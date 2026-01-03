@@ -1,0 +1,170 @@
+<!-- 
+  HTML DE EJEMPLO - ESTRUCTURA SEMÁNTICA Y SEO (SIN TAILWIND)
+  
+  Objetivo: Establecer una base sólida de HTML5 priorizando:
+  1. SEO: Jerarquía de encabezados (h1, h2, h3) y metaetiquetas.
+  2. Accesibilidad: Uso de regiones semánticas (nav, main, footer).
+  3. Legibilidad: Código limpio listo para ser estilizado posteriormente (con CSS o frameworks).
+-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO: El title debe ser único y descriptivo (aprox 60 caracteres) -->
+    <title>Estructura Base Codeo - Guía Semántica</title>
+    <!-- SEO: Meta description para buscadores (aprox 150-160 caracteres) -->
+    <meta name="description" content="Ejemplo de estructura HTML5 semántica optimizada para SEO y accesibilidad. Base para el desarrollo de la plataforma Codeo.">
+    
+    <!-- CSS BÁSICO (Solo para visualización, sin frameworks) -->
+    <style>
+        /* Reset básico para legibilidad */
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            color: #333;
+        }
+        
+        /* Layout básico */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        header {
+            border-bottom: 1px solid #eee;
+            padding: 1rem 0;
+        }
+        
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        /* Main Content */
+        main {
+            padding: 4rem 0;
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        /* Cards Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        article {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #f9f9f9;
+            padding: 3rem 0;
+            margin-top: auto;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- HEADER: Contenedor principal de navegación -->
+    <header>
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <!-- Logo: Puede ser h1 en la home, o div en otras páginas si h1 es el título del contenido -->
+            <div class="logo font-bold">Codeo</div>
+
+            <!-- NAVEGACIÓN PRINCIPAL -->
+            <nav aria-label="Navegación principal">
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#plataforma">Plataforma</a></li>
+                    <li><a href="#recursos">Recursos</a></li>
+                </ul>
+            </nav>
+
+            <div class="actions">
+                <button>Acceder</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- SECCIÓN HERO: Contenido principal de introducción -->
+        <section class="container" aria-labelledby="hero-title">
+            <!-- H1: Único por página. Describe el contenido principal -->
+            <h1 id="hero-title" style="font-size: 2.5rem; margin-bottom: 1rem;">
+                Desarrollo web sin límites
+            </h1>
+            <p style="font-size: 1.25rem; color: #666; max-width: 700px;">
+                Estructura base optimizada para motores de búsqueda y lista para crecer.
+            </p>
+        </section>
+
+        <!-- SECCIÓN DE CARACTERÍSTICAS -->
+        <section class="container" aria-labelledby="features-title">
+            <h2 id="features-title" style="font-size: 1.8rem; margin-bottom: 2rem;">
+                Arquitectura del Proyecto
+            </h2>
+
+            <div class="grid">
+                <!-- ARTICLE: Contenido independiente y distribuible -->
+                <article>
+                    <h3>Semántica HTML5</h3>
+                    <p>Uso de etiquetas significativas (nav, main, article) para mejorar el ranking en buscadores y la lectura de screen readers.</p>
+                </article>
+
+                <article>
+                    <h3>Jerarquía de Encabezados</h3>
+                    <p>Orden lógico de H1 a H6 para que los bots de Google entiendan la estructura y relevancia del contenido.</p>
+                </article>
+
+                <article>
+                    <h3>Backend Friendly</h3>
+                    <p>Estructura modular limpia, ideal para inyectar datos dinámicos desde Laravel sin romper el layout.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER: Información legal, sitemap y contacto -->
+    <footer>
+        <div class="container">
+            <div class="grid">
+                <div>
+                    <strong>Codeo</strong>
+                    <p>Referencia de arquitectura.</p>
+                </div>
+                
+                <nav aria-label="Enlaces legales">
+                    <h4>Legal</h4>
+                    <ul style="display: block;">
+                        <li><a href="#">Privacidad</a></li>
+                        <li><a href="#">Términos</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <p style="text-align: center; margin-top: 2rem; font-size: 0.9rem; color: #888;">&copy; 2024 Codeo. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
