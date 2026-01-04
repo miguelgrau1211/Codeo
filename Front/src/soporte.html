@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soporte Técnico - Codeo</title>
+    <meta name="description" content="Reporta errores, contacta con el equipo de soporte o resuelve tus dudas frecuentes en Codeo.">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav aria-label="Navegación de retorno">
+                <a href="index.html" class="btn-back">← Volver</a>
+            </nav>
+            
+            <div class="page-header">
+                <h1>Soporte Técnico</h1>
+                <p>Reportar errores y problemas</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="support-form-section" aria-labelledby="form-title">
+            <h2 id="form-title">Formulario de Reporte</h2>
+
+            <div class="form-card">
+                <form action="#" method="POST">
+                    
+                    <div class="form-group">
+                        <label for="email">Email (Opcional)</label>
+                        <input type="email" id="email" name="email" placeholder="tu@email.com">
+                        <small class="helper-text">Para recibir actualizaciones sobre tu reporte</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Asunto *</label>
+                        <input type="text" id="subject" name="subject" placeholder="Ej: Error al ejecutar código en Python" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Descripción del Problema *</label>
+                        <textarea id="description" name="description" rows="8" required 
+placeholder="Describe el error con el máximo detalle posible...
+
+Pasos para reproducir:
+1. ...
+2. ...
+
+Resultado esperado:
+Resultado obtenido:"></textarea>
+                    </div>
+
+                    <div class="info-box">
+                        <p>💡 Incluye capturas de pantalla, mensajes de error exactos y pasos para reproducir el problema.</p>
+                    </div>
+
+                    <div class="actions">
+                        <button type="submit" class="btn-primary">enviar Reporte</button>
+                    </div>
+
+                </form>
+            </div>
+        </section>
+
+        <section class="contact-methods" aria-labelledby="contact-title">
+            <h2 id="contact-title">Otras Formas de Contacto</h2>
+            
+            <ul class="contact-list">
+                <li>
+                    <a href="#" class="contact-btn discord">
+                        <span class="icon">💬</span> Únete a nuestro Discord
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="contact-btn github">
+                        <span class="icon">🐙</span> Reportar en GitHub
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="contact-btn twitter">
+                        <span class="icon">🐦</span> Síguenos en Twitter
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+        <section class="faq-section" aria-labelledby="faq-title">
+            <h2 id="faq-title">Preguntas Frecuentes</h2>
+
+            <div class="faq-grid">
+                <article class="faq-item">
+                    <h3>¿Cuánto tarda en responderse un reporte?</h3>
+                    <p>Generalmente 24-48 horas</p>
+                </article>
+
+                <article class="faq-item">
+                    <h3>¿Cómo reseteo mi progreso?</h3>
+                    <p>Ve a Ajustes > Cuenta > Resetear Progreso</p>
+                </article>
+
+                <article class="faq-item">
+                    <h3>¿Hay recompensas por reportar bugs?</h3>
+                    <p>¡Sí! Recibes créditos por cada bug válido</p>
+                </article>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container text-center">
+            <p>&copy; Codeo. Soporte y Ayuda.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
