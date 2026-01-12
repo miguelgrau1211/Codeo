@@ -1,0 +1,167 @@
+<div class="admin-dashboard">
+    <header>
+        <button type="button">Volver</button>
+        <div class="header-info">
+            <h1>Panel de Administración</h1>
+            <p>Control y estadísticas del sistema</p>
+        </div>
+    </header>
+
+    <section class="stats-grid">
+        <!-- Stat Card 1 -->
+        <app-admin-stat-card>
+            <div class="stat-icon">👥</div>
+            <div class="stat-value">12,847</div>
+            <div class="stat-label">Usuarios Totales</div>
+            <div class="stat-trend positive">+12% esta semana</div>
+        </app-admin-stat-card>
+
+        <!-- Stat Card 2 -->
+        <app-admin-stat-card>
+            <div class="stat-icon">📈</div>
+            <div class="stat-value">3,247</div>
+            <div class="stat-label">Usuarios Activos</div>
+            <div class="stat-trend positive">+8% esta semana</div>
+        </app-admin-stat-card>
+
+        <!-- Stat Card 3 -->
+        <app-admin-stat-card>
+            <div class="stat-icon">📄</div>
+            <div class="stat-value">89,234</div>
+            <div class="stat-label">Desafíos Completados</div>
+            <div class="stat-trend positive">+15% esta semana</div>
+        </app-admin-stat-card>
+
+        <!-- Stat Card 4 -->
+        <app-admin-stat-card>
+            <div class="stat-icon">⚠️</div>
+            <div class="stat-value">23</div>
+            <div class="stat-label">Reportes Pendientes</div>
+            <div class="stat-trend neutral">5 nuevos hoy</div>
+        </app-admin-stat-card>
+    </section>
+
+    <div class="main-grid">
+        <section class="user-management">
+            <h2>Gestión de Usuarios</h2>
+            <ul class="user-list">
+                <li class="user-item">
+                    <span class="user-name">PyMaster3000</span>
+                    <span class="user-email">pymaster@example.com</span>
+                    <span class="user-level">Nivel 18</span>
+                    <span class="status-badge active">Activo</span>
+                </li>
+                <li class="user-item">
+                    <span class="user-name">CodeNinja</span>
+                    <span class="user-email">codeninja@example.com</span>
+                    <span class="user-level">Nivel 17</span>
+                    <span class="status-badge active">Activo</span>
+                </li>
+                <li class="user-item">
+                    <span class="user-name">AlgoQueen</span>
+                    <span class="user-email">algoqueen@example.com</span>
+                    <span class="user-level">Nivel 17</span>
+                    <span class="status-badge inactive">Inactivo</span>
+                </li>
+                <li class="user-item">
+                    <span class="user-name">ByteWizard</span>
+                    <span class="user-email">bytewizard@example.com</span>
+                    <span class="user-level">Nivel 16</span>
+                    <span class="status-badge active">Activo</span>
+                </li>
+            </ul>
+            <button class="btn-view-all">Ver Todos los Usuarios</button>
+        </section>
+
+        <section class="content-management">
+            <h2>Gestión de Contenido</h2>
+            <ul class="content-list">
+                <li class="content-item">
+                    <span class="content-title">Bucles Avanzados</span>
+                    <span class="content-difficulty">Nivel - Media</span>
+                    <span class="status-badge received">Publicado</span>
+                </li>
+                <li class="content-item">
+                    <span class="content-title">Listas y Tuplas</span>
+                    <span class="content-difficulty">Nivel - Fácil</span>
+                    <span class="status-badge received">Publicado</span>
+                </li>
+                <li class="content-item">
+                    <span class="content-title">Funciones Lambda</span>
+                    <span class="content-difficulty">Nivel - Difícil</span>
+                    <span class="status-badge warning">Borrador</span>
+                </li>
+                <li class="content-item">
+                    <span class="content-title">Comprehensions</span>
+                    <span class="content-difficulty">Nivel - Media</span>
+                    <span class="status-badge info">En Revisión</span>
+                </li>
+            </ul>
+            <div class="actions">
+                <button class="btn-primary">Crear Nivel</button>
+                <button class="btn-secondary">Ver Todo</button>
+            </div>
+        </section>
+    </div>
+
+    <div class="bottom-grid">
+        <section class="error-reports">
+            <h2>Reportes de Errores</h2>
+            <div class="report-item">
+                <div class="report-header">
+                    <h3>Error en editor de código</h3>
+                    <span class="badge high">Alta</span>
+                    <span class="badge pending">Pendiente</span>
+                </div>
+                <p>Reportado por user123</p>
+            </div>
+
+            <div class="report-item">
+                <div class="report-header">
+                    <h3>Puntuación no se guarda</h3>
+                    <span class="badge medium">Media</span>
+                    <span class="badge progress">En Progreso</span>
+                </div>
+                <p>Reportado por user456</p>
+            </div>
+
+            <div class="report-item">
+                <div class="report-header">
+                    <h3>UI problema en móvil</h3>
+                    <span class="badge low">Baja</span>
+                    <span class="badge pending">Pendiente</span>
+                </div>
+                <p>Reportado por user789</p>
+            </div>
+            
+            <button class="btn-view-all">Ver Todos los Reportes</button>
+        </section>
+
+        <section class="system-config">
+            <h2>Configuración del Sistema</h2>
+            
+            <div class="config-actions">
+                <button>Configuración General</button>
+                <button>Gestionar Roles</button>
+                <button>Logs del Sistema</button>
+                <button>Exportar Datos</button>
+            </div>
+
+            <div class="system-status">
+                <h3>Estado del Sistema</h3>
+                <div class="status-row">
+                    <span>Base de Datos</span>
+                    <span class="badge success">Operacional</span>
+                </div>
+                <div class="status-row">
+                    <span>API</span>
+                    <span class="badge success">Operacional</span>
+                </div>
+                <div class="status-row">
+                    <span>Almacenamiento</span>
+                    <span class="badge warning">75% Usado</span>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

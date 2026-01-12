@@ -1,0 +1,80 @@
+<div class="modo-infinito-container">
+    <!-- Header Principal -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <button class="btn-salir">
+                <span class="icon-arrow-left">←</span> Salir
+            </button>
+            <div class="level-info">
+                <span class="icon-infinity">∞</span>
+                <div class="level-details">
+                    <span class="level-text">Nivel 0</span>
+                    <span class="mode-tag">🐛 Depuración</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="top-bar-right">
+            <div class="lives-container">
+                <span class="label-lives">Vidas</span>
+                <div class="hearts">
+                    <span class="heart">♥</span>
+                    <span class="heart">♥</span>
+                    <span class="heart">♥</span>
+                </div>
+            </div>
+            <div class="timer-container">
+                <span class="label-timer">Tiempo</span>
+                <span class="time-value">1:55</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sección del Editor -->
+    <section class="editor-panel">
+        <div class="editor-header">
+            <div class="editor-title-group">
+                <div class="icon-box-purple">
+                    <span class="icon-sparkle">✨</span>
+                </div>
+                <h2>Editor de Código</h2>
+            </div>
+            
+            <div class="editor-controls">
+                <button class="btn-reset">
+                    <span class="icon-refresh">↻</span> Resetear
+                </button>
+                <button class="btn-run">
+                    <span class="icon-play">▶</span> Ejecutar
+                </button>
+            </div>
+
+            <div class="editor-info-icon">
+                <span class="icon-info">ℹ</span>
+            </div>
+        </div>
+
+        <div class="code-area">
+            <div class="line-numbers">
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+            </div>
+            <pre class="code-content"><code><span class="keyword">def</span> <span class="function-name">calcular_suma</span>(lista):
+    <span class="variable">suma</span> = <span class="number">0</span>
+    <span class="keyword">for</span> num <span class="keyword">in</span> lista:
+        suma += num
+    <span class="keyword">return</span> suma</code></pre>
+        </div>
+    </section>
+
+    <!-- Sección de Consola -->
+    <section class="console-panel">
+        <h3>Consola</h3>
+        <div class="console-output">
+            <span class="console-text success">Esperando ejecución...</span>
+        </div>
+    </section>
+</div>

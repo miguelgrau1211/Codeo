@@ -1,0 +1,139 @@
+<div class="logros-container">
+    <!-- 1. Header de la página -->
+    <header class="page-header">
+        <button class="btn-back">
+            <span class="icon-arrow">←</span> Volver
+        </button>
+        <div class="header-info">
+            <h1>Logros</h1>
+            <p>Desbloquea todos los logros</p>
+        </div>
+    </header>
+
+    <!-- 2. Tarjetas de Estadísticas -->
+    <section class="stats-dashboard">
+        <!-- Card 1 -->
+        <div class="stat-card">
+            <div class="stat-icon trophy">🏆</div>
+            <div class="stat-content">
+                <span class="label">Desbloqueados</span>
+                <span class="value">4 / 8</span>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="stat-card">
+            <div class="stat-icon star">⭐</div>
+            <div class="stat-content">
+                <span class="label">Puntos Ganados</span>
+                <span class="value">900</span>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="stat-card">
+            <div class="stat-icon cup">🍷</div> <!-- Usando icono aproximado -->
+            <div class="stat-content">
+                <span class="label">Progreso Total</span>
+                <span class="value">50%</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Barra de Navegación (Tabs) -->
+    <nav class="tabs-bar">
+        <button class="tab active">Todos</button>
+        <button class="tab">Desbloqueados</button>
+        <button class="tab">Bloqueados</button>
+    </nav>
+
+    <!-- 4. Grid de Logros (Componentes Hijos) -->
+    <!-- Aquí instanciamos el componente 'app-logro' para cada ítem -->
+    <div class="achievements-grid">
+        
+        <!-- Log 1: Primer Paso -->
+        <app-logro 
+            title="Primer Paso"
+            description="Completa tu primer desafío"
+            points="50"
+            rarity="Común"
+            icon="👣" 
+            [isLocked]="false">
+        </app-logro>
+
+        <!-- Log 2: Pythonista -->
+        <app-logro 
+            title="Pythonista"
+            description="Completa 50 desafíos"
+            points="500"
+            rarity="Épico"
+            icon="🐍" 
+            [isLocked]="false">
+        </app-logro>
+
+        <!-- Log 3: Racha de Fuego -->
+        <app-logro 
+            title="Racha de Fuego"
+            description="Practica 10 días consecutivos"
+            points="200"
+            rarity="Raro"
+            icon="🔥" 
+            [isLocked]="false">
+        </app-logro>
+
+        <!-- Log 4: Velocista -->
+        <app-logro 
+            title="Velocista"
+            description="Completa un nivel en menos de 2 minutos"
+            points="150"
+            rarity="Raro"
+            icon="⚡" 
+            [isLocked]="false">
+        </app-logro>
+
+        <!-- Log 5: Perfeccionista (Bloqueado con progreso) -->
+        <app-logro 
+            title="Perfeccionista"
+            description="Obtén 100/100 en 5 desafíos"
+            points="300"
+            rarity="Epico"
+            [isLocked]="true"
+            currentProgress="3"
+            maxProgress="5">
+        </app-logro>
+
+        <!-- Log 6: Maestro del Código (Bloqueado con progreso) -->
+        <app-logro 
+            title="Maestro del Código"
+            description="Completa todos los niveles"
+            points="1000"
+            rarity="Legendario"
+            [isLocked]="true"
+            currentProgress="47"
+            maxProgress="100">
+        </app-logro>
+
+        <!-- Log 7: Colaborador (Bloqueado con progreso) -->
+        <app-logro 
+            title="Colaborador"
+            description="Reporta 3 bugs válidos"
+            points="200"
+            rarity="Raro"
+            [isLocked]="true"
+            currentProgress="1"
+            maxProgress="3">
+        </app-logro>
+
+        <!-- Log 8: Top 100 (Bloqueado con progreso) -->
+        <app-logro 
+            title="Top 100"
+            description="Alcanza el top 100 del ranking"
+            points="400"
+            rarity="Epico"
+            [isLocked]="true"
+            currentProgress="247"
+            maxProgress="100">
+        </app-logro>
+        
+    </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="card-container" [class.locked]="isLocked">
+    
+    <!-- Sección Izquierda: Icono -->
+    <div class="icon-section">
+        <!-- Mostramos el icono personalizado si está desbloqueado -->
+        <div class="emoji-icon" *ngIf="!isLocked">
+            {{ icon }}
+        </div>
+        <!-- Mostramos el candado si está bloqueado -->
+        <div class="lock-icon" *ngIf="isLocked">
+            🔒
+        </div>
+    </div>
+
+    <!-- Sección Central: Información -->
+    <div class="info-section">
+        <div class="card-header">
+            <h3 class="achievement-title">{{ title }}</h3>
+            <!-- El badge de rareza solo se ve si no está bloqueado (o según diseño) -->
+            <span class="rarity-badge" *ngIf="!isLocked" [class]="rarity">
+                {{ rarity }}
+            </span>
+        </div>
+        
+        <p class="achievement-desc">{{ description }}</p>
+
+        <!-- Barra de progreso: Solo si maxProgress está definido -->
+        <div class="progress-bar-container" *ngIf="maxProgress">
+            <div class="progress-info">
+                <span class="label-progreso">Progreso</span>
+                <span class="value-progreso">{{ currentProgress }} / {{ maxProgress }}</span>
+            </div>
+            <div class="bar-track">
+                <!-- Calculamos el ancho inline simulado para el HTML -->
+                <div class="bar-fill" [style.width.%]="(currentProgress / maxProgress) * 100"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección Derecha: Puntos -->
+    <div class="points-section">
+        <div class="points-badge">
+            <span class="star">☆</span>
+            <span class="points-value">+{{ points }} puntos</span>
+        </div>
+    </div>
+
+</div>
