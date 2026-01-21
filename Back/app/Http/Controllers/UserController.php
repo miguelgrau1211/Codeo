@@ -146,4 +146,38 @@ class UserController extends Controller
             'message' => 'Usuario eliminado exitosamente'
         ], 200);
     }
+    /**
+     * Inicia sesión con un usuario existente.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $usuario = Usuario::where('email', $request->email)->first();
+
+        if (! $usuario || ! Hash::check($request->password, $usuario->password)) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'email' => ['Las credenciales proporcionadas son incorrectas.'],
+            ]);
+        }
+
+        // Crear token de acceso (requiere Laravel Sanctum instalado y configurado)
+        $token = $usuario->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Inicio de sesión exitoso',
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'user' => $usuario,
+        ], 200);
+    }
+
+
+    
 }
