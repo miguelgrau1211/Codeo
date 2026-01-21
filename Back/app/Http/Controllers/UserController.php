@@ -178,6 +178,156 @@ class UserController extends Controller
         ], 200);
     }
 
+    /**
+     * Obtiene la experiencia total y el progreso de nivel del usuario
+     * * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getExperienciaTotalUsuario($id)
+    {
+        //buscamos al usuario
+        $usuario = \App\Models\Usuario::find($id);
 
-    
+        if (!$usuario) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+
+
+        $xpPorNivel = 1000; //esto se puede cambiar ya que he asignado de momento 
+        // que cada nivel da 1000 de xp, pero claro, como no lo hemos hablado 
+        // no se cual poner, pero a falta que lo cambiemos para 
+        // sacar el nivel del usuario lo dejaré así
+        $nivelActual = $usuario->nivel_global;
+        $expTotal = $usuario->exp_total;
+        
+        // Calcular progreso hacia el siguiente nivel
+        $expEnNivelActual = $expTotal % $xpPorNivel;
+        $expRestanteParaSubir = $xpPorNivel - $expEnNivelActual;
+        $porcentajeNivel = ($expEnNivelActual / $xpPorNivel) * 100;
+
+        return response()->json([
+            'id' => $usuario->id,
+            'nickname' => $usuario->nickname,
+            'exp_total' => $expTotal,
+            'nivel_actual' => $nivelActual,
+            'detalle_progreso' => [
+                'exp_en_este_nivel' => $expEnNivelActual,
+                'exp_necesaria_siguiente_nivel' => $xpPorNivel,
+                'exp_faltante' => $expRestanteParaSubir,
+                'porcentaje_completado' => round($porcentajeNivel, 2) . '%'
+            ]
+        ], 200);
+    }
+
+    /**
+     * Obtiene un resumen de la actividad más reciente del usuario (Historia, Logros, Runs).
+     * * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getActividadUsuarioReciente($id)
+    {
+        //Valida usuario
+        $usuario = \App\Models\Usuario::find($id);
+        if (!$usuario) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+
+        //últimos 3 niveles de historia superados
+        $historia = \App\Models\ProgresoHistoria::where('usuario_id', $id)
+            ->where('completado', true)
+            ->with('nivel')
+            ->orderBy('updated_at', 'desc')
+            ->limit(3)
+            ->get()
+            ->map(fn($item) => [
+                'tipo' => 'Historia',
+                'descripcion' => 'Completaste el nivel: ' . $item->nivel->titulo,
+                'fecha' => $item->updated_at->diffForHumans() // Ejemplo: "hace 2 horas"
+            ]);
+
+        //  últimos 3 logros desbloqueados
+        $logros = \App\Models\UsuarioLogro::where('usuario_id', $id)
+            ->with('logro')
+            ->orderBy('fecha_desbloqueo', 'desc')
+            ->limit(3)
+            ->get()
+            ->map(fn($item) => [
+                'tipo' => 'Logro',
+                'descripcion' => 'Ganaste el logro: ' . $item->logro->nombre,
+                'fecha' => \Carbon\Carbon::parse($item->fecha_desbloqueo)->diffForHumans()
+            ]);
+
+        //última run de Roguelike
+        $run = \App\Models\RunRoguelike::where('usuario_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->limit(1)
+            ->get()
+            ->map(fn($item) => [
+                'tipo' => 'Roguelike',
+                'descripcion' => "Llegaste al nivel {$item->niveles_superados} con estado: {$item->estado}",
+                'fecha' => $item->created_at->diffForHumans()
+            ]);
+
+        // Unir  y ordenar por lo más reciente 
+        $actividadGlobal = collect($historia)
+            ->merge($logros)
+            ->merge($run)
+            ->sortByDesc(fn($item) => $item['fecha']) // Aunque diffForHumans es texto, esto es ilustrativo
+            ->values();
+
+        return response()->json([
+            'usuario' => $usuario->nickname,
+            'actividad' => $actividadGlobal
+        ], 200);
+    }
+
+    /**
+     * Obtiene el ranking global de usuarios basado en nivel y experiencia.
+     * * @return \Illuminate\Http\JsonResponse
+     */
+    public function getRanking()
+    {
+        //usuarios ordenados por nivel (desc) y luego por experiencia (desc)
+
+        $ranking = \App\Models\Usuario::select('id', 'nickname', 'avatar_url', 'nivel_global', 'exp_total')->orderByDesc('nivel_global')->orderByDesc('exp_total')
+        // Paginar para no saturar el Frontend si hay muchos  usuarios    
+        ->paginate(10); // Devuelve de 10 en 10
+
+        // Transformamos los datos para añadir la posición numérica
+        $items = $ranking->getCollection()->map(function ($usuario, $key) use ($ranking) {
+            return [
+                'posicion' => (($ranking->currentPage() - 1) * $ranking->perPage()) + $key + 1,
+                'id' => $usuario->id,
+                'nickname' => $usuario->nickname,
+                'avatar_url' => $usuario->avatar_url,
+                'nivel' => $usuario->nivel_global,
+                'puntos' => $usuario->exp_total
+            ];
+        });
+
+        return response()->json([
+            'pagina_actual' => $ranking->currentPage(),
+            'total_paginas' => $ranking->lastPage(),
+            'usuarios' => $items
+        ], 200);
+    }
+
+    /**
+     * Obtiene la fecha en la que el usuario se registró en Codeo.
+     * * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getFechaDeCreacionCuenta($id)
+    {
+        //buscamos al usuario
+        $usuario = \App\Models\Usuario::findOrFail($id);
+
+        // formatear  fecha
+        return response()->json([
+            'id' => $usuario->id,
+            'nickname' => $usuario->nickname,
+            'fecha_union' => $usuario->created_at->format('d/m/Y'),
+            'antiguedad' => $usuario->created_at->diffForHumans()
+        ], 200);
+    }
 }

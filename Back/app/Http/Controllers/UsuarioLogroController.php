@@ -99,4 +99,73 @@ class UsuarioLogroController extends Controller
             'logros' => $resultado
         ], 200);
     }
+
+    /**
+     * Obtiene la lista completa de logros del juego, indicando cuáles ha desbloqueado el usuario.
+     * * @param int $idUsuario
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getLogrosDesbloqueados($idUsuario)
+    {
+        // logros disponibles, todossss
+        $todosLosLogros = \App\Models\Logro::all();
+
+        //id de los logros que el usuario ya tiene
+        $logrosUsuarioIds = \App\Models\UsuarioLogro::where('usuario_id', $idUsuario)
+            ->pluck('logro_id')
+            ->toArray();
+
+        $resultado = $todosLosLogros->map(function ($logro) use ($logrosUsuarioIds) {
+            $desbloqueado = in_array($logro->id, $logrosUsuarioIds);
+            
+            return [
+                'id' => $logro->id,
+                'nombre' => $logro->nombre,
+                'descripcion' => $logro->descripcion,
+                'icono_url' => $logro->icono_url,
+                'requisito_tipo' => $logro->requisito_tipo,
+                'requisito_cantidad' => $logro->requisito_cantidad,
+                'desbloqueado' => $desbloqueado,//clave para el CSS de Angular
+                'fecha_obtencion' => $desbloqueado ? 
+                    \App\Models\UsuarioLogro::where('usuario_id', $idUsuario)
+                        ->where('logro_id', $logro->id)
+                        ->value('fecha_desbloqueo') : null
+            ];
+        });
+
+        return response()->json([
+            'usuario_id' => (int)$idUsuario,
+            'progreso_logros' => $logrosUsuarioIds->count() . '/' . $todosLosLogros->count(),
+            'lista_completa' => $resultado
+        ], 200);
+    }
+
+    /**
+     * Obtiene el porcentaje de completitud de logros de un usuario.
+     * * @param int $idUsuario
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getPorcentajeLogros($idUsuario)
+    {
+        //contar cuántos logros existen en total en el juego para luego sacar el procentaje
+        $totalLogros = \App\Models\Logro::count();
+
+        if ($totalLogros === 0) {
+            return response()->json(['porcentaje' => 0, 'mensaje' => 'No hay logros configurados'], 200);
+        }
+
+        // cuántos tiene el usuario
+        $logrosUsuario = \App\Models\UsuarioLogro::where('usuario_id', $idUsuario)->count();
+
+        // porcentaje
+        $porcentaje = ($logrosUsuario / $totalLogros) * 100;
+
+        return response()->json([
+            'usuario_id' => (int)$idUsuario,
+            'logros_obtenidos' => $logrosUsuario,
+            'total_disponibles' => $totalLogros,
+            'porcentaje' => round($porcentaje, 2),
+            'texto' => "Has completado $logrosUsuario de $totalLogros logros"
+        ], 200);
+    }
 }

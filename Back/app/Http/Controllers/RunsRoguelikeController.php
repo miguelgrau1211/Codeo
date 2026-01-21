@@ -63,4 +63,31 @@ class RunsRoguelikeController
             'message' => 'Run eliminado exitosamente'
         ], 200);
     }
+    
+    /**
+     * Obtiene el récord histórico del usuario en Roguelike
+     * * @param int $idUsuario
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getNivelMejorRunUsuario($idUsuario)
+    {
+        //valida existencia del usuario
+        $usuario = \App\Models\Usuario::find($idUsuario);
+        if (!$usuario) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+
+        //mejor partida
+        $mejorRun = \App\Models\RunRoguelike::where('usuario_id', $idUsuario)
+            ->orderByDesc('niveles_superados')->orderByDesc('monedas_obtenidas') // Desempate por monedas
+            ->first();
+
+        if (!$mejorRun) {
+            return response()->json([
+                'nickname' => $usuario->nickname,
+                'tiene_record' => false,
+                'mejor_nivel' => 0
+            ], 200);
+        }
+    }
 }
