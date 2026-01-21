@@ -179,5 +179,29 @@ class UserController extends Controller
     }
 
 
+    public function getNivelCuentaUsuario($id)
+    {
+        $usuario = Usuario::findOrFail($id);
+        return response()->json($usuario->nivel_global, 200);
+    }
+
+    public function getCreditosUsuario($id)
+    {
+        $usuario = Usuario::findOrFail($id);
+        return response()->json($usuario->monedas, 200);
+    }
+
+    public function getRachaActualUsuario($id)
+    {
+        $usuario = Usuario::findOrFail($id);
+        return response()->json($usuario->racha_dias, 200);
+    }
+
+    public function getPosicionRankingUsuario($id)
+    {
+        $usuario = Usuario::findOrFail($id);
+        return response()->json($usuario->posicion_ranking, 200);
+    }
+
     
 }

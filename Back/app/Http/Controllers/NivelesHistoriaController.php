@@ -67,4 +67,5 @@ class NivelesHistoriaController
             'message' => 'Nivel eliminado exitosamente'
         ], 200);
     }
+
 }
