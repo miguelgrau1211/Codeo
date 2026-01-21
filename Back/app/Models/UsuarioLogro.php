@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Logros;
+use App\Models\Usuario;
 
 class UsuarioLogro extends Model
 {
@@ -30,6 +32,6 @@ class UsuarioLogro extends Model
      */
     public function logro(): BelongsTo
     {
-        return $this->belongsTo(Logro::class, 'logro_id');
+        return $this->belongsTo(Logros::class, 'logro_id');
     }
 }
