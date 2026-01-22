@@ -59,4 +59,9 @@ class MejorasController
             'message' => 'Mejora eliminada exitosamente'
         ], 200);
     }
+
+    public function getTresMejorasRandom(){
+        $mejoras = Mejoras::inRandomOrder()->take(3)->get();
+        return response()->json($mejoras, 200);
+    }
 }

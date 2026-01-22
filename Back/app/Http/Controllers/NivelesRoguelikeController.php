@@ -53,4 +53,17 @@ class NivelRoguelikeController extends Controller
         NivelRoguelike::destroy($id);
         return response()->json(['message' => 'Nivel eliminado'], 200);
     }
+
+    public function getNivelModoInfinito($dificultad)
+    {
+        $nivel = NivelRoguelike::where('dificultad', $dificultad)
+            ->inRandomOrder()
+            ->first();
+
+        if (!$nivel) {
+            return response()->json(['message' => 'No hay niveles para esa dificultad'], 404);
+        }
+
+        return response()->json($nivel, 200);
+    }
 }

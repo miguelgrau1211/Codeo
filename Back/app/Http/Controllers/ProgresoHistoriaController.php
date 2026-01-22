@@ -87,4 +87,40 @@ class ProgresoHistoriaController extends Controller
             'progreso_detallado' => $progreso
         ], 200);
     }
+
+
+    public function getPorcentajeUsuarioModoHistoria($idUsuario)
+    {
+        // verificamos que el usuario existe
+        $usuarioExists = \App\Models\Usuario::where('id', $idUsuario)->exists();
+        
+        if (!$usuarioExists) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+
+        //obtenemos el progreso con los datos del nivel
+        $progreso = ProgresoHistoria::where('usuario_id', $idUsuario)->join('niveles_historia', 'usuario_progreso_historia.nivel_id', '=', 'niveles_historia.id')
+            ->select(
+                'usuario_progreso_historia.*', 
+                'niveles_historia.titulo', 
+                'niveles_historia.orden'
+            )->orderBy('niveles_historia.orden', 'asc')->get();
+
+        //estadísticas para el Dashboard
+        $totalNiveles = NivelesHistoria::count();
+        $nivelesCompletados = $progreso->where('completado', true)->count();
+        
+        //porcentaje
+        $porcentajeCerrado = $totalNiveles > 0 ? round(($nivelesCompletados / $totalNiveles) * 100) : 0;
+
+        return response()->json([
+            'usuario_id' => (int)$idUsuario,
+            'stats' => [
+                'total_niveles' => $totalNiveles,
+                'completados' => $nivelesCompletados,
+                'porcentaje_progreso' => $porcentajeCerrado . '%'
+            ],
+            'progreso_detallado' => $progreso
+        ], 200);
+    }
 }

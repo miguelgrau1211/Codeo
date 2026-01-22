@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\NivelesHistoria;
+use App\Models\NivelRoguelike;
 use Illuminate\Http\Request;
 
 class EjecutarCodigo extends Controller
@@ -21,7 +23,7 @@ class EjecutarCodigo extends Controller
 
         // 1. Obtener el resultado esperado de la Base de Datos según el tipo de nivel
         if ($tipo === 'historia') {
-            $nivel = \App\Models\NivelesHistoria::find($nivelId);
+            $nivel = NivelesHistoria::find($nivelId);
             if (!$nivel) {
                 return response()->json(['message' => 'Nivel de historia no encontrado'], 404);
             }
@@ -31,7 +33,7 @@ class EjecutarCodigo extends Controller
             $resultadoEsperado = $nivel->solucion_esperada;
 
         } else { // Roguelike
-            $nivel = \App\Models\NivelRoguelike::find($nivelId);
+            $nivel = NivelRoguelike::find($nivelId);
             if (!$nivel) {
                 return response()->json(['message' => 'Nivel roguelike no encontrado'], 404);
             }
