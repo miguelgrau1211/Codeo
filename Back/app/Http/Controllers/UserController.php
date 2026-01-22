@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Usuario;
+use App\Models\UsuarioDesactivado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use App\Models\ProgresoHistoria;
 use App\Models\NivelesHistoria;
@@ -330,36 +332,6 @@ class UserController extends Controller
             'nickname' => $usuario->nickname,
             'fecha_union' => $usuario->created_at->format('d/m/Y'),
             'antiguedad' => $usuario->created_at->diffForHumans()
-        ], 200);
-    }
-
-
-    public function getPerfilUsuario($id){
-        //buscamos al usuario
-        $usuario = Usuario::findOrFail($id);
-
-        //obtenemos el nickname y datos del usuario
-        $nickname = $usuario->nickname;
-        $nombre = $usuario->nombre;
-        $apellidos = $usuario->apellidos;
-        $email = $usuario->email;
-        $avatar_url = $usuario->avatar_url;
-        $monedas = $usuario->monedas;
-        $exp_total = $usuario->exp_total;
-        $nivel_global = $usuario->nivel_global;
-        $antiguedad = $usuario->created_at->diffForHumans();
-        
-        return response()->json([
-            'id' => $usuario->id,
-            'nickname' => $nickname,
-            'nombre' => $nombre,
-            'apellidos' => $apellidos,
-            'email' => $email,
-            'avatar_url' => $avatar_url,
-            'monedas' => $monedas,
-            'exp_total' => $exp_total,
-            'nivel_global' => $nivel_global,
-            'antiguedad' => $antiguedad
         ], 200);
     }
 }
