@@ -1,5 +1,5 @@
 {
-  "name": "codeo-front",
+  "name": "front",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -21,7 +21,7 @@
     ]
   },
   "private": true,
-  "packageManager": "npm@10.9.2",
+  "packageManager": "npm@11.6.2",
   "dependencies": {
     "@angular/common": "^21.0.0",
     "@angular/compiler": "^21.0.0",
@@ -33,9 +33,10 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@angular/build": "^21.0.4",
-    "@angular/cli": "^21.0.4",
+    "@angular/build": "^21.0.3",
+    "@angular/cli": "^21.0.3",
     "@angular/compiler-cli": "^21.0.0",
+    "@tailwindcss/postcss": "^4.1.18",
     "autoprefixer": "^10.4.23",
     "jsdom": "^27.1.0",
     "postcss": "^8.5.6",

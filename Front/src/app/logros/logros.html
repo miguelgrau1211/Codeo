@@ -55,7 +55,7 @@
         <app-logro 
             title="Primer Paso"
             description="Completa tu primer desafío"
-            points="50"
+            [points]="50"
             rarity="Común"
             icon="👣" 
             [isLocked]="false">
@@ -65,7 +65,7 @@
         <app-logro 
             title="Pythonista"
             description="Completa 50 desafíos"
-            points="500"
+            [points]="500"
             rarity="Épico"
             icon="🐍" 
             [isLocked]="false">
@@ -75,7 +75,7 @@
         <app-logro 
             title="Racha de Fuego"
             description="Practica 10 días consecutivos"
-            points="200"
+            [points]="200"
             rarity="Raro"
             icon="🔥" 
             [isLocked]="false">
@@ -85,7 +85,7 @@
         <app-logro 
             title="Velocista"
             description="Completa un nivel en menos de 2 minutos"
-            points="150"
+            [points]="150"
             rarity="Raro"
             icon="⚡" 
             [isLocked]="false">
@@ -95,44 +95,44 @@
         <app-logro 
             title="Perfeccionista"
             description="Obtén 100/100 en 5 desafíos"
-            points="300"
+            [points]="300"
             rarity="Epico"
             [isLocked]="true"
-            currentProgress="3"
-            maxProgress="5">
+            [currentProgress]="3"
+            [maxProgress]="5">
         </app-logro>
 
         <!-- Log 6: Maestro del Código (Bloqueado con progreso) -->
         <app-logro 
             title="Maestro del Código"
             description="Completa todos los niveles"
-            points="1000"
+            [points]="1000"
             rarity="Legendario"
             [isLocked]="true"
-            currentProgress="47"
-            maxProgress="100">
+            [currentProgress]="47"
+            [maxProgress]="100">
         </app-logro>
 
         <!-- Log 7: Colaborador (Bloqueado con progreso) -->
         <app-logro 
             title="Colaborador"
             description="Reporta 3 bugs válidos"
-            points="200"
+            [points]="200"
             rarity="Raro"
             [isLocked]="true"
-            currentProgress="1"
-            maxProgress="3">
+            [currentProgress]="1"
+            [maxProgress]="3">
         </app-logro>
 
         <!-- Log 8: Top 100 (Bloqueado con progreso) -->
         <app-logro 
             title="Top 100"
             description="Alcanza el top 100 del ranking"
-            points="400"
+            [points]="400"
             rarity="Epico"
             [isLocked]="true"
-            currentProgress="247"
-            maxProgress="100">
+            [currentProgress]="247"
+            [maxProgress]="100">
         </app-logro>
         
     </div>

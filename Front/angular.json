@@ -2,12 +2,11 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm",
-    "analytics": "f5929242-17c4-4d01-86ff-702064db8c4e"
+    "packageManager": "npm"
   },
   "newProjectRoot": "projects",
   "projects": {
-    "codeo-front": {
+    "Front": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -57,10 +56,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "codeo-front:build:production"
+              "buildTarget": "Front:build:production"
             },
             "development": {
-              "buildTarget": "codeo-front:build:development"
+              "buildTarget": "Front:build:development"
             }
           },
           "defaultConfiguration": "development"
