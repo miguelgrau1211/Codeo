@@ -116,6 +116,8 @@ class UsuarioLogroController extends Controller
             ->pluck('logro_id')
             ->toArray();
 
+            
+
         $resultado = $todosLosLogros->map(function ($logro) use ($logrosUsuarioIds, $idUsuario) {
             $desbloqueado = in_array($logro->id, $logrosUsuarioIds);
             
@@ -136,7 +138,7 @@ class UsuarioLogroController extends Controller
 
         return response()->json([
             'usuario_id' => (int)$idUsuario,
-            'progreso_logros' => $logrosUsuarioIds->count() . '/' . $todosLosLogros->count(),
+            'progreso_logros' => count($logrosUsuarioIds) > 0 ? count($logrosUsuarioIds) . '/' . $todosLosLogros->count() : '0/0',
             'lista_completa' => $resultado
         ], 200);
     }

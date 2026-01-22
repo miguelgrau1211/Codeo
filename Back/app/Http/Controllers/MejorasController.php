@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Mejoras;
 use Illuminate\Http\Request;
 
-class MejorasController
+class MejorasController extends Controller
 {
     public function index(){
         $mejoras = Mejoras::all();

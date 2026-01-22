@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Logros;
 use Illuminate\Http\Request;
 
-class LogrosController
+class LogrosController extends Controller
 {
     public function index(){
         $logros = Logros::all();

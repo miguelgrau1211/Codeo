@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\NivelRoguelike;
 use Illuminate\Http\Request;
 
-class NivelRoguelikeController extends Controller
+class NivelesRoguelikeController extends Controller
 {
     // todos los niveles roguelike
     public function index()

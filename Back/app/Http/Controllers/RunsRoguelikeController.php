@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\RunsRoguelike;
 use Illuminate\Http\Request;
 
-class RunsRoguelikeController
+class RunsRoguelikeController extends Controller
 {
     public function index(){
         $runs = RunsRoguelike::all();
@@ -89,5 +89,13 @@ class RunsRoguelikeController
                 'mejor_nivel' => 0
             ], 200);
         }
+
+        return response()->json([
+            'nickname' => $usuario->nickname,
+            'tiene_record' => true,
+            'mejor_nivel' => $mejorRun->niveles_superados,
+            'monedas' => $mejorRun->monedas_obtenidas,
+            'fecha' => $mejorRun->created_at->diffForHumans()
+        ], 200);
     }
 }
