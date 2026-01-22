@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProgresoHistoria;
 use Illuminate\Http\Request;
+use App\Models\NivelesHistoria;
 
 class ProgresoHistoriaController extends Controller
 {
@@ -62,7 +63,7 @@ class ProgresoHistoriaController extends Controller
         }
 
         //obtenemos el progreso con los datos del nivel
-        $progreso = \App\Models\ProgresoHistoria::where('usuario_id', $idUsuario)->join('niveles_historia', 'usuario_progreso_historia.nivel_id', '=', 'niveles_historia.id')
+        $progreso = ProgresoHistoria::where('usuario_id', $idUsuario)->join('niveles_historia', 'usuario_progreso_historia.nivel_id', '=', 'niveles_historia.id')
             ->select(
                 'usuario_progreso_historia.*', 
                 'niveles_historia.titulo', 
@@ -70,7 +71,7 @@ class ProgresoHistoriaController extends Controller
             )->orderBy('niveles_historia.orden', 'asc')->get();
 
         //estadísticas para el Dashboard
-        $totalNiveles = \App\Models\NivelHistoria::count();
+        $totalNiveles = NivelesHistoria::count();
         $nivelesCompletados = $progreso->where('completado', true)->count();
         
         //porcentaje

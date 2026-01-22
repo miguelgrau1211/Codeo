@@ -186,7 +186,7 @@ class UserController extends Controller
     public function getExperienciaTotalUsuario($id)
     {
         //buscamos al usuario
-        $usuario = \App\Models\Usuario::find($id);
+        $usuario = Usuario::find($id);
 
         if (!$usuario) {
             return response()->json(['message' => 'Usuario no encontrado'], 404);
@@ -227,7 +227,7 @@ class UserController extends Controller
     public function getActividadUsuarioReciente($id)
     {
         //Valida usuario
-        $usuario = \App\Models\Usuario::find($id);
+        $usuario = Usuario::find($id);
         if (!$usuario) {
             return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
@@ -258,7 +258,7 @@ class UserController extends Controller
             ]);
 
         //última run de Roguelike
-        $run = \App\Models\RunRoguelike::where('usuario_id', $id)
+        $run = \App\Models\RunsRoguelike::where('usuario_id', $id)
             ->orderBy('created_at', 'desc')
             ->limit(1)
             ->get()
@@ -289,7 +289,7 @@ class UserController extends Controller
     {
         //usuarios ordenados por nivel (desc) y luego por experiencia (desc)
 
-        $ranking = \App\Models\Usuario::select('id', 'nickname', 'avatar_url', 'nivel_global', 'exp_total')->orderByDesc('nivel_global')->orderByDesc('exp_total')
+        $ranking = Usuario::select('id', 'nickname', 'avatar_url', 'nivel_global', 'exp_total')->orderByDesc('nivel_global')->orderByDesc('exp_total')
         // Paginar para no saturar el Frontend si hay muchos  usuarios    
         ->paginate(10); // Devuelve de 10 en 10
 
@@ -320,7 +320,7 @@ class UserController extends Controller
     public function getFechaDeCreacionCuenta($id)
     {
         //buscamos al usuario
-        $usuario = \App\Models\Usuario::findOrFail($id);
+        $usuario = Usuario::findOrFail($id);
 
         // formatear  fecha
         return response()->json([

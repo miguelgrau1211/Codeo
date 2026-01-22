@@ -78,7 +78,7 @@ class RunsRoguelikeController
         }
 
         //mejor partida
-        $mejorRun = \App\Models\RunRoguelike::where('usuario_id', $idUsuario)
+        $mejorRun = RunsRoguelike::where('usuario_id', $idUsuario)
             ->orderByDesc('niveles_superados')->orderByDesc('monedas_obtenidas') // Desempate por monedas
             ->first();
 
