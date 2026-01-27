@@ -1,14 +1,15 @@
 <div class="min-h-screen bg-slate-900 text-white selection:bg-purple-500 selection:text-white font-jersey tracking-wide">
     
     <!-- Navbar simple overlay -->
-    <nav class="absolute top-0 w-full p-6 flex justify-between items-center max-w-7xl mx-auto left-0 right-0">
+    <nav class="absolute top-0 w-full p-6 flex justify-between items-center max-w-7xl mx-auto left-0 right-0 z-50">
         <div class="text-xl font-bold tracking-wide">
             <span class="text-purple-400">&gt;_</span> Codeo
         </div>
+        <a routerLink="/login" class="text-slate-300 hover:text-white transition font-medium">Acceder</a>
     </nav>
 
     <!-- Hero Section -->
-    <header class="relative flex flex-col items-center justify-center min-h-[85vh] px-4 text-center overflow-hidden">
+    <main class="relative flex flex-col items-center justify-center min-h-[85vh] px-4 text-center overflow-hidden">
         
         <!-- Background decorative elements -->
         <div class="absolute top-1/4 -left-10 w-72 h-72 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
@@ -101,5 +102,4 @@
         <p class="text-slate-600 font-mono text-xs uppercase tracking-widest hover:text-slate-500 transition-colors">
             &copy; 2026 Codeo Systems. Crafted for Excellence.</p>
     </footer>
-
 </div>
