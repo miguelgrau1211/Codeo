@@ -12,6 +12,8 @@ module.exports = {
       animation: {
         blob: "blob 7s infinite",
         "fade-in-up": "fadeInUp 0.5s ease-out forwards",
+        "spin-slow": "spin-slow 20s linear infinite",
+        "zoom-pulse": "zoom-pulse 15s ease-in-out infinite",
       },
       keyframes: {
         blob: {
@@ -36,6 +38,22 @@ module.exports = {
           "100%": {
             opacity: "1",
             transform: "translateY(0)",
+          },
+        },
+        "spin-slow": {
+          "from": {
+            transform: "rotate(0deg)",
+          },
+          "to": {
+            transform: "rotate(360deg)",
+          },
+        },
+        "zoom-pulse": {
+          "0%, 100%": {
+            transform: "scale(1)",
+          },
+          "50%": {
+            transform: "scale(1.5)",
           },
         },
       },

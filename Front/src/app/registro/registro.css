@@ -1,0 +1,5 @@
+/* Ensure video always covers height to prevent black lines */
+video {
+    min-height: 105%;
+    min-width: 105%;
+}
