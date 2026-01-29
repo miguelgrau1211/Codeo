@@ -21,4 +21,31 @@
     -webkit-text-fill-color: transparent;
     color: transparent;
   }
+
+  /* Glowing Embers Animation */
+  @keyframes rise-ember {
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-250px) scale(0) translateX(var(--drift, 10px));
+      opacity: 0;
+    }
+  }
+
+  .ember-particle {
+    position: absolute;
+    bottom: -10px;
+    border-radius: 50%;
+    background: #fbbf24;
+    box-shadow: 0 0 15px 4px rgba(220, 38, 38, 0.6);
+    opacity: 0; /* Base opacity is 0 */
+    animation: rise-ember linear infinite;
+    /* Always running, visibility controlled by parent opacity or internal keyframes if parent is visible */
+  }
+
 }
