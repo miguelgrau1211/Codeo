@@ -40,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // Gestión de Usuarios (excepto crear que es registro)
+    Route::get('/users/index', [UserController::class, 'index']);
     Route::apiResource('users', UserController::class)->except(['store']);
     Route::get('/users/{id}/experiencia', [UserController::class, 'getExperienciaTotalUsuario']);
     Route::get('/users/{id}/actividad', [UserController::class, 'getActividadUsuarioReciente']);

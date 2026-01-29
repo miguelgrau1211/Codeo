@@ -171,4 +171,7 @@ class UsuarioLogroController extends Controller
             'texto' => "Has completado $logrosUsuario de $totalLogros logros"
         ], 200);
     }
+
+    
 }
+

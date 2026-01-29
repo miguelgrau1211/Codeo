@@ -1,7 +1,9 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, ChangeDetectorRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../services/auth-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +18,15 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
   `]
 })
 export class LoginComponent implements AfterViewInit, OnDestroy {
-  loginForm: FormGroup;
+  private authService = inject(AuthService);
+  private fb = inject(FormBuilder);
+  private cdr = inject(ChangeDetectorRef);
+  private router = inject(Router);
+
+  loginForm: FormGroup = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required]]
+  });
 
   @ViewChild('bgCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('sourceVideo') video1Ref!: ElementRef<HTMLVideoElement>;
@@ -29,12 +39,7 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
   private opacity1 = 1;
   private opacity2 = 0;
 
-  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]]
-    });
-  }
+  constructor() {}
 
   ngAfterViewInit() {
     const canvas = this.canvasRef.nativeElement;
@@ -159,6 +164,23 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
     if (this.loginForm.valid) {
       console.log('Login data:', this.loginForm.value);
       // Aquí iría la lógica de autenticación
+      
+      this.authService.login(this.loginForm.value).subscribe({
+        next: (response) => {
+          console.log('Login successful:', response);
+          // Aquí iría la lógica de redirección´
+          sessionStorage.setItem('token', response.access_token);
+          sessionStorage.setItem('user', JSON.stringify(response.user));
+          this.router.navigate(['/dashboard']);
+        },
+        error: (error) => {
+          console.error('Login failed:', error);
+          // Aquí iría la lógica de manejo de errores
+        }
+      });
+
+
+
     }
   }
 }
