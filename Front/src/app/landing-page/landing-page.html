@@ -1,5 +1,6 @@
-<div class="min-h-screen bg-slate-950 font-sans text-slate-300 antialiased selection:bg-purple-500/30 selection:text-purple-200">
-    
+<div
+    class="min-h-screen bg-slate-950 font-sans text-slate-300 antialiased selection:bg-purple-500/30 selection:text-purple-200">
+
     <!-- Navbar -->
     <nav class="absolute top-0 w-full p-6 flex justify-between items-center max-w-7xl mx-auto left-0 right-0 z-50">
         <div class="text-3xl font-black tracking-wide text-white flex items-center gap-2 font-jersey">
@@ -8,45 +9,68 @@
         <div class="flex items-center gap-6 font-medium">
             <a href="#" class="hidden md:block hover:text-white transition">Características</a>
             <a href="#" class="hidden md:block hover:text-white transition">Precios</a>
-            <a routerLink="/login" class="text-white hover:text-purple-400 transition font-jersey tracking-wide text-xl">Acceder</a>
+            <a routerLink="/login"
+                class="text-white hover:text-purple-400 transition font-jersey tracking-wide text-xl">Acceder</a>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <main class="relative flex flex-col items-center justify-center min-h-screen w-full px-6 text-center overflow-hidden">
-        
+    <main
+        class="relative flex flex-col items-center justify-center min-h-screen w-full px-6 text-center overflow-hidden">
+
         <!-- Background decorative elements (Animated Blobs Restored) -->
         <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-            <div class="absolute top-1/4 -left-10 w-96 h-96 bg-purple-600/30 rounded-full mix-blend-screen filter blur-[100px] animate-blob"></div>
-            <div class="absolute bottom-1/4 -right-10 w-96 h-96 bg-blue-600/30 rounded-full mix-blend-screen filter blur-[100px] animate-blob animation-delay-2000"></div>
+            <div
+                class="absolute top-1/4 -left-10 w-96 h-96 bg-purple-600/30 rounded-full mix-blend-screen filter blur-[100px] animate-blob">
+            </div>
+            <div
+                class="absolute bottom-1/4 -right-10 w-96 h-96 bg-blue-600/30 rounded-full mix-blend-screen filter blur-[100px] animate-blob animation-delay-2000">
+            </div>
         </div>
 
         <!-- Spiral Background -->
-        <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-60 mix-blend-overlay z-0">
+        <div
+            class="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-60 mix-blend-overlay z-0">
             <div class="animate-spin-slow will-change-transform">
-                 <img src="/landing/espiral.png" class="w-[150vmax] max-w-none opacity-20" alt="">
+                <img src="/landing/espiral.png" class="w-[150vmax] max-w-none opacity-20" alt="">
             </div>
         </div>
 
         <div class="relative z-10 max-w-5xl mx-auto flex flex-col items-center gap-8 pt-20">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/80 border border-slate-800 text-sm font-medium text-purple-400 mb-4 animate-fade-in-up font-mono">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/80 border border-slate-800 text-sm font-medium text-purple-400 mb-4 animate-fade-in-up font-mono">
                 <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                 v1.0 Ahora disponible
             </div>
-            
-            <h1 class="text-6xl md:text-8xl lg:text-9xl font-black tracking-wide text-white leading-[0.9] text-center max-w-5xl animate-fade-in-up font-jersey">
+
+            <h1
+                class="text-6xl md:text-8xl lg:text-9xl font-black tracking-wide text-white leading-[0.9] text-center max-w-5xl animate-fade-in-up font-jersey">
                 Domina el código.<br>
                 <span class="text-gradient-purple">Construye el futuro.</span>
             </h1>
-            
+
             <!-- Kept font-sans for readability as requested in critique -->
-            <p class="text-lg md:text-2xl text-slate-400 max-w-3xl text-center leading-relaxed animate-fade-in-up delay-100 font-light">
-                La plataforma definitiva para aprender Python. Sin aburrimiento, sin teoría vacía. Solo tú, el código y retos reales.
+            <p
+                class="text-lg md:text-2xl text-slate-400 max-w-3xl text-center leading-relaxed animate-fade-in-up delay-100 font-light">
+                La plataforma definitiva para aprender PHP. Sin aburrimiento, sin teoría vacía. Solo tú, el código y
+                retos reales.
             </p>
 
-             <div class="flex flex-col sm:flex-row items-center gap-6 mt-10 w-full justify-center animate-fade-in-up delay-200">
-                <a routerLink="/registro" class="min-w-[220px] px-8 py-5 bg-white text-slate-950 rounded-xl font-black text-2xl hover:bg-slate-200 transition-all text-center font-jersey transform hover:scale-105 shadow-xl shadow-white/10">
-                    Empezar Gratis
+            <div
+                class="flex flex-col sm:flex-row items-center gap-6 mt-10 w-full justify-center animate-fade-in-up delay-200">
+                <a routerLink="/registro"
+                    class="group relative px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-bold text-xl tracking-wide hover:shadow-lg hover:shadow-purple-500/40 transition-all duration-300 transform hover:-translate-y-1 text-center min-w-[220px] overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-700 ease-out -skew-x-12 origin-left -translate-x-full">
+                    </div>
+                    <span class="relative z-10 flex items-center justify-center gap-2">
+                        Empezar Gratis
+                        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                    </span>
                 </a>
             </div>
         </div>
@@ -55,57 +79,78 @@
     <!-- Game Modes Section (Static Glass Cards) -->
     <section class="py-32 px-6 relative z-20">
         <div class="max-w-7xl mx-auto">
-             <div class="text-center mb-24">
-                 <h2 class="text-4xl md:text-5xl font-black text-white mb-6">Elige tu Camino</h2>
-                 <p class="text-xl text-slate-400 max-w-2xl mx-auto">Dos metodologías diseñadas para diferentes tipos de aprendizaje.</p>
-             </div>
+            <div class="text-center mb-24">
+                <h2 class="text-4xl md:text-5xl font-black text-white mb-6">Elige tu Camino</h2>
+                <p class="text-xl text-slate-400 max-w-2xl mx-auto">Dos metodologías diseñadas para diferentes tipos de
+                    aprendizaje.</p>
+            </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16">
-                
+
                 <!-- Card 1: Modo Historia -->
-                <div class="glass-card rounded-[2rem] p-8 md:p-12 relative overflow-hidden group transition-all duration-300 hover:-translate-y-2">
-                    <div class="absolute top-0 right-0 p-12 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none transform translate-x-12 -translate-y-12">
-                         <img src="/landing/icons/history_mode.png" class="w-64 h-64 object-contain grayscale group-hover:grayscale-0 transition-all duration-500">
+                <div
+                    class="glass-card rounded-[2rem] p-8 md:p-12 relative overflow-hidden group transition-all duration-300 hover:-translate-y-2">
+                    <div
+                        class="absolute top-0 right-0 p-12 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none transform translate-x-12 -translate-y-12">
+                        <img src="/landing/icons/history_mode.png"
+                            class="w-64 h-64 object-contain grayscale group-hover:grayscale-0 transition-all duration-500">
                     </div>
 
                     <div class="relative z-10 flex flex-col h-full justify-between gap-8">
                         <div>
-                            <div class="w-16 h-16 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-8 text-3xl text-purple-400">
+                            <div
+                                class="w-16 h-16 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-8 text-3xl text-purple-400">
                                 <img src="/landing/icons/history_mode.png" class="w-12 h-12 object-contain">
                             </div>
                             <h3 class="text-3xl font-bold text-white mb-4">Modo Historia</h3>
                             <p class="text-lg text-slate-400 leading-relaxed max-w-md">
-                                Una aventura narrativa guiada. Empieza desde cero ("Hello World") y avanza capítulo a capítulo dominando variables, bucles y funciones mientras desentrañas la trama.
+                                Una aventura narrativa guiada. Empieza desde cero ("Hello World") y avanza capítulo a
+                                capítulo dominando variables, bucles y funciones mientras desentrañas la trama.
                             </p>
                         </div>
-                        
-                        <div class="flex items-center gap-4 text-sm font-medium text-slate-500 border-t border-white/5 pt-8">
-                            <span class="flex items-center gap-2"><div class="w-2 h-2 bg-green-500 rounded-full"></div> Principiante</span>
-                            <span class="flex items-center gap-2"><div class="w-2 h-2 bg-blue-500 rounded-full"></div> Narrativo</span>
+
+                        <div
+                            class="flex items-center gap-4 text-sm font-medium text-slate-500 border-t border-white/5 pt-8">
+                            <span class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-green-500 rounded-full"></div> Principiante
+                            </span>
+                            <span class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-blue-500 rounded-full"></div> Narrativo
+                            </span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Card 2: Roguelike -->
-                <div class="glass-card rounded-[2rem] p-8 md:p-12 relative overflow-hidden group transition-all duration-300 hover:-translate-y-2">
-                    <div class="absolute top-0 right-0 p-12 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none transform translate-x-12 -translate-y-12">
-                         <img src="/landing/icons/roguelike_mode.png" class="w-64 h-64 object-contain grayscale group-hover:grayscale-0 transition-all duration-500">
+                <div
+                    class="glass-card rounded-[2rem] p-8 md:p-12 relative overflow-hidden group transition-all duration-300 hover:-translate-y-2">
+                    <div
+                        class="absolute top-0 right-0 p-12 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none transform translate-x-12 -translate-y-12">
+                        <img src="/landing/icons/roguelike_mode.png"
+                            class="w-64 h-64 object-contain grayscale group-hover:grayscale-0 transition-all duration-500">
                     </div>
 
-                     <div class="relative z-10 flex flex-col h-full justify-between gap-8">
+                    <div class="relative z-10 flex flex-col h-full justify-between gap-8">
                         <div>
-                            <div class="w-16 h-16 rounded-2xl bg-red-500/20 flex items-center justify-center mb-8 text-3xl text-red-400">
+                            <div
+                                class="w-16 h-16 rounded-2xl bg-red-500/20 flex items-center justify-center mb-8 text-3xl text-red-400">
                                 <img src="/landing/icons/roguelike_mode.png" class="w-14 h-14 object-contain">
                             </div>
                             <h3 class="text-3xl font-bold text-white mb-4">Modo Roguelike</h3>
                             <p class="text-lg text-slate-400 leading-relaxed max-w-md">
-                                ¿Sabes programar? Demuéstralo. Enfréntate a desafíos algorítmicos infinitos generados proceduralmente. Si fallas, pierdes tu racha. Solo para valientes.
+                                ¿Sabes programar? Demuéstralo. Enfréntate a desafíos algorítmicos infinitos generados
+                                proceduralmente. Si fallas, pierdes tu racha. Solo para valientes.
                             </p>
                         </div>
-                        
-                        <div class="flex items-center gap-4 text-sm font-medium text-slate-500 border-t border-white/5 pt-8">
-                             <span class="flex items-center gap-2"><div class="w-2 h-2 bg-orange-500 rounded-full"></div> Avanzado</span>
-                            <span class="flex items-center gap-2"><div class="w-2 h-2 bg-red-500 rounded-full"></div> Hardcore</span>
+
+                        <div
+                            class="flex items-center gap-4 text-sm font-medium text-slate-500 border-t border-white/5 pt-8">
+                            <span class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-orange-500 rounded-full"></div> Avanzado
+                            </span>
+                            <span class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-red-500 rounded-full"></div> Hardcore
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -119,18 +164,20 @@
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-5xl font-black text-white mb-6">Compite. Gana. Mejora.</h2>
-                <p class="text-slate-400 max-w-2xl mx-auto text-lg">La gamificación no es un adorno. Es el motor de tu aprendizaje.</p>
+                <p class="text-slate-400 max-w-2xl mx-auto text-lg">La gamificación no es un adorno. Es el motor de tu
+                    aprendizaje.</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-                
+
                 <!-- Buttons Column -->
                 <div class="lg:col-span-4 flex flex-col gap-4">
-                    <button (click)="showFeature('ranking')" 
+                    <button (click)="showFeature('ranking')"
                         class="group w-full text-left p-6 rounded-2xl border transition-all duration-300 relative overflow-hidden"
                         [class]="activeFeature() === 'ranking' ? 'bg-slate-800 border-blue-500/50 shadow-lg shadow-blue-900/10' : 'bg-transparent border-slate-800 hover:bg-slate-800/50 hover:border-slate-700'">
                         <div class="flex items-center gap-4 relative z-10">
-                            <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                                 <img src="/landing/icons/ranking.png" class="w-8 h-8 object-contain">
                             </div>
                             <div>
@@ -140,11 +187,12 @@
                         </div>
                     </button>
 
-                    <button (click)="showFeature('logros')" 
+                    <button (click)="showFeature('logros')"
                         class="group w-full text-left p-6 rounded-2xl border transition-all duration-300 relative overflow-hidden"
                         [class]="activeFeature() === 'logros' ? 'bg-slate-800 border-purple-500/50 shadow-lg shadow-purple-900/10' : 'bg-transparent border-slate-800 hover:bg-slate-800/50 hover:border-slate-700'">
-                       <div class="flex items-center gap-4 relative z-10">
-                            <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <div class="flex items-center gap-4 relative z-10">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                                 <img src="/landing/icons/logros.png" class="w-8 h-8 object-contain">
                             </div>
                             <div>
@@ -154,14 +202,15 @@
                         </div>
                     </button>
 
-                     <button (click)="showFeature('racha')" 
+                    <button (click)="showFeature('racha')"
                         class="group w-full text-left p-6 rounded-2xl border transition-all duration-300 relative overflow-hidden"
                         [class]="activeFeature() === 'racha' ? 'bg-slate-800 border-orange-500/50 shadow-lg shadow-orange-900/10' : 'bg-transparent border-slate-800 hover:bg-slate-800/50 hover:border-slate-700'">
                         <div class="flex items-center gap-4 relative z-10">
-                            <div class="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                                 <img src="/landing/icons/racha.png" class="w-8 h-8 object-contain">
                             </div>
-                             <div>
+                            <div>
                                 <h4 class="text-xl font-bold text-white">Racha Diaria</h4>
                                 <p class="text-slate-500 text-sm mt-1">La constancia paga</p>
                             </div>
@@ -171,99 +220,113 @@
 
                 <!-- Display Area -->
                 <div class="lg:col-span-8">
-                     <div class="glass-card rounded-[2.5rem] p-8 md:p-12 min-h-[500px] flex items-center justify-center relative overflow-hidden">
-                        
+                    <div
+                        class="glass-card rounded-[2.5rem] p-8 md:p-12 min-h-[500px] flex items-center justify-center relative overflow-hidden">
+
                         <!-- Dynamic Content Switching -->
                         @switch (activeFeature()) {
-                            @case ('ranking') {
-                                <div class="w-full max-w-md animate-fade-in-up">
-                                    <div class="flex items-center justify-between mb-8">
-                                        <h3 class="text-2xl font-bold text-white">Top Players</h3>
-                                        <span class="text-blue-400 text-sm font-mono bg-blue-500/10 px-3 py-1 rounded-full">Weekly reset</span>
+                        @case ('ranking') {
+                        <div class="w-full max-w-md animate-fade-in-up">
+                            <div class="flex items-center justify-between mb-8">
+                                <h3 class="text-2xl font-bold text-white">Top Players</h3>
+                                <span
+                                    class="text-blue-400 text-sm font-mono bg-blue-500/10 px-3 py-1 rounded-full">Weekly
+                                    reset</span>
+                            </div>
+                            <!-- Mock Leaderboard -->
+                            <div class="space-y-4">
+                                <div
+                                    class="flex items-center gap-4 bg-slate-800/50 p-4 rounded-xl border border-yellow-500/20">
+                                    <span class="text-2xl">🥇</span>
+                                    <div class="w-10 h-10 rounded-full bg-slate-700"></div>
+                                    <div class="flex-1">
+                                        <div class="h-4 bg-slate-700 rounded w-24 mb-2"></div>
+                                        <div class="h-3 bg-slate-700/50 rounded w-12"></div>
                                     </div>
-                                    <!-- Mock Leaderboard -->
-                                    <div class="space-y-4">
-                                        <div class="flex items-center gap-4 bg-slate-800/50 p-4 rounded-xl border border-yellow-500/20">
-                                            <span class="text-2xl">🥇</span>
-                                            <div class="w-10 h-10 rounded-full bg-slate-700"></div>
-                                            <div class="flex-1">
-                                                <div class="h-4 bg-slate-700 rounded w-24 mb-2"></div>
-                                                <div class="h-3 bg-slate-700/50 rounded w-12"></div>
-                                            </div>
-                                            <span class="font-mono text-yellow-500">2,450 XP</span>
-                                        </div>
-                                         <div class="flex items-center gap-4 bg-slate-800/30 p-4 rounded-xl border border-slate-700/50">
-                                            <span class="text-2xl text-slate-500">🥈</span>
-                                            <div class="w-10 h-10 rounded-full bg-slate-700"></div>
-                                            <div class="flex-1">
-                                                <div class="h-4 bg-slate-700 rounded w-20 mb-2"></div>
-                                                <div class="h-3 bg-slate-700/50 rounded w-10"></div>
-                                            </div>
-                                            <span class="font-mono text-slate-400">1,980 XP</span>
-                                        </div>
-                                         <div class="flex items-center gap-4 bg-slate-800/30 p-4 rounded-xl border border-slate-700/50">
-                                            <span class="text-2xl text-slate-600">🥉</span>
-                                            <div class="w-10 h-10 rounded-full bg-slate-700"></div>
-                                            <div class="flex-1">
-                                                <div class="h-4 bg-slate-700 rounded w-28 mb-2"></div>
-                                                <div class="h-3 bg-slate-700/50 rounded w-14"></div>
-                                            </div>
-                                            <span class="font-mono text-slate-400">1,850 XP</span>
-                                        </div>
-                                    </div>
+                                    <span class="font-mono text-yellow-500">2,450 XP</span>
                                 </div>
-                            }
-                            @case ('logros') {
-                                <div class="w-full max-w-lg animate-fade-in-up text-center">
-                                    <h3 class="text-2xl font-bold text-white mb-8">Tu Vitrina de Trofeos</h3>
-                                    <div class="grid grid-cols-3 gap-6">
-                                        <!-- Mock Badges -->
-                                        <div class="aspect-square rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center p-6 grayscale hover:grayscale-0 transition-all cursor-help">
-                                            <img src="/landing/icons/logros.png" class="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">
-                                        </div>
-                                         <div class="aspect-square rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center p-6 opacity-50 relative">
-                                            <span class="absolute inset-0 flex items-center justify-center text-4xl">🔒</span>
-                                        </div>
-                                         <div class="aspect-square rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center p-6 opacity-50 relative">
-                                             <span class="absolute inset-0 flex items-center justify-center text-4xl">🔒</span>
-                                        </div>
+                                <div
+                                    class="flex items-center gap-4 bg-slate-800/30 p-4 rounded-xl border border-slate-700/50">
+                                    <span class="text-2xl text-slate-500">🥈</span>
+                                    <div class="w-10 h-10 rounded-full bg-slate-700"></div>
+                                    <div class="flex-1">
+                                        <div class="h-4 bg-slate-700 rounded w-20 mb-2"></div>
+                                        <div class="h-3 bg-slate-700/50 rounded w-10"></div>
                                     </div>
-                                    <p class="mt-8 text-slate-400">Desbloquea insignias únicas completando retos específicos.</p>
+                                    <span class="font-mono text-slate-400">1,980 XP</span>
                                 </div>
-                            }
-                            @case ('racha') {
-                                <div class="w-full max-w-md animate-fade-in-up text-center">
-                                    <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-orange-500/10 mb-6 text-5xl border border-orange-500/20">
-                                        🔥
+                                <div
+                                    class="flex items-center gap-4 bg-slate-800/30 p-4 rounded-xl border border-slate-700/50">
+                                    <span class="text-2xl text-slate-600">🥉</span>
+                                    <div class="w-10 h-10 rounded-full bg-slate-700"></div>
+                                    <div class="flex-1">
+                                        <div class="h-4 bg-slate-700 rounded w-28 mb-2"></div>
+                                        <div class="h-3 bg-slate-700/50 rounded w-14"></div>
                                     </div>
-                                    <h3 class="text-4xl font-black text-white mb-2">7 Días</h3>
-                                    <p class="text-orange-400 uppercase tracking-widest text-sm font-bold mb-8">Racha Indestructible</p>
-                                    
-                                    <!-- Mock Calendar Grid -->
-                                    <div class="flex justify-between gap-2">
-                                        @for (day of [1,2,3,4,5,6,7]; track day) {
-                                            <div class="flex flex-col items-center gap-2">
-                                                <div class="w-10 h-10 rounded-lg flex items-center justify-center font-bold"
-                                                    [class]="day <= 7 ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-slate-800 text-slate-600'">
-                                                    {{day}}
-                                                </div>
-                                                <span class="text-[10px] text-slate-500 uppercase">Day</span>
-                                            </div>
-                                        }
-                                    </div>
+                                    <span class="font-mono text-slate-400">1,850 XP</span>
                                 </div>
-                            }
-                            @default {
-                                <div class="text-center animate-fade-in-up">
-                                    <div class="w-24 h-24 rounded-3xl bg-slate-800 mx-auto mb-6 flex items-center justify-center">
-                                        <span class="text-4xl animate-bounce">👆</span>
-                                    </div>
-                                    <p class="text-xl text-slate-400">Selecciona una característica<br>para verla en acción.</p>
+                            </div>
+                        </div>
+                        }
+                        @case ('logros') {
+                        <div class="w-full max-w-lg animate-fade-in-up text-center">
+                            <h3 class="text-2xl font-bold text-white mb-8">Tu Vitrina de Trofeos</h3>
+                            <div class="grid grid-cols-3 gap-6">
+                                <!-- Mock Badges -->
+                                <div
+                                    class="aspect-square rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center p-6 grayscale hover:grayscale-0 transition-all cursor-help">
+                                    <img src="/landing/icons/logros.png"
+                                        class="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">
                                 </div>
-                            }
+                                <div
+                                    class="aspect-square rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center p-6 opacity-50 relative">
+                                    <span class="absolute inset-0 flex items-center justify-center text-4xl">🔒</span>
+                                </div>
+                                <div
+                                    class="aspect-square rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center p-6 opacity-50 relative">
+                                    <span class="absolute inset-0 flex items-center justify-center text-4xl">🔒</span>
+                                </div>
+                            </div>
+                            <p class="mt-8 text-slate-400">Desbloquea insignias únicas completando retos específicos.
+                            </p>
+                        </div>
+                        }
+                        @case ('racha') {
+                        <div class="w-full max-w-md animate-fade-in-up text-center">
+                            <div
+                                class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-orange-500/10 mb-6 text-5xl border border-orange-500/20">
+                                🔥
+                            </div>
+                            <h3 class="text-4xl font-black text-white mb-2">7 Días</h3>
+                            <p class="text-orange-400 uppercase tracking-widest text-sm font-bold mb-8">Racha
+                                Indestructible</p>
+
+                            <!-- Mock Calendar Grid -->
+                            <div class="flex justify-between gap-2">
+                                @for (day of [1,2,3,4,5,6,7]; track day) {
+                                <div class="flex flex-col items-center gap-2">
+                                    <div class="w-10 h-10 rounded-lg flex items-center justify-center font-bold"
+                                        [class]="day <= 7 ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-slate-800 text-slate-600'">
+                                        {{day}}
+                                    </div>
+                                    <span class="text-[10px] text-slate-500 uppercase">Day</span>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        }
+                        @default {
+                        <div class="text-center animate-fade-in-up">
+                            <div
+                                class="w-24 h-24 rounded-3xl bg-slate-800 mx-auto mb-6 flex items-center justify-center">
+                                <span class="text-4xl animate-bounce">👆</span>
+                            </div>
+                            <p class="text-xl text-slate-400">Selecciona una característica<br>para verla en acción.</p>
+                        </div>
+                        }
                         }
 
-                     </div>
+                    </div>
                 </div>
 
             </div>
@@ -278,9 +341,9 @@
                 &copy; 2026 Codeo Systems.
             </div>
             <div class="flex gap-6">
-                 <a href="#" class="text-slate-500 hover:text-white transition-colors text-sm">Privacidad</a>
-                 <a href="#" class="text-slate-500 hover:text-white transition-colors text-sm">Términos</a>
-                 <a href="#" class="text-slate-500 hover:text-white transition-colors text-sm">Twitter</a>
+                <a href="#" class="text-slate-500 hover:text-white transition-colors text-sm">Privacidad</a>
+                <a href="#" class="text-slate-500 hover:text-white transition-colors text-sm">Términos</a>
+                <a href="#" class="text-slate-500 hover:text-white transition-colors text-sm">Twitter</a>
             </div>
         </div>
     </footer>
