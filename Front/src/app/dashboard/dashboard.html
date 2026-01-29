@@ -13,22 +13,22 @@
         <!-- Navigation -->
         <nav class="flex-1 px-4 space-y-2 mt-4">
             <a routerLink="/dashboard" class="flex items-center gap-4 px-4 py-3 rounded-xl bg-purple-600/10 text-purple-400 border border-purple-500/20 transition-all group">
-                <span class="text-xl">🏠</span>
+                <img src="/common/icons/home.png" class="w-6 h-6 object-contain">
                 <span class="font-bold" [class.hidden]="!isSidebarOpen()">Inicio</span>
             </a>
             
             <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-white transition-all group">
-                <span class="text-xl">📖</span>
+                <img src="/common/icons/history_mode.png" class="w-6 h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity">
                 <span class="font-medium" [class.hidden]="!isSidebarOpen()">Modo Historia</span>
             </a>
 
             <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-white transition-all group">
-                <span class="text-xl">⚔️</span>
+                <img src="/common/icons/roguelike_mode.png" class="w-6 h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity">
                 <span class="font-medium" [class.hidden]="!isSidebarOpen()">Roguelike</span>
             </a>
 
             <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-white transition-all group">
-                <span class="text-xl">🏆</span>
+                <img src="/common/icons/ranking.png" class="w-6 h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity">
                 <span class="font-medium" [class.hidden]="!isSidebarOpen()">Ranking</span>
             </a>
         </nav>
@@ -92,13 +92,18 @@
             </div>
 
             <!-- 2. Game Modes (Large Animated Cards) -->
+            <!-- 2. Game Modes (Large Animated Cards) -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 
                 <!-- History Mode -->
                 <a href="#" class="group relative h-64 rounded-3xl overflow-hidden border border-purple-500/30 transition-all hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(168,85,247,0.3)]">
                     <!-- Animated Background -->
-                    <div class="absolute inset-0 bg-slate-900">
-                        <div class="absolute inset-0 opacity-30 bg-[url('/landing/espiral.png')] bg-cover animate-spin-slow mix-blend-overlay"></div>
+                    <div class="absolute inset-0 bg-slate-900 overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center opacity-30 mix-blend-overlay">
+                            <div class="animate-spin-slow will-change-transform">
+                                <img src="/landing/espiral.png" class="min-w-[1000px] w-[200%] max-w-none" alt="">
+                            </div>
+                        </div>
                         <div class="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent"></div>
                     </div>
                     
@@ -114,7 +119,7 @@
                     </div>
 
                     <!-- Floating Icon -->
-                    <img src="/landing/icons/history_mode.png" class="absolute right-[-20px] bottom-[-20px] w-48 h-48 object-contain opacity-50 rotate-12 group-hover:rotate-0 group-hover:scale-110 group-hover:opacity-80 transition-all duration-500">
+                    <img src="/common/icons/history_mode.png" class="absolute right-[-20px] bottom-[-20px] w-48 h-48 object-contain opacity-50 rotate-12 group-hover:rotate-0 group-hover:scale-110 group-hover:opacity-80 transition-all duration-500">
                 </a>
 
                 <!-- Roguelike Mode -->
@@ -137,7 +142,7 @@
                     </div>
 
                     <!-- Floating Icon -->
-                    <img src="/landing/icons/roguelike_mode.png" class="absolute right-[-20px] bottom-[-20px] w-52 h-52 object-contain opacity-50 rotate-[-12deg] group-hover:rotate-0 group-hover:scale-110 group-hover:opacity-80 transition-all duration-500">
+                    <img src="/common/icons/roguelike_mode.png" class="absolute right-[-20px] bottom-[-20px] w-52 h-52 object-contain opacity-50 rotate-[-12deg] group-hover:rotate-0 group-hover:scale-110 group-hover:opacity-80 transition-all duration-500">
                 </a>
 
             </div>
@@ -147,10 +152,10 @@
                 <!-- XP Card -->
                 <div class="glass-card p-6 rounded-2xl flex items-center gap-6 border border-blue-500/20 bg-blue-900/5 relative overflow-hidden group">
                      <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <span class="text-6xl">⚡</span>
+                        <img src="/common/icons/exp.png" class="w-24 h-24 object-contain">
                      </div>
-                     <div class="w-16 h-16 rounded-2xl bg-blue-500/10 flex items-center justify-center text-3xl shadow-inner shadow-blue-500/20 text-blue-400">
-                        ⚡
+                     <div class="w-16 h-16 rounded-2xl bg-blue-500/10 flex items-center justify-center shadow-inner shadow-blue-500/20">
+                        <img src="/common/icons/exp.png" class="w-10 h-10 object-contain">
                      </div>
                      <div>
                         <p class="text-slate-400 text-sm font-bold uppercase tracking-wider">Total XP</p>
@@ -161,10 +166,10 @@
                 <!-- Level Card -->
                 <div class="glass-card p-6 rounded-2xl flex items-center gap-6 border border-purple-500/20 bg-purple-900/5 relative overflow-hidden group">
                      <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <span class="text-6xl">🆙</span>
+                        <img src="/common/icons/lvl.png" class="w-24 h-24 object-contain">
                      </div>
-                    <div class="w-16 h-16 rounded-2xl bg-purple-500/10 flex items-center justify-center text-3xl shadow-inner shadow-purple-500/20 text-purple-400">
-                       🆙
+                    <div class="w-16 h-16 rounded-2xl bg-purple-500/10 flex items-center justify-center shadow-inner shadow-purple-500/20">
+                       <img src="/common/icons/lvl.png" class="w-10 h-10 object-contain">
                     </div>
                     <div>
                        <p class="text-slate-400 text-sm font-bold uppercase tracking-wider">Nivel Actual</p>
@@ -175,10 +180,10 @@
                <!-- Streak Card -->
                <div class="glass-card p-6 rounded-2xl flex items-center gap-6 border border-orange-500/20 bg-orange-900/5 relative overflow-hidden group">
                     <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <span class="text-6xl">🔥</span>
+                        <img src="/common/icons/racha.png" class="w-24 h-24 object-contain">
                     </div>
-                    <div class="w-16 h-16 rounded-2xl bg-orange-500/10 flex items-center justify-center text-3xl shadow-inner shadow-orange-500/20 text-orange-400">
-                        🔥
+                    <div class="w-16 h-16 rounded-2xl bg-orange-500/10 flex items-center justify-center shadow-inner shadow-orange-500/20">
+                        <img src="/common/icons/racha.png" class="w-10 h-10 object-contain">
                     </div>
                     <div>
                         <p class="text-slate-400 text-sm font-bold uppercase tracking-wider">Racha</p>
@@ -196,40 +201,40 @@
                     
                     <!-- Logros -->
                     <a href="#" class="glass-card p-6 rounded-2xl flex flex-col items-center justify-center gap-4 hover:bg-slate-800 transition-all hover:-translate-y-1 border border-white/5 group">
-                        <div class="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform border border-slate-700 group-hover:border-purple-500/50">
-                            🏆
+                        <div class="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center group-hover:scale-110 transition-transform border border-slate-700 group-hover:border-purple-500/50">
+                            <img src="/common/icons/logros.png" class="w-8 h-8 object-contain">
                         </div>
                         <span class="font-bold text-slate-300 group-hover:text-white">Logros</span>
                     </a>
 
                     <!-- Ranking -->
                     <a href="#" class="glass-card p-6 rounded-2xl flex flex-col items-center justify-center gap-4 hover:bg-slate-800 transition-all hover:-translate-y-1 border border-white/5 group">
-                        <div class="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform border border-slate-700 group-hover:border-blue-500/50">
-                            📊
+                        <div class="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center group-hover:scale-110 transition-transform border border-slate-700 group-hover:border-blue-500/50">
+                            <img src="/common/icons/ranking.png" class="w-8 h-8 object-contain">
                         </div>
                         <span class="font-bold text-slate-300 group-hover:text-white">Ranking</span>
                     </a>
 
                     <!-- Perfil -->
                     <a href="#" class="glass-card p-6 rounded-2xl flex flex-col items-center justify-center gap-4 hover:bg-slate-800 transition-all hover:-translate-y-1 border border-white/5 group">
-                         <div class="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform border border-slate-700 group-hover:border-green-500/50">
-                            👤
+                         <div class="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center group-hover:scale-110 transition-transform border border-slate-700 group-hover:border-green-500/50">
+                            <img src="/common/icons/perfil.png" class="w-8 h-8 object-contain">
                         </div>
                         <span class="font-bold text-slate-300 group-hover:text-white">Perfil</span>
                     </a>
 
                     <!-- Reportes -->
                      <a href="#" class="glass-card p-6 rounded-2xl flex flex-col items-center justify-center gap-4 hover:bg-slate-800 transition-all hover:-translate-y-1 border border-white/5 group">
-                        <div class="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform border border-slate-700 group-hover:border-yellow-500/50">
-                           �
+                        <div class="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center group-hover:scale-110 transition-transform border border-slate-700 group-hover:border-yellow-500/50">
+                           <img src="/common/icons/reportes.png" class="w-8 h-8 object-contain">
                        </div>
                        <span class="font-bold text-slate-300 group-hover:text-white">Reportes</span>
                    </a>
 
                     <!-- Ajustes -->
                     <a href="#" class="glass-card p-6 rounded-2xl flex flex-col items-center justify-center gap-4 hover:bg-slate-800 transition-all hover:-translate-y-1 border border-white/5 group">
-                        <div class="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform border border-slate-700 group-hover:border-slate-500/50">
-                            ⚙️
+                        <div class="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center group-hover:scale-110 transition-transform border border-slate-700 group-hover:border-slate-500/50">
+                            <img src="/common/icons/ajustes.png" class="w-8 h-8 object-contain">
                         </div>
                         <span class="font-bold text-slate-300 group-hover:text-white">Ajustes</span>
                     </a>
