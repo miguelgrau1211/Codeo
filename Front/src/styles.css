@@ -48,4 +48,70 @@
     /* Always running, visibility controlled by parent opacity or internal keyframes if parent is visible */
   }
 
+  /* Global Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #21252b; /* Sidebar BG */
+  }
+  ::-webkit-scrollbar-corner {
+    background: #21252b;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #4b5363; /* Slate-600 approx */
+    border: 2px solid #21252b; /* Border matches track for padding effect */
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #6b7280; /* Slate-500 approx */
+  }
+
+  /* Syntax Highlighting Colors */
+  .token-keyword { color: #c678dd; } /* Purple */
+  .token-function { color: #61afef; } /* Blue */
+  .token-string { color: #98c379; } /* Green */
+  .token-number { color: #d19a66; } /* Orange */
+  .token-comment { color: #5c6370; font-style: italic; } /* Grey */
+  .token-variable { color: #e06c75; } /* Red */
+  .token-type { color: #e5c07b; } /* Yellow */
+  .token-operator { color: #56b6c2; } /* Cyan */
+
+  @keyframes space-drift {
+    0% {
+      background-position: 0% 50%;
+      transform: scale(1.0);
+    }
+    50% {
+      background-position: 100% 50%;
+      transform: scale(1.25);
+    }
+    100% {
+      background-position: 0% 50%;
+      transform: scale(1.0);
+    }
+  }
+
+  .editor-background-animate {
+    animation: space-drift 45s ease-in-out infinite;
+  }
+
+  @keyframes spin-zoom {
+    0% {
+      transform: scale(0.4) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    100% {
+      transform: scale(4) rotate(180deg);
+      opacity: 0;
+    }
+  }
+
+  .animate-spin-zoom {
+    animation: spin-zoom 2.5s ease-in-out forwards;
+  }
 }

@@ -5,6 +5,7 @@ import { LandingPageComponent } from './landing-page/landing-page';
 import { LoginComponent } from './login/login';
 import { DashboardComponent } from './dashboard/dashboard';
 import { Soporte } from './soporte/soporte';
+import { ModoHistoria } from './modo-historia/modo-historia';
 
 export const routes: Routes = [
     { path: '', component: LandingPageComponent },
@@ -13,4 +14,5 @@ export const routes: Routes = [
     { path: 'logros', component: LogrosComponent },
     { path: 'dashboard', component: DashboardComponent },
     { path: 'soporte', component: Soporte },
+    { path: 'modo-historia', component: ModoHistoria },
 ];

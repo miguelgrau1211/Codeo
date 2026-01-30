@@ -2,12 +2,17 @@
 module.exports = {
   content: [
     "./src/**/*.{html,ts}"
-
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
         jersey: ['"Jersey 10"', 'sans-serif'],
+      },
+      colors: {
+        'editor-bg': '#282C34',
+        'sidebar-bg': '#21252B',
+        'ui-bg': '#333842',
       },
       animation: {
         blob: "blob 7s infinite",
