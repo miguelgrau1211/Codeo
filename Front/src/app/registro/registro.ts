@@ -1,15 +1,36 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, HostListener, ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, HostListener, ChangeDetectorRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../services/auth-service';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+
+export const matchPasswordValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  const password = control.get('password');
+  const confirm = control.get('password_confirm');
+  return password && confirm && password.value !== confirm.value ? { passwordMismatch: true } : null;
+};
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule],
   templateUrl: './registro.html',
   styleUrl: './registro.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Registro implements AfterViewInit, OnDestroy {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  registroForm = new FormGroup({
+    nombre: new FormControl('', [Validators.required]),
+    apellidos: new FormControl('', [Validators.required]),
+    username: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+    password_confirm: new FormControl('', [Validators.required])
+  }, { validators: matchPasswordValidator });
+
   @ViewChild('bgCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('sourceVideo') video1Ref!: ElementRef<HTMLVideoElement>;
   @ViewChild('sourceVideo2') video2Ref!: ElementRef<HTMLVideoElement>;
@@ -139,6 +160,30 @@ export class Registro implements AfterViewInit, OnDestroy {
   ngOnDestroy() {
     if (this.animationFrameId) {
       cancelAnimationFrame(this.animationFrameId);
+    }
+  }
+
+  onSubmit() {
+    if (this.registroForm.valid) {
+      const formValue = this.registroForm.value;
+      const payload = {
+        nickname: formValue.username,
+        nombre: formValue.nombre,
+        apellidos: formValue.apellidos,
+        email: formValue.email,
+        password: formValue.password,
+        terminos_aceptados: true
+      };
+
+      this.authService.register(payload).subscribe({
+        next: (response) => {
+          console.log('Registro exitoso:', response);
+          this.router.navigate(['/login']); // si el registro es exitoso, redirige al login
+        },
+        error: (error) => {
+          console.error('Error en el registro:', error);
+        }
+      });
     }
   }
 }
