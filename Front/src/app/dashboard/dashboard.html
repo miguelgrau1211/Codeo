@@ -1,43 +1,43 @@
-<div class="min-h-screen bg-slate-950 font-sans text-slate-300 flex overflow-hidden">
+<div class="min-h-screen bg-slate-50 dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-300 flex overflow-hidden transition-colors duration-300">
 
     <!-- Sidebar -->
     <aside
-        class="w-64 bg-slate-900 border-r border-slate-800 flex-col justify-between hidden md:flex transition-all duration-300"
+        class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex-col justify-between hidden md:flex transition-all duration-300 shadow-xl dark:shadow-none z-20"
         [class.w-20]="!isSidebarOpen()">
 
         <!-- Logo -->
         <div class="p-6 flex items-center gap-3 overflow-hidden whitespace-nowrap">
             <span class="text-purple-500 text-3xl font-jersey">&gt;_</span>
-            <span class="text-2xl font-black text-white font-jersey tracking-wide"
+            <span class="text-2xl font-black text-slate-900 dark:text-white font-jersey tracking-wide"
                 [class.hidden]="!isSidebarOpen()">Codeo</span>
         </div>
 
         <!-- Navigation -->
         <nav class="flex-1 px-4 space-y-2 mt-4">
             <a routerLink="/dashboard"
-                class="flex items-center gap-4 px-4 py-3 rounded-xl bg-purple-600/10 text-purple-400 border border-purple-500/20 transition-all group">
+                class="flex items-center gap-4 px-4 py-3 rounded-xl bg-purple-50 dark:bg-purple-600/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20 transition-all group shadow-sm dark:shadow-none">
                 <img src="/common/icons/home.png" class="w-6 h-6 object-contain">
                 <span class="font-bold" [class.hidden]="!isSidebarOpen()">Inicio</span>
             </a>
 
             <a routerLink="/modo-historia"
-                class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-white transition-all group">
+                class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-white transition-all group">
                 <img src="/common/icons/history_mode.png"
-                    class="w-6 h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity">
+                    class="w-6 h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0 dark:grayscale-0">
                 <span class="font-medium" [class.hidden]="!isSidebarOpen()">Modo Historia</span>
             </a>
 
-            <a href="#"
-                class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-white transition-all group">
+            <a routerLink="/modo-infinito"
+                class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-white transition-all group">
                 <img src="/common/icons/roguelike_mode.png"
-                    class="w-6 h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity">
+                    class="w-6 h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0 dark:grayscale-0">
                 <span class="font-medium" [class.hidden]="!isSidebarOpen()">Roguelike</span>
             </a>
 
             <a href="#"
-                class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-white transition-all group">
+                class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-yellow-500 dark:hover:text-white transition-all group">
                 <img src="/common/icons/ranking.png"
-                    class="w-6 h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity">
+                    class="w-6 h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0 dark:grayscale-0">
                 <span class="font-medium" [class.hidden]="!isSidebarOpen()">Ranking</span>
             </a>
         </nav>
@@ -50,13 +50,15 @@
             </button>
         </div>
 
-        <!-- User Profile (Bottom) -->
-        <div class="p-4 border-t border-slate-800 bg-slate-900/50">
-            <div class="flex items-center gap-3 overflow-hidden">
-                <img [src]="user().avatar" class="w-10 h-10 rounded-full border border-slate-700 bg-slate-800">
-                <div class="flex flex-col whitespace-nowrap" [class.hidden]="!isSidebarOpen()">
-                    <span class="text-sm font-bold text-white">{{ user().name }}</span>
-                    <span class="text-xs text-slate-500">{{ user().role }}</span>
+        <!-- User Profile (Sidebar Bottom) -->
+        <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 overflow-hidden shrink-0">
+                     <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="w-full h-full object-cover">
+                </div>
+                <div class="overflow-hidden" [class.hidden]="!isSidebarOpen()">
+                    <div class="font-bold text-slate-800 dark:text-white text-sm truncate">{{ user().name }}</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400">Novato</div>
                 </div>
             </div>
         </div>
@@ -105,14 +107,14 @@
             </div>
 
             <!-- 2. Game Modes (Large Animated Cards) -->
-            <!-- 2. Game Modes (Large Animated Cards) -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
                 <!-- History Mode -->
                 <a routerLink="/modo-historia"
-                    class="group relative h-64 rounded-3xl overflow-hidden border border-purple-500/30 transition-all hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(168,85,247,0.3)]">
-                    <!-- Animated Background -->
-                    <div class="absolute inset-0 bg-slate-900 overflow-hidden">
+                    class="group relative h-64 rounded-3xl overflow-hidden border border-purple-200 dark:border-purple-500/30 transition-all hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-500/20 dark:hover:shadow-[0_0_40px_rgba(168,85,247,0.3)] bg-white dark:bg-transparent shadow-lg dark:shadow-none">
+                    
+                    <!-- Animated Background (Dark Mode Only) -->
+                    <div class="absolute inset-0 bg-slate-900 overflow-hidden hidden dark:block">
                         <div class="absolute inset-0 flex items-center justify-center opacity-30 mix-blend-overlay">
                             <div class="animate-spin-slow will-change-transform">
                                 <img src="/landing/espiral.png" class="min-w-[1000px] w-[200%] max-w-none" alt="">
@@ -121,33 +123,36 @@
                         <div class="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent">
                         </div>
                     </div>
+                    
+                    <!-- Light Mode Background -->
+                    <div class="absolute inset-0 bg-gradient-to-br from-purple-50 to-white dark:hidden"></div>
 
                     <div class="relative z-10 h-full p-8 flex flex-col justify-center items-start">
                         <div
-                            class="inline-block px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold uppercase tracking-widest mb-4 border border-purple-500/30">
+                            class="inline-block px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-300 text-xs font-bold uppercase tracking-widest mb-4 border border-purple-200 dark:border-purple-500/30">
                             Campaña Principal
                         </div>
                         <h3
-                            class="text-4xl font-black text-white font-jersey mb-2 group-hover:text-purple-400 transition-colors">
+                            class="text-4xl font-black text-slate-800 dark:text-white font-jersey mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
                             Modo Historia</h3>
-                        <p class="text-slate-400 max-w-sm mb-6">Continúa tu viaje donde lo dejaste. Capítulo 3:
+                        <p class="text-slate-500 dark:text-slate-400 max-w-sm mb-6 font-medium dark:font-normal">Continúa tu viaje donde lo dejaste. Capítulo 3:
                             Funciones.</p>
                         <span
-                            class="flex items-center gap-2 font-bold text-white bg-purple-600 hover:bg-purple-500 px-6 py-3 rounded-xl transition-colors">
+                            class="flex items-center gap-2 font-bold text-white bg-purple-600 hover:bg-purple-500 px-6 py-3 rounded-xl transition-colors shadow-lg shadow-purple-600/20">
                             Jugar Ahora <span class="group-hover:translate-x-1 transition-transform">→</span>
                         </span>
                     </div>
 
                     <!-- Floating Icon -->
                     <img src="/common/icons/history_mode.png"
-                        class="absolute right-[-20px] bottom-[-20px] w-48 h-48 object-contain opacity-50 rotate-12 group-hover:rotate-0 group-hover:scale-110 group-hover:opacity-80 transition-all duration-500">
+                        class="absolute right-[-20px] bottom-[-20px] w-48 h-48 object-contain opacity-20 dark:opacity-50 rotate-12 group-hover:rotate-0 group-hover:scale-110 group-hover:opacity-40 dark:group-hover:opacity-80 transition-all duration-500 grayscale dark:grayscale-0">
                 </a>
 
                 <!-- Roguelike Mode -->
-                <a href="#"
-                    class="group relative h-64 rounded-3xl overflow-hidden border border-red-500/30 transition-all hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(239,68,68,0.3)]">
-                    <!-- Animated Background -->
-                    <div class="absolute inset-0 bg-slate-900 overflow-hidden">
+                <a routerLink="/modo-infinito"
+                    class="group relative h-64 rounded-3xl overflow-hidden border border-red-200 dark:border-red-500/30 transition-all hover:scale-[1.02] hover:shadow-2xl hover:shadow-red-500/20 dark:hover:shadow-[0_0_40px_rgba(239,68,68,0.3)] bg-white dark:bg-transparent shadow-lg dark:shadow-none">
+                    <!-- Animated Background (Dark Mode) -->
+                    <div class="absolute inset-0 bg-slate-900 overflow-hidden hidden dark:block">
                         <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-red-900 to-transparent animate-pulse"></div>
                         
                         <div class="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent"></div>
@@ -181,77 +186,70 @@
                             <div class="ember-particle" style="left: 85%; width: 2px; height: 2px; animation-duration: 1.8s; animation-delay: 2.2s; opacity: 0.5"></div>
                         </div>
                     </div>
+                    
+                    <!-- Light Mode Background -->
+                    <div class="absolute inset-0 bg-gradient-to-br from-red-50 to-white dark:hidden"></div>
 
                     <div class="relative z-10 h-full p-8 flex flex-col justify-center items-start">
                         <div
-                            class="inline-block px-3 py-1 rounded-full bg-red-500/20 text-red-300 text-xs font-bold uppercase tracking-widest mb-4 border border-red-500/30">
+                            class="inline-block px-3 py-1 rounded-full bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-300 text-xs font-bold uppercase tracking-widest mb-4 border border-red-200 dark:border-red-500/30">
                             Modo Survival
                         </div>
                         <h3
-                            class="text-4xl font-black text-white font-jersey mb-2 group-hover:text-red-400 transition-colors">
+                            class="text-4xl font-black text-slate-800 dark:text-white font-jersey mb-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
                             Roguelike</h3>
-                        <p class="text-slate-400 max-w-sm mb-6">Enfréntate a desafíos infinitos. Si pierdes, reinicias.
+                        <p class="text-slate-500 dark:text-slate-400 max-w-sm mb-6 font-medium dark:font-normal">Enfréntate a desafíos infinitos. Si pierdes, reinicias.
                         </p>
-                        <span
-                            class="flex items-center gap-2 font-bold text-white bg-red-600 hover:bg-red-500 px-6 py-3 rounded-xl transition-colors">
-                            Aceptar Desafío <span class="group-hover:translate-x-1 transition-transform">⚔️</span>
-                        </span>
-                    </div>
+                        <img src="/common/icons/roguelike_mode.png"
+                        class="absolute right-[-20px] bottom-[-20px] w-48 h-48 object-contain opacity-20 dark:opacity-50 rotate-12 group-hover:rotate-0 group-hover:scale-110 group-hover:opacity-40 dark:group-hover:opacity-80 transition-all duration-500 grayscale dark:grayscale-0">
 
-                    <!-- Floating Icon -->
-                    <img src="/common/icons/roguelike_mode.png"
-                        class="absolute right-[-20px] bottom-[-20px] w-52 h-52 object-contain opacity-50 rotate-[-12deg] group-hover:rotate-0 group-hover:scale-110 group-hover:opacity-80 transition-all duration-500">
+                        
+                    </div>
                 </a>
 
             </div>
 
             <!-- 3. User Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- XP Card -->
+                <!-- Total XP -->
                 <div
-                    class="glass-card p-6 rounded-2xl flex items-center gap-6 border border-blue-500/20 bg-blue-900/5 relative overflow-hidden group">
-                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <img src="/common/icons/exp.png" class="w-24 h-24 object-contain">
-                    </div>
-                    <div
-                        class="w-16 h-16 rounded-2xl bg-blue-500/10 flex items-center justify-center shadow-inner shadow-blue-500/20">
-                        <img src="/common/icons/exp.png" class="w-10 h-10 object-contain">
-                    </div>
-                    <div>
-                        <p class="text-slate-400 text-sm font-bold uppercase tracking-wider">Total XP</p>
-                        <p class="text-3xl font-black text-white font-mono">{{ stats().xp | number }}</p>
+                    class="bg-white dark:bg-slate-700/50 p-6 rounded-3xl flex items-center justify-between border border-slate-200 dark:border-white/10 shadow-lg dark:shadow-none hover:scale-105 transition-transform">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-blue-100 dark:bg-blue-500/20 rounded-2xl">
+                            <img src="/common/icons/exp.png" class="w-8 h-8 object-contain">
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">Total XP</div>
+                            <div class="text-3xl font-black text-slate-800 dark:text-white font-jersey">2,450</div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Level Card -->
+                <!-- Current Level -->
                 <div
-                    class="glass-card p-6 rounded-2xl flex items-center gap-6 border border-purple-500/20 bg-purple-900/5 relative overflow-hidden group">
-                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <img src="/common/icons/lvl.png" class="w-24 h-24 object-contain">
-                    </div>
-                    <div
-                        class="w-16 h-16 rounded-2xl bg-purple-500/10 flex items-center justify-center shadow-inner shadow-purple-500/20">
-                        <img src="/common/icons/lvl.png" class="w-10 h-10 object-contain">
-                    </div>
-                    <div>
-                        <p class="text-slate-400 text-sm font-bold uppercase tracking-wider">Nivel Actual</p>
-                        <p class="text-3xl font-black text-white font-mono">{{ stats().level }}</p>
+                    class="bg-white dark:bg-slate-700/50 p-6 rounded-3xl flex items-center justify-between border border-slate-200 dark:border-white/10 shadow-lg dark:shadow-none hover:scale-105 transition-transform">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-purple-100 dark:bg-purple-500/20 rounded-2xl">
+                            <img src="/common/icons/lvl.png" class="w-8 h-8 object-contain">
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">Nivel Actual</div>
+                            <div class="text-3xl font-black text-slate-800 dark:text-white font-jersey">5</div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Streak Card -->
+                <!-- Streak -->
                 <div
-                    class="glass-card p-6 rounded-2xl flex items-center gap-6 border border-orange-500/20 bg-orange-900/5 relative overflow-hidden group">
-                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <img src="/common/icons/racha.png" class="w-24 h-24 object-contain">
-                    </div>
-                    <div
-                        class="w-16 h-16 rounded-2xl bg-orange-500/10 flex items-center justify-center shadow-inner shadow-orange-500/20">
-                        <img src="/common/icons/racha.png" class="w-10 h-10 object-contain">
-                    </div>
-                    <div>
-                        <p class="text-slate-400 text-sm font-bold uppercase tracking-wider">Racha</p>
-                        <p class="text-3xl font-black text-white font-mono">{{ stats().streak }} Días</p>
+                    class="bg-white dark:bg-slate-700/50 p-6 rounded-3xl flex items-center justify-between border border-slate-200 dark:border-white/10 shadow-lg dark:shadow-none hover:scale-105 transition-transform">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-orange-100 dark:bg-orange-500/20 rounded-2xl">
+                            <img src="/common/icons/racha.png" class="w-8 h-8 object-contain">
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">Racha</div>
+                            <div class="text-3xl font-black text-slate-800 dark:text-white font-jersey">7 Días</div>
+                        </div>
                     </div>
                 </div>
             </div>

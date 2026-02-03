@@ -30,11 +30,39 @@ export class ModoInfinito implements OnInit {
   highlightedCode = signal<SafeHtml>('');
   currentLine = signal<number | null>(null);
   lineNumbers = signal<number[]>([1]);
-  scrollTop = signal(0); // Track scroll position
+  // Game State
+  lives = signal(3);
+  coins = signal(150);
+  time = signal('05:00');
+  
+  // Shop & Upgrades
+  showMejoras = signal(false);
+  purchasedUpgrades = signal<{icon: string, name: string, desc: string}[]>([]);
+  
+  // Mock Upgrades options
+  upgradeOptions = [
+    { icon: '⚡', name: 'Compilador Turbo', desc: 'Tu código se ejecuta un 20% más rápido.' },
+    { icon: '🛡️', name: 'Escudo de Sintaxis', desc: 'Ignora el primer error de compilación.' },
+    { icon: '💰', name: 'Minería de Datos', desc: 'Ganas +50% de monedas por nivel.' }
+  ];
 
   constructor(private sanitizer: DomSanitizer) {
     // Initial highlight
     this.updateCode(this.codeContent());
+  }
+
+  buyBox() {
+    if (this.coins() >= 100) {
+        this.coins.update(c => c - 100);
+        this.showMejoras.set(true);
+    } else {
+        alert("No tienes suficientes monedas (Cuesta 100)");
+    }
+  }
+
+  selectUpgrade(upgrade: any) {
+    this.purchasedUpgrades.update(list => [...list, upgrade]);
+    this.showMejoras.set(false);
   }
 
   ngOnInit() {

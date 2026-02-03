@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300;
+  }
+}
+
 @layer utilities {
   .animation-delay-2000 {
     animation-delay: 2s;
@@ -113,5 +119,39 @@
 
   .animate-spin-zoom {
     animation: spin-zoom 2.5s ease-in-out forwards;
+  }
+
+  /* Gamified Syntax Highlighting Animations */
+  /* Animations removed to prevent flickering on innerHTML updates. 
+     Future Todo: Implement particle system for typing rewards. */
+
+  .token-keyword {
+    display: inline-block;
+    filter: drop-shadow(0 0 2px rgba(168,85,247,0.3));
+  }
+
+  .token-variable {
+    display: inline-block;
+    color: #f87171; /* red-400 */
+  }
+
+  .token-function {
+    display: inline-block;
+    color: #60a5fa; /* blue-400 */
+  }
+
+  .token-string {
+    display: inline-block;
+    transition: all 0.2s;
+  }
+  .token-string:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 8px rgba(74, 222, 128, 0.5); /* green-400 glow */
+  }
+
+  .token-number {
+    display: inline-block;
+    font-weight: bold;
+    color: #fbbf24; /* amber-400 */
   }
 }
