@@ -1,48 +1,175 @@
-<div class="card-container" [class.locked]="isLocked">
-    
-    <!-- Sección Izquierda: Icono -->
-    <div class="icon-section">
-        <!-- Mostramos el icono personalizado si está desbloqueado -->
-        <div class="emoji-icon" *ngIf="!isLocked">
-            {{ icon }}
-        </div>
-        <!-- Mostramos el candado si está bloqueado -->
-        <div class="lock-icon" *ngIf="isLocked">
-            🔒
-        </div>
-    </div>
+<!-- Card Container -->
+<div class="relative flex flex-col h-full p-1 rounded-2xl transition-all duration-300 group preserve-3d" [ngClass]="{
+        'hover:-translate-y-2 hover:rotate-x-2': !isLocked,
+        'opacity-70 grayscale': isLocked
+    }">
 
-    <!-- Sección Central: Información -->
-    <div class="info-section">
-        <div class="card-header">
-            <h3 class="achievement-title">{{ title }}</h3>
-            <!-- El badge de rareza solo se ve si no está bloqueado (o según diseño) -->
-            <span class="rarity-badge" *ngIf="!isLocked" [class]="rarity">
-                {{ rarity }}
-            </span>
-        </div>
-        
-        <p class="achievement-desc">{{ description }}</p>
+    <!-- Outer Glow/Border Gradient -->
+    <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/10 to-white/0 -z-10 group-hover:from-purple-500/50 group-hover:to-pink-500/50 transition-all duration-500 blur-sm opacity-0 group-hover:opacity-100"
+        [ngClass]="{'!from-red-600/50 !to-red-900/50': icon === 'hacker'}"></div>
 
-        <!-- Barra de progreso: Solo si maxProgress está definido -->
-        <div class="progress-bar-container" *ngIf="maxProgress">
-            <div class="progress-info">
-                <span class="label-progreso">Progreso</span>
-                <span class="value-progreso">{{ currentProgress }} / {{ maxProgress }}</span>
+    <!-- Main Card Content -->
+    <div class="flex flex-col h-full bg-slate-900/90 backdrop-blur-md rounded-xl p-5 border border-white/5 relative overflow-hidden transition-colors group-hover:bg-slate-800/90 group-hover:border-white/10"
+        [class.border-red-600_30]="icon === 'hacker'">
+
+        <!-- Shine Effect -->
+        <div
+            class="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 z-20 pointer-events-none">
+        </div>
+
+        <!-- Header: Icon & Points -->
+        <div class="flex justify-between items-start mb-4 relative z-10">
+            <!-- Icon Box -->
+            <div class="w-12 h-12 rounded-lg flex items-center justify-center text-2xl shadow-inner border border-white/5 bg-slate-800 group-hover:scale-110 transition-transform duration-300"
+                [ngClass]="{
+                    'shadow-[0_0_15px_rgba(168,85,247,0.3)] border-purple-500/30': !isLocked && icon !== 'hacker',
+                    'shadow-[0_0_15px_rgba(220,38,38,0.4)] border-red-600/40': icon === 'hacker'
+                }">
+
+                <!-- SVG Animations Switch -->
+                <div [ngSwitch]="icon" class="w-7 h-7 flex items-center justify-center transition-colors"
+                    [class.text-slate-500]="isLocked" [class.text-white]="!isLocked">
+
+                    <!-- 1. Primer Paso (Footprint) -->
+                    <svg *ngSwitchCase="'step'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                        class="group-hover:text-purple-400">
+                        <path
+                            d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 11 3.8 11 8c0 2.85-1.27 5.1-4 7 1.91-.72 4.06.67 4 2.82V22"
+                            class="group-hover:animate-bounce" />
+                        <path
+                            d="M20 20v-2.38c0-2.12-1.03-3.12-1-5.62.03-2.72 1.49-6 4.5-6C25.37 6 27 7.8 27 12c0 2.85-1.27 5.1-4 7 1.91-.72 4.06.67 4 2.82V26" />
+                        <path d="M13 22h.01" />
+                        <path d="M16 19h.01" />
+                    </svg>
+
+                    <!-- 2. Pythonista (Code/Brackets) -->
+                    <svg *ngSwitchCase="'code'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-blue-400">
+                        <polyline points="16 18 22 12 16 6"
+                            class="group-hover:translate-x-1 transition-transform duration-300" />
+                        <polyline points="8 6 2 12 8 18"
+                            class="group-hover:-translate-x-1 transition-transform duration-300" />
+                    </svg>
+
+                    <!-- 3. Racha de Fuego (Fire) -->
+                    <svg *ngSwitchCase="'fire'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-orange-500 group-hover:fill-orange-500/20 transition-all">
+                        <path
+                            d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.115.385-2.256 1-3.24"
+                            class="group-hover:animate-pulse" />
+                    </svg>
+
+                    <!-- 4. Hacker (Terminal) -->
+                    <svg *ngSwitchCase="'hacker'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-red-500">
+                        <rect width="20" height="14" x="2" y="3" rx="2" class="group-hover:stroke-red-400" />
+                        <line x1="8" x2="16" y1="21" y2="21" />
+                        <line x1="12" x2="12" y1="17" y2="21" />
+                        <path d="m9 8 2 2-2 2" />
+                        <path d="M13 12h2" class="animate-pulse" />
+                    </svg>
+
+                    <!-- 5. Velocista (Lightning) -->
+                    <svg *ngSwitchCase="'lightning'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-yellow-400 group-hover:scale-110 transition-transform">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
+                            class="group-hover:fill-yellow-400/30" />
+                    </svg>
+
+                    <!-- 6. Perfeccionista (Target) -->
+                    <svg *ngSwitchCase="'target'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-pink-400">
+                        <circle cx="12" cy="12" r="10" />
+                        <circle cx="12" cy="12" r="6" />
+                        <circle cx="12" cy="12" r="2" class="group-hover:animate-ping" />
+                    </svg>
+
+                    <!-- 7. Maestro (Crown) -->
+                    <svg *ngSwitchCase="'crown'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-yellow-300">
+                        <path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"
+                            class="group-hover:drop-shadow-[0_0_5px_rgba(253,224,71,0.5)] transition-all" />
+                    </svg>
+
+                    <!-- 8. Bug Hunter -->
+                    <svg *ngSwitchCase="'bug'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-green-400">
+                        <path d="m8 2 1.88 1.88" />
+                        <path d="M14.12 3.88 16 2" />
+                        <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1" />
+                        <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6" />
+                        <path d="M12 20v-9" />
+                        <path d="M6.53 9C4.6 8.8 3 7.1 3 5" />
+                        <path d="M6 13H2" />
+                        <path d="M3 21c0-2.1 1.7-3.9 3.8-4" />
+                        <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4" />
+                        <path d="M22 13h-4" />
+                        <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4" />
+                    </svg>
+
+                    <!-- 9. Lock Icon (Default for locked state if no icon logic overrides) -->
+                    <svg *ngIf="isLocked" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-slate-600 absolute inset-0 m-auto w-6 h-6">
+                        <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    </svg>
+
+                </div>
+
             </div>
-            <div class="bar-track">
-                <!-- Calculamos el ancho inline simulado para el HTML -->
-                <div class="bar-fill" [style.width.%]="(currentProgress / maxProgress) * 100"></div>
+
+            <!-- Points Pill -->
+            <div
+                class="px-2 py-1 rounded-md text-[10px] font-black uppercase tracking-wider border bg-slate-950/50 border-white/10 text-slate-400 group-hover:text-yellow-400 group-hover:border-yellow-500/30 transition-colors">
+                XP +{{ points }}
+            </div>
+        </div>
+
+        <!-- Body: Title & Desc -->
+        <div class="flex-1 relative z-10">
+            <h3
+                class="text-lg font-bold text-white mb-1 leading-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-slate-300 transition-all">
+                {{ title }}
+            </h3>
+            <p class="text-xs text-slate-400 leading-relaxed line-clamp-2 mb-3">
+                {{ description }}
+            </p>
+        </div>
+
+        <!-- Footer: Badge & Progress -->
+        <div class="mt-auto relative z-10 pt-3 border-t border-white/5">
+            <div class="flex items-center justify-between mb-2">
+                <span
+                    class="text-[10px] font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r"
+                    [ngClass]="{
+                        'from-slate-400 to-slate-500': rarity === 'Común',
+                        'from-blue-400 to-indigo-400': rarity === 'Raro',
+                        'from-purple-400 to-pink-400': rarity === 'Épico',
+                        'from-yellow-400 to-orange-400': rarity === 'Legendario',
+                        '!from-red-500 !to-rose-600': icon === 'hacker'
+                    }">
+                    {{ rarity }}
+                </span>
+                <span *ngIf="!isLocked && !maxProgress" class="text-xs text-green-400">✔</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div *ngIf="maxProgress" class="relative w-full h-1 bg-slate-800 rounded-full overflow-hidden">
+                <div class="absolute h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full group-hover:animate-pulse"
+                    [style.width.%]="(currentProgress / maxProgress) * 100"></div>
+            </div>
+            <div *ngIf="maxProgress" class="text-[9px] text-right text-slate-500 mt-1 font-mono">
+                {{ currentProgress }} / {{ maxProgress }}
             </div>
         </div>
     </div>
-
-    <!-- Sección Derecha: Puntos -->
-    <div class="points-section">
-        <div class="points-badge">
-            <span class="star">☆</span>
-            <span class="points-value">+{{ points }} puntos</span>
-        </div>
-    </div>
-
 </div>
