@@ -9,6 +9,8 @@ import { ModoHistoria } from './modo-historia/modo-historia';
 import { ModoInfinito } from './modo-infinito/modo-infinito';
 import { Ranking } from './ranking/ranking';
 import { Configuracion } from './configuracion/configuracion';
+import { Perfil } from './perfil/perfil';
+
 
 export const routes: Routes = [
     { path: '', component: LandingPageComponent },
@@ -21,4 +23,6 @@ export const routes: Routes = [
     { path: 'modo-infinito', component: ModoInfinito },
     { path: 'ranking', component: Ranking },
     { path: 'ajustes', component: Configuracion },
+    { path: 'perfil', component: Perfil },
+    
 ];
