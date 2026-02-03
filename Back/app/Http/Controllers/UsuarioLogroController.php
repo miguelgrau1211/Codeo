@@ -4,18 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\UsuarioLogro;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Logros;
 
 class UsuarioLogroController extends Controller
 {
     // logros conseguidos
-    public function index(Request $request)
+    // logros conseguidos
+    public function index()
     {
-        $request->validate([
-            'usuario_id' => 'required|exists:usuarios,id'
-        ]);
-
-        $logros = UsuarioLogro::where('usuario_id', $request->usuario_id)->with('logro')->get();
+        $logros = UsuarioLogro::where('usuario_id', Auth::id())->with('logro')->get();
 
         return response()->json($logros, 200);
     }
@@ -24,14 +22,13 @@ class UsuarioLogroController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'usuario_id' => 'required|exists:usuarios,id',
             'logro_id'   => 'required|exists:logros,id',
         ]);
 
         //crear el registro
         try {
             $nuevoLogro = UsuarioLogro::create([
-                'usuario_id' => $validatedData['usuario_id'],
+                'usuario_id' => Auth::id(),
                 'logro_id'   => $validatedData['logro_id'],
                 'fecha_desbloqueo' => now()
             ]);
@@ -50,14 +47,21 @@ class UsuarioLogroController extends Controller
     }
 
     // Elimina un logro
-    public function destroy(Request $request)
+    public function destroy(Request $request, $id) // $id es el ID del recurso (logro vinculación) o del logro? Asumimos que es logro_id para simplificar o el id de la relación
     {
+        // En este caso, si destruimos por ID de logro para el usuario auth
+        // O si destroy recibe el ID de la tabla usuario_logros
+        
+        // Vamos a asumir que quieres revocar un logro específico. 
+        // Si la ruta es apiResource, destroy recibe el ID principal.
+        // Pero tu implementación anterior usaba un request body.
+        // Adaptamos para usar el parámetro de ruta o request pero validando Auth.
+        
         $request->validate([
-            'usuario_id' => 'required|exists:usuarios,id',
             'logro_id'   => 'required|exists:logros,id',
         ]);
 
-        UsuarioLogro::where('usuario_id', $request->usuario_id)
+        UsuarioLogro::where('usuario_id', Auth::id())
             ->where('logro_id', $request->logro_id)
             ->delete();
 
@@ -68,15 +72,10 @@ class UsuarioLogroController extends Controller
      * * @param int $idUsuario
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getLogrosUsuario($idUsuario)
+    public function getLogrosUsuario()
     {
-        //verificamos si el usuario existe
-        $usuarioExists = \App\Models\Usuario::where('id', $idUsuario)->exists();
+        $idUsuario = Auth::id();
         
-        if (!$usuarioExists) {
-            return response()->json(['message' => 'Usuario no encontrado'], 404);
-        }
-
         // obtenemos los logros del usuario
         $logrosConseguidos = UsuarioLogro::where('usuario_id', $idUsuario)
             ->with('logro') 
@@ -106,8 +105,10 @@ class UsuarioLogroController extends Controller
      * * @param int $idUsuario
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getLogrosDesbloqueados($idUsuario)
+    public function getLogrosDesbloqueados()
     {
+        $idUsuario = Auth::id();
+        
         // logros disponibles, todossss
         $todosLosLogros = Logros::all();
 
@@ -148,8 +149,10 @@ class UsuarioLogroController extends Controller
      * * @param int $idUsuario
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPorcentajeLogros($idUsuario)
+    public function getPorcentajeLogros()
     {
+        $idUsuario = Auth::id();
+
         //contar cuántos logros existen en total en el juego para luego sacar el procentaje
         $totalLogros = Logros::count();
 

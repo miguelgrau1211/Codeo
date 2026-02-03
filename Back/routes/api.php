@@ -38,32 +38,43 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+    
+    // Check Admin Role
+    Route::get('/es-admin', [UserController::class, 'esAdmin']);
+
+    //validar usuario
+    Route::get('/validate-user', [UserController::class, 'validateUser']);
 
     // Gestión de Usuarios (excepto crear que es registro)
-    Route::get('/users/index', [UserController::class, 'index']);
     Route::apiResource('users', UserController::class)->except(['store']);
-    Route::get('/users/{id}/experiencia', [UserController::class, 'getExperienciaTotalUsuario']);
-    Route::get('/users/{id}/actividad', [UserController::class, 'getActividadUsuarioReciente']);
-    Route::get('/users/{id}/antiguedad', [UserController::class, 'getFechaDeCreacionCuenta']);
-    Route::get('/users/{id}/perfil', [UserController::class, 'getPerfilUsuario']);
+    Route::get('/users/experiencia', [UserController::class, 'getExperienciaTotalUsuario']);
+    Route::get('/users/actividad', [UserController::class, 'getActividadUsuarioReciente']);
+    Route::get('/users/antiguedad', [UserController::class, 'getFechaDeCreacionCuenta']);
+    Route::get('/users/perfil', [UserController::class, 'getPerfilUsuario']);
 
     // Logros
     Route::apiResource('usuario-logros', UsuarioLogroController::class);
-    Route::get('/users/{id}/logros', [UsuarioLogroController::class, 'getLogrosUsuario']);
-    Route::get('/users/{id}/logros-desbloqueados', [UsuarioLogroController::class, 'getLogrosDesbloqueados']);
-    Route::get('/users/{id}/porcentaje-logros', [UsuarioLogroController::class, 'getPorcentajeLogros']);
+    Route::get('/users/logros', [UsuarioLogroController::class, 'getLogrosUsuario']);
+    Route::get('/users/logros-desbloqueados', [UsuarioLogroController::class, 'getLogrosDesbloqueados']);
+    Route::get('/users/porcentaje-logros', [UsuarioLogroController::class, 'getPorcentajeLogros']);
 
     // Progreso Historia
     Route::get('/progreso-historia', [ProgresoHistoriaController::class, 'index']);
     Route::post('/progreso-historia', [ProgresoHistoriaController::class, 'store']);
-    Route::get('/users/{id}/progreso-historia', [ProgresoHistoriaController::class, 'getProgresoModoHistoriaUsuario']);
-    Route::get('/users/{id}/porcentaje-historia', [ProgresoHistoriaController::class, 'getPorcentajeUsuarioModoHistoria']);
+    Route::get('/users/progreso-historia', [ProgresoHistoriaController::class, 'getProgresoModoHistoriaUsuario']);
+    Route::get('/users/porcentaje-historia', [ProgresoHistoriaController::class, 'getPorcentajeUsuarioModoHistoria']);
 
     // Roguelike
     Route::apiResource('runs-roguelike', RunsRoguelikeController::class);
-    Route::get('/users/{id}/mejor-run', [RunsRoguelikeController::class, 'getNivelMejorRunUsuario']);
+    Route::get('/users/mejor-run', [RunsRoguelikeController::class, 'getNivelMejorRunUsuario']);
     
     // Administración de contenido (Proteger crear/borrar niveles y mejoras)
-    Route::apiResource('niveles-roguelike', NivelesRoguelikeController::class)->except(['index', 'show']);
-    Route::apiResource('mejoras', MejorasController::class)->except(['index', 'show']);
+    Route::middleware('admin')->group(function () {
+        Route::apiResource('niveles-roguelike', NivelesRoguelikeController::class)->except(['index', 'show']);
+        Route::apiResource('mejoras', MejorasController::class)->except(['index', 'show']);
+        Route::get('/users/index', [UserController::class, 'index']);
+
+        // Aquí podrías mover también la gestión completa de usuarios si solo los admins pueden borrar/editar a otros
+        // Route::apiResource('users', UserController::class)->except(['store', 'index', 'show']); // Ejemplo
+    });
 });

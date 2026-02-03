@@ -40,6 +40,7 @@ class Usuario extends Authenticatable
         'preferencias',
         'terminos_aceptados',
         
+        
     ];
 
     /**

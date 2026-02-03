@@ -4,16 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\ProgresoHistoria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\NivelesHistoria;
 
 class ProgresoHistoriaController extends Controller
 {
     // progreso de un usuario
-    public function index(Request $request)
+    // progreso de un usuario
+    public function index()
     {
-        $request->validate(['usuario_id' => 'required|exists:usuarios,id']);
-
-        $progreso = ProgresoHistoria::where('usuario_id', $request->usuario_id)
+        $progreso = ProgresoHistoria::where('usuario_id', Auth::id())
             ->with('nivel')
             ->get();
 
@@ -24,7 +24,6 @@ class ProgresoHistoriaController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'usuario_id' => 'required|exists:usuarios,id',
             'nivel_id'   => 'required|exists:niveles_historia,id',
             'completado' => 'required|boolean',
             'codigo_solucion_usuario' => 'nullable|string'
@@ -33,7 +32,7 @@ class ProgresoHistoriaController extends Controller
         //Si ya existe lo actualiza si no lo crea
         $progreso = ProgresoHistoria::updateOrCreate(
             [
-                'usuario_id' => $validatedData['usuario_id'],
+                'usuario_id' => Auth::id(),
                 'nivel_id'   => $validatedData['nivel_id']
             ],
             [
@@ -53,14 +52,13 @@ class ProgresoHistoriaController extends Controller
      * * @param int $idUsuario
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getProgresoModoHistoriaUsuario($idUsuario)
+    /**
+     * Obtiene el progreso detallado del usuario en el Modo Historia.
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getProgresoModoHistoriaUsuario()
     {
-        // verificamos que el usuario existe
-        $usuarioExists = \App\Models\Usuario::where('id', $idUsuario)->exists();
-        
-        if (!$usuarioExists) {
-            return response()->json(['message' => 'Usuario no encontrado'], 404);
-        }
+        $idUsuario = Auth::id();
 
         //obtenemos el progreso con los datos del nivel
         $progreso = ProgresoHistoria::where('usuario_id', $idUsuario)->join('niveles_historia', 'usuario_progreso_historia.nivel_id', '=', 'niveles_historia.id')
@@ -89,14 +87,9 @@ class ProgresoHistoriaController extends Controller
     }
 
 
-    public function getPorcentajeUsuarioModoHistoria($idUsuario)
+    public function getPorcentajeUsuarioModoHistoria()
     {
-        // verificamos que el usuario existe
-        $usuarioExists = \App\Models\Usuario::where('id', $idUsuario)->exists();
-        
-        if (!$usuarioExists) {
-            return response()->json(['message' => 'Usuario no encontrado'], 404);
-        }
+        $idUsuario = Auth::id();
 
         //obtenemos el progreso con los datos del nivel
         $progreso = ProgresoHistoria::where('usuario_id', $idUsuario)->join('niveles_historia', 'usuario_progreso_historia.nivel_id', '=', 'niveles_historia.id')

@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\RunsRoguelike;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RunsRoguelikeController extends Controller
 {
     public function index(){
-        $runs = RunsRoguelike::all();
+        $runs = RunsRoguelike::where('usuario_id', Auth::id())->get();
         return response()->json($runs, 200);
     }
 
@@ -19,13 +20,14 @@ class RunsRoguelikeController extends Controller
 
     public function store(Request $request){
         $validatedData = $request->validate([
-            'usuario_id' => 'required|exists:usuarios,id',
             'vidas_restantes' => 'required|integer',
             'niveles_superados' => 'required|integer',
             'monedas_obtenidas' => 'required|integer',
             'estado' => 'required|string',
             'data_partida' => 'required|array',
         ]);
+
+        $validatedData['usuario_id'] = Auth::id();
 
         $run = RunsRoguelike::create($validatedData);
 
@@ -36,10 +38,9 @@ class RunsRoguelikeController extends Controller
     }
 
     public function update(Request $request, $id){
-        $run = RunsRoguelike::findOrFail($id);
+        $run = RunsRoguelike::where('usuario_id', Auth::id())->findOrFail($id);
 
         $validatedData = $request->validate([
-            'usuario_id' => 'required|exists:usuarios,id',
             'vidas_restantes' => 'required|integer',
             'niveles_superados' => 'required|integer',
             'monedas_obtenidas' => 'required|integer',
@@ -69,13 +70,10 @@ class RunsRoguelikeController extends Controller
      * * @param int $idUsuario
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getNivelMejorRunUsuario($idUsuario)
+    public function getNivelMejorRunUsuario()
     {
-        //valida existencia del usuario
-        $usuario = \App\Models\Usuario::find($idUsuario);
-        if (!$usuario) {
-            return response()->json(['message' => 'Usuario no encontrado'], 404);
-        }
+        $idUsuario = Auth::id();
+        $usuario = Auth::user();
 
         //mejor partida
         $mejorRun = RunsRoguelike::where('usuario_id', $idUsuario)

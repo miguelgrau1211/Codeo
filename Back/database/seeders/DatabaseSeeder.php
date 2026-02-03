@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
                 'nombre' => 'Administrador',
                 'apellidos' => 'Sistema',
                 'password' => Hash::make('12341234'), // Contraseña fácil para pruebas
+                'es_admin' => true, // <--- ESTO ES LO IMPORTANTE
                 'avatar_url' => 'https://ui-avatars.com/api/?name=Admin',
                 'monedas' => 9999,
                 'nivel_global' => 100,

@@ -28,6 +28,13 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
     password: ['', [Validators.required]]
   });
 
+  ngOnInit() {
+    if (this.authService.validateUser(sessionStorage.getItem('token')!)) {
+      this.router.navigate(['/dashboard']);
+    }
+  }
+  
+
   @ViewChild('bgCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('sourceVideo') video1Ref!: ElementRef<HTMLVideoElement>;
   @ViewChild('sourceVideo2') video2Ref!: ElementRef<HTMLVideoElement>;
@@ -168,9 +175,9 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
           console.log('Login successful:', response);
-          // Aquí iría la lógica de redirección´
+          // Aquí iría la lógica de redirección
           sessionStorage.setItem('token', response.access_token);
-          sessionStorage.setItem('user', JSON.stringify(response.user));
+          sessionStorage.setItem('nickname', response.nickname);
           this.router.navigate(['/dashboard']);
         },
         error: (error) => {

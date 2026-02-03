@@ -7,6 +7,7 @@ use App\Models\UsuarioDesactivado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Models\ProgresoHistoria;
 use App\Models\NivelesHistoria;
@@ -178,7 +179,23 @@ class UserController extends Controller
             'message' => 'Inicio de sesión exitoso',
             'access_token' => $token,
             'token_type' => 'Bearer',
-            'user' => $usuario,
+            'nickname' => $usuario->nickname,
+            'avatar_url' => $usuario->avatar_url
+            
+        ], 200);
+    }
+
+
+    public function esAdmin(Request $request)
+    {
+        $usuario = Auth::user();
+
+        if (! $usuario) {
+             return response()->json(['es_admin' => false], 401);
+        }
+
+        return response()->json([
+            'es_admin' => (bool) $usuario->es_admin
         ], 200);
     }
 
@@ -187,10 +204,10 @@ class UserController extends Controller
      * * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getExperienciaTotalUsuario($id)
+    public function getExperienciaTotalUsuario()
     {
-        //buscamos al usuario
-        $usuario = Usuario::find($id);
+        //buscamos al usuario autenticado
+        $usuario = Usuario::find(Auth::id());
 
         if (!$usuario) {
             return response()->json(['message' => 'Usuario no encontrado'], 404);
@@ -228,8 +245,9 @@ class UserController extends Controller
      * * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getActividadUsuarioReciente($id)
+    public function getActividadUsuarioReciente()
     {
+        $id = Auth::id();
         //Valida usuario
         $usuario = Usuario::find($id);
         if (!$usuario) {
@@ -321,10 +339,10 @@ class UserController extends Controller
      * * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getFechaDeCreacionCuenta($id)
+    public function getFechaDeCreacionCuenta()
     {
-        //buscamos al usuario
-        $usuario = Usuario::findOrFail($id);
+        //buscamos al usuario autenticado
+        $usuario = Usuario::findOrFail(Auth::id());
 
         // formatear  fecha
         return response()->json([
@@ -333,5 +351,19 @@ class UserController extends Controller
             'fecha_union' => $usuario->created_at->format('d/m/Y'),
             'antiguedad' => $usuario->created_at->diffForHumans()
         ], 200);
+    }
+
+    public function validateUser($response){
+        
+        $user = Auth::user();
+        
+        return response()->json([
+            'user' => $user->id,
+        ], 200);
+    }
+
+    public function getPerfilUsuario()
+    {
+        return response()->json(Auth::user());
     }
 }
