@@ -7,6 +7,8 @@ import { DashboardComponent } from './dashboard/dashboard';
 import { Soporte } from './soporte/soporte';
 import { ModoHistoria } from './modo-historia/modo-historia';
 import { ModoInfinito } from './modo-infinito/modo-infinito';
+import { Ranking } from './ranking/ranking';
+import { Configuracion } from './configuracion/configuracion';
 
 export const routes: Routes = [
     { path: '', component: LandingPageComponent },
@@ -17,4 +19,6 @@ export const routes: Routes = [
     { path: 'soporte', component: Soporte },
     { path: 'modo-historia', component: ModoHistoria },
     { path: 'modo-infinito', component: ModoInfinito },
+    { path: 'ranking', component: Ranking },
+    { path: 'ajustes', component: Configuracion },
 ];
