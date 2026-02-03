@@ -10,5 +10,20 @@ import { LogroComponent } from './logro/logro';
     styleUrls: ['./logros.css']
 })
 export class LogrosComponent {
-   
+    easterEggClicks = 0;
+    isEasterEggActive = false;
+    showConfetti = false;
+
+    triggerEasterEgg() {
+        this.easterEggClicks++;
+        if (this.easterEggClicks >= 5) {
+            this.isEasterEggActive = !this.isEasterEggActive;
+            this.easterEggClicks = 0; // Reset
+
+            if (this.isEasterEggActive) {
+                this.showConfetti = true;
+                setTimeout(() => this.showConfetti = false, 3000);
+            }
+        }
+    }
 }

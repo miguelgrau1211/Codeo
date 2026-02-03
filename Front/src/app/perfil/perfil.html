@@ -1,194 +1,337 @@
-    <header>
-        <div class="container">
-            <nav aria-label="Navegación de retorno">
-                <a routerLink="/" class="btn-back">← Volver</a>
-            </nav>
-            
-            <div class="page-header">
-                <h1>Mi Perfil</h1>
-                <p>Tu progreso y estadísticas</p>
+<div class="min-h-screen bg-slate-950 pb-20 relative overflow-hidden font-sans">
+
+    <!-- Background Ambient Glow -->
+    <div
+        class="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-purple-900/20 via-slate-900/10 to-transparent pointer-events-none">
+    </div>
+    <div
+        class="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] rounded-full bg-blue-600/5 blur-[100px] pointer-events-none">
+    </div>
+
+    <!-- 1. Hero / Banner Section -->
+    <div class="h-64 relative w-full overflow-hidden">
+        <!-- Abstract Banner Image/Gradient -->
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-900 to-slate-800">
+            <div
+                class="absolute inset-0 opacity-20 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:20px_20px]">
             </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent"></div>
         </div>
-    </header>
 
-    <main class="container profile-layout">
-
-        <aside class="profile-sidebar">
-            
-            <section class="user-card text-center">
-                <div class="avatar-circle">
-                    <span>CM</span> 
-                </div>
-                <h2>CodeMaster_2077</h2>
-                <p class="member-since">Miembro desde Nov 2024</p>
-                <button type="button" class="btn-edit">✎ Editar Perfil</button>
-            </section>
-
-            <section class="level-card">
-                <h3>Nivel 12</h3>
-                
-                <div class="progress-container">
-                    <div class="progress-info">
-                        <span>Progreso</span>
-                        <span>8,492 / 10,000 XP</span>
-                    </div>
-                    <progress value="8492" max="10000">84%</progress>
-                    <p class="small-text">1,508 XP hasta nivel 13</p>
-                </div>
-            </section>
-
-            <section class="stats-summary-card">
-                <h3>Estadísticas</h3>
-                <ul class="stats-list">
-                    <li>
-                        <span class="icon">Target</span>
-                        <span class="label">Desafíos Completados</span>
-                        <strong class="value">47</strong>
-                    </li>
-                    <li>
-                        <span class="icon">Trophy</span>
-                        <span class="label">Logros Desbloqueados</span>
-                        <strong class="value">12</strong>
-                    </li>
-                    <li>
-                        <span class="icon">Lightning</span>
-                        <span class="label">Racha Actual</span>
-                        <strong class="value">12 días</strong>
-                    </li>
-                    <li>
-                        <span class="icon">Medal</span>
-                        <span class="label">Puntos Totales</span>
-                        <strong class="value">8,492</strong>
-                    </li>
-                </ul>
-            </section>
-
-        </aside>
-
-        <div class="profile-content">
-
-            <section class="recent-achievements">
-                <h3>Logros Recientes</h3>
-                
-                <div class="achievements-mini-grid">
-                    <article class="mini-card epic">
-                        <div class="icon">🐍</div>
-                        <h4>Pythonista</h4>
-                        <p>Completa 50 desafíos</p>
-                        <span class="badge epic">Épico</span>
-                    </article>
-
-                    <article class="mini-card rare">
-                        <div class="icon">🔥</div>
-                        <h4>Racha de Fuego</h4>
-                        <p>10 días consecutivos</p>
-                        <span class="badge rare">Raro</span>
-                    </article>
-
-                    <article class="mini-card common">
-                        <div class="icon">👣</div>
-                        <h4>Primer Paso</h4>
-                        <p>Completa el tutorial</p>
-                        <span class="badge common">Común</span>
-                    </article>
-
-                    <article class="mini-card rare">
-                        <div class="icon">⚡</div>
-                        <h4>Velocista</h4>
-                        <p>Completa un nivel en &lt;2min</p>
-                        <span class="badge rare">Raro</span>
-                    </article>
-                </div>
-            </section>
-
-            <section class="skills-section">
-                <h3>Habilidades de Python</h3>
-                
-                <div class="skills-list">
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <span class="skill-name">Variables y Tipos</span>
-                            <span class="skill-rank master">Maestro 100%</span>
-                        </div>
-                        <progress value="100" max="100">100%</progress>
-                    </div>
-
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <span class="skill-name">Control de Flujo</span>
-                            <span class="skill-rank advanced">Avanzado 90%</span>
-                        </div>
-                        <progress value="90" max="100">90%</progress>
-                    </div>
-
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <span class="skill-name">Funciones</span>
-                            <span class="skill-rank intermediate">Intermedio 75%</span>
-                        </div>
-                        <progress value="75" max="100">75%</progress>
-                    </div>
-
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <span class="skill-name">Listas y Bucles</span>
-                            <span class="skill-rank advanced">Avanzado 85%</span>
-                        </div>
-                        <progress value="85" max="100">85%</progress>
-                    </div>
-
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <span class="skill-name">Diccionarios</span>
-                            <span class="skill-rank intermediate">Intermedio 60%</span>
-                        </div>
-                        <progress value="60" max="100">60%</progress>
-                    </div>
-                </div>
-            </section>
-
-            <section class="activity-section">
-                <h3>Actividad Reciente</h3>
-                
-                <ul class="activity-list">
-                    <li class="activity-item">
-                        <div class="activity-info">
-                            <p>Completaste <strong>Listas y Tuplas - Nivel 3</strong></p>
-                            <span class="time-ago">Hace 2 horas</span>
-                        </div>
-                        <span class="xp-gain">+150 XP</span>
-                    </li>
-
-                    <li class="activity-item">
-                        <div class="activity-info">
-                            <p>Desbloqueaste Logro: <strong>Pythonista</strong></p>
-                            <span class="time-ago">Hace 5 horas</span>
-                        </div>
-                        <span class="xp-gain">+200 XP</span>
-                    </li>
-
-                    <li class="activity-item">
-                        <div class="activity-info">
-                            <p>Subiste al <strong>Puesto #247 en el ranking</strong></p>
-                            <span class="time-ago">Hace 1 día</span>
-                        </div>
-                        </li>
-
-                    <li class="activity-item">
-                        <div class="activity-info">
-                            <p>Completaste <strong>Funciones Básicas - Nivel 5</strong></p>
-                            <span class="time-ago">Hace 2 días</span>
-                        </div>
-                        <span class="xp-gain">+100 XP</span>
-                    </li>
-                </ul>
-            </section>
-
-        </div> 
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; Codeo. Perfil de usuario.</p>
+        <!-- Navbar Placeholder / Back Button -->
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
+            <button routerLink="/dashboard"
+                class="self-start px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/5 text-slate-300 hover:text-white transition-all flex items-center gap-2 group mb-8">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="group-hover:-translate-x-1 transition-transform">
+                    <path d="m15 18-6-6 6-6" />
+                </svg>
+                <span>Volver al Dashboard</span>
+            </button>
         </div>
-    </footer>
+    </div>
+
+    <!-- 2. Main Content Grid (Overlapping Banner) -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-32 relative z-20">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <!-- LEFT COLUMN: User Identity (Sidebar) -->
+            <div class="lg:col-span-4 space-y-6">
+                <!-- Profile Card -->
+                <div
+                    class="bg-slate-900/80 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-2xl overflow-hidden relative group">
+                    <!-- Glow Effect -->
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-purple-500/20 transition-all duration-500">
+                    </div>
+
+                    <!-- Avatar -->
+                    <div class="relative mb-6 text-center">
+                        <div
+                            class="w-32 h-32 mx-auto rounded-full p-1 bg-gradient-to-tr from-purple-500 to-blue-500 shadow-lg shadow-purple-500/20 relative">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=CodeMaster" alt="Avatar"
+                                class="w-full h-full rounded-full bg-slate-800 object-cover border-4 border-slate-900">
+                            <!-- Online Status -->
+                            <div class="absolute bottom-2 right-2 w-5 h-5 bg-green-500 border-4 border-slate-900 rounded-full"
+                                title="Online"></div>
+                        </div>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="text-center mb-6">
+                        <h2 class="text-2xl font-black text-white tracking-tight mb-1">CodeMaster_2077</h2>
+                        <p class="text-slate-400 text-sm font-medium">Full Stack Developer</p>
+                        <div class="flex items-center justify-center gap-2 mt-3">
+                            <span
+                                class="px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-bold uppercase tracking-wider">Pro
+                                User</span>
+                            <span
+                                class="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-wider">Lvl
+                                12</span>
+                        </div>
+                    </div>
+
+                    <!-- Level Progress -->
+                    <div class="mb-6">
+                        <div class="flex justify-between text-xs font-bold text-slate-400 mb-2">
+                            <span>Progreso Nivel 13</span>
+                            <span class="text-white">84%</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                            <div
+                                class="h-full bg-gradient-to-r from-purple-500 to-blue-500 w-[84%] shadow-[0_0_10px_rgba(168,85,247,0.5)]">
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-slate-500 mt-2 text-center">1,508 XP para subir de nivel</p>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex gap-3">
+                        <button
+                            class="flex-1 py-2.5 rounded-xl bg-white text-slate-900 font-bold text-sm hover:bg-slate-200 transition-colors shadow-lg shadow-white/5">
+                            Editar Perfil
+                        </button>
+                        <button
+                            class="p-2.5 rounded-xl bg-slate-800 text-slate-400 border border-white/5 hover:text-white hover:bg-slate-700 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.09a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.09a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Info Grid -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div
+                        class="bg-slate-900/50 backdrop-blur-md border border-white/5 rounded-2xl p-4 text-center hover:bg-slate-800/50 transition-colors">
+                        <div class="text-slate-400 text-xs uppercase font-bold tracking-wider mb-1">Unido</div>
+                        <div class="text-white font-bold">Nov 2024</div>
+                    </div>
+                    <div
+                        class="bg-slate-900/50 backdrop-blur-md border border-white/5 rounded-2xl p-4 text-center hover:bg-slate-800/50 transition-colors">
+                        <div class="text-slate-400 text-xs uppercase font-bold tracking-wider mb-1">Ranking</div>
+                        <div class="text-yellow-400 font-bold">#247</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Stats & Content -->
+            <div class="lg:col-span-8 space-y-8">
+
+                <!-- 1. Key Statistics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Stat 1: Solved -->
+                    <div
+                        class="bg-slate-900/80 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:border-purple-500/30 transition-colors group">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="22" x2="18" y1="12" y2="12" />
+                                <line x1="6" x2="2" y1="12" y2="12" />
+                                <line x1="12" x2="12" y1="6" y2="2" />
+                                <line x1="12" x2="12" y1="22" y2="18" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider">Desafíos</p>
+                            <p class="text-2xl font-black text-white">47</p>
+                        </div>
+                    </div>
+                    <!-- Stat 2: Streak -->
+                    <div
+                        class="bg-slate-900/80 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:border-orange-500/30 transition-colors group">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-400 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.115.385-2.256 1-3.24" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider">Racha</p>
+                            <p class="text-2xl font-black text-white">12 Días</p>
+                        </div>
+                    </div>
+                    <!-- Stat 3: Total XP -->
+                    <div
+                        class="bg-slate-900/80 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:border-blue-500/30 transition-colors group">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                                <path d="M4 22h16" />
+                                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+                                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+                                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider">Total XP</p>
+                            <p class="text-2xl font-black text-white">8.5k</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Skills & Languages -->
+                <section>
+                    <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                        <span class="w-1 h-6 bg-purple-500 rounded-full"></span>
+                        Habilidades
+                    </h3>
+                    <div class="bg-slate-900/60 border border-white/5 rounded-2xl p-6 space-y-5">
+                        <!-- Skill 1 -->
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-bold text-slate-200 text-sm">Python</span>
+                                <span class="text-xs font-bold text-purple-400">Maestro</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-purple-500 rounded-full w-full"></div>
+                            </div>
+                        </div>
+                        <!-- Skill 2 -->
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-bold text-slate-200 text-sm">Algoritmos</span>
+                                <span class="text-xs font-bold text-blue-400">Avanzado</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-blue-500 rounded-full w-[85%]"></div>
+                            </div>
+                        </div>
+                        <!-- Skill 3 -->
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-bold text-slate-200 text-sm">Bases de Datos</span>
+                                <span class="text-xs font-bold text-green-400">Intermedio</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-green-500 rounded-full w-[60%]"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. Recent Activity -->
+                <section>
+                    <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                        <span class="w-1 h-6 bg-blue-500 rounded-full"></span>
+                        Actividad Reciente
+                    </h3>
+                    <div class="space-y-3">
+                        <!-- Activity Item -->
+                        <div
+                            class="group flex items-center gap-4 bg-slate-900/40 border border-white/5 p-4 rounded-xl hover:bg-slate-800/60 transition-colors">
+                            <div
+                                class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center text-green-400 font-bold shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-slate-200 font-bold text-sm group-hover:text-white transition-colors">
+                                    Completaste "Tuplas Avanzadas"</h4>
+                                <p class="text-slate-500 text-xs">Módulo 3: Estructuras de Datos</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-green-400 font-black text-sm">+150 XP</div>
+                                <div class="text-slate-600 text-[10px]">Hace 2h</div>
+                            </div>
+                        </div>
+
+                        <!-- Activity Item -->
+                        <div
+                            class="group flex items-center gap-4 bg-slate-900/40 border border-white/5 p-4 rounded-xl hover:bg-slate-800/60 transition-colors">
+                            <div
+                                class="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center text-yellow-400 font-bold shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="12" cy="8" r="7" />
+                                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-slate-200 font-bold text-sm group-hover:text-white transition-colors">
+                                    Logro Desbloqueado: Pythonista</h4>
+                                <p class="text-slate-500 text-xs">Rareza: Épico</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-yellow-400 font-black text-sm">+500 XP</div>
+                                <div class="text-slate-600 text-[10px]">Hace 5h</div>
+                            </div>
+                        </div>
+
+                        <!-- Activity Item -->
+                        <div
+                            class="group flex items-center gap-4 bg-slate-900/40 border border-white/5 p-4 rounded-xl hover:bg-slate-800/60 transition-colors">
+                            <div
+                                class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 font-bold shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M12 20v-6M6 20V10M18 20V4" />
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-slate-200 font-bold text-sm group-hover:text-white transition-colors">
+                                    Ascenso en Ranking Global</h4>
+                                <p class="text-slate-500 text-xs">Alcanzaste el Top 250</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-blue-400 font-black text-sm">#247</div>
+                                <div class="text-slate-600 text-[10px]">Hace 1d</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. Pinned Achievements (Mini Grid) -->
+                <section>
+                    <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                        <span class="w-1 h-6 bg-yellow-500 rounded-full"></span>
+                        Insignias Destacadas
+                    </h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div
+                            class="bg-gradient-to-br from-purple-500/20 to-slate-900 border border-purple-500/30 p-4 rounded-xl text-center transform hover:scale-105 transition-transform cursor-pointer">
+                            <div class="text-2xl mb-2">🐍</div>
+                            <div class="text-slate-200 font-bold text-xs uppercase">Pythonista</div>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-orange-500/20 to-slate-900 border border-orange-500/30 p-4 rounded-xl text-center transform hover:scale-105 transition-transform cursor-pointer">
+                            <div class="text-2xl mb-2">🔥</div>
+                            <div class="text-slate-200 font-bold text-xs uppercase">Racha 10</div>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-blue-500/20 to-slate-900 border border-blue-500/30 p-4 rounded-xl text-center transform hover:scale-105 transition-transform cursor-pointer">
+                            <div class="text-2xl mb-2">⚡</div>
+                            <div class="text-slate-200 font-bold text-xs uppercase">Veloz</div>
+                        </div>
+                        <div
+                            class="bg-slate-900/40 border border-white/5 border-dashed p-4 rounded-xl text-center flex items-center justify-center text-slate-600 hover:text-slate-400 hover:border-white/20 transition-all cursor-pointer">
+                            <span class="text-xs font-bold">+ Añadir</span>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+        </div>
+    </div>
+</div>
