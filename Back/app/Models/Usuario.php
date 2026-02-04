@@ -39,8 +39,7 @@ class Usuario extends Authenticatable
         'ultima_conexion',
         'preferencias',
         'terminos_aceptados',
-        
-        
+        'es_admin',
     ];
 
     /**

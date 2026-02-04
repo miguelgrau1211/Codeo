@@ -23,7 +23,7 @@ class UserController extends Controller
     {
         // Obtiene todos los registros de la tabla 'usuarios'
         $usuarios = Usuario::all();
-        
+
         // Devuelve los usuarios en formato JSON con un código de estado 200 (OK)
         return response()->json($usuarios, 200);
     }
@@ -166,7 +166,7 @@ class UserController extends Controller
 
         $usuario = Usuario::where('email', $request->email)->first();
 
-        if (! $usuario || ! Hash::check($request->password, $usuario->password)) {
+        if (!$usuario || !Hash::check($request->password, $usuario->password)) {
             throw \Illuminate\Validation\ValidationException::withMessages([
                 'email' => ['Las credenciales proporcionadas son incorrectas.'],
             ]);
@@ -181,7 +181,7 @@ class UserController extends Controller
             'token_type' => 'Bearer',
             'nickname' => $usuario->nickname,
             'avatar_url' => $usuario->avatar_url
-            
+
         ], 200);
     }
 
@@ -190,8 +190,8 @@ class UserController extends Controller
     {
         $usuario = Auth::user();
 
-        if (! $usuario) {
-             return response()->json(['es_admin' => false], 401);
+        if (!$usuario) {
+            return response()->json(['es_admin' => false], 401);
         }
 
         return response()->json([
@@ -220,7 +220,7 @@ class UserController extends Controller
         // sacar el nivel del usuario lo dejaré así
         $nivelActual = $usuario->nivel_global;
         $expTotal = $usuario->exp_total;
-        
+
         // Calcular progreso hacia el siguiente nivel
         $expEnNivelActual = $expTotal % $xpPorNivel;
         $expRestanteParaSubir = $xpPorNivel - $expEnNivelActual;
@@ -312,8 +312,8 @@ class UserController extends Controller
         //usuarios ordenados por nivel (desc) y luego por experiencia (desc)
 
         $ranking = Usuario::select('id', 'nickname', 'avatar_url', 'nivel_global', 'exp_total')->orderByDesc('nivel_global')->orderByDesc('exp_total')
-        // Paginar para no saturar el Frontend si hay muchos  usuarios    
-        ->paginate(10); // Devuelve de 10 en 10
+            // Paginar para no saturar el Frontend si hay muchos  usuarios    
+            ->paginate(10); // Devuelve de 10 en 10
 
         // Transformamos los datos para añadir la posición numérica
         $items = $ranking->getCollection()->map(function ($usuario, $key) use ($ranking) {
@@ -353,10 +353,11 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function validateUser($response){
-        
+    public function validateUser($response)
+    {
+
         $user = Auth::user();
-        
+
         return response()->json([
             'user' => $user->id,
         ], 200);
@@ -365,5 +366,57 @@ class UserController extends Controller
     public function getPerfilUsuario()
     {
         return response()->json(Auth::user());
+    }
+
+    /**
+     * Permite al usuario autenticado actualizar su propio perfil.
+     */
+    public function updatePropio(Request $request)
+    {
+        return $this->update($request, Auth::id());
+    }
+
+    /**
+     * Alterna el estado de un usuario moviéndolo a la tabla de desactivados
+     * o restaurándolo desde ella.
+     */
+    public function toggleStatus(Request $request, $id)
+    {
+        // 1. Intentar encontrar al usuario en la tabla principal para desactivarlo
+        $usuario = Usuario::find($id);
+
+        if ($usuario) {
+            if ($usuario->id === Auth::id()) {
+                return response()->json(['message' => 'No puedes desactivarte a ti mismo'], 403);
+            }
+
+            return DB::transaction(function () use ($usuario, $request) {
+                // Mover a la tabla de desactivados
+                UsuarioDesactivado::create([
+                    'usuario_id_original' => $usuario->id,
+                    'nickname' => $usuario->nickname,
+                    'email' => $usuario->email,
+                    'nivel_alcanzado' => $usuario->nivel_global,
+                    'motivo' => $request->input('motivo', 'Desactivado por el administrador'),
+                    'fecha_desactivacion' => now(),
+                ]);
+
+                // Eliminar de la tabla principal
+                $usuario->delete();
+
+                return response()->json(['message' => 'Usuario desactivado y archivado correctamente', 'estado' => 'desactivado'], 200);
+            });
+        }
+
+        // 2. Si no está en 'usuarios', intentar encontrarlo en 'usuarios_desactivados' para reactivarlo
+        $archivado = UsuarioDesactivado::where('usuario_id_original', $id)->first();
+
+        if ($archivado) {
+            $desactivadoController = new UsuarioDesactivadoController();
+            // Reutilizamos la lógica de reactivación que ya tienes
+            return $desactivadoController->reactivar($request, $id);
+        }
+
+        return response()->json(['message' => 'Usuario no encontrado en ninguna tabla'], 404);
     }
 }

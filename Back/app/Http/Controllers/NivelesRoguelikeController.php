@@ -14,6 +14,7 @@ class NivelesRoguelikeController extends Controller
         return response()->json($niveles, 200);
     }
 
+
     // Crea un nuevo desafío roguelike
     public function store(Request $request)
     {
@@ -31,9 +32,10 @@ class NivelesRoguelikeController extends Controller
 
         return response()->json([
             'message' => 'Desafío Roguelike creado con éxito',
-            'data'    => $nivel
+            'data' => $nivel
         ], 201);
     }
+
 
     // Obtener un nivel aleatorio según dificultad.
     public function obtenerAleatorio($dificultad)
