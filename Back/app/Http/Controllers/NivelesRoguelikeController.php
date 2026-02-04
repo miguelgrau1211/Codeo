@@ -14,14 +14,15 @@ class NivelesRoguelikeController extends Controller
         return response()->json($niveles, 200);
     }
 
+
     // Crea un nuevo desafío roguelike
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'dificultad'         => 'required|in:fácil,medio,difícil,extremo',
-            'titulo'             => 'required|string|max:255',
-            'descripcion'        => 'required|string',
-            'codigo_validador'   => 'required|string',
+            'dificultad' => 'required|in:fácil,medio,difícil,extremo',
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            'codigo_validador' => 'required|string',
             'recompensa_monedas' => 'required|integer|min:0',
         ]);
 
@@ -29,9 +30,10 @@ class NivelesRoguelikeController extends Controller
 
         return response()->json([
             'message' => 'Desafío Roguelike creado con éxito',
-            'data'    => $nivel
+            'data' => $nivel
         ], 201);
     }
+
 
     // Obtener un nivel aleatorio según dificultad.
     public function obtenerAleatorio($dificultad)

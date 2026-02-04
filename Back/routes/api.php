@@ -27,30 +27,30 @@ Route::get('/ranking', [UserController::class, 'getRanking']);
 
 // Datos del juego (pueden ser públicos para mostrar en landing page)
 Route::get('/niveles-roguelike/aleatorio/{dificultad}', [NivelesRoguelikeController::class, 'getNivelModoInfinito']);
-Route::apiResource('niveles-roguelike', NivelesRoguelikeController::class)->only(['index', 'show']); 
+Route::apiResource('niveles-roguelike', NivelesRoguelikeController::class)->only(['index', 'show']);
 Route::get('/mejoras/random', [MejorasController::class, 'getTresMejorasRandom']);
 Route::apiResource('mejoras', MejorasController::class)->only(['index', 'show']);
 
 // --- Rutas Protegidas (Requieren Token) ---
 Route::middleware('auth:sanctum')->group(function () {
-    
+
     // Usuario Autenticado
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    
+
     // Check Admin Role
     Route::get('/es-admin', [UserController::class, 'esAdmin']);
 
     //validar usuario
     Route::get('/validate-user', [UserController::class, 'validateUser']);
 
-    // Gestión de Usuarios (excepto crear que es registro)
-    Route::apiResource('users', UserController::class)->except(['store']);
+    // Perfil y Actualización Propia
+    Route::get('/users/perfil', [UserController::class, 'getPerfilUsuario']);
+    Route::put('/users/perfil', [UserController::class, 'updatePropio']); // Método a crear para seguridad
     Route::get('/users/experiencia', [UserController::class, 'getExperienciaTotalUsuario']);
     Route::get('/users/actividad', [UserController::class, 'getActividadUsuarioReciente']);
     Route::get('/users/antiguedad', [UserController::class, 'getFechaDeCreacionCuenta']);
-    Route::get('/users/perfil', [UserController::class, 'getPerfilUsuario']);
 
     // Logros
     Route::apiResource('usuario-logros', UsuarioLogroController::class);
@@ -67,14 +67,15 @@ Route::middleware('auth:sanctum')->group(function () {
     // Roguelike
     Route::apiResource('runs-roguelike', RunsRoguelikeController::class);
     Route::get('/users/mejor-run', [RunsRoguelikeController::class, 'getNivelMejorRunUsuario']);
-    
-    // Administración de contenido (Proteger crear/borrar niveles y mejoras)
+
+    // Administración de contenido y usuarios (Solo Admin)
     Route::middleware('admin')->group(function () {
         Route::apiResource('niveles-roguelike', NivelesRoguelikeController::class)->except(['index', 'show']);
         Route::apiResource('mejoras', MejorasController::class)->except(['index', 'show']);
-        Route::get('/users/index', [UserController::class, 'index']);
 
-        // Aquí podrías mover también la gestión completa de usuarios si solo los admins pueden borrar/editar a otros
-        // Route::apiResource('users', UserController::class)->except(['store', 'index', 'show']); // Ejemplo
+        // Gestión de Usuarios Completa
+        Route::get('/admin/users', [UserController::class, 'index']);
+        Route::delete('/admin/users/{id}', [UserController::class, 'destroy']);
+        Route::post('/admin/users/{id}/toggle-status', [UserController::class, 'toggleStatus']);
     });
 });
