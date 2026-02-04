@@ -154,4 +154,10 @@
     font-weight: bold;
     color: #fbbf24; /* amber-400 */
   }
+
+  @keyframes loading {
+    0% { transform: translateX(-100%); }
+    50% { transform: translateX(0); }
+    100% { transform: translateX(100%); }
+  }
 }

@@ -10,7 +10,7 @@ import { ModoInfinito } from './modo-infinito/modo-infinito';
 import { Ranking } from './ranking/ranking';
 import { Configuracion } from './configuracion/configuracion';
 import { Perfil } from './perfil/perfil';
-
+import { PanelAdmin } from './panel-admin/panel-admin';
 
 export const routes: Routes = [
     { path: '', component: LandingPageComponent },
@@ -24,5 +24,6 @@ export const routes: Routes = [
     { path: 'ranking', component: Ranking },
     { path: 'ajustes', component: Configuracion },
     { path: 'perfil', component: Perfil },
+    { path: 'panel-admin', component: PanelAdmin },
     
 ];

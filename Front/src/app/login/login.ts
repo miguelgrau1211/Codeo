@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, ChangeDetectorRef, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -23,13 +23,16 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
   private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
 
+  isLoading = signal(false); // Signal for loading state
+
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]]
   });
 
   ngOnInit() {
-    if (this.authService.validateUser(sessionStorage.getItem('token')!)) {
+    const token = sessionStorage.getItem('token');
+    if (token && this.authService.validateUser(token)) {
       this.router.navigate(['/dashboard']);
     }
   }
@@ -170,24 +173,26 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
   onSubmit() {
     if (this.loginForm.valid) {
       console.log('Login data:', this.loginForm.value);
-      // Aquí iría la lógica de autenticación
-      
+      this.isLoading.set(true); // Start loading animation
+
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
           console.log('Login successful:', response);
-          // Aquí iría la lógica de redirección
           sessionStorage.setItem('token', response.access_token);
           sessionStorage.setItem('nickname', response.nickname);
-          this.router.navigate(['/dashboard']);
+          
+          // Add a small delay for the animation to feel impactful (optional)
+          setTimeout(() => {
+             this.router.navigate(['/dashboard']);
+             // We don't set isLoading(false) here because navigation will destroy component
+          }, 1500); 
         },
         error: (error) => {
           console.error('Login failed:', error);
-          // Aquí iría la lógica de manejo de errores
+          this.isLoading.set(false); // Stop loading on error
+          // Here you should probably show an error toast/message
         }
       });
-
-
-
     }
   }
 }
