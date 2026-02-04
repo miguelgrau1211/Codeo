@@ -15,7 +15,7 @@ class NivelesHistoria extends Model
         'descripcion',
         'contenido_teorico',
         'codigo_inicial',
-        'solucion_esperada',
+        'test_cases',
         'recompensa_exp',
         'recompensa_monedas'
     ];
@@ -23,6 +23,7 @@ class NivelesHistoria extends Model
     protected $casts = [
         'recompensa_exp' => 'integer',
         'recompensa_monedas' => 'integer',
+        'test_cases' => 'array',
     ];
 
     

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\NivelesHistoria;
 use App\Models\NivelRoguelike;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class EjecutarCodigo extends Controller
 {
@@ -19,7 +20,7 @@ class EjecutarCodigo extends Controller
         $codigoUsuario = $request->codigo;
         $tipo = $request->tipo;
         $nivelId = $request->nivel_id;
-        $resultadoEsperado = null;
+        
 
         // 1. Obtener el resultado esperado de la Base de Datos según el tipo de nivel
         if ($tipo === 'historia') {
@@ -30,7 +31,7 @@ class EjecutarCodigo extends Controller
             // En historia, comparamos con 'solucion_esperada' (asumiendo que es el valor de retorno).
             // OJO: 'solucion_esperada' en la BD podría ser el código que da la solución o el valor exacto.
             // Asumiremos que es el valor exacto que debe devolver el código.
-            $resultadoEsperado = $nivel->solucion_esperada;
+            $tests_historia = $nivel->test_cases;
 
         } else { // Roguelike
             $nivel = NivelRoguelike::find($nivelId);
@@ -38,47 +39,87 @@ class EjecutarCodigo extends Controller
                 return response()->json(['message' => 'Nivel roguelike no encontrado'], 404);
             }
             // En Roguelike, tenemos 'codigo_validador' que podría ser el resultado esperado
-            $resultadoEsperado = $nivel->codigo_validador;
+            $tests_roguelike = $nivel->test_cases;
         }
 
-        // 2. Ejecutar el código del usuario (¡PELIGRO!: eval() es inseguro en producción)
-        // Se recomienda usar sandboxes como Judge0 o Dockercontainers aislados.
-        try {
-            // Un eval muy básico. Capturamos la salida.
-            // Si el código debe hacer `return ...;` eval lo devuelve.
-            // Si hace `echo`, necesitamos output buffering.
-            
-            ob_start();
-            $resultadoUsuario = eval($codigoUsuario);
-            $output = ob_get_clean();
+        // 2. Ejecutar el código del usuario usando AWS Lambda
+        $awsLambdaUrl = env('AWS_LAMBDA_URL'); 
+        $todasPasadas = true;
+        $detallesTests = [];
 
-            // Si eval retorna null pero hubo output (echo), usamos el output.
-            if ($resultadoUsuario === null && !empty($output)) {
-                $resultadoUsuario = trim($output);
+        // Determinar qué tests usar
+        $tests = isset($tests_historia) ? $tests_historia : $tests_roguelike;
+
+        if (!$tests || !is_array($tests)) {
+             return response()->json([
+                'correcto' => false,
+                'message' => 'Error: No hay casos de prueba configurados para este nivel.',
+            ], 200);
+        }
+
+        try {
+            foreach ($tests as $index => $test) {
+                // Preparar petición a Lambda
+                $response = Http::post($awsLambdaUrl, [
+                    'code' => $codigoUsuario,
+                    'input' => $test['input'] ?? '' // Enviar input si existe, o vacío
+                ]);
+
+                if ($response->failed()) {
+                     throw new \Exception("Error al conectar con el servidor de ejecución: " . $response->status());
+                }
+
+                $lambdaResult = $response->json();
+                
+                // Procesar respuesta de Lambda
+                if (isset($lambdaResult['error']) && !empty($lambdaResult['error'])) {
+                    // Si hubo error de ejecución (SyntaxError, etc)
+                    return response()->json([
+                        'correcto' => false,
+                        'message' => 'Error de ejecución en tu código:',
+                        'error' => $lambdaResult['error']
+                    ], 200);
+                }
+
+                $outputObtenido = isset($lambdaResult['output']) ? trim($lambdaResult['output']) : '';
+                $outputEsperado = trim($test['output']);
+
+                // Comparar (case-insensitive para strings simples, o estricto)
+                // Aquí hacemos comparación estricta de string trimado
+                $pasoTest = ($outputObtenido === $outputEsperado);
+
+                $detallesTests[] = [
+                    'input' => $test['input'] ?? 'Sin input',
+                    'esperado' => $outputEsperado,
+                    'obtenido' => $outputObtenido,
+                    'correcto' => $pasoTest
+                ];
+
+                if (!$pasoTest) {
+                    $todasPasadas = false;
+                    // Opcional: break; si quieres parar al primer fallo
+                }
             }
             
         } catch (\Throwable $e) {
             return response()->json([
-                'message' => 'Error de ejecución',
+                'message' => 'Error interno del sistema de evaluación',
                 'error' => $e->getMessage()
-            ], 200); // 200 para que el front lo muestre amistosamente
+            ], 200); 
         }
 
-        // 3. Comparar resultados
-        // Nota: Esto es una comparación laxa. Depende de cómo guardes 'solucion_esperada'.
-        // Si 'solucion_esperada' es "15" y el usuario devuelve entero 15, esto funciona.
-        if ($resultadoUsuario == $resultadoEsperado) {
+        // 3. Devolver resultado final
+        if ($todasPasadas) {
             return response()->json([
                 'correcto' => true,
-                'message' => '¡Código Correcto!',
-                'resultado_obtenido' => $resultadoUsuario
+                'message' => '¡Genial! Todos los tests pasaron.',
+                'detalles' => $detallesTests
             ], 200);
         } else {
             return response()->json([
                 'correcto' => false,
-                'message' => 'Código Incorrecto',
-                'esperado' => $resultadoEsperado,
-                'obtenido' => $resultadoUsuario
+                'message' => 'Algunos tests fallaron. Revisa tu lógica.',
+                'detalles' => $detallesTests
             ], 200);
         }
     }

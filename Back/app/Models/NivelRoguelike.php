@@ -15,11 +15,12 @@ class NivelRoguelike extends Model
         'dificultad',
         'titulo',
         'descripcion',
-        'codigo_validador',
+        'test_cases',
         'recompensa_monedas'
     ];
 
     protected $casts = [
         'recompensa_monedas' => 'integer',
+        'test_cases' => 'array',
     ];
 }

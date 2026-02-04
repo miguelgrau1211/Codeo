@@ -24,7 +24,9 @@ class NivelesHistoriaController
             'descripcion' => 'required|string',
             'contenido_teorico' => 'required|string',
             'codigo_inicial' => 'required|string',
-            'solucion_esperada' => 'required|string',
+            'test_cases' => 'required|array',
+            'test_cases.*.input' => 'required|string',
+            'test_cases.*.output' => 'required|string',
             'recompensa_exp' => 'required|integer',
             'recompensa_monedas' => 'required|integer',
         ]);
@@ -46,7 +48,9 @@ class NivelesHistoriaController
             'descripcion' => 'required|string',
             'contenido_teorico' => 'required|string',
             'codigo_inicial' => 'required|string',
-            'solucion_esperada' => 'required|string',
+            'test_cases' => 'required|array',
+            'test_cases.*.input' => 'required|string',
+            'test_cases.*.output' => 'required|string',
             'recompensa_exp' => 'required|integer',
             'recompensa_monedas' => 'required|integer',
         ]);

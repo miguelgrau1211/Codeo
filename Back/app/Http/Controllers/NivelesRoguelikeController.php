@@ -21,7 +21,9 @@ class NivelesRoguelikeController extends Controller
             'dificultad'         => 'required|in:fácil,medio,difícil,extremo',
             'titulo'             => 'required|string|max:255',
             'descripcion'        => 'required|string',
-            'codigo_validador'   => 'required|string',
+            'test_cases'   => 'required|array',
+            'test_cases.*.input' => 'required|string',
+            'test_cases.*.output' => 'required|string',
             'recompensa_monedas' => 'required|integer|min:0',
         ]);
 

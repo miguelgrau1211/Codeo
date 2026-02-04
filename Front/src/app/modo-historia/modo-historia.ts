@@ -132,4 +132,8 @@ export class ModoHistoria implements OnInit {
 
     this.highlightedCode.set(this.sanitizer.bypassSecurityTrustHtml(escaped));
   }
+
+  ejecutarCodigo() {
+    this
+  }
 }
