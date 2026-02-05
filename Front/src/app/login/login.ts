@@ -38,7 +38,7 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
       this.router.navigate(['/dashboard']);
     }
   }
-  
+
 
   @ViewChild('bgCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('sourceVideo') video1Ref!: ElementRef<HTMLVideoElement>;
@@ -51,7 +51,7 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
   private opacity1 = 1;
   private opacity2 = 0;
 
-  constructor() {}
+  constructor() { }
 
   ngAfterViewInit() {
     const canvas = this.canvasRef.nativeElement;
@@ -172,7 +172,16 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  errorMessage = signal<string>('');
+
   onSubmit() {
+    this.errorMessage.set('');
+
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
+
     if (this.loginForm.valid) {
       console.log('Login data:', this.loginForm.value);
       this.isLoading.set(true); // Start loading animation
@@ -182,40 +191,55 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
           console.log('Login successful:', response);
           sessionStorage.setItem('token', response.access_token);
           sessionStorage.setItem('nickname', response.nickname);
-          
+
           // Pre-fetch data for next screens while animation plays
           const token = response.access_token;
           const requests = [
-              this.authService.esAdmin(token),
-              this.progresoService.getProgresoHistoria()
+            this.authService.esAdmin(token),
+            this.progresoService.getProgresoHistoria()
           ];
 
           // Minimum animation time
           const minAnimationTime = new Promise(resolve => setTimeout(resolve, 1500));
-          
+
           // Wait for both Data AND Animation
           import('rxjs').then(({ forkJoin }) => {
-               forkJoin(requests).subscribe({
-                   next: () => {
-                       // Only navigate when data IS READY
-                       minAnimationTime.then(() => {
-                            this.router.navigate(['/dashboard']);
-                       });
-                   },
-                   error: (err) => {
-                       console.warn('Error displaying pre-fetched data but continuing:', err);
-                       // Navigate anyway even if some pre-fetch failed
-                       minAnimationTime.then(() => {
-                           this.router.navigate(['/dashboard']);
-                       });
-                   }
-               });
+            forkJoin(requests).subscribe({
+              next: () => {
+                // Only navigate when data IS READY
+                minAnimationTime.then(() => {
+                  this.router.navigate(['/dashboard']);
+                });
+              },
+              error: (err) => {
+                console.warn('Error displaying pre-fetched data but continuing:', err);
+                // Navigate anyway even if some pre-fetch failed
+                minAnimationTime.then(() => {
+                  this.router.navigate(['/dashboard']);
+                });
+              }
+            });
           });
         },
         error: (error) => {
           console.error('Login failed:', error);
           this.isLoading.set(false); // Stop loading on error
-          // Here you should probably show an error toast/message
+
+          if (error.status === 422 && error.error?.errors) {
+            const serverErrors = error.error.errors;
+            Object.keys(serverErrors).forEach(key => {
+              const control = this.loginForm.get(key);
+              if (control) {
+                control.setErrors({ serverError: serverErrors[key][0] });
+                control.markAsTouched();
+              }
+            });
+          } else if (error.status === 401 || error.status === 403) {
+            // Credenciales incorrectas
+            this.errorMessage.set('Correo electrónico o contraseña incorrectos.');
+          } else {
+            this.errorMessage.set(error.error?.message || 'Error al iniciar sesión. Inténtalo de nuevo.');
+          }
         }
       });
     }

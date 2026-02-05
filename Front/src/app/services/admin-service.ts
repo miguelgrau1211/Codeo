@@ -63,4 +63,36 @@ export class AdminService {
             headers: this.getHeaders()
         });
     }
+
+    getStats(): Observable<DashboardStats> {
+        return this.http.get<DashboardStats>(`${this.apiUrl}/stats`, {
+            headers: this.getHeaders()
+        });
+    }
+
+    getLogs(page: number = 1, action: string = ''): Observable<PaginatedResponse<AdminLog>> {
+        let url = `${this.apiUrl}/logs?page=${page}`;
+        if (action) {
+            url += `&action=${action}`;
+        }
+        return this.http.get<PaginatedResponse<AdminLog>>(url, {
+            headers: this.getHeaders()
+        });
+    }
+}
+
+export interface DashboardStats {
+    total_users: number;
+    active_users_24h: number;
+    total_runs: number;
+    success_rate: number;
+}
+
+export interface AdminLog {
+    id: number;
+    user_id: number;
+    user?: { id: number, nickname: string, email: string };
+    action: string;
+    details: string | null;
+    created_at: string;
 }

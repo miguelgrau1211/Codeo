@@ -66,8 +66,16 @@
                                 </svg>
                             </div>
                             <input type="text" id="nombre" formControlName="nombre" placeholder="Tu Nombre"
-                                class="w-full bg-slate-950/50 border border-slate-700 text-slate-100 placeholder:text-slate-600 text-xl rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 transform focus:scale-[1.02] focus:bg-slate-900/80 focus:shadow-[0_0_20px_rgba(168,85,247,0.3)]">
+                                class="w-full bg-slate-950/50 border border-slate-700 text-slate-100 placeholder:text-slate-600 text-xl rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 transform focus:scale-[1.02] focus:bg-slate-900/80 focus:shadow-[0_0_20px_rgba(168,85,247,0.3)]
+                                {{ registroForm.get('nombre')?.invalid && registroForm.get('nombre')?.touched ? 'border-red-500 focus:border-red-500 focus:ring-red-500/50' : '' }}">
                         </div>
+                        @if(registroForm.get('nombre')?.invalid && registroForm.get('nombre')?.touched) {
+                        <div class="text-red-400 text-sm ml-1 mt-1 animate-fade-in">
+                            @if(registroForm.get('nombre')?.hasError('required')) { El nombre es obligatorio. }
+                            @if(registroForm.get('nombre')?.hasError('serverError')) { {{
+                            registroForm.get('nombre')?.getError('serverError') }} }
+                        </div>
+                        }
                     </div>
                     <div class="space-y-2">
                         <label for="apellidos" class="text-xl text-slate-200 ml-1">Apellidos</label>
@@ -84,8 +92,16 @@
                                 </svg>
                             </div>
                             <input type="text" id="apellidos" formControlName="apellidos" placeholder="Tus Apellidos"
-                                class="w-full bg-slate-950/50 border border-slate-700 text-slate-100 placeholder:text-slate-600 text-xl rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 transform focus:scale-[1.02] focus:bg-slate-900/80 focus:shadow-[0_0_20px_rgba(168,85,247,0.3)]">
+                                class="w-full bg-slate-950/50 border border-slate-700 text-slate-100 placeholder:text-slate-600 text-xl rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 transform focus:scale-[1.02] focus:bg-slate-900/80 focus:shadow-[0_0_20px_rgba(168,85,247,0.3)]
+                                {{ registroForm.get('apellidos')?.invalid && registroForm.get('apellidos')?.touched ? 'border-red-500 focus:border-red-500 focus:ring-red-500/50' : '' }}">
                         </div>
+                        @if(registroForm.get('apellidos')?.invalid && registroForm.get('apellidos')?.touched) {
+                        <div class="text-red-400 text-sm ml-1 mt-1 animate-fade-in">
+                            @if(registroForm.get('apellidos')?.hasError('required')) { Los apellidos son obligatorios. }
+                            @if(registroForm.get('apellidos')?.hasError('serverError')) { {{
+                            registroForm.get('apellidos')?.getError('serverError') }} }
+                        </div>
+                        }
                     </div>
                 </div>
 
@@ -102,8 +118,16 @@
                             </svg>
                         </div>
                         <input type="text" id="username" formControlName="username" placeholder="Ej. CyberNinja"
-                            class="w-full bg-slate-950/50 border border-slate-700 text-slate-100 placeholder:text-slate-600 text-xl rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 transform focus:scale-[1.02] focus:bg-slate-900/80 focus:shadow-[0_0_20px_rgba(168,85,247,0.3)]">
+                            class="w-full bg-slate-950/50 border border-slate-700 text-slate-100 placeholder:text-slate-600 text-xl rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 transform focus:scale-[1.02] focus:bg-slate-900/80 focus:shadow-[0_0_20px_rgba(168,85,247,0.3)]
+                            {{ registroForm.get('username')?.invalid && registroForm.get('username')?.touched ? 'border-red-500 focus:border-red-500 focus:ring-red-500/50' : '' }}">
                     </div>
+                    @if(registroForm.get('username')?.invalid && registroForm.get('username')?.touched) {
+                    <div class="text-red-400 text-sm ml-1 mt-1 animate-fade-in">
+                        @if(registroForm.get('username')?.hasError('required')) { El nombre de usuario es obligatorio. }
+                        @if(registroForm.get('username')?.hasError('serverError')) { {{
+                        registroForm.get('username')?.getError('serverError') }} }
+                    </div>
+                    }
                 </div>
 
 
@@ -120,8 +144,17 @@
                             </svg>
                         </div>
                         <input type="email" id="email" formControlName="email" placeholder="tu@email.com"
-                            class="w-full bg-slate-950/50 border border-slate-700 text-slate-100 placeholder:text-slate-600 text-xl rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 transform focus:scale-[1.02] focus:bg-slate-900/80 focus:shadow-[0_0_20px_rgba(168,85,247,0.3)]">
+                            class="w-full bg-slate-950/50 border border-slate-700 text-slate-100 placeholder:text-slate-600 text-xl rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 transform focus:scale-[1.02] focus:bg-slate-900/80 focus:shadow-[0_0_20px_rgba(168,85,247,0.3)]
+                            {{ registroForm.get('email')?.invalid && registroForm.get('email')?.touched ? 'border-red-500 focus:border-red-500 focus:ring-red-500/50' : '' }}">
                     </div>
+                    @if(registroForm.get('email')?.invalid && registroForm.get('email')?.touched) {
+                    <div class="text-red-400 text-sm ml-1 mt-1 animate-fade-in">
+                        @if(registroForm.get('email')?.hasError('required')) { El email es obligatorio. }
+                        @if(registroForm.get('email')?.hasError('email')) { Introduce un email válido. }
+                        @if(registroForm.get('email')?.hasError('serverError')) { {{
+                        registroForm.get('email')?.getError('serverError') }} }
+                    </div>
+                    }
                 </div>
 
 
@@ -140,8 +173,15 @@
                             </div>
                             <input type="password" id="password" formControlName="password" placeholder="••••••••"
                                 minlength="8"
-                                class="w-full bg-slate-950/50 border border-slate-700 text-slate-100 placeholder:text-slate-600 text-xl rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 transform focus:scale-[1.02] focus:bg-slate-900/80 focus:shadow-[0_0_20px_rgba(168,85,247,0.3)]">
+                                class="w-full bg-slate-950/50 border border-slate-700 text-slate-100 placeholder:text-slate-600 text-xl rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 transform focus:scale-[1.02] focus:bg-slate-900/80 focus:shadow-[0_0_20px_rgba(168,85,247,0.3)]
+                                {{ registroForm.get('password')?.invalid && registroForm.get('password')?.touched ? 'border-red-500 focus:border-red-500 focus:ring-red-500/50' : '' }}">
                         </div>
+                        @if(registroForm.get('password')?.invalid && registroForm.get('password')?.touched) {
+                        <div class="text-red-400 text-sm ml-1 mt-1 animate-fade-in">
+                            @if(registroForm.get('password')?.hasError('required')) { La contraseña es obligatoria. }
+                            @if(registroForm.get('password')?.hasError('minlength')) { Mínimo 8 caracteres. }
+                        </div>
+                        }
                     </div>
 
                     <div class="space-y-2">
@@ -158,10 +198,30 @@
                             </div>
                             <input type="password" id="password_confirm" formControlName="password_confirm"
                                 placeholder="••••••••" required
-                                class="w-full bg-slate-950/50 border border-slate-700 text-slate-100 placeholder:text-slate-600 text-xl rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 transform focus:scale-[1.02] focus:bg-slate-900/80 focus:shadow-[0_0_20px_rgba(168,85,247,0.3)]">
+                                class="w-full bg-slate-950/50 border border-slate-700 text-slate-100 placeholder:text-slate-600 text-xl rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 transform focus:scale-[1.02] focus:bg-slate-900/80 focus:shadow-[0_0_20px_rgba(168,85,247,0.3)]
+                                {{ (registroForm.errors?.['passwordMismatch'] && registroForm.get('password_confirm')?.touched) || (registroForm.get('password_confirm')?.invalid && registroForm.get('password_confirm')?.touched) ? 'border-red-500 focus:border-red-500 focus:ring-red-500/50' : '' }}">
                         </div>
+                        @if(registroForm.get('password_confirm')?.invalid &&
+                        registroForm.get('password_confirm')?.touched) {
+                        <div class="text-red-400 text-sm ml-1 mt-1 animate-fade-in">
+                            @if(registroForm.get('password_confirm')?.hasError('required')) { Confirma tu contraseña. }
+                        </div>
+                        }
+                        @if(registroForm.errors?.['passwordMismatch'] && registroForm.get('password_confirm')?.touched)
+                        {
+                        <div class="text-red-400 text-sm ml-1 mt-1 animate-fade-in">
+                            Las contraseñas no coinciden.
+                        </div>
+                        }
                     </div>
                 </div>
+
+                @if (errorMessage()) {
+                <div
+                    class="bg-red-500/10 border border-red-500/50 rounded-xl p-4 text-center mt-4 mb-4 animate-fade-in">
+                    <p class="text-red-200 text-sm font-medium">{{ errorMessage() }}</p>
+                </div>
+                }
 
                 <div class="pt-6">
                     <button type="submit"

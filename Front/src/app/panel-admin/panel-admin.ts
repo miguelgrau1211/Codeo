@@ -2,21 +2,36 @@ import { Component, signal, inject, OnInit, computed, OnDestroy } from '@angular
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { AdminService, User } from '../services/admin-service';
+import { AdminService, User, DashboardStats, AdminLog } from '../services/admin-service';
+import { AdminStatCard } from './components/admin-stat-card/admin-stat-card';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-panel-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, AdminStatCard],
   templateUrl: './panel-admin.html',
   styleUrl: './panel-admin.css'
 })
 export class PanelAdmin implements OnInit, OnDestroy {
   private adminService = inject(AdminService);
 
-  activeTab = signal<'users' | 'story' | 'roguelike'>('users');
+  activeTab = signal<'users' | 'story' | 'roguelike' | 'logs'>('users');
   isLoading = signal(false);
+
+  // Stats
+  stats = signal<DashboardStats>({
+    total_users: 0,
+    active_users_24h: 0,
+    total_runs: 0,
+    success_rate: 0
+  });
+
+  // Logs
+  logs = signal<AdminLog[]>([]);
+  logsCurrentPage = signal(1);
+  logsTotalPages = signal(1);
+  logsActionFilter = signal('');
 
   // Paginación y filtros de usuarios
   users = signal<User[]>([]);       // La lista de usuarios que se ve en pantalla
@@ -31,6 +46,7 @@ export class PanelAdmin implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadUsers();
+    this.loadStats();
 
     // Configurar debounce para la búsqueda
     this.searchSubject.pipe(
@@ -107,8 +123,41 @@ export class PanelAdmin implements OnInit, OnDestroy {
   ]);
 
   // View Helpers
-  setTab(tab: 'users' | 'story' | 'roguelike') {
+  setTab(tab: 'users' | 'story' | 'roguelike' | 'logs') {
     this.activeTab.set(tab);
+    if (tab === 'logs') {
+      this.loadLogs();
+    }
+  }
+
+  loadStats() {
+    this.adminService.getStats().subscribe({
+      next: (res) => this.stats.set(res),
+      error: (err) => console.error('Error loading stats', err)
+    });
+  }
+
+  loadLogs(page: number = 1) {
+    this.adminService.getLogs(page, this.logsActionFilter()).subscribe({
+      next: (res) => {
+        this.logs.set(res.data);
+        this.logsCurrentPage.set(res.current_page);
+        this.logsTotalPages.set(res.last_page);
+      },
+      error: (err) => console.error('Error loading logs', err)
+    });
+  }
+
+  nextLogPage() {
+    if (this.logsCurrentPage() < this.logsTotalPages()) {
+      this.loadLogs(this.logsCurrentPage() + 1);
+    }
+  }
+
+  prevLogPage() {
+    if (this.logsCurrentPage() > 1) {
+      this.loadLogs(this.logsCurrentPage() - 1);
+    }
   }
 
   // ACTIONS
