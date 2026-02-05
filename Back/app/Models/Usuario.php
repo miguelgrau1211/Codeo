@@ -67,5 +67,6 @@ class Usuario extends Authenticatable
         'nivel_global' => 'integer',
         'exp_total' => 'integer',
         'racha_dias' => 'integer',
+        'es_admin' => 'boolean',
     ];
 }

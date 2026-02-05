@@ -1,7 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject, OnInit, computed, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { AdminService, User } from '../services/admin-service';
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-panel-admin',
@@ -10,16 +12,85 @@ import { RouterLink } from '@angular/router';
   templateUrl: './panel-admin.html',
   styleUrl: './panel-admin.css'
 })
-export class PanelAdmin {
-  activeTab = signal<'users' | 'story' | 'roguelike'>('users');
+export class PanelAdmin implements OnInit, OnDestroy {
+  private adminService = inject(AdminService);
 
-  // MOCK DATA: Users
-  users = signal([
-    { id: 1, name: 'DevMaster_99', email: 'dev@codeo.app', role: 'admin', active: true },
-    { id: 2, name: 'CyberWitch', email: 'witch@codeo.app', role: 'user', active: true },
-    { id: 3, name: 'NullPointer', email: 'null@error.com', role: 'user', active: false },
-    { id: 4, name: 'Pythonista', email: 'py@snake.org', role: 'user', active: true },
-  ]);
+  activeTab = signal<'users' | 'story' | 'roguelike'>('users');
+  isLoading = signal(false);
+
+  // Paginación y filtros de usuarios
+  users = signal<User[]>([]);       // La lista de usuarios que se ve en pantalla
+  currentPage = signal(1);          // En qué página estás ahora (ej. Página 1)
+  totalPages = signal(1);           // Cuántas páginas hay en total (ej. 10)
+  totalUsers = signal(0);           // Cuántos usuarios hay en total en la base de datos
+  searchTerm = signal('');
+  sortBy = signal<string>('id');
+  sortOrder = signal<'asc' | 'desc'>('desc');
+
+  private searchSubject = new Subject<string>();
+
+  ngOnInit() {
+    this.loadUsers();
+
+    // Configurar debounce para la búsqueda
+    this.searchSubject.pipe(
+      debounceTime(400),
+      distinctUntilChanged()
+    ).subscribe(term => {
+      this.searchTerm.set(term);
+      this.loadUsers(1);
+    });
+  }
+
+  ngOnDestroy() {
+    this.searchSubject.complete();
+  }
+
+  loadUsers(page: number = 1) {
+    this.isLoading.set(true); // Muestra el spinner de carga
+    // Pide los datos al backend
+    this.adminService.getUsers(page, this.searchTerm(), this.sortBy(), this.sortOrder()).subscribe({
+      next: (response) => {
+        this.users.set(response.data);           // Guarda los usuarios recibidos
+        this.currentPage.set(response.current_page); // Actualiza la página actual real
+        this.totalPages.set(response.last_page);     // Actualiza el total de páginas
+        this.totalUsers.set(response.total);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error('Error loading users', err);
+        this.isLoading.set(false);
+      }
+    });
+  }
+
+  onSearchChange(event: any) {
+    this.searchSubject.next(event.target.value);
+  }
+
+  toggleSort(field: string) {
+    if (this.sortBy() === field) {
+      // Si ya ordenamos por este campo, cambiamos el orden
+      this.sortOrder.update(current => current === 'asc' ? 'desc' : 'asc');
+    } else {
+      // Si es un campo nuevo, ponemos desc por defecto
+      this.sortBy.set(field);
+      this.sortOrder.set('desc');
+    }
+    this.loadUsers(1);
+  }
+
+  nextPage() {
+    if (this.currentPage() < this.totalPages()) {
+      this.loadUsers(this.currentPage() + 1);
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage() > 1) {
+      this.loadUsers(this.currentPage() - 1);
+    }
+  }
 
   // MOCK DATA: Story Levels
   storyLevels = signal([
@@ -40,26 +111,27 @@ export class PanelAdmin {
     this.activeTab.set(tab);
   }
 
-  // MOCK ACTIONS
-  deleteUser(id: number) {
-    if(confirm('¿Estás seguro de eliminar este usuario?')) {
-        this.users.update(list => list.filter(u => u.id !== id));
-    }
-  }
+  // ACTIONS
 
   toggleUserStatus(id: number) {
-    this.users.update(list => list.map(u => u.id === id ? {...u, active: !u.active} : u));
+    this.adminService.toggleUserStatus(id).subscribe({
+      next: (res) => {
+        alert(res.message); // Notificar al usuario
+        this.loadUsers(this.currentPage());
+      },
+      error: (err) => alert('Error al cambiar estado del usuario')
+    });
   }
 
   deleteStoryLevel(id: number) {
-    if(confirm('¿Borrar nivel?')) {
-        this.storyLevels.update(list => list.filter(l => l.id !== id));
+    if (confirm('¿Borrar nivel?')) {
+      this.storyLevels.update(list => list.filter(l => l.id !== id));
     }
   }
 
   deleteRoguelikeLevel(id: number) {
-    if(confirm('¿Borrar desafío?')) {
-        this.roguelikeLevels.update(list => list.filter(l => l.id !== id));
+    if (confirm('¿Borrar desafío?')) {
+      this.roguelikeLevels.update(list => list.filter(l => l.id !== id));
     }
   }
 }

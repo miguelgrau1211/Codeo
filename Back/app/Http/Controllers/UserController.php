@@ -19,12 +19,49 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Obtiene todos los registros de la tabla 'usuarios'
-        $usuarios = Usuario::all();
+        $search = $request->query('search');
+        $sortBy = $request->query('sort_by', 'id');
+        $sortOrder = $request->query('sort_order', 'desc');
 
-        // Devuelve los usuarios en formato JSON con un código de estado 200 (OK)
+        // Validar campos de ordenación permitidos
+        $allowedSorts = ['id', 'nickname', 'email', 'nivel_global', 'active', 'es_admin'];
+        if (!in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'id';
+        }
+
+        // 1. Consulta Usuarios Activos
+        $activos = DB::table('usuarios')
+            ->select('id', 'nickname', 'email', 'nivel_global', DB::raw('1 as active'), 'es_admin');
+
+        if ($search) {
+            $activos->where(function ($q) use ($search) {
+                $q->where('nickname', 'LIKE', "%{$search}%")
+                    ->orWhere('email', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // 2. Consulta Usuarios Desactivados
+        $desactivados = DB::table('usuarios_desactivados')
+            ->select('usuario_id_original as id', 'nickname', 'email', 'nivel_alcanzado as nivel_global', DB::raw('0 as active'), DB::raw('0 as es_admin'));
+
+        if ($search) {
+            $desactivados->where(function ($q) use ($search) {
+                $q->where('nickname', 'LIKE', "%{$search}%")
+                    ->orWhere('email', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // 3. Unión, Ordenación Global y Paginación
+        $query = $activos->union($desactivados);
+
+        $usuarios = DB::table(DB::raw("({$query->toSql()}) as combined_users"))
+            ->mergeBindings($query)
+            ->orderBy($sortBy, $sortOrder)
+            ->paginate(8)
+            ->withQueryString();
+
         return response()->json($usuarios, 200);
     }
 
