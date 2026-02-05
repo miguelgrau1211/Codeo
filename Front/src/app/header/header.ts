@@ -16,7 +16,9 @@ export class Header {
   // States
   isDarkMode = signal(true);
   isLoggedIn = signal(false);
-  isAdmin = signal(false);
+  
+  // Computed signal directly from service
+  isAdmin = this.authService.isAdminSignal;
 
   router = inject(Router);
 
@@ -39,24 +41,16 @@ export class Header {
     
     if (token) {
         this.isLoggedIn.set(true);
-        this.verifyAdminStatus(token);
+        // We don't verify here because Login already did it, 
+        // OR if refreshing page, we should trigger re-fetch if signal is false?
+        // For robustness: if signal is false but we have token, fetch it.
+        if (!this.isAdmin()) {
+             this.authService.esAdmin(token).subscribe();
+        }
     } else {
         this.isLoggedIn.set(false);
-        this.isAdmin.set(false); // Reset admin if not logged in
+        this.isAdmin.set(false); 
     }
-  }
-
-  verifyAdminStatus(token: string) {
-
-    this.authService.esAdmin(token).subscribe({
-      next: (response) => {
-        this.isAdmin.set(response.es_admin);
-      },
-      error: (error) => {
-        console.error('Error verifying admin status:', error);
-        this.isAdmin.set(false);
-      }
-    });
   }
 
   initTheme() {

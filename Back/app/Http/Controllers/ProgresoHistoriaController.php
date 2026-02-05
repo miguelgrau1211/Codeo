@@ -61,12 +61,21 @@ class ProgresoHistoriaController extends Controller
         $idUsuario = Auth::id();
 
         //obtenemos el progreso con los datos del nivel
-        $progreso = ProgresoHistoria::where('usuario_id', $idUsuario)->join('niveles_historia', 'usuario_progreso_historia.nivel_id', '=', 'niveles_historia.id')
+        // Usamos DB::raw para el COALESCE, asegurando que si el usuario no tiene codigo, se devuelve el inicial.
+        $progreso = ProgresoHistoria::where('usuario_id', $idUsuario)
+            ->join('niveles_historia', 'usuario_progreso_historia.nivel_id', '=', 'niveles_historia.id')
             ->select(
-                'usuario_progreso_historia.*', 
+                'usuario_progreso_historia.*',
+                // Sobrescribimos codigo_solucion_usuario con la lógica de fallback
+                \Illuminate\Support\Facades\DB::raw('COALESCE(usuario_progreso_historia.codigo_solucion_usuario, niveles_historia.codigo_inicial) as codigo_solucion_usuario'),
                 'niveles_historia.titulo', 
-                'niveles_historia.orden'
-            )->orderBy('niveles_historia.orden', 'asc')->get();
+                'niveles_historia.orden',
+                'niveles_historia.codigo_inicial', // Seleccionamos tambien el inicial por si acaso
+                'niveles_historia.descripcion',
+                'niveles_historia.contenido_teorico'
+            )
+            ->orderBy('niveles_historia.orden', 'asc')
+            ->get();
 
         //estadísticas para el Dashboard
         $totalNiveles = NivelesHistoria::count();
@@ -74,13 +83,17 @@ class ProgresoHistoriaController extends Controller
         
         //porcentaje
         $porcentajeCerrado = $totalNiveles > 0 ? round(($nivelesCompletados / $totalNiveles) * 100) : 0;
+        
+        // Titulo ultimo nivel
+        $ultimoTitulo = $progreso->isNotEmpty() ? $progreso->last()->titulo : 'Inicio';
 
         return response()->json([
             'usuario_id' => (int)$idUsuario,
             'stats' => [
                 'total_niveles' => $totalNiveles,
                 'completados' => $nivelesCompletados,
-                'porcentaje_progreso' => $porcentajeCerrado . '%'
+                'porcentaje_progreso' => $porcentajeCerrado . '%',
+                'titulo_ultimo_nivel' => $ultimoTitulo
             ],
             'progreso_detallado' => $progreso
         ], 200);

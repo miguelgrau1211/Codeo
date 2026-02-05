@@ -63,43 +63,53 @@ class EjecutarCodigo extends Controller
                 $response = Http::post($awsLambdaUrl, [
                     'code' => $codigoUsuario,
                     'input' => $test['input'] ?? '' // Enviar input si existe, o vacío
+             // Enviar output si existe, o vacío
                 ]);
 
                 if ($response->failed()) {
                      throw new \Exception("Error al conectar con el servidor de ejecución: " . $response->status());
                 }
 
-                $lambdaResult = $response->json();
-                
-                // Procesar respuesta de Lambda
-                if (isset($lambdaResult['error']) && !empty($lambdaResult['error'])) {
-                    // Si hubo error de ejecución (SyntaxError, etc)
-                    return response()->json([
-                        'correcto' => false,
-                        'message' => 'Error de ejecución en tu código:',
-                        'error' => $lambdaResult['error']
-                    ], 200);
-                }
+                    $lambdaRaw = $response->json();
+                    
+                    // Decodificar el body si la Lambda devuelve formato Proxy (API Gateway)
+                    if (isset($lambdaRaw['body']) && is_string($lambdaRaw['body'])) {
+                        $lambdaResult = json_decode($lambdaRaw['body'], true);
+                    } else {
+                        $lambdaResult = $lambdaRaw;
+                    }
 
-                $outputObtenido = isset($lambdaResult['output']) ? trim($lambdaResult['output']) : '';
-                $outputEsperado = trim($test['output']);
+                    // --- DEBUG TEMPORAL REMOVED ---
+                    
+                    // Procesar respuesta de Lambda
+                    if (isset($lambdaResult['error']) && !empty($lambdaResult['error'])) {
+                        // Si hubo error de ejecución (SyntaxError, etc)
+                        return response()->json([
+                            'correcto' => false,
+                            'message' => 'Error de ejecución en tu código:',
+                            'error' => $lambdaResult['error']
+                        ], 200);
+                    }
 
-                // Comparar (case-insensitive para strings simples, o estricto)
-                // Aquí hacemos comparación estricta de string trimado
-                $pasoTest = ($outputObtenido === $outputEsperado);
+                    $outputObtenido = isset($lambdaResult['output']) ? trim($lambdaResult['output']) : '';
+                    $outputEsperado = trim($test['output']);
 
-                $detallesTests[] = [
-                    'input' => $test['input'] ?? 'Sin input',
-                    'esperado' => $outputEsperado,
-                    'obtenido' => $outputObtenido,
-                    'correcto' => $pasoTest
-                ];
+                    // Comparar (case-insensitive para strings simples, o estricto)
+                    // Aquí hacemos comparación estricta de string trimado
+                    $pasoTest = ($outputObtenido === $outputEsperado);
 
-                if (!$pasoTest) {
-                    $todasPasadas = false;
-                    // Opcional: break; si quieres parar al primer fallo
-                }
-            }
+                    $detallesTests[] = [
+                        'input' => $test['input'] ?? 'Sin input',
+                        'esperado' => $outputEsperado,
+                        'obtenido' => $outputObtenido,
+                        'correcto' => $pasoTest
+                    ];
+
+                    if (!$pasoTest) {
+                        $todasPasadas = false;
+                        // Opcional: break; si quieres parar al primer fallo
+                    }
+                } // This brace closes the foreach loop
             
         } catch (\Throwable $e) {
             return response()->json([

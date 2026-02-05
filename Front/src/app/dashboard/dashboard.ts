@@ -1,6 +1,7 @@
 import { Component, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { ProgresoHistoriaService } from '../services/progreso-historia-service';
 
 interface UserStats {
   level: number;
@@ -18,6 +19,13 @@ interface Activity {
   time: string;
 }
 
+interface StatsHistoria {
+  actual_level: number;
+  total_levels: number;
+  lvls_progress: string;
+  titulo: string;
+}
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -27,6 +35,8 @@ interface Activity {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent {
+  constructor(private progresoHistoriaService: ProgresoHistoriaService) {}
+  
   // User State
   user = signal({
     name: 'DevMaster_99',
@@ -54,6 +64,35 @@ export class DashboardComponent {
     { id: 2, type: 'achievement', title: 'Logro Desbloqueado: "Bug Hunter"', xpEarned: 300, time: 'Hace 5h' },
     { id: 3, type: 'challenge', title: 'Derrotaste al Boss "NullPointer"', xpEarned: 500, time: 'Ayer' }
   ]);
+
+  // Refactored logic:
+  serviceProgreso = this.progresoHistoriaService.progresoSignal;
+
+  stats_historia = computed(() => {
+      const data = this.serviceProgreso();
+      if (data) {
+          return {
+              actual_level: data.stats.total_niveles,
+              total_levels: data.stats.completados,
+              lvls_progress: data.stats.porcentaje_progreso,
+              titulo: data.stats.titulo_ultimo_nivel
+          };
+      }
+      return {
+          actual_level: 0,
+          total_levels: 0,
+          lvls_progress: "0%",
+          titulo: "Cargando..."
+      };
+  });
+
+  // Init logic
+  ngOnInit() {
+      if (!this.serviceProgreso()) {
+          this.progresoHistoriaService.getProgresoHistoria().subscribe();
+      }
+  }
+
 
   // Sidebar State
   isSidebarOpen = signal(true);

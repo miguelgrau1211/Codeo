@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth-service';
+import { ProgresoHistoriaService } from '../services/progreso-historia-service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -19,6 +20,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements AfterViewInit, OnDestroy {
   private authService = inject(AuthService);
+  private progresoService = inject(ProgresoHistoriaService);
   private fb = inject(FormBuilder);
   private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
@@ -181,11 +183,34 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
           sessionStorage.setItem('token', response.access_token);
           sessionStorage.setItem('nickname', response.nickname);
           
-          // Add a small delay for the animation to feel impactful (optional)
-          setTimeout(() => {
-             this.router.navigate(['/dashboard']);
-             // We don't set isLoading(false) here because navigation will destroy component
-          }, 1500); 
+          // Pre-fetch data for next screens while animation plays
+          const token = response.access_token;
+          const requests = [
+              this.authService.esAdmin(token),
+              this.progresoService.getProgresoHistoria()
+          ];
+
+          // Minimum animation time
+          const minAnimationTime = new Promise(resolve => setTimeout(resolve, 1500));
+          
+          // Wait for both Data AND Animation
+          import('rxjs').then(({ forkJoin }) => {
+               forkJoin(requests).subscribe({
+                   next: () => {
+                       // Only navigate when data IS READY
+                       minAnimationTime.then(() => {
+                            this.router.navigate(['/dashboard']);
+                       });
+                   },
+                   error: (err) => {
+                       console.warn('Error displaying pre-fetched data but continuing:', err);
+                       // Navigate anyway even if some pre-fetch failed
+                       minAnimationTime.then(() => {
+                           this.router.navigate(['/dashboard']);
+                       });
+                   }
+               });
+          });
         },
         error: (error) => {
           console.error('Login failed:', error);

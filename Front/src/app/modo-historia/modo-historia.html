@@ -13,7 +13,7 @@
 
         <!-- Center: Level Title -->
         <div class="absolute left-1/2 -translate-x-1/2 flex flex-col items-center">
-            <h1 class="font-jersey text-2xl text-white tracking-wide">Nivel 12: <span class="text-purple-400">Bucles Avanzados</span></h1>
+            <h1 class="font-jersey text-2xl text-white tracking-wide">Nivel {{orden()}}: <span class="text-purple-400">{{titulo()}}</span></h1>
             <div class="flex items-center gap-2 text-xs text-slate-500 font-mono">
                 <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                 <span>En línea</span>
@@ -75,7 +75,7 @@
                             <span class="text-lg">🎯</span> Objetivo Principal
                         </h3>
                         <p class="text-slate-300 leading-relaxed text-sm">
-                            Debes optimizar el algoritmo de búsqueda para encontrar el número primo más alto en un array desordenado en menos de <span class="bg-slate-800 px-1 py-0.5 rounded text-white font-mono text-xs">O(n)</span>.
+                            {{descripcion()}}
                         </p>
                     </div>
                 </div>
@@ -90,27 +90,7 @@
                             <div class="w-0.5 h-12 bg-slate-800"></div>
                         </div>
                         <div class="pb-6">
-                            <h4 class="text-sm font-bold text-white mb-1">Analiza el Array</h4>
-                            <p class="text-xs text-slate-400 leading-relaxed">Recorre la lista de números `numbers` usando un bucle `foreach` o `for`.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-4 items-start">
-                        <div class="flex flex-col items-center gap-1 mt-1">
-                            <div class="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-slate-400">2</div>
-                            <div class="w-0.5 h-12 bg-slate-800"></div>
-                        </div>
-                        <div class="pb-6">
-                            <h4 class="text-sm font-bold text-white mb-1">Verifica Primos</h4>
-                            <p class="text-xs text-slate-400 leading-relaxed">Implementa una función auxiliar `isPrime(n)` para validar cada número.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex gap-4 items-start">
-                        <div class="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-slate-400 shrink-0 mt-1">3</div>
-                        <div>
-                            <h4 class="text-sm font-bold text-white mb-1">Retorna el Resultado</h4>
-                            <p class="text-xs text-slate-400 leading-relaxed">Devuelve el primo más grande encontrado o `null` si no hay ninguno.</p>
+                            <div [innerHTML]="contenidoTeorico()"></div>
                         </div>
                     </div>
                 </div>
@@ -217,7 +197,7 @@
             <div class="h-1/3 border-t border-white/5 bg-ui-bg backdrop-blur flex flex-col">
                 <div class="h-10 border-b border-white/5 flex items-center px-4 justify-between bg-black/20">
                     <span class="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                        <img src="/common/icons/terminal.png" class="w-3 h-3 opacity-50" onerror="this.style.display='none'"> 
+                        <span class="text-slate-500 font-mono font-bold text-sm mr-1">$_</span> 
                         Terminal
                     </span>
                     <span class="text-[10px] text-slate-600">PHP 8.2 Execution Environment</span>

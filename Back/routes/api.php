@@ -8,6 +8,7 @@ use App\Http\Controllers\ProgresoHistoriaController;
 use App\Http\Controllers\RunsRoguelikeController;
 use App\Http\Controllers\NivelesRoguelikeController;
 use App\Http\Controllers\MejorasController;
+use App\Http\Controllers\EjecutarCodigo;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +69,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('runs-roguelike', RunsRoguelikeController::class);
     Route::get('/users/mejor-run', [RunsRoguelikeController::class, 'getNivelMejorRunUsuario']);
 
+
+    //ejecutar codigo
+    Route::post('/ejecutar-codigo', [EjecutarCodigo::class, 'ejecutarCodigo']);
     // Administración de contenido y usuarios (Solo Admin)
     Route::middleware('admin')->group(function () {
         Route::apiResource('niveles-roguelike', NivelesRoguelikeController::class)->except(['index', 'show']);

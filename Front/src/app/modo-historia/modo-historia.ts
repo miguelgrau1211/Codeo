@@ -1,7 +1,9 @@
-import { Component, signal, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, signal, ViewEncapsulation, OnInit, Input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { EjecutarCodigoService } from '../services/ejecutar-codigo-service';
+import { ProgresoHistoriaService } from '../services/progreso-historia-service';
 
 @Component({
   selector: 'app-modo-historia',
@@ -12,39 +14,84 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   encapsulation: ViewEncapsulation.None // Needed for dynamic syntax regex classes to apply
 })
 export class ModoHistoria implements OnInit {
+  
+  // Signals
   showIntro = signal(true);
   startExit = signal(false);
   isInstructionsOpen = signal(true);
-  codeContent = signal(`function findHighestPrime($numbers) {
-    $highest = null;
-
-    foreach ($numbers as $num) {
-        // Tu lógica aquí
-        if (isPrime($num)) {
-            $highest = $num;
-        }
-    }
-
-    return $highest;
-}`);
+  
+  // Initial state empty, populated by effect
+  codeContent = signal('');
+  currentLevel = signal<number | undefined>(undefined);
+  orden = signal<number | undefined>(undefined);
+  titulo = signal<string | undefined>(undefined);  
   highlightedCode = signal<SafeHtml>('');
+  descripcion = signal<string | undefined>(undefined);
+  contenidoTeorico = signal<SafeHtml | undefined>(undefined);
   currentLine = signal<number | null>(null);
   lineNumbers = signal<number[]>([1]);
   scrollTop = signal(0); // Track scroll position
 
-  constructor(private sanitizer: DomSanitizer) {
-    // Initial highlight
+  constructor(
+    private sanitizer: DomSanitizer, 
+    private ejecutarCodigoService: EjecutarCodigoService, 
+    private progresoHistoriaService: ProgresoHistoriaService
+  ) {
+    // Initial highlight (empty)
     this.updateCode(this.codeContent());
+
+    // Reactive Data Loading
+    effect(() => {
+        const data = this.progresoHistoriaService.progresoSignal();
+        
+        // If we have data
+        if (data && data.progreso_detallado) {
+             const ultimoNivel = data.progreso_detallado.length 
+                ? data.progreso_detallado[data.progreso_detallado.length - 1]
+                : null;
+
+             if (ultimoNivel) {
+                 const codigo = ultimoNivel.codigo_solucion_usuario || '';
+                 
+                 // Update Content
+                 this.codeContent.set(codigo);
+                 this.updateCode(codigo);
+                 
+                 // Update Level Info
+                 const nivelId = ultimoNivel.nivel_id;
+                 
+                 
+                 this.currentLevel.set(nivelId);
+                 this.orden.set(ultimoNivel.orden);
+                 this.titulo.set(ultimoNivel.titulo);
+                 this.descripcion.set(ultimoNivel.descripcion);
+                 this.contenidoTeorico.set(this.sanitizer.bypassSecurityTrustHtml(ultimoNivel.contenido_teorico));
+                 
+                 // Hide Loading Screen safely
+                 setTimeout(() => {
+                     this.startExit.set(true); 
+                     setTimeout(() => this.showIntro.set(false), 500); // Wait for transition
+                 }, 500); // Optional small delay for smoothness
+             }
+        }
+    });
   }
 
   ngOnInit() {
-    // Reveal editor after animation
-    setTimeout(() => {
-        this.startExit.set(true); // Fade out overlay
-    }, 2000);
-    setTimeout(() => {
-        this.showIntro.set(false); // Remove from DOM
-    }, 2500);
+    // Auto-fetch logic for page refresh
+    if (!this.progresoHistoriaService.progresoSignal()) {
+        console.log('ModoHistoria: No progress signal detected, fetching from API...');
+        this.progresoHistoriaService.getProgresoHistoria().subscribe({
+            next: (data) => console.log('ModoHistoria: Progress fetched successfully'),
+            error: (err) => {
+                console.error('ModoHistoria: Error fetching progress', err);
+                // On error, maybe show intro indefinitely or show error message?
+                // For now let's hide intro to not block user
+                 this.startExit.set(true); 
+                 this.showIntro.set(false);
+            }
+        });
+    }
   }
   
   toggleInstructions() {
@@ -133,7 +180,17 @@ export class ModoHistoria implements OnInit {
     this.highlightedCode.set(this.sanitizer.bypassSecurityTrustHtml(escaped));
   }
 
+  @Input() nivel: number = 1;
+
   ejecutarCodigo() {
-    this
+    console.log(this.codeContent());
+    this.ejecutarCodigoService.ejecutarCodigo(this.codeContent(), 'historia', this.nivel, sessionStorage.getItem("token")!).subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 }

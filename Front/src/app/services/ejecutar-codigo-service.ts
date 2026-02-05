@@ -11,8 +11,12 @@ export class EjecutarCodigoService {
 
   constructor(private http: HttpClient) { }
 
-  ejecutarCodigo(codigo: string): Observable<any> {
-    return this.http.post<any>(this.apiUrl, { codigo });
+  ejecutarCodigo(codigo: string, tipo: string, nivel_id: number, token: string): Observable<any> {
+    return this.http.post<any>(this.apiUrl, { codigo, tipo, nivel_id }, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      }
+    });
   }
-  
 }
