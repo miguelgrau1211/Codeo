@@ -16,17 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => \App\Http\Middleware\IsAdmin::class,
         ]);
 
-        // Configuración CORS manual (sin usar cors.php)
-        $middleware->append(function ($request, $next) {
-            $response = $next($request);
-            // Asegurarse de que es una respuesta válida para añadir headers
-            if (method_exists($response, 'header')) {
-                $response->header('Access-Control-Allow-Origin', '*')
-                    ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-                    ->header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, X-Token-Auth, Authorization');
-            }
-            return $response;
-        });
+        $middleware->append(\App\Http\Middleware\ForceCors::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
