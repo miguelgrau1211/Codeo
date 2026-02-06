@@ -3,43 +3,82 @@
 
     <!-- Sidebar -->
     <aside
-        class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex-col justify-between hidden md:flex transition-all duration-300 shadow-xl dark:shadow-none z-20"
-        [class.w-20]="!isSidebarOpen()">
+        class="bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex-col justify-between hidden md:flex transition-all duration-500 ease-in-out shadow-xl dark:shadow-none z-20"
+        [class.w-64]="isSidebarOpen()" [class.w-20]="!isSidebarOpen()">
 
         <!-- Logo -->
-        <div class="p-6 flex items-center gap-3 overflow-hidden whitespace-nowrap">
-            <span class="text-purple-500 text-3xl font-jersey">&gt;_</span>
-            <span class="text-2xl font-black text-slate-900 dark:text-white font-jersey tracking-wide"
-                [class.hidden]="!isSidebarOpen()">Codeo</span>
+        <!-- Logo -->
+        <!-- Logo -->
+        <div class="flex items-center overflow-hidden whitespace-nowrap transition-all duration-500 ease-in-out h-16"
+            [class.px-6]="isSidebarOpen()" [class.px-0]="!isSidebarOpen()" [class.justify-center]="!isSidebarOpen()"
+            [class.gap-3]="isSidebarOpen()" [class.gap-0]="!isSidebarOpen()">
+            <span class="text-purple-500 text-3xl font-jersey shrink-0 transition-transform duration-500 ease-in-out"
+                [class.scale-125]="!isSidebarOpen()">&gt;_</span>
+            <div class="grid transition-[grid-template-columns] duration-500 ease-in-out"
+                [class.grid-cols-[1fr]]="isSidebarOpen()" [class.grid-cols-[0fr]]="!isSidebarOpen()">
+                <div class="overflow-hidden">
+                    <span
+                        class="text-2xl font-black text-slate-900 dark:text-white font-jersey tracking-wide whitespace-nowrap block ml-3">Codeo</span>
+                </div>
+            </div>
         </div>
 
         <!-- Navigation -->
-        <nav class="flex-1 px-4 space-y-2 mt-4">
+        <!-- Navigation -->
+        <nav class="flex-1 px-3 space-y-2 mt-4">
             <a routerLink="/dashboard"
-                class="flex items-center gap-4 px-4 py-3 rounded-xl bg-purple-50 dark:bg-purple-600/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20 transition-all group shadow-sm dark:shadow-none">
-                <img src="/common/icons/home.png" class="w-6 h-6 object-contain">
-                <span class="font-bold" [class.hidden]="!isSidebarOpen()">Inicio</span>
+                class="flex items-center py-3 rounded-xl bg-purple-50 dark:bg-purple-600/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20 transition-all duration-500 ease-in-out group shadow-sm dark:shadow-none overflow-hidden"
+                [class.px-4]="isSidebarOpen()" [class.px-0]="!isSidebarOpen()" [class.justify-center]="!isSidebarOpen()"
+                [class.gap-4]="isSidebarOpen()" [class.gap-0]="!isSidebarOpen()">
+                <img src="/common/icons/home.png" class="w-6 h-6 object-contain shrink-0">
+                <div class="grid transition-[grid-template-columns] duration-500 ease-in-out"
+                    [class.grid-cols-[1fr]]="isSidebarOpen()" [class.grid-cols-[0fr]]="!isSidebarOpen()">
+                    <div class="overflow-hidden">
+                        <span class="font-bold whitespace-nowrap block pl-1">Inicio</span>
+                    </div>
+                </div>
             </a>
 
             <a routerLink="/modo-historia"
-                class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-white transition-all group">
+                class="flex items-center py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-white transition-all duration-500 ease-in-out group overflow-hidden"
+                [class.px-4]="isSidebarOpen()" [class.px-0]="!isSidebarOpen()" [class.justify-center]="!isSidebarOpen()"
+                [class.gap-4]="isSidebarOpen()" [class.gap-0]="!isSidebarOpen()">
                 <img src="/common/icons/history_mode.png"
-                    class="w-6 h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0 dark:grayscale-0">
-                <span class="font-medium" [class.hidden]="!isSidebarOpen()">Modo Historia</span>
+                    class="w-6 h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0 dark:grayscale-0 shrink-0">
+                <div class="grid transition-[grid-template-columns] duration-500 ease-in-out"
+                    [class.grid-cols-[1fr]]="isSidebarOpen()" [class.grid-cols-[0fr]]="!isSidebarOpen()">
+                    <div class="overflow-hidden">
+                        <span class="font-medium whitespace-nowrap block pl-1">Modo Historia</span>
+                    </div>
+                </div>
             </a>
 
             <a routerLink="/modo-infinito"
-                class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-white transition-all group">
+                class="flex items-center py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-white transition-all duration-500 ease-in-out group overflow-hidden"
+                [class.px-4]="isSidebarOpen()" [class.px-0]="!isSidebarOpen()" [class.justify-center]="!isSidebarOpen()"
+                [class.gap-4]="isSidebarOpen()" [class.gap-0]="!isSidebarOpen()">
                 <img src="/common/icons/roguelike_mode.png"
-                    class="w-6 h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0 dark:grayscale-0">
-                <span class="font-medium" [class.hidden]="!isSidebarOpen()">Roguelike</span>
+                    class="w-6 h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0 dark:grayscale-0 shrink-0">
+                <div class="grid transition-[grid-template-columns] duration-500 ease-in-out"
+                    [class.grid-cols-[1fr]]="isSidebarOpen()" [class.grid-cols-[0fr]]="!isSidebarOpen()">
+                    <div class="overflow-hidden">
+                        <span class="font-medium whitespace-nowrap block pl-1">Roguelike</span>
+                    </div>
+                </div>
             </a>
 
             <a routerLink="/ranking"
-                class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-yellow-500 dark:hover:text-white transition-all group">
+                class="flex items-center py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-yellow-500 dark:hover:text-white transition-all duration-500 ease-in-out group overflow-hidden"
+                [class.px-4]="isSidebarOpen()" [class.px-0]="!isSidebarOpen()" [class.justify-center]="!isSidebarOpen()"
+                [class.gap-4]="isSidebarOpen()" [class.gap-0]="!isSidebarOpen()">
                 <img src="/common/icons/ranking.png"
-                    class="w-6 h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0 dark:grayscale-0">
-                <span class="font-medium" [class.hidden]="!isSidebarOpen()">Ranking</span>
+                    class="w-6 h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0 dark:grayscale-0 shrink-0">
+                <div class="grid transition-[grid-template-columns] duration-500 ease-in-out"
+                    [class.grid-cols-[1fr]]="isSidebarOpen()" [class.grid-cols-[0fr]]="!isSidebarOpen()">
+                    <div class="overflow-hidden">
+                        <span class="font-medium whitespace-nowrap block pl-1">Ranking</span>
+                    </div>
+                </div>
             </a>
         </nav>
 
@@ -47,20 +86,29 @@
         <div class="px-4 py-4 border-t border-slate-800">
             <button (click)="toggleSidebar()"
                 class="w-full flex items-center justify-center p-2 rounded-lg hover:bg-slate-800 text-slate-500 transition-colors">
-                <span class="transform transition-transform" [class.rotate-180]="!isSidebarOpen()">◀</span>
+                <span class="transform transition-transform duration-500 ease-in-out"
+                    [class.rotate-180]="!isSidebarOpen()">◀</span>
             </button>
         </div>
 
         <!-- User Profile (Sidebar Bottom) -->
-        <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
-            <div class="flex items-center gap-3">
+        <div
+            class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 overflow-hidden">
+            <div class="flex items-center transition-all duration-500 ease-in-out" [class.gap-3]="isSidebarOpen()"
+                [class.gap-0]="!isSidebarOpen()" [class.justify-center]="!isSidebarOpen()">
                 <div
                     class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 overflow-hidden shrink-0">
                     <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="w-full h-full object-cover">
                 </div>
-                <div class="overflow-hidden" [class.hidden]="!isSidebarOpen()">
-                    <div class="font-bold text-slate-800 dark:text-white text-sm truncate">{{ user().name }}</div>
-                    <div class="text-xs text-slate-500 dark:text-slate-400">Novato</div>
+                <div class="grid transition-[grid-template-columns] duration-500 ease-in-out"
+                    [class.grid-cols-[1fr]]="isSidebarOpen()" [class.grid-cols-[0fr]]="!isSidebarOpen()">
+                    <div class="overflow-hidden">
+                        <div
+                            class="font-bold text-slate-800 dark:text-white text-sm truncate whitespace-nowrap block pl-2">
+                            {{ user().name }}</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap block pl-2">Novato
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -140,7 +188,7 @@
                             Modo Historia</h3>
                         <p class="text-slate-500 dark:text-slate-400 max-w-sm mb-6 font-medium dark:font-normal">
                             Continúa tu viaje donde lo dejaste. Nivel:
-                            {{stats_historia().actual_level}} - 
+                            {{stats_historia().actual_level}} -
                             {{stats_historia().titulo}}</p>
 
                     </div>
