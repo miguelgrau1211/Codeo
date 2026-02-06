@@ -75,8 +75,6 @@
 
             <!-- STATS PREVIEW -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <app-admin-stat-card title="Total Usuarios" [value]="stats().total_users" icon="bi-people"
-                    trendColor="text-green-500"></app-admin-stat-card>
                 <app-admin-stat-card title="Activos 24h" [value]="stats().active_users_24h" icon="bi-activity"
                     trendColor="text-green-500"></app-admin-stat-card>
                 <app-admin-stat-card title="Total Runs" [value]="stats().total_runs" icon="bi-controller"
@@ -84,6 +82,7 @@
                 <app-admin-stat-card title="Win Rate" [value]="stats().success_rate + '%'" icon="bi-trophy"
                     trendColor="text-red-500"></app-admin-stat-card>
             </div>
+
 
             <!-- USERS TAB -->
             @if (activeTab() === 'users') {

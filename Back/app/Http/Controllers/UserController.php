@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Models\ProgresoHistoria;
 use App\Models\NivelesHistoria;
+use App\Models\AdminLog;
+use App\Http\Controllers\UsuarioDesactivadoController;
 
 class UserController extends Controller
 {
@@ -419,41 +421,53 @@ class UserController extends Controller
      */
     public function toggleStatus(Request $request, $id)
     {
-        // 1. Intentar encontrar al usuario en la tabla principal para desactivarlo
-        $usuario = Usuario::find($id);
+        try {
+            // 1. Intentar encontrar al usuario en la tabla principal para desactivarlo
+            $usuario = Usuario::find($id);
 
-        if ($usuario) {
-            if ($usuario->id === Auth::id()) {
-                return response()->json(['message' => 'No puedes desactivarte a ti mismo'], 403);
+            if ($usuario) {
+                if ($usuario->id === Auth::id()) {
+                    return response()->json(['message' => 'No puedes desactivarte a ti mismo'], 403);
+                }
+
+                return DB::transaction(function () use ($usuario, $request) {
+                    // Mover a la tabla de desactivados
+                    UsuarioDesactivado::create([
+                        'usuario_id_original' => $usuario->id,
+                        'nickname' => $usuario->nickname,
+                        'email' => $usuario->email,
+                        'nivel_alcanzado' => $usuario->nivel_global,
+                        'motivo' => $request->input('motivo', 'Desactivado por el administrador'),
+                        'fecha_desactivacion' => now(),
+                    ]);
+
+                    // Eliminar de la tabla principal
+                    $usuario->delete();
+
+                    // log
+                    AdminLog::create([
+                        'user_id' => Auth::id(),
+                        'action' => 'BAN_USER',
+                        'details' => "Baneó a usuario ID: {$usuario->id} ({$usuario->nickname}) - Motivo: " . $request->input('motivo', 'Desactivado por el administrador'),
+                    ]);
+
+                    return response()->json(['message' => 'Usuario desactivado y archivado correctamente', 'estado' => 'desactivado'], 200);
+                });
             }
 
-            return DB::transaction(function () use ($usuario, $request) {
-                // Mover a la tabla de desactivados
-                UsuarioDesactivado::create([
-                    'usuario_id_original' => $usuario->id,
-                    'nickname' => $usuario->nickname,
-                    'email' => $usuario->email,
-                    'nivel_alcanzado' => $usuario->nivel_global,
-                    'motivo' => $request->input('motivo', 'Desactivado por el administrador'),
-                    'fecha_desactivacion' => now(),
-                ]);
+            // 2. Si no está en 'usuarios', intentar encontrarlo en 'usuarios_desactivados' para reactivarlo
+            $archivado = UsuarioDesactivado::where('usuario_id_original', $id)->first();
 
-                // Eliminar de la tabla principal
-                $usuario->delete();
+            if ($archivado) {
+                $desactivadoController = new UsuarioDesactivadoController();
+                // Reutilizamos la lógica de reactivación que ya tienes
+                return $desactivadoController->reactivar($request, $id);
+            }
 
-                return response()->json(['message' => 'Usuario desactivado y archivado correctamente', 'estado' => 'desactivado'], 200);
-            });
+            return response()->json(['message' => 'Usuario no encontrado en ninguna tabla'], 404);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Error en toggleStatus: ' . $e->getMessage());
+            return response()->json(['message' => 'Error interno del servidor: ' . $e->getMessage()], 500);
         }
-
-        // 2. Si no está en 'usuarios', intentar encontrarlo en 'usuarios_desactivados' para reactivarlo
-        $archivado = UsuarioDesactivado::where('usuario_id_original', $id)->first();
-
-        if ($archivado) {
-            $desactivadoController = new UsuarioDesactivadoController();
-            // Reutilizamos la lógica de reactivación que ya tienes
-            return $desactivadoController->reactivar($request, $id);
-        }
-
-        return response()->json(['message' => 'Usuario no encontrado en ninguna tabla'], 404);
     }
 }

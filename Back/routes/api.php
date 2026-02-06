@@ -9,6 +9,7 @@ use App\Http\Controllers\RunsRoguelikeController;
 use App\Http\Controllers\NivelesRoguelikeController;
 use App\Http\Controllers\MejorasController;
 use App\Http\Controllers\EjecutarCodigo;
+use App\Http\Controllers\AdminDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,5 +82,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/admin/users', [UserController::class, 'index']);
         Route::delete('/admin/users/{id}', [UserController::class, 'destroy']);
         Route::post('/admin/users/{id}/toggle-status', [UserController::class, 'toggleStatus']);
+
+        // Dashboard Stats y Logs
+        Route::get('/admin/stats', [AdminDashboardController::class, 'getStats']);
+        Route::get('/admin/logs', [AdminDashboardController::class, 'getLogs']);
     });
 });

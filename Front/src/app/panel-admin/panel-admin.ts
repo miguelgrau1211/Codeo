@@ -168,7 +168,11 @@ export class PanelAdmin implements OnInit, OnDestroy {
         alert(res.message); // Notificar al usuario
         this.loadUsers(this.currentPage());
       },
-      error: (err) => alert('Error al cambiar estado del usuario')
+      error: (err) => {
+        console.error('Error toggling user status', err);
+        const errorMessage = err.error?.message || 'Error al cambiar estado del usuario';
+        alert(errorMessage);
+      }
     });
   }
 
