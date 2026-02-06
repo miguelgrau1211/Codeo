@@ -435,6 +435,8 @@ class UserController extends Controller
                     UsuarioDesactivado::create([
                         'usuario_id_original' => $usuario->id,
                         'nickname' => $usuario->nickname,
+                        'nombre' => $usuario->nombre,
+                        'apellidos' => $usuario->apellidos,
                         'email' => $usuario->email,
                         'nivel_alcanzado' => $usuario->nivel_global,
                         'motivo' => $request->input('motivo', 'Desactivado por el administrador'),
