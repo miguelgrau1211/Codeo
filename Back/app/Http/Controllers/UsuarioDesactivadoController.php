@@ -26,7 +26,7 @@ class UsuarioDesactivadoController extends Controller
     public function reactivar(Request $request, $idOriginal)
     {
         return DB::transaction(function () use ($idOriginal, $request) {
-            
+
             //buscar
             $archivado = UsuarioDesactivado::where('usuario_id_original', $idOriginal)->first();
 
@@ -36,17 +36,19 @@ class UsuarioDesactivadoController extends Controller
 
             //validar que el email o nickname no hayan sido usados
             $existe = Usuario::where('email', $archivado->email)
-                             ->orWhere('nickname', $archivado->nickname)
-                             ->exists();
-            
+                ->orWhere('nickname', $archivado->nickname)
+                ->exists();
+
             if ($existe) {
                 return response()->json(['message' => 'El nickname o email ya están ocupados por un usuario activo'], 409);
             }
 
             // crear de nuevo el usuario en la tabla principal
             Usuario::create([
-                'id' => $archivado->usuario_id_original, 
+                'id' => $archivado->usuario_id_original,
                 'nickname' => $archivado->nickname,
+                'nombre' => $archivado->nombre,
+                'apellidos' => $archivado->apellidos,
                 'email' => $archivado->email,
                 'password' => bcrypt($request->input('password', 'Codeo')),//contrasña temporal que luego habra que cambiar
                 'nivel_global' => $archivado->nivel_alcanzado,

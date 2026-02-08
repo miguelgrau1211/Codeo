@@ -1,1 +1,19 @@
-<p>admin-stat-card works!</p>
+<div
+    class="bg-gray-800 p-4 rounded-xl shadow-lg border border-gray-700 flex flex-col justify-between h-full hover:border-gray-600 transition-colors">
+    <div class="flex justify-between items-start mb-2">
+        <h3 class="text-gray-400 text-sm font-bold uppercase tracking-wider">{{ title() }}</h3>
+        @if(icon()) {
+        <i [class]="'bi ' + icon() + ' text-primary-400 text-xl'"></i>
+        }
+    </div>
+
+    <div class="flex items-end justify-between mt-2">
+        <div class="text-3xl font-black text-white tracking-tight">{{ value() }}</div>
+        @if(trend()) {
+        <div
+            [class]="'text-xs font-semibold px-2 py-1 rounded bg-opacity-10 ' + (trendColor() === 'text-green-500' ? 'bg-green-500 text-green-400' : 'bg-red-500 text-red-400')">
+            {{ trend() }}
+        </div>
+        }
+    </div>
+</div>

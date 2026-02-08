@@ -8,7 +8,7 @@ import { Observable, tap } from 'rxjs';
 export class ProgresoHistoriaService {
 
   private apiUrl = 'http://localhost/api/users/progreso-historia';
-  
+
   // State
   progresoSignal = signal<any>(null);
 

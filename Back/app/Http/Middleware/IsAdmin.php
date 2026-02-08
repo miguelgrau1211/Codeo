@@ -16,10 +16,20 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check() || !Auth::user()->es_admin) {
-            return response()->json(['message' => 'Acceso denegado. Se requieren permisos de administrador.'], 403);
-        }
+        try {
+            if (!Auth::check()) {
+                return response()->json(['message' => 'No autenticado.'], 401);
+            }
 
-        return $next($request);
+            // Usamos una comprobacion segura por si la columna no existe
+            $user = Auth::user();
+            if (!$user->es_admin) {
+                return response()->json(['message' => 'Acceso denegado. Se requieren permisos de administrador.'], 403);
+            }
+
+            return $next($request);
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'Error de autorización: ' . $e->getMessage()], 500);
+        }
     }
 }

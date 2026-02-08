@@ -1,15 +1,19 @@
 <div class="min-h-screen bg-slate-50 dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-300 p-6 md:p-8">
-    
+
     <!-- Background Decoration -->
-    <div class="fixed top-0 right-0 w-[500px] h-[500px] bg-red-500/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
+    <div
+        class="fixed top-0 right-0 w-[500px] h-[500px] bg-red-500/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2">
+    </div>
 
     <!-- Header -->
     <header class="relative z-10 flex items-center justify-between mb-8 max-w-7xl mx-auto">
         <div>
-            <a routerLink="/dashboard" class="group flex items-center gap-2 text-slate-500 hover:text-red-500 transition-colors mb-2 cursor-pointer">
+            <a routerLink="/dashboard"
+                class="group flex items-center gap-2 text-slate-500 hover:text-red-500 transition-colors mb-2 cursor-pointer">
                 <span class="transform group-hover:-translate-x-1 transition-transform">←</span> Volver al Dashboard
             </a>
-            <h1 class="text-4xl font-black text-slate-900 dark:text-white font-jersey tracking-wide flex items-center gap-3">
+            <h1
+                class="text-4xl font-black text-slate-900 dark:text-white font-jersey tracking-wide flex items-center gap-3">
                 <span class="text-red-500">🛡️</span> PANEL DE ADMIN
             </h1>
         </div>
@@ -23,191 +27,347 @@
 
         <!-- Sidebar Navigation -->
         <aside class="space-y-2">
-            <button (click)="setTab('users')" 
-                    class="w-full text-left px-5 py-4 rounded-xl font-bold transition-all flex items-center gap-3 border"
-                    [class.bg-white]="activeTab() === 'users'"
-                    [class.dark:bg-slate-800]="activeTab() === 'users'"
-                    [class.border-red-500]="activeTab() === 'users'"
-                    [class.text-red-500]="activeTab() === 'users'"
-                    [class.border-transparent]="activeTab() !== 'users'"
-                    [class.text-slate-500]="activeTab() !== 'users'"
-                    [class.hover:bg-slate-100]="activeTab() !== 'users'"
-                    [class.dark:hover:bg-slate-900]="activeTab() !== 'users'">
+            <button (click)="setTab('users')"
+                class="w-full text-left px-5 py-4 rounded-xl font-bold transition-all flex items-center gap-3 border"
+                [class.bg-white]="activeTab() === 'users'" [class.dark:bg-slate-800]="activeTab() === 'users'"
+                [class.border-red-500]="activeTab() === 'users'" [class.text-red-500]="activeTab() === 'users'"
+                [class.border-transparent]="activeTab() !== 'users'" [class.text-slate-500]="activeTab() !== 'users'"
+                [class.hover:bg-slate-100]="activeTab() !== 'users'"
+                [class.dark:hover:bg-slate-900]="activeTab() !== 'users'">
                 <span>👥</span> Usuarios
             </button>
 
-            <button (click)="setTab('story')" 
-                    class="w-full text-left px-5 py-4 rounded-xl font-bold transition-all flex items-center gap-3 border"
-                    [class.bg-white]="activeTab() === 'story'"
-                    [class.dark:bg-slate-800]="activeTab() === 'story'"
-                    [class.border-purple-500]="activeTab() === 'story'"
-                    [class.text-purple-500]="activeTab() === 'story'"
-                    [class.border-transparent]="activeTab() !== 'story'"
-                    [class.text-slate-500]="activeTab() !== 'story'"
-                    [class.hover:bg-slate-100]="activeTab() !== 'story'"
-                    [class.dark:hover:bg-slate-900]="activeTab() !== 'story'">
+            <button (click)="setTab('story')"
+                class="w-full text-left px-5 py-4 rounded-xl font-bold transition-all flex items-center gap-3 border"
+                [class.bg-white]="activeTab() === 'story'" [class.dark:bg-slate-800]="activeTab() === 'story'"
+                [class.border-purple-500]="activeTab() === 'story'" [class.text-purple-500]="activeTab() === 'story'"
+                [class.border-transparent]="activeTab() !== 'story'" [class.text-slate-500]="activeTab() !== 'story'"
+                [class.hover:bg-slate-100]="activeTab() !== 'story'"
+                [class.dark:hover:bg-slate-900]="activeTab() !== 'story'">
                 <span>📖</span> Niveles Historia
             </button>
 
-            <button (click)="setTab('roguelike')" 
-                    class="w-full text-left px-5 py-4 rounded-xl font-bold transition-all flex items-center gap-3 border"
-                    [class.bg-white]="activeTab() === 'roguelike'"
-                    [class.dark:bg-slate-800]="activeTab() === 'roguelike'"
-                    [class.border-orange-500]="activeTab() === 'roguelike'"
-                    [class.text-orange-500]="activeTab() === 'roguelike'"
-                    [class.border-transparent]="activeTab() !== 'roguelike'"
-                    [class.text-slate-500]="activeTab() !== 'roguelike'"
-                    [class.hover:bg-slate-100]="activeTab() !== 'roguelike'"
-                    [class.dark:hover:bg-slate-900]="activeTab() !== 'roguelike'">
+            <button (click)="setTab('roguelike')"
+                class="w-full text-left px-5 py-4 rounded-xl font-bold transition-all flex items-center gap-3 border"
+                [class.bg-white]="activeTab() === 'roguelike'" [class.dark:bg-slate-800]="activeTab() === 'roguelike'"
+                [class.border-orange-500]="activeTab() === 'roguelike'"
+                [class.text-orange-500]="activeTab() === 'roguelike'"
+                [class.border-transparent]="activeTab() !== 'roguelike'"
+                [class.text-slate-500]="activeTab() !== 'roguelike'"
+                [class.hover:bg-slate-100]="activeTab() !== 'roguelike'"
+                [class.dark:hover:bg-slate-900]="activeTab() !== 'roguelike'">
                 <span>💀</span> Niveles Roguelike
+            </button>
+
+            <button (click)="setTab('logs')"
+                class="w-full text-left px-5 py-4 rounded-xl font-bold transition-all flex items-center gap-3 border"
+                [class.bg-white]="activeTab() === 'logs'" [class.dark:bg-slate-800]="activeTab() === 'logs'"
+                [class.border-blue-500]="activeTab() === 'logs'" [class.text-blue-500]="activeTab() === 'logs'"
+                [class.border-transparent]="activeTab() !== 'logs'" [class.text-slate-500]="activeTab() !== 'logs'"
+                [class.hover:bg-slate-100]="activeTab() !== 'logs'"
+                [class.dark:hover:bg-slate-900]="activeTab() !== 'logs'">
+                <span>📋</span> Logs del Sistema
             </button>
         </aside>
 
         <!-- Content Area -->
         <main class="md:col-span-3">
-            
+
+            <!-- STATS PREVIEW -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <app-admin-stat-card title="Activos 24h" [value]="stats().active_users_24h" icon="bi-activity"
+                    trendColor="text-green-500"></app-admin-stat-card>
+                <app-admin-stat-card title="Total Runs" [value]="stats().total_runs" icon="bi-controller"
+                    trendColor="text-green-500"></app-admin-stat-card>
+                <app-admin-stat-card title="Win Rate" [value]="stats().success_rate + '%'" icon="bi-trophy"
+                    trendColor="text-red-500"></app-admin-stat-card>
+            </div>
+
+
             <!-- USERS TAB -->
             @if (activeTab() === 'users') {
-                <div class="bg-white dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200 dark:border-white/5 shadow-xl">
-                    <div class="flex justify-between items-center mb-6">
+            <div class="bg-white dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200 dark:border-white/5 shadow-xl transition-all"
+                [class.opacity-50]="isLoading()">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                    <div>
                         <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Gestión de Usuarios</h2>
-                        <div class="text-sm text-slate-400">Total: {{ users().length }}</div>
+                        <div class="text-sm text-slate-400">Total: {{ totalUsers() }} usuarios</div>
                     </div>
 
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left">
-                            <thead class="text-xs text-slate-500 uppercase bg-slate-50 dark:bg-slate-800/50">
-                                <tr>
-                                    <th class="px-6 py-3 rounded-l-lg">ID</th>
-                                    <th class="px-6 py-3">Usuario</th>
-                                    <th class="px-6 py-3">Email</th>
-                                    <th class="px-6 py-3">Rol</th>
-                                    <th class="px-6 py-3">Estado</th>
-                                    <th class="px-6 py-3 rounded-r-lg">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for (u of users(); track u.id) {
-                                    <tr class="border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5">
-                                        <td class="px-6 py-4 font-mono text-slate-400">#{{ u.id }}</td>
-                                        <td class="px-6 py-4 font-bold text-slate-800 dark:text-white">{{ u.name }}</td>
-                                        <td class="px-6 py-4 text-slate-500">{{ u.email }}</td>
-                                        <td class="px-6 py-4">
-                                            <span class="px-2 py-1 rounded-md text-xs font-bold"
-                                                  [class.bg-red-500-10]="u.role === 'admin'"
-                                                  [class.text-red-500]="u.role === 'admin'"
-                                                  [class.bg-blue-500-10]="u.role === 'user'"
-                                                  [class.text-blue-500]="u.role === 'user'">
-                                                {{ u.role }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <button (click)="toggleUserStatus(u.id)" 
-                                                class="px-2 py-1 rounded text-xs font-bold transition-colors"
-                                                [class.text-green-500]="u.active"
-                                                [class.bg-green-500-10]="u.active"
-                                                [class.text-slate-400]="!u.active"
-                                                [class.bg-slate-500-10]="!u.active">
-                                                {{ u.active ? 'Activo' : 'Baneado' }}
-                                            </button>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <button (click)="deleteUser(u.id)" class="text-red-400 hover:text-red-500 transition-colors" title="Eliminar Usuario">
-                                                🗑️
-                                            </button>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                    <!-- Search Bar -->
+                    <div class="relative w-full md:w-80">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">🔍</span>
+                        <input type="text" (input)="onSearchChange($event)" placeholder="Buscar por nombre o email..."
+                            class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/10 rounded-xl py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-red-500 transition-colors">
                     </div>
                 </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-slate-500 uppercase bg-slate-50 dark:bg-slate-800/50">
+                            <tr>
+                                <th class="px-6 py-3 rounded-l-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group"
+                                    (click)="toggleSort('id')">
+                                    <div class="flex items-center gap-2">
+                                        ID
+                                        <span class="text-[10px] transition-transform"
+                                            [class.rotate-180]="sortOrder() === 'asc'"
+                                            [class.opacity-0]="sortBy() !== 'id'">
+                                            {{ sortOrder() === 'desc' ? '▼' : '▲' }}
+                                        </span>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3">Usuario</th>
+                                <th class="px-6 py-3">Email</th>
+                                <th class="px-6 py-3 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group"
+                                    (click)="toggleSort('es_admin')">
+                                    <div class="flex items-center gap-2">
+                                        Rol
+                                        <span class="text-[10px] transition-transform"
+                                            [class.rotate-180]="sortOrder() === 'asc'"
+                                            [class.opacity-0]="sortBy() !== 'es_admin'">
+                                            {{ sortOrder() === 'desc' ? '▼' : '▲' }}
+                                        </span>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group"
+                                    (click)="toggleSort('active')">
+                                    <div class="flex items-center gap-2">
+                                        Estado
+                                        <span class="text-[10px] transition-transform"
+                                            [class.rotate-180]="sortOrder() === 'asc'"
+                                            [class.opacity-0]="sortBy() !== 'active'">
+                                            {{ sortOrder() === 'desc' ? '▼' : '▲' }}
+                                        </span>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 rounded-r-lg">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (u of users(); track u.id) {
+                            <tr
+                                class="border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5">
+                                <td class="px-6 py-4 font-mono text-slate-400">#{{ u.id }}</td>
+                                <td class="px-6 py-4 font-bold text-slate-800 dark:text-white">{{ u.nickname }}</td>
+                                <td class="px-6 py-4 text-slate-500">{{ u.email }}</td>
+                                <td class="px-6 py-4">
+                                    <span class="px-2 py-1 rounded-md text-xs font-bold"
+                                        [class.bg-red-500-10]="u.es_admin" [class.text-red-500]="u.es_admin"
+                                        [class.bg-blue-500-10]="!u.es_admin" [class.text-blue-500]="!u.es_admin">
+                                        {{ u.es_admin ? 'Admin' : 'Usuario' }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <button (click)="toggleUserStatus(u.id)"
+                                        class="px-2 py-1 rounded text-xs font-bold transition-colors"
+                                        [class.text-green-500]="u.active" [class.bg-green-500-10]="u.active"
+                                        [class.text-slate-400]="!u.active" [class.bg-slate-500-10]="!u.active">
+                                        {{ u.active ? 'Activo' : 'Baneado' }}
+                                    </button>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <!-- Ya no hay botón de borrar permanentemente -->
+                                    <span class="text-slate-400 text-xs">-</span>
+                                </td>
+                            </tr>
+                            }
+                            @if (users().length === 0 && !isLoading()) {
+                            <tr>
+                                <td colspan="6" class="px-6 py-10 text-center text-slate-500 italic">No se encontraron
+                                    usuarios</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination Controls -->
+                <div class="mt-8 flex items-center justify-between border-t border-slate-100 dark:border-white/5 pt-6">
+                    <div class="text-sm text-slate-500">
+                        Página {{ currentPage() }} de {{ totalPages() }}
+                    </div>
+                    <div class="flex gap-2">
+                        <button (click)="prevPage()" [disabled]="currentPage() === 1 || isLoading()"
+                            class="px-4 py-2 rounded-lg font-bold transition-all border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed text-slate-600 dark:text-slate-400">
+                            ⬅ Anterior
+                        </button>
+                        <button (click)="nextPage()" [disabled]="currentPage() === totalPages() || isLoading()"
+                            class="px-4 py-2 rounded-lg font-bold transition-all border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed text-slate-600 dark:text-slate-400">
+                            Siguiente ➡
+                        </button>
+                    </div>
+                </div>
+            </div>
             }
 
             <!-- STORY LEVELS TAB -->
             @if (activeTab() === 'story') {
-                <div class="bg-white dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200 dark:border-white/5 shadow-xl">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Niveles Modo Historia</h2>
-                        <button class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-lg shadow-purple-600/20">
-                            + Nuevo Nivel
-                        </button>
-                    </div>
+            <div
+                class="bg-white dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200 dark:border-white/5 shadow-xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Niveles Modo Historia</h2>
+                    <button
+                        class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-lg shadow-purple-600/20">
+                        + Nuevo Nivel
+                    </button>
+                </div>
 
-                    <div class="grid gap-4">
-                        @for (level of storyLevels(); track level.id) {
-                            <div class="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-white/5 hover:border-purple-500/50 transition-colors group">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center text-purple-500 font-bold text-xl font-jersey">
-                                        {{ level.chapter }}
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-slate-800 dark:text-white">{{ level.title }}</h3>
-                                        <div class="flex gap-2 text-xs mt-1">
-                                            <span class="text-slate-500">XP: {{ level.xp }}</span>
-                                            <span class="text-slate-500">•</span>
-                                            <span class="px-1.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300">{{ level.difficulty }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <button class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded text-slate-500">✏️</button>
-                                    <button (click)="deleteStoryLevel(level.id)" class="p-2 hover:bg-red-500/10 rounded text-red-500">🗑️</button>
+                <div class="grid gap-4">
+                    @for (level of storyLevels(); track level.id) {
+                    <div
+                        class="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-white/5 hover:border-purple-500/50 transition-colors group">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center text-purple-500 font-bold text-xl font-jersey">
+                                {{ level.chapter }}
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 dark:text-white">{{ level.title }}</h3>
+                                <div class="flex gap-2 text-xs mt-1">
+                                    <span class="text-slate-500">XP: {{ level.xp }}</span>
+                                    <span class="text-slate-500">•</span>
+                                    <span
+                                        class="px-1.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300">{{
+                                        level.difficulty }}</span>
                                 </div>
                             </div>
-                        }
+                        </div>
+                        <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button
+                                class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded text-slate-500">✏️</button>
+                            <button (click)="deleteStoryLevel(level.id)"
+                                class="p-2 hover:bg-red-500/10 rounded text-red-500">🗑️</button>
+                        </div>
                     </div>
+                    }
                 </div>
+            </div>
             }
 
             <!-- ROGUELIKE LEVELS TAB -->
             @if (activeTab() === 'roguelike') {
-                <div class="bg-white dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200 dark:border-white/5 shadow-xl">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Desafíos Roguelike</h2>
-                        <button class="bg-orange-600 hover:bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-lg shadow-orange-600/20">
-                            + Nuevo Desafío
-                        </button>
-                    </div>
-
-                     <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left">
-                            <thead class="text-xs text-slate-500 uppercase bg-slate-50 dark:bg-slate-800/50">
-                                <tr>
-                                    <th class="px-6 py-3 rounded-l-lg">Tier</th>
-                                    <th class="px-6 py-3">Nombre del Desafío</th>
-                                    <th class="px-6 py-3">Tiempo Límite</th>
-                                    <th class="px-6 py-3 rounded-r-lg">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for (level of roguelikeLevels(); track level.id) {
-                                    <tr class="border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 group">
-                                        <td class="px-6 py-4">
-                                            <span class="w-8 h-8 flex items-center justify-center rounded-lg font-black font-jersey test-lg"
-                                                  [class.bg-yellow-500-10]="level.tier === 'S'"
-                                                  [class.text-yellow-500]="level.tier === 'S'"
-                                                  [class.bg-purple-500-10]="level.tier === 'A'"
-                                                  [class.text-purple-500]="level.tier === 'A'"
-                                                  [class.bg-slate-500-10]="level.tier === 'C'"
-                                                  [class.text-slate-500]="level.tier === 'C'">
-                                                {{ level.tier }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 font-bold text-slate-800 dark:text-white">{{ level.name }}</td>
-                                        <td class="px-6 py-4 text-mono text-slate-500">{{ level.timeLimit }}s</td>
-                                        <td class="px-6 py-4">
-                                             <div class="flex gap-2">
-                                                <button class="text-slate-400 hover:text-white transition-colors">✏️</button>
-                                                <button (click)="deleteRoguelikeLevel(level.id)" class="text-slate-400 hover:text-red-500 transition-colors">🗑️</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+            <div
+                class="bg-white dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200 dark:border-white/5 shadow-xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Desafíos Roguelike</h2>
+                    <button
+                        class="bg-orange-600 hover:bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-lg shadow-orange-600/20">
+                        + Nuevo Desafío
+                    </button>
                 </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-slate-500 uppercase bg-slate-50 dark:bg-slate-800/50">
+                            <tr>
+                                <th class="px-6 py-3 rounded-l-lg">Tier</th>
+                                <th class="px-6 py-3">Nombre del Desafío</th>
+                                <th class="px-6 py-3">Tiempo Límite</th>
+                                <th class="px-6 py-3 rounded-r-lg">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (level of roguelikeLevels(); track level.id) {
+                            <tr
+                                class="border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 group">
+                                <td class="px-6 py-4">
+                                    <span
+                                        class="w-8 h-8 flex items-center justify-center rounded-lg font-black font-jersey test-lg"
+                                        [class.bg-yellow-500-10]="level.tier === 'S'"
+                                        [class.text-yellow-500]="level.tier === 'S'"
+                                        [class.bg-purple-500-10]="level.tier === 'A'"
+                                        [class.text-purple-500]="level.tier === 'A'"
+                                        [class.bg-slate-500-10]="level.tier === 'C'"
+                                        [class.text-slate-500]="level.tier === 'C'">
+                                        {{ level.tier }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 font-bold text-slate-800 dark:text-white">{{ level.name }}</td>
+                                <td class="px-6 py-4 text-mono text-slate-500">{{ level.timeLimit }}s</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex gap-2">
+                                        <button class="text-slate-400 hover:text-white transition-colors">✏️</button>
+                                        <button (click)="deleteRoguelikeLevel(level.id)"
+                                            class="text-slate-400 hover:text-red-500 transition-colors">🗑️</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            }
+
+            <!-- LOGS TAB -->
+            @if (activeTab() === 'logs') {
+            <div
+                class="bg-white dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200 dark:border-white/5 shadow-xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Logs de Seguridad</h2>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-slate-500 uppercase bg-slate-50 dark:bg-slate-800/50">
+                            <tr>
+                                <th class="px-6 py-3 rounded-l-lg">Fecha</th>
+                                <th class="px-6 py-3 border-transparent">Usuario</th>
+                                <th class="px-6 py-3 border-transparent">Acción</th>
+                                <th class="px-6 py-3 rounded-r-lg">Detalles</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (log of logs(); track log.id) {
+                            <tr
+                                class="border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5">
+                                <td class="px-6 py-4 font-mono text-xs text-slate-500">
+                                    {{ log.created_at | date:'short' }}
+                                </td>
+                                <td class="px-6 py-4 font-bold text-slate-800 dark:text-white">
+                                    @if(log.user) {
+                                    {{ log.user.nickname }} <span class="text-xs font-normal text-slate-500">({{
+                                        log.user.email
+                                        }})</span>
+                                    } @else {
+                                    Unknown
+                                    }
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span
+                                        class="px-2 py-1 rounded-md text-xs font-bold bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300">
+                                        {{ log.action }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-xs font-mono text-slate-400">
+                                    {{ log.details }}
+                                </td>
+                            </tr>
+                            }
+                            @if (logs().length === 0) {
+                            <tr>
+                                <td colspan="4" class="px-6 py-10 text-center text-slate-500 italic">No hay registros
+                                    recientes
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination Logs -->
+                <div class="mt-4 flex justify-end gap-2">
+                    <button (click)="prevLogPage()" [disabled]="logsCurrentPage() === 1"
+                        class="px-3 py-1 text-sm rounded border dark:border-white/10 disabled:opacity-30">
+                        Anterior
+                    </button>
+                    <span class="px-2 text-sm self-center">{{ logsCurrentPage() }} / {{ logsTotalPages() }}</span>
+                    <button (click)="nextLogPage()" [disabled]="logsCurrentPage() === logsTotalPages()"
+                        class="px-3 py-1 text-sm rounded border dark:border-white/10 disabled:opacity-30">
+                        Siguiente
+                    </button>
+                </div>
+            </div>
             }
 
         </main>

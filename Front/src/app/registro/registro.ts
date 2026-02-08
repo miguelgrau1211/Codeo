@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, HostListener, ChangeDetectorRef, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, HostListener, ChangeDetectorRef, inject, ChangeDetectionStrategy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth-service';
@@ -163,27 +163,57 @@ export class Registro implements AfterViewInit, OnDestroy {
     }
   }
 
-  onSubmit() {
-    if (this.registroForm.valid) {
-      const formValue = this.registroForm.value;
-      const payload = {
-        nickname: formValue.username,
-        nombre: formValue.nombre,
-        apellidos: formValue.apellidos,
-        email: formValue.email,
-        password: formValue.password,
-        terminos_aceptados: true
-      };
+  errorMessage = signal<string>(''); // Para errores generales
 
-      this.authService.register(payload).subscribe({
-        next: (response) => {
-          console.log('Registro exitoso:', response);
-          this.router.navigate(['/login']); // si el registro es exitoso, redirige al login
-        },
-        error: (error) => {
-          console.error('Error en el registro:', error);
-        }
-      });
+  onSubmit() {
+    this.errorMessage.set(''); // Limpiar errores previos
+
+    if (this.registroForm.invalid) {
+      this.registroForm.markAllAsTouched();
+      return;
     }
+
+    const formValue = this.registroForm.value;
+    const payload = {
+      nickname: formValue.username,
+      nombre: formValue.nombre,
+      apellidos: formValue.apellidos,
+      email: formValue.email,
+      password: formValue.password,
+      terminos_aceptados: true
+    };
+
+    console.log('Enviando payload al backend...');
+
+    this.authService.register(payload).subscribe({
+      next: (response) => {
+        console.log('Registro exitoso:', response);
+        this.router.navigate(['/login']);
+      },
+      error: (error) => {
+        console.error('Error detallado del backend:', error);
+
+        if (error.status === 422 && error.error?.errors) {
+          // Mapear errores de Laravel a los controles del formulario
+          const serverErrors = error.error.errors;
+
+          Object.keys(serverErrors).forEach(key => {
+            // Mapear nombre de campo backend -> frontend si es necesario
+            let controlName = key;
+            if (key === 'nickname') controlName = 'username';
+
+            const control = this.registroForm.get(controlName);
+            if (control) {
+              // Asignar el error al control para que se muestre en el HTML
+              control.setErrors({ serverError: serverErrors[key][0] });
+              control.markAsTouched();
+            }
+          });
+        } else {
+          // Error general no relacionado con campos específicos
+          this.errorMessage.set(error.error?.message || 'Ocurrió un error inesperado al registrarse.');
+        }
+      }
+    });
   }
 }

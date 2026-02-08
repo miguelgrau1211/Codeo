@@ -11,6 +11,8 @@ class UsuarioDesactivado extends Model
     protected $fillable = [
         'usuario_id_original',
         'nickname',
+        'nombre',
+        'apellidos',
         'email',
         'nivel_alcanzado',
         'motivo',
