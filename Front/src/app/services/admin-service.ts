@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -27,12 +27,29 @@ export interface PaginatedResponse<T> {
     total: number;
 }
 
+export interface PaginatedResponse<T> {
+    data: T[];
+    current_page: number;
+    last_page: number;
+    total: number;
+    per_page: number;
+}
+
 @Injectable({
     providedIn: 'root'
 })
 export class AdminService {
     private http = inject(HttpClient);
     private apiUrl = 'http://localhost/api/admin';
+
+    // State Cache
+    storyState = signal<{ data: StoryLevel[], page: number, total: number, last_page: number, loaded: boolean }>({
+        data: [], page: 1, total: 0, last_page: 1, loaded: false
+    });
+
+    roguelikeState = signal<{ data: RoguelikeLevel[], page: number, total: number, last_page: number, loaded: boolean }>({
+        data: [], page: 1, total: 0, last_page: 1, loaded: false
+    });
 
     private getHeaders() {
         const token = sessionStorage.getItem('token');
@@ -79,6 +96,57 @@ export class AdminService {
             headers: this.getHeaders()
         });
     }
+
+    // Niveles historia
+    getStoryLevels(page: number = 1): Observable<PaginatedResponse<StoryLevel>> {
+        return this.http.get<PaginatedResponse<StoryLevel>>(`${this.apiUrl}/niveles-historia?page=${page}`, { headers: this.getHeaders() });
+    }
+
+    getStoryLevelsDesactivados(): Observable<StoryLevel[]> {
+        return this.http.get<StoryLevel[]>(`${this.apiUrl}/niveles-historia/desactivados`, { headers: this.getHeaders() });
+    }
+
+    toggleStoryLevelStatus(id: number, motivo: string = 'Admin action'): Observable<any> {
+        return this.http.post(`${this.apiUrl}/niveles-historia/${id}/toggle-status`, { motivo }, { headers: this.getHeaders() });
+    }
+
+    createStoryLevel(data: any): Observable<StoryLevel> {
+        return this.http.post<StoryLevel>(`${this.apiUrl}/niveles-historia`, data, { headers: this.getHeaders() });
+    }
+
+    updateStoryLevel(id: number, data: any): Observable<StoryLevel> {
+        return this.http.put<StoryLevel>(`${this.apiUrl}/niveles-historia/${id}`, data, { headers: this.getHeaders() });
+    }
+
+    // Niveles roguelike
+    getRoguelikeLevels(page: number = 1): Observable<PaginatedResponse<RoguelikeLevel>> {
+        return this.http.get<PaginatedResponse<RoguelikeLevel>>(`${this.apiUrl}/niveles-roguelike?page=${page}`, { headers: this.getHeaders() });
+    }
+
+    getStoryLevel(id: number): Observable<StoryLevel> {
+        return this.http.get<StoryLevel>(`${this.apiUrl}/niveles-historia/${id}`, { headers: this.getHeaders() });
+    }
+
+    getRoguelikeLevel(id: number): Observable<RoguelikeLevel> {
+        return this.http.get<RoguelikeLevel>(`${this.apiUrl}/niveles-roguelike/${id}`, { headers: this.getHeaders() });
+    }
+
+    getRoguelikeLevelsDesactivados(): Observable<RoguelikeLevel[]> {
+        return this.http.get<RoguelikeLevel[]>(`${this.apiUrl}/niveles-roguelike/desactivados`, { headers: this.getHeaders() });
+    }
+
+    toggleRoguelikeLevelStatus(id: number, motivo: string = 'Admin action'): Observable<any> {
+        return this.http.post(`${this.apiUrl}/niveles-roguelike/${id}/toggle-status`, { motivo }, { headers: this.getHeaders() });
+    }
+
+    createRoguelikeLevel(data: any): Observable<RoguelikeLevel> {
+        // Las rutas protegidas de CREATE/UPDATE están en /api/admin/niveles-roguelike
+        return this.http.post<RoguelikeLevel>(`${this.apiUrl}/niveles-roguelike`, data, { headers: this.getHeaders() });
+    }
+
+    updateRoguelikeLevel(id: number, data: any): Observable<RoguelikeLevel> {
+        return this.http.put<RoguelikeLevel>(`${this.apiUrl}/niveles-roguelike/${id}`, data, { headers: this.getHeaders() });
+    }
 }
 
 export interface DashboardStats {
@@ -95,4 +163,25 @@ export interface AdminLog {
     action: string;
     details: string | null;
     created_at: string;
+}
+
+export interface StoryLevel {
+    id: number;
+    orden: number;
+    titulo: string;
+    descripcion: string;
+    recompensa_exp: number;
+    recompensa_monedas: number;
+    nivel_id_original?: number; // Para desactivados
+    fecha_desactivacion?: string;
+}
+
+export interface RoguelikeLevel {
+    id: number;
+    dificultad: string;
+    titulo: string;
+    descripcion: string;
+    recompensa_monedas: number;
+    nivel_id_original?: number;
+    fecha_desactivacion?: string;
 }

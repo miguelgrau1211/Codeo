@@ -5,23 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class NivelRoguelike extends Model
+class NivelRoguelikeDesactivado extends Model
 {
     use HasFactory;
 
-    protected $table = 'niveles_roguelike';
+    protected $table = 'niveles_roguelike_desactivados';
 
     protected $fillable = [
-        'id',
+        'nivel_id_original',
         'dificultad',
         'titulo',
         'descripcion',
         'test_cases',
-        'recompensa_monedas'
+        'recompensa_monedas',
+        'motivo',
+        'fecha_desactivacion'
     ];
 
     protected $casts = [
-        'recompensa_monedas' => 'integer',
         'test_cases' => 'array',
+        'fecha_desactivacion' => 'datetime',
+        'recompensa_monedas' => 'integer'
     ];
 }
