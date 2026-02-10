@@ -1,7 +1,9 @@
-import { Component, signal, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, signal, ViewEncapsulation, OnInit, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { RoguelikeService, NivelRoguelike } from '../services/roguelike-service';
+import { EjecutarCodigoService } from '../services/ejecutar-codigo-service';
 
 @Component({
   selector: 'app-modo-infinito',
@@ -9,31 +11,34 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   imports: [CommonModule, RouterLink],
   templateUrl: './modo-infinito.html',
   styleUrl: './modo-infinito.css',
-  encapsulation: ViewEncapsulation.None // Needed for dynamic syntax regex classes to apply
+  encapsulation: ViewEncapsulation.None 
 })
 export class ModoInfinito implements OnInit {
+  
+  // UI State
   showIntro = signal(true);
   startExit = signal(false);
   isInstructionsOpen = signal(true);
-  codeContent = signal(`function findHighestPrime($numbers) {
-    $highest = null;
+  
+  // Level Data
+  titulo = signal<string>('Cargando...');
+  descripcion = signal<string>('');
+  testCases = signal<any[]>([]);
+  nivelId = signal<number | null>(null);
+  
+  // Editor State
+  // Default template since DB lacks initial code field for now
+  codeContent = signal('');
 
-    foreach ($numbers as $num) {
-        // Tu lógica aquí
-        if (isPrime($num)) {
-            $highest = $num;
-        }
-    }
-
-    return $highest;
-}`);
   highlightedCode = signal<SafeHtml>('');
   currentLine = signal<number | null>(null);
   lineNumbers = signal<number[]>([1]);
+  
   // Game State
   lives = signal(3);
   coins = signal(150);
   time = signal('05:00');
+  nivelesCompletados = signal(0);
   
   // Shop & Upgrades
   showMejoras = signal(false);
@@ -46,11 +51,86 @@ export class ModoInfinito implements OnInit {
     { icon: '💰', name: 'Minería de Datos', desc: 'Ganas +50% de monedas por nivel.' }
   ];
 
-  constructor(private sanitizer: DomSanitizer) {
+  // Reset functionality
+  showResetConfirm = signal(false);
+  initialCode = signal('');
+  
+  // Next Level Button
+  showNextLevelButton = signal(false);
+
+  constructor(
+    private sanitizer: DomSanitizer,
+    private roguelikeService: RoguelikeService,
+    private ejecutarCodigoService: EjecutarCodigoService
+  ) {
     // Initial highlight
     this.updateCode(this.codeContent());
   }
 
+  requestReset() {
+      this.showResetConfirm.set(true);
+  }
+
+  confirmReset() {
+      const code = this.initialCode();
+      this.codeContent.set(code);
+      this.updateCode(code);
+      this.showResetConfirm.set(false);
+      this.executionResult.set(null);
+      this.showNextLevelButton.set(false);
+  }
+
+  cancelReset() {
+      this.showResetConfirm.set(false);
+  }
+
+  ngOnInit() {
+    this.loadRandomLevel();
+  }
+
+  loadRandomLevel() {
+    // Show loading state
+    this.showIntro.set(true);
+    this.startExit.set(false);
+    this.showNextLevelButton.set(false);
+    this.executionResult.set(null);
+
+    // 1. Fetch Random Level
+    // 1. Fetch Random Level
+    this.roguelikeService.getNivelAleatorio(this.nivelesCompletados()).subscribe({
+        next: (nivel: NivelRoguelike) => {
+            this.nivelId.set(nivel.id);
+            this.titulo.set(nivel.titulo);
+            this.descripcion.set(nivel.descripcion);
+            this.testCases.set(nivel.test_cases || []);
+            
+            // If DB had initial code, we would set it here. For now, keep default template.
+            this.initialCode.set(`# La variable $input_data contiene los datos de entrada
+# Tu código aquí
+`);
+            this.codeContent.set(this.initialCode());
+            
+            this.updateCode(this.codeContent());
+            
+            // 2. Hide Loading Screen
+            setTimeout(() => {
+                this.startExit.set(true); 
+                setTimeout(() => this.showIntro.set(false), 500);
+            }, 1000); // Simulate brief load
+        },
+        error: (err) => {
+            console.error('Error loading roguelike level', err);
+            this.titulo.set('Error de conexión');
+            this.startExit.set(true);
+            this.showIntro.set(false);
+        }
+    });
+  }
+
+  goToNextLevel() {
+      this.loadRandomLevel();
+  }
+  
   buyBox() {
     if (this.coins() >= 100) {
         this.coins.update(c => c - 100);
@@ -65,16 +145,6 @@ export class ModoInfinito implements OnInit {
     this.showMejoras.set(false);
   }
 
-  ngOnInit() {
-    // Reveal editor after animation
-    setTimeout(() => {
-        this.startExit.set(true); // Fade out overlay
-    }, 2000);
-    setTimeout(() => {
-        this.showIntro.set(false); // Remove from DOM
-    }, 2500);
-  }
-  
   toggleInstructions() {
     this.isInstructionsOpen.update(v => !v);
   }
@@ -137,8 +207,8 @@ export class ModoInfinito implements OnInit {
     // 1. Strings (Green) - '...' or "..."
     escaped = escaped.replace(/(['"])(?:(?=(\\?))\2.)*?\1/g, '<span class="token-string">$&</span>');
 
-    // 2. Comments (Grey) - // ...
-    escaped = escaped.replace(/\/\/.*/g, '<span class="token-comment">$&</span>');
+    // 2. Comments (Grey) - # ...
+    escaped = escaped.replace(/#.*/g, '<span class="token-comment">$&</span>');
 
     // 3. PHP Variables (Red) - $var
     escaped = escaped.replace(/\$[a-zA-Z0-9_]+/g, '<span class="token-variable">$&</span>');
@@ -159,5 +229,38 @@ export class ModoInfinito implements OnInit {
     escaped = escaped.replace(/\b\d+\b/g, '<span class="token-number">$&</span>');
 
     this.highlightedCode.set(this.sanitizer.bypassSecurityTrustHtml(escaped));
+  }
+
+  // Execution Output
+  executionResult = signal<any>(null);
+
+  ejecutarCodigo() {
+      if (!this.nivelId()) {
+          console.error("No level loaded");
+          return;
+      }
+      
+      const token = sessionStorage.getItem("token") || '';
+      this.executionResult.set({ message: 'Ejecutando tests...', loading: true });
+      
+      this.ejecutarCodigoService.ejecutarCodigo(this.codeContent(), 'roguelike', this.nivelId()!, token).subscribe({
+        next: (response) => {
+            console.log("Resultado Ejecución:", response);
+            this.executionResult.set(response);
+
+            if (response.correcto) {
+                this.showNextLevelButton.set(true);
+                this.nivelesCompletados.update(n => n + 1);
+            }
+        },
+        error: (err) => {
+            console.error(err);
+            this.executionResult.set({ 
+                correcto: false, 
+                message: 'Error al conectar con el servidor.',
+                detalles: []
+            });
+        }
+      });
   }
 }

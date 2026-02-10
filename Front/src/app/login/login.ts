@@ -194,32 +194,36 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
 
           // Pre-fetch data for next screens while animation plays
           const token = response.access_token;
-          const requests = [
-            this.authService.esAdmin(token),
-            this.progresoService.getProgresoHistoria()
-          ];
-
+          
           // Minimum animation time
           const minAnimationTime = new Promise(resolve => setTimeout(resolve, 1500));
 
-          // Wait for both Data AND Animation
-          import('rxjs').then(({ forkJoin }) => {
-            forkJoin(requests).subscribe({
-              next: () => {
-                // Only navigate when data IS READY
-                minAnimationTime.then(() => {
-                  this.router.navigate(['/dashboard']);
-                });
-              },
-              error: (err) => {
-                console.warn('Error displaying pre-fetched data but continuing:', err);
-                // Navigate anyway even if some pre-fetch failed
-                minAnimationTime.then(() => {
-                  this.router.navigate(['/dashboard']);
-                });
-              }
+          // Use setTimeout to ensure sessionStorage is fully written before API calls
+          setTimeout(() => {
+            const requests = [
+              this.authService.esAdmin(token),
+              this.progresoService.getProgresoHistoria()
+            ];
+
+            // Wait for both Data AND Animation
+            import('rxjs').then(({ forkJoin }) => {
+              forkJoin(requests).subscribe({
+                next: () => {
+                  // Only navigate when data IS READY
+                  minAnimationTime.then(() => {
+                    this.router.navigate(['/dashboard']);
+                  });
+                },
+                error: (err) => {
+                  console.warn('Error pre-fetching data but continuing:', err);
+                  // Navigate anyway even if some pre-fetch failed
+                  minAnimationTime.then(() => {
+                    this.router.navigate(['/dashboard']);
+                  });
+                }
+              });
             });
-          });
+          }, 0);
         },
         error: (error) => {
           console.error('Login failed:', error);

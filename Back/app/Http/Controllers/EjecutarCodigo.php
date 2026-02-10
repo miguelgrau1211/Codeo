@@ -6,6 +6,7 @@ use App\Models\NivelesHistoria;
 use App\Models\NivelRoguelike;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
 
 class EjecutarCodigo extends Controller
 {
@@ -20,7 +21,6 @@ class EjecutarCodigo extends Controller
         $codigoUsuario = $request->codigo;
         $tipo = $request->tipo;
         $nivelId = $request->nivel_id;
-        
 
         // 1. Obtener el resultado esperado de la Base de Datos según el tipo de nivel
         if ($tipo === 'historia') {
@@ -28,27 +28,15 @@ class EjecutarCodigo extends Controller
             if (!$nivel) {
                 return response()->json(['message' => 'Nivel de historia no encontrado'], 404);
             }
-            // En historia, comparamos con 'solucion_esperada' (asumiendo que es el valor de retorno).
-            // OJO: 'solucion_esperada' en la BD podría ser el código que da la solución o el valor exacto.
-            // Asumiremos que es el valor exacto que debe devolver el código.
-            $tests_historia = $nivel->test_cases;
+            $tests = $nivel->test_cases;
 
         } else { // Roguelike
             $nivel = NivelRoguelike::find($nivelId);
             if (!$nivel) {
                 return response()->json(['message' => 'Nivel roguelike no encontrado'], 404);
             }
-            // En Roguelike, tenemos 'codigo_validador' que podría ser el resultado esperado
-            $tests_roguelike = $nivel->test_cases;
+            $tests = $nivel->test_cases;
         }
-
-        // 2. Ejecutar el código del usuario usando AWS Lambda
-        $awsLambdaUrl = env('AWS_LAMBDA_URL'); 
-        $todasPasadas = true;
-        $detallesTests = [];
-
-        // Determinar qué tests usar
-        $tests = isset($tests_historia) ? $tests_historia : $tests_roguelike;
 
         if (!$tests || !is_array($tests)) {
              return response()->json([
@@ -57,80 +45,86 @@ class EjecutarCodigo extends Controller
             ], 200);
         }
 
+        // 2. Ejecutar el código del usuario usando AWS Lambda (UNA SOLA LLAMADA)
+        $awsLambdaUrl = env('AWS_LAMBDA_URL'); 
+        
         try {
-            foreach ($tests as $index => $test) {
-                // Preparar petición a Lambda
-                $response = Http::post($awsLambdaUrl, [
-                    'code' => $codigoUsuario,
-                    'input' => $test['input'] ?? '' // Enviar input si existe, o vacío
-             // Enviar output si existe, o vacío
-                ]);
+            // Enviamos el código y TODOS los tests a la Lambda
+            $payload = [
+                'code' => $codigoUsuario,
+                'tests' => $tests // Array de {input, output}
+            ];
 
-                if ($response->failed()) {
-                     throw new \Exception("Error al conectar con el servidor de ejecución: " . $response->status());
-                }
+            $response = Http::post($awsLambdaUrl, $payload);
 
-                    $lambdaRaw = $response->json();
-                    
-                    // Decodificar el body si la Lambda devuelve formato Proxy (API Gateway)
-                    if (isset($lambdaRaw['body']) && is_string($lambdaRaw['body'])) {
-                        $lambdaResult = json_decode($lambdaRaw['body'], true);
-                    } else {
-                        $lambdaResult = $lambdaRaw;
-                    }
+            if ($response->failed()) {
+                 throw new \Exception("Error al conectar con el servidor de ejecución: " . $response->status());
+            }
 
-                    // --- DEBUG TEMPORAL REMOVED ---
-                    
-                    // Procesar respuesta de Lambda
-                    if (isset($lambdaResult['error']) && !empty($lambdaResult['error'])) {
-                        // Si hubo error de ejecución (SyntaxError, etc)
-                        return response()->json([
-                            'correcto' => false,
-                            'message' => 'Error de ejecución en tu código:',
-                            'error' => $lambdaResult['error']
-                        ], 200);
-                    }
-
-                    $outputObtenido = isset($lambdaResult['output']) ? trim($lambdaResult['output']) : '';
-                    $outputEsperado = trim($test['output']);
-
-                    // Comparar (case-insensitive para strings simples, o estricto)
-                    // Aquí hacemos comparación estricta de string trimado
-                    $pasoTest = ($outputObtenido === $outputEsperado);
-
-                    $detallesTests[] = [
-                        'input' => $test['input'] ?? 'Sin input',
-                        'esperado' => $outputEsperado,
-                        'obtenido' => $outputObtenido,
-                        'correcto' => $pasoTest
-                    ];
-
-                    if (!$pasoTest) {
-                        $todasPasadas = false;
-                        // Opcional: break; si quieres parar al primer fallo
-                    }
-                } // This brace closes the foreach loop
+            $lambdaRaw = $response->json();
             
+            // Decodificar el body si la Lambda devuelve formato Proxy (API Gateway)
+            if (isset($lambdaRaw['body']) && is_string($lambdaRaw['body'])) {
+                $lambdaResult = json_decode($lambdaRaw['body'], true);
+            } else {
+                $lambdaResult = $lambdaRaw;
+            }
+
+            // Verificar si hubo error general en la Lambda (fuera de los tests)
+            if (isset($lambdaResult['error']) && !empty($lambdaResult['error'])) {
+                return response()->json([
+                    'correcto' => false,
+                    'message' => 'Error crítico de ejecución:',
+                    'error' => $lambdaResult['error']
+                ], 200);
+            }
+
+            // 3. Procesar resultados devueltos por la Lambda
+            // La Lambda debe devolver 'results' => [ {passed, input, expected, actual, output, error}, ... ]
+            $resultadosTests = $lambdaResult['results'] ?? [];
+            $todasPasadas = true;
+
+            // Verificar si todos pasaron
+            foreach ($resultadosTests as $res) {
+                 // La lambda devuelve 'passed' (boolean)
+                 if (isset($res['passed']) && !$res['passed']) {
+                     $todasPasadas = false;
+                     break;
+                 }
+            }
+            
+            $recompensas = [];
+
+            if ($todasPasadas && $tipo === 'roguelike') {
+                /** @var \App\Models\Usuario $user */
+                $user = Auth::user();
+                if ($user) {
+                    $xp = 25;
+                    $coins = 10;
+                    $user->increment('exp_total', $xp);
+                    $user->increment('monedas', $coins);
+                    
+                    $recompensas = [
+                        'xp' => $xp,
+                        'monedas' => $coins,
+                        'message' => "Ganaste $xp XP y $coins Monedas."
+                    ];
+                }
+            }
+            
+            // Estructura de respuesta para el Front
+            return response()->json([
+                'correcto' => $todasPasadas,
+                'message' => $todasPasadas ? '¡Genial! Todos los tests pasaron.' : 'Algunos tests fallaron. Revisa tu lógica.',
+                'detalles' => $resultadosTests,
+                'recompensas' => $recompensas
+            ], 200);
+
         } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Error interno del sistema de evaluación',
                 'error' => $e->getMessage()
             ], 200); 
-        }
-
-        // 3. Devolver resultado final
-        if ($todasPasadas) {
-            return response()->json([
-                'correcto' => true,
-                'message' => '¡Genial! Todos los tests pasaron.',
-                'detalles' => $detallesTests
-            ], 200);
-        } else {
-            return response()->json([
-                'correcto' => false,
-                'message' => 'Algunos tests fallaron. Revisa tu lógica.',
-                'detalles' => $detallesTests
-            ], 200);
         }
     }
 }

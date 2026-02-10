@@ -28,9 +28,17 @@ export class ModoHistoria implements OnInit {
   highlightedCode = signal<SafeHtml>('');
   descripcion = signal<string | undefined>(undefined);
   contenidoTeorico = signal<SafeHtml | undefined>(undefined);
+  testCases = signal<any[]>([]);
   currentLine = signal<number | null>(null);
   lineNumbers = signal<number[]>([1]);
   scrollTop = signal(0); // Track scroll position
+
+  // Reset functionality
+  showResetConfirm = signal(false);
+  initialCode = signal(''); // Store initial code for reset
+  
+  // Next Level Button
+  showNextLevelButton = signal(false);
 
   constructor(
     private sanitizer: DomSanitizer, 
@@ -46,27 +54,39 @@ export class ModoHistoria implements OnInit {
         
         // If we have data
         if (data && data.progreso_detallado) {
-             const ultimoNivel = data.progreso_detallado.length 
-                ? data.progreso_detallado[data.progreso_detallado.length - 1]
-                : null;
+             // Find the first level that is NOT completed
+             let nextLevel = data.progreso_detallado.find((l: any) => !l.completado);
+             
+             // If all are completed, or none found (shouldn't happen with full list), default to the last one (Review Mode)
+             if (!nextLevel && data.progreso_detallado.length > 0) {
+                 nextLevel = data.progreso_detallado[data.progreso_detallado.length - 1];
+             }
 
-             if (ultimoNivel) {
-                 const codigo = ultimoNivel.codigo_solucion_usuario || '';
+             if (nextLevel) {
+                 this.showNextLevelButton.set(false); // Reset button state on level load
+
+                 const codigo = nextLevel.codigo_solucion_usuario || '';
                  
                  // Update Content
                  this.codeContent.set(codigo);
                  this.updateCode(codigo);
                  
                  // Update Level Info
-                 const nivelId = ultimoNivel.nivel_id;
+                 // Ensure we use the correct ID property. Backend sends 'nivel_id' for progress items, or 'id' for the level itself?
+                 // In the backend Refactor:
+                 // 'nivel_id' => $nivel->id
+                 // So we should use 'nivel_id'
                  
+                 this.currentLevel.set(nextLevel.nivel_id);
+                 this.orden.set(nextLevel.orden);
+                 this.titulo.set(nextLevel.titulo);
+                 this.descripcion.set(nextLevel.descripcion);
+                 this.contenidoTeorico.set(this.sanitizer.bypassSecurityTrustHtml(nextLevel.contenido_teorico));
+                 this.testCases.set(nextLevel.test_cases || []);
                  
-                 this.currentLevel.set(nivelId);
-                 this.orden.set(ultimoNivel.orden);
-                 this.titulo.set(ultimoNivel.titulo);
-                 this.descripcion.set(ultimoNivel.descripcion);
-                 this.contenidoTeorico.set(this.sanitizer.bypassSecurityTrustHtml(ultimoNivel.contenido_teorico));
-                 
+                 // Store initial code for reset
+                 this.initialCode.set(nextLevel.codigo_inicial || '');
+
                  // Hide Loading Screen safely
                  setTimeout(() => {
                      this.startExit.set(true); 
@@ -75,6 +95,33 @@ export class ModoHistoria implements OnInit {
              }
         }
     });
+  }
+
+  requestReset() {
+      this.showResetConfirm.set(true);
+  }
+
+  confirmReset() {
+      const code = this.initialCode();
+      this.codeContent.set(code);
+      this.updateCode(code);
+      this.showResetConfirm.set(false);
+      this.executionResult.set(null); // Clear previous results
+      this.showNextLevelButton.set(false);
+  }
+
+  cancelReset() {
+      this.showResetConfirm.set(false);
+  }
+
+  goToNextLevel() {
+      this.showIntro.set(true); 
+      this.startExit.set(false);
+      
+      this.progresoHistoriaService.getProgresoHistoria().subscribe({
+          next: () => console.log('Nivel siguiente cargado'),
+          error: (e) => console.error(e)
+      });
   }
 
   ngOnInit() {
@@ -93,7 +140,7 @@ export class ModoHistoria implements OnInit {
         });
     }
   }
-  
+
   toggleInstructions() {
     this.isInstructionsOpen.update(v => !v);
   }
@@ -182,14 +229,44 @@ export class ModoHistoria implements OnInit {
 
   @Input() nivel: number = 1;
 
+  // Execution Output
+  executionResult = signal<any>(null);
+
   ejecutarCodigo() {
     console.log(this.codeContent());
-    this.ejecutarCodigoService.ejecutarCodigo(this.codeContent(), 'historia', this.nivel, sessionStorage.getItem("token")!).subscribe({
+    
+    this.executionResult.set({ message: 'Ejecutando tests...', loading: true });
+
+    this.ejecutarCodigoService.ejecutarCodigo(this.codeContent(), 'historia', this.currentLevel()!, sessionStorage.getItem("token")!).subscribe({
       next: (response) => {
         console.log(response);
+         this.executionResult.set(response);
+
+         // If execution was successful, save progress
+         if (response.correcto) {
+            const progreso = {
+                nivel_id: this.currentLevel(),
+                completado: true,
+                codigo_solucion_usuario: this.codeContent()
+            };
+
+            this.progresoHistoriaService.updateProgresoHistoria(progreso).subscribe({
+                next: (res) => {
+                    console.log('Progreso guardado:', res);
+                    // Show "Next Level" button ONLY on success
+                    this.showNextLevelButton.set(true);
+                },
+                error: (err) => console.error('Error guardando progreso:', err)
+            });
+         }
       },
       error: (error) => {
         console.error(error);
+        this.executionResult.set({ 
+            correcto: false, 
+            message: 'Error al conectar con el servidor.',
+            detalles: []
+        });
       }
     });
   }

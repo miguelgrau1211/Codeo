@@ -28,7 +28,7 @@ Route::post('/users', [UserController::class, 'store']); // Registro
 Route::get('/ranking', [UserController::class, 'getRanking']);
 
 // Datos del juego (pueden ser públicos para mostrar en landing page)
-Route::get('/niveles-roguelike/aleatorio/{dificultad}', [NivelesRoguelikeController::class, 'getNivelModoInfinito']);
+Route::get('/niveles-roguelike/aleatorio', [NivelesRoguelikeController::class, 'getNivelModoInfinito']);
 Route::apiResource('niveles-roguelike', NivelesRoguelikeController::class)->only(['index', 'show']);
 Route::get('/mejoras/random', [MejorasController::class, 'getTresMejorasRandom']);
 Route::apiResource('mejoras', MejorasController::class)->only(['index', 'show']);

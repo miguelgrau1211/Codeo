@@ -22,5 +22,6 @@ class NivelRoguelike extends Model
     protected $casts = [
         'recompensa_monedas' => 'integer',
         'test_cases' => 'array',
+        
     ];
 }

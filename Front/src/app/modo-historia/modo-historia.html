@@ -36,6 +36,20 @@
         </div>
     }
 
+    <!-- Reset Confirmation Overlay -->
+    @if (showResetConfirm()) {
+        <div class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center animate-fade-in p-4">
+            <div class="bg-slate-900 border border-white/10 rounded-2xl p-6 max-w-sm w-full shadow-2xl scale-in-center">
+                <h3 class="text-xl font-bold text-white mb-2">¿Reiniciar Código?</h3>
+                <p class="text-slate-400 text-sm mb-6">Tu código actual se perderá y volverás al estado inicial del nivel.</p>
+                <div class="flex items-center gap-3">
+                    <button (click)="cancelReset()" class="flex-1 py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Cancelar</button>
+                    <button (click)="confirmReset()" class="flex-1 py-2 rounded-lg bg-red-600 text-white hover:bg-red-500 transition font-bold">Reiniciar</button>
+                </div>
+            </div>
+        </div>
+    }
+
     <!-- Main Workspace -->
     <main class="flex-1 flex overflow-hidden relative">
         
@@ -82,15 +96,38 @@
                     <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest pl-1">Instrucciones</h3>
                     
                     <div class="flex gap-4 items-start">
-                        <div class="flex flex-col items-center gap-1 mt-1">
-                            <div class="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-slate-400">1</div>
-                            <div class="w-0.5 h-12 bg-slate-800"></div>
-                        </div>
+                        
                         <div class="pb-6">
                             <div [innerHTML]="contenidoTeorico()"></div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Examples / Test Cases -->
+                @if (testCases().length > 0) {
+                    <div class="mt-8">
+                        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest pl-1 mb-3">Ejemplos</h3>
+                        <div class="grid grid-cols-1 gap-3 text-xs font-mono">
+                             @for (test of testCases(); track $index) {
+                                <div class="bg-black/30 rounded-lg border border-white/5 overflow-hidden">
+                                    <div class="bg-white/5 px-3 py-1.5 text-[10px] font-bold text-slate-500 uppercase flex justify-between">
+                                         <span>Caso {{ $index + 1 }}</span>
+                                    </div>
+                                    <div class="p-3 space-y-2">
+                                        <div class="flex justify-between items-start gap-4">
+                                             <span class="text-slate-500 shrink-0">Input:</span>
+                                             <span class="text-slate-300 text-right break-all">{{ test.input }}</span>
+                                        </div>
+                                        <div class="flex justify-between items-start gap-4 border-t border-white/5 pt-2">
+                                             <span class="text-slate-500 shrink-0">Output:</span>
+                                             <span class="text-purple-400 font-bold text-right break-all">{{ test.output }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                             }
+                        </div>
+                    </div>
+                }
 
                 <!-- Hints -->
                 <div class="mt-8 p-4 rounded-xl bg-blue-500/5 border border-blue-500/10 border-l-4 border-l-blue-500">
@@ -119,7 +156,7 @@
                 </div>
                 
                 <div class="flex items-center gap-2">
-                    <button class="px-3 py-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white text-xs font-bold transition-colors flex items-center gap-2">
+                    <button (click)="requestReset()" class="px-3 py-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white text-xs font-bold transition-colors flex items-center gap-2">
                         <span>↺</span> Reset
                     </button>
                     <button (click)="ejecutarCodigo()" class="pl-3 pr-4 py-1.5 rounded-lg bg-green-600 hover:bg-green-500 text-white text-xs font-bold transition-all hover:shadow-[0_0_15px_rgba(34,197,94,0.4)] flex items-center gap-2 transform active:scale-95 group shadow-lg">
@@ -166,6 +203,7 @@
                     <textarea id="code-input" #textarea
                               class="absolute inset-0 w-full h-full bg-transparent text-transparent caret-white resize-none focus:outline-none font-mono z-10 whitespace-pre overflow-auto" 
                               style="font-family: monospace !important; font-size: 14px !important; line-height: 24px !important; padding: 16px !important; margin: 0 !important; border: none !important; outline: none !important;"
+                              [value]="codeContent()"
                               spellcheck="false" 
                               autocapitalize="off"
                               autocomplete="off"
@@ -175,18 +213,7 @@
                               (blur)="onBlur()"
                               (focus)="onFocus($event)"
                               (input)="onCodeInput($event); syncScroll($event, lineNumbersRef, scrollContainer)"
-                              (scroll)="syncScroll($event, lineNumbersRef, scrollContainer)">function findHighestPrime($numbers) {
-    $highest = null;
-
-    foreach ($numbers as $num) {
-        // Tu lógica aquí
-        if (isPrime($num)) {
-            $highest = $num;
-        }
-    }
-
-    return $highest;
-}</textarea>
+                              (scroll)="syncScroll($event, lineNumbersRef, scrollContainer)"></textarea>
                 </div>
             </div>
 
@@ -200,16 +227,104 @@
                     <span class="text-[10px] text-slate-600">PHP 8.2 Execution Environment</span>
                 </div>
                 <div class="flex-1 p-4 font-mono text-xs overflow-y-auto">
-                    <div class="bg-black border border-black/50 rounded-lg p-4 h-full shadow-inner flex flex-col gap-2">
-                        <div class="text-slate-400">> Iniciando entorno de pruebas...</div>
-                        <div class="text-green-500">✓ Entorno cargado correctamente</div>
-                        <div class="text-slate-500 animate-pulse">_ Esperando ejecución</div>
-                    </div>
+                <div class="flex-1 p-4 font-mono text-xs overflow-y-auto bg-black border-t border-white/5">
+                    @if (!executionResult()) {
+                         <div class="h-full flex flex-col items-center justify-center text-slate-500 opacity-50">
+                            <span class="text-2xl mb-2">⌨️</span>
+                            <p>Escribe tu código y pulsa "Ejecutar"</p>
+                         </div>
+                    } @else if (executionResult().loading) {
+                         <div class="h-full flex flex-col items-center justify-center gap-3">
+                            <img src="/landing/espiral.png" class="w-8 h-8 animate-spin opacity-50">
+                            <span class="text-yellow-500 animate-pulse">Compilando y ejecutando tests...</span>
+                         </div>
+                    } @else {
+                         <!-- Message -->
+                         <div class="mb-4 font-bold p-3 rounded-lg flex items-center justify-between gap-3" 
+                              [class.bg-green-500-10]="executionResult().correcto" 
+                              [class.text-green-400]="executionResult().correcto" 
+                              [class.bg-red-500-10]="!executionResult().correcto"
+                              [class.text-red-400]="!executionResult().correcto">
+                             <div class="flex items-center gap-3">
+                                 <span class="text-xl">{{ executionResult().correcto ? '✓' : '✕' }}</span>
+                                 {{ executionResult().message }}
+                             </div>
+                             
+                             @if (showNextLevelButton()) {
+                                 <button (click)="goToNextLevel()" class="px-4 py-1.5 rounded-lg bg-green-500 hover:bg-green-600 text-white text-xs uppercase font-bold tracking-wider transition-all animate-pulse border border-white/20 shadow-lg transform hover:scale-105">
+                                     Siguiente Nivel ➜
+                                 </button>
+                             }
+                         </div>
+            
+                         <!-- Critical Error -->
+                         @if (executionResult().error) {
+                             <div class="text-red-500 p-4 bg-red-900/20 rounded-lg border border-red-500/20 whitespace-pre-wrap font-mono text-xs">
+                                 <span class="block font-bold mb-2 text-red-400">RUNTIME ERROR:</span>
+                                 {{ executionResult().error }}
+                             </div>
+                         }
+            
+                         <!-- Test Details -->
+                         @if (executionResult().detalles && executionResult().detalles.length > 0) {
+                             <div class="space-y-2">
+                                 @for (test of executionResult().detalles; track $index) {
+                                     <div class="p-3 rounded-lg border transition-all" 
+                                          [ngClass]="{
+                                            'border-green-500/30 bg-green-500/5': test.passed,
+                                            'border-red-500/30 bg-red-500/5': !test.passed
+                                          }">
+                                         <div class="flex items-center gap-2 mb-2">
+                                             <span class="font-bold" [class.text-green-400]="test.passed" [class.text-red-400]="!test.passed">
+                                                 Test Case #{{ $index + 1 }}
+                                             </span>
+                                             @if (!test.passed) {
+                                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 border border-red-500/30">FAILED</span>
+                                             } @else {
+                                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 border border-green-500/30">PASSED</span>
+                                             }
+                                         </div>
+                                         
+                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-slate-400 text-[11px]">
+                                             <!-- Input -->
+                                             <div>
+                                                 <span class="block text-[10px] uppercase text-slate-600 mb-1">Input</span>
+                                                 <div class="text-slate-300 bg-black/40 px-2 py-1.5 rounded border border-white/5 font-mono">
+                                                    {{ test.input || '(Vacío)' }}
+                                                 </div>
+                                             </div>
+                                             
+                                             <!-- Outputs -->
+                                             <div>
+                                                 <span class="block text-[10px] uppercase text-slate-600 mb-1">Resultado</span>
+                                                 <div class="flex items-center gap-2">
+                                                    <span class="text-slate-500">Esperado:</span>
+                                                    <span class="text-green-400 font-bold bg-green-900/20 px-1.5 rounded">{{ test.expected }}</span>
+                                                 </div>
+                                                 @if (!test.passed) {
+                                                    <div class="flex items-center gap-2 mt-1">
+                                                        <span class="text-slate-500">Obtenido:</span>
+                                                        <span class="text-red-400 font-bold bg-red-900/20 px-1.5 rounded">{{ test.output || '(Vacío)' }}</span>
+                                                    </div>
+                                                 }
+                                             </div>
+                                         </div>
+                                         
+                                         @if (test.error) {
+                                              <div class="mt-2 pt-2 border-t border-red-500/10 text-red-300 text-[10px]">
+                                                <span class="font-bold">Error:</span> {{ test.error }}
+                                              </div>
+                                         }
+                                     </div>
+                                 }
+                             </div>
+                         }
+                    }
                 </div>
             </div>
 
-        </section>
+        
 
-    </main>
+   
 
 </div>

@@ -45,12 +45,27 @@ export class Header {
         // OR if refreshing page, we should trigger re-fetch if signal is false?
         // For robustness: if signal is false but we have token, fetch it.
         if (!this.isAdmin()) {
-             this.authService.esAdmin(token).subscribe();
+             this.authService.esAdmin(token).subscribe({
+                 error: (err) => {
+                     // If token is invalid/expired (401), logout
+                     if (err.status === 401) {
+                         this.logout();
+                     }
+                 }
+             });
         }
     } else {
         this.isLoggedIn.set(false);
         this.isAdmin.set(false); 
     }
+  }
+
+  logout() {
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
+    this.isLoggedIn.set(false);
+    this.isAdmin.set(false);
+    this.router.navigate(['/login']);
   }
 
   initTheme() {

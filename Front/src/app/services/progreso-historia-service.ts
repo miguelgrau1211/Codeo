@@ -30,11 +30,14 @@ export class ProgresoHistoriaService {
 
   updateProgresoHistoria(progreso: any): Observable<any> {
     const token = sessionStorage.getItem('token');
-    return this.http.put<any>(this.apiUrl, progreso, {
+    // The POST route is /api/progreso-historia, while the GET is /api/users/progreso-historia
+    const postUrl = 'http://localhost/api/progreso-historia';
+    
+    return this.http.post<any>(postUrl, progreso, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Accept': 'application/json'
       }
-    }); // TODO: update signal locally on success if optimization needed
+    }); 
   }
 }
