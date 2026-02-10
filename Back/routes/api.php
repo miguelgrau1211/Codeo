@@ -10,6 +10,7 @@ use App\Http\Controllers\NivelesRoguelikeController;
 use App\Http\Controllers\MejorasController;
 use App\Http\Controllers\EjecutarCodigo;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\NivelesHistoriaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,15 +74,36 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //ejecutar codigo
     Route::post('/ejecutar-codigo', [EjecutarCodigo::class, 'ejecutarCodigo']);
+
     // Administración de contenido y usuarios (Solo Admin)
     Route::middleware('admin')->group(function () {
-        Route::apiResource('niveles-roguelike', NivelesRoguelikeController::class)->except(['index', 'show']);
+        // Admin Routes for Roguelike Levels
+        Route::get('/admin/niveles-roguelike', [NivelesRoguelikeController::class, 'indexAdmin']);
+        Route::post('/admin/niveles-roguelike', [NivelesRoguelikeController::class, 'store']);
+        Route::put('/admin/niveles-roguelike/{id}', [NivelesRoguelikeController::class, 'update']);
+        Route::delete('/admin/niveles-roguelike/{id}', [NivelesRoguelikeController::class, 'destroy']);
+        Route::get('/admin/niveles-roguelike/{id}', [NivelesRoguelikeController::class, 'show']); // Ensure we can get single level details
+
         Route::apiResource('mejoras', MejorasController::class)->except(['index', 'show']);
 
         // Gestión de Usuarios Completa
         Route::get('/admin/users', [UserController::class, 'index']);
         Route::delete('/admin/users/{id}', [UserController::class, 'destroy']);
         Route::post('/admin/users/{id}/toggle-status', [UserController::class, 'toggleStatus']);
+
+        // Gestión de Niveles Historia
+        Route::get('/admin/niveles-historia', [NivelesHistoriaController::class, 'indexAdmin']); // Listar todos paginados
+        Route::post('/admin/niveles-historia', [NivelesHistoriaController::class, 'store']);
+        Route::put('/admin/niveles-historia/{id}', [NivelesHistoriaController::class, 'update']);
+        Route::delete('/admin/niveles-historia/{id}', [NivelesHistoriaController::class, 'destroy']);
+        Route::get('/admin/niveles-historia/{id}', [NivelesHistoriaController::class, 'show']); // Add show explicit just in case
+
+        Route::get('/admin/niveles-historia/desactivados', [NivelesHistoriaController::class, 'desactivados']);
+        Route::post('/admin/niveles-historia/{id}/toggle-status', [NivelesHistoriaController::class, 'toggleStatus']);
+
+        // Gestión de Niveles Roguelike (Desactivados y Toggle)
+        Route::get('/admin/niveles-roguelike/desactivados', [NivelesRoguelikeController::class, 'desactivados']);
+        Route::post('/admin/niveles-roguelike/{id}/toggle-status', [NivelesRoguelikeController::class, 'toggleStatus']);
 
         // Dashboard Stats y Logs
         Route::get('/admin/stats', [AdminDashboardController::class, 'getStats']);

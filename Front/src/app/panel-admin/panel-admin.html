@@ -206,40 +206,109 @@
             <div
                 class="bg-white dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200 dark:border-white/5 shadow-xl">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Niveles Modo Historia</h2>
-                    <button
+                    <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Niveles Modo Historia (Activos)</h2>
+                    <button (click)="openEditor('story')"
                         class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-lg shadow-purple-600/20">
                         + Nuevo Nivel
                     </button>
                 </div>
 
                 <div class="grid gap-4">
+                    @if (isStoryLoading()) {
+                    <!-- Skeleton Loader -->
+                    @for (i of [1,2,3]; track i) {
+                    <div
+                        class="animate-pulse flex items-center p-4 bg-white dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-white/5">
+                        <div class="w-12 h-12 bg-slate-200 dark:bg-slate-700 rounded-lg mr-4"></div>
+                        <div class="flex-1 space-y-2">
+                            <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/3"></div>
+                            <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-1/4"></div>
+                        </div>
+                    </div>
+                    }
+                    } @else {
                     @for (level of storyLevels(); track level.id) {
                     <div
                         class="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-white/5 hover:border-purple-500/50 transition-colors group">
                         <div class="flex items-center gap-4">
                             <div
                                 class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center text-purple-500 font-bold text-xl font-jersey">
-                                {{ level.chapter }}
+                                {{ level.orden }}
                             </div>
                             <div>
-                                <h3 class="font-bold text-slate-800 dark:text-white">{{ level.title }}</h3>
+                                <h3 class="font-bold text-slate-800 dark:text-white">{{ level.titulo }}</h3>
                                 <div class="flex gap-2 text-xs mt-1">
-                                    <span class="text-slate-500">XP: {{ level.xp }}</span>
+                                    <span class="text-slate-500">XP: {{ level.recompensa_exp }}</span>
                                     <span class="text-slate-500">•</span>
-                                    <span
-                                        class="px-1.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300">{{
-                                        level.difficulty }}</span>
+                                    <span class="text-slate-500">💰 {{ level.recompensa_monedas }}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button
+                            <button (click)="openEditor('story', level)"
                                 class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded text-slate-500">✏️</button>
-                            <button (click)="deleteStoryLevel(level.id)"
-                                class="p-2 hover:bg-red-500/10 rounded text-red-500">🗑️</button>
+                            <button (click)="toggleStoryStatus(level.id)"
+                                class="p-2 hover:bg-red-500/10 rounded text-red-500" title="Desactivar">🚫</button>
                         </div>
                     </div>
+                    }
+                    @if (storyLevels().length === 0) {
+                    <div class="text-center py-8 text-slate-500">No hay niveles activos</div>
+                    }
+
+                    <!-- Story Pagination -->
+                    <div
+                        class="mt-4 flex justify-between items-center text-sm text-slate-500 pt-4 border-t border-slate-100 dark:border-white/5">
+                        <div>Página {{ storyPage() }} de {{ storyTotalPages() }}</div>
+                        <div class="flex gap-2">
+                            <button (click)="prevStoryPage()" [disabled]="storyPage() === 1 || isStoryLoading()"
+                                class="px-3 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg disabled:opacity-50 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                ◀ Anterior
+                            </button>
+                            <button (click)="nextStoryPage()"
+                                [disabled]="storyPage() === storyTotalPages() || isStoryLoading()"
+                                class="px-3 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg disabled:opacity-50 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                Siguiente ▶
+                            </button>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <!-- STORY LEVELS DESACTIVADOS -->
+            <div
+                class="mt-8 bg-red-50 dark:bg-red-900/10 rounded-3xl p-6 border border-red-200 dark:border-red-500/20 shadow-xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-red-800 dark:text-red-400">Niveles Historia Desactivados</h2>
+                </div>
+
+                <div class="grid gap-4">
+                    @for (level of storyLevelsDisabled(); track level.id) {
+                    <div
+                        class="flex items-center justify-between p-4 bg-white dark:bg-slate-900/50 rounded-xl border border-red-100 dark:border-red-500/10 hover:border-red-500/30 transition-colors">
+                        <div class="flex items-center gap-4 opacity-75">
+                            <div
+                                class="w-12 h-12 bg-slate-200 dark:bg-slate-800 rounded-lg flex items-center justify-center text-slate-500 font-bold text-xl font-jersey">
+                                {{ level.orden }}
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-700 dark:text-slate-300">{{ level.titulo }}</h3>
+                                <div class="text-xs text-red-500 mt-1">
+                                    Desactivado: {{ level.fecha_desactivacion | date:'mediumDate' }}
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <button (click)="toggleStoryStatus(level.id)"
+                                class="px-3 py-1 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600 transition-colors">
+                                Reactivar 🔄
+                            </button>
+                        </div>
+                    </div>
+                    }
+                    @if (storyLevelsDisabled().length === 0) {
+                    <div class="text-center py-8 text-slate-500">No hay niveles desactivados</div>
                     }
                 </div>
             </div>
@@ -250,8 +319,8 @@
             <div
                 class="bg-white dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200 dark:border-white/5 shadow-xl">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Desafíos Roguelike</h2>
-                    <button
+                    <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Desafíos Roguelike (Activos)</h2>
+                    <button (click)="openEditor('roguelike')"
                         class="bg-orange-600 hover:bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-lg shadow-orange-600/20">
                         + Nuevo Desafío
                     </button>
@@ -261,37 +330,107 @@
                     <table class="w-full text-sm text-left">
                         <thead class="text-xs text-slate-500 uppercase bg-slate-50 dark:bg-slate-800/50">
                             <tr>
-                                <th class="px-6 py-3 rounded-l-lg">Tier</th>
+                                <th class="px-6 py-3 rounded-l-lg">Dificultad</th>
                                 <th class="px-6 py-3">Nombre del Desafío</th>
-                                <th class="px-6 py-3">Tiempo Límite</th>
+                                <th class="px-6 py-3">Recompensa</th>
                                 <th class="px-6 py-3 rounded-r-lg">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @if (isRoguelikeLoading()) {
+                            @for (i of [1,2,3]; track i) {
+                            <tr class="animate-pulse border-b border-slate-100 dark:border-white/5">
+                                <td class="px-6 py-4">
+                                    <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-16"></div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-32"></div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-12"></div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-8"></div>
+                                </td>
+                            </tr>
+                            }
+                            } @else {
                             @for (level of roguelikeLevels(); track level.id) {
                             <tr
                                 class="border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 group">
                                 <td class="px-6 py-4">
-                                    <span
-                                        class="w-8 h-8 flex items-center justify-center rounded-lg font-black font-jersey test-lg"
-                                        [class.bg-yellow-500-10]="level.tier === 'S'"
-                                        [class.text-yellow-500]="level.tier === 'S'"
-                                        [class.bg-purple-500-10]="level.tier === 'A'"
-                                        [class.text-purple-500]="level.tier === 'A'"
-                                        [class.bg-slate-500-10]="level.tier === 'C'"
-                                        [class.text-slate-500]="level.tier === 'C'">
-                                        {{ level.tier }}
+                                    <span class="px-2 py-1 rounded-md text-xs font-bold uppercase"
+                                        [class.bg-green-500-10]="level.dificultad === 'fácil'"
+                                        [class.text-green-500]="level.dificultad === 'fácil'"
+                                        [class.bg-yellow-500-10]="level.dificultad === 'medio'"
+                                        [class.text-yellow-500]="level.dificultad === 'medio'"
+                                        [class.bg-red-500-10]="level.dificultad === 'difícil'"
+                                        [class.text-red-500]="level.dificultad === 'difícil'"
+                                        [class.bg-purple-500-10]="level.dificultad === 'extremo'"
+                                        [class.text-purple-500]="level.dificultad === 'extremo'">
+                                        {{ level.dificultad }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 font-bold text-slate-800 dark:text-white">{{ level.name }}</td>
-                                <td class="px-6 py-4 text-mono text-slate-500">{{ level.timeLimit }}s</td>
+                                <td class="px-6 py-4 font-bold text-slate-800 dark:text-white">{{ level.titulo }}</td>
+                                <td class="px-6 py-4 text-mono text-slate-500">💰 {{ level.recompensa_monedas }}</td>
                                 <td class="px-6 py-4">
                                     <div class="flex gap-2">
-                                        <button class="text-slate-400 hover:text-white transition-colors">✏️</button>
-                                        <button (click)="deleteRoguelikeLevel(level.id)"
-                                            class="text-slate-400 hover:text-red-500 transition-colors">🗑️</button>
+                                        <button (click)="openEditor('roguelike', level)"
+                                            class="text-slate-400 hover:text-white transition-colors">✏️</button>
+                                        <button (click)="toggleRoguelikeStatus(level.id)"
+                                            class="text-slate-400 hover:text-red-500 transition-colors"
+                                            title="Desactivar">🚫</button>
                                     </div>
                                 </td>
+                            </tr>
+                            }
+                            @if (roguelikeLevels().length === 0) {
+                            <tr>
+                                <td colspan="4" class="px-6 py-8 text-center text-slate-500">No hay desafíos activos
+                                </td>
+                            </tr>
+                            }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ROGUELIKE DESACTIVADOS -->
+            <div
+                class="mt-8 bg-red-50 dark:bg-red-900/10 rounded-3xl p-6 border border-red-200 dark:border-red-500/20 shadow-xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-red-800 dark:text-red-400">Desafíos Roguelike Desactivados</h2>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-slate-500 uppercase">
+                            <tr>
+                                <th class="px-6 py-3">Dificultad</th>
+                                <th class="px-6 py-3">Nombre</th>
+                                <th class="px-6 py-3">Fecha Desactivación</th>
+                                <th class="px-6 py-3">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (level of roguelikeLevelsDisabled(); track level.id) {
+                            <tr class="border-b border-red-100 dark:border-white/5 opacity-75">
+                                <td class="px-6 py-4">{{ level.dificultad }}</td>
+                                <td class="px-6 py-4 font-bold">{{ level.titulo }}</td>
+                                <td class="px-6 py-4">{{ level.fecha_desactivacion | date:'mediumDate' }}</td>
+                                <td class="px-6 py-4">
+                                    <button (click)="toggleRoguelikeStatus(level.id)"
+                                        class="px-3 py-1 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600 transition-colors">
+                                        Reactivar 🔄
+                                    </button>
+                                </td>
+                            </tr>
+                            }
+                            @if (roguelikeLevelsDisabled().length === 0) {
+                            <tr>
+                                <td colspan="4" class="px-6 py-8 text-center text-slate-500">No hay desafíos
+                                    desactivados</td>
                             </tr>
                             }
                         </tbody>
@@ -372,4 +511,10 @@
 
         </main>
     </div>
+
+    <!-- Modal Editor -->
+    <app-level-editor-modal [isOpen]="isEditorOpen()" [levelType]="editorType" [levelData]="editorData"
+        (close)="closeEditor()" (save)="onSaveLevel($event)">
+    </app-level-editor-modal>
+
 </div>

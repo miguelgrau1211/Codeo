@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\NivelRoguelike;
+use App\Models\NivelRoguelikeDesactivado;
+use App\Models\AdminLog;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class NivelesRoguelikeController extends Controller
@@ -10,8 +14,22 @@ class NivelesRoguelikeController extends Controller
     // todos los niveles roguelike
     public function index()
     {
-        $niveles = NivelRoguelike::all();
+        // Solo mostraremos lo necesario
+        $niveles = NivelRoguelike::select('id', 'dificultad', 'titulo', 'recompensa_monedas')->orderBy('id')->get();
         return response()->json($niveles, 200);
+    }
+
+    public function indexAdmin()
+    {
+        // Paginación para admin
+        $niveles = NivelRoguelike::select('id', 'dificultad', 'titulo', 'recompensa_monedas')->orderBy('id')->paginate(10);
+        return response()->json($niveles, 200);
+    }
+
+    public function show($id)
+    {
+        $nivel = NivelRoguelike::findOrFail($id);
+        return response()->json($nivel, 200);
     }
 
 
@@ -19,12 +37,10 @@ class NivelesRoguelikeController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'dificultad'         => 'required|in:fácil,medio,difícil,extremo',
-            'titulo'             => 'required|string|max:255',
-            'descripcion'        => 'required|string',
-            'test_cases'   => 'required|array',
-            'test_cases.*.input' => 'required|string',
-            'test_cases.*.output' => 'required|string',
+            'dificultad' => 'required|in:fácil,medio,difícil,extremo',
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            'test_cases' => 'nullable|array',
             'recompensa_monedas' => 'required|integer|min:0',
         ]);
 
@@ -34,6 +50,30 @@ class NivelesRoguelikeController extends Controller
             'message' => 'Desafío Roguelike creado con éxito',
             'data' => $nivel
         ], 201);
+    }
+
+    // Actualiza un desafío roguelike
+    public function update(Request $request, $id)
+    {
+        $nivel = NivelRoguelike::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'dificultad' => 'required|in:fácil,medio,difícil,extremo',
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            'test_cases' => 'nullable|array',
+            'recompensa_monedas' => 'required|integer|min:0',
+        ]);
+
+        // Removed manual validation for test_cases structure to be more flexible
+        // if (isset($request->test_cases)) { ... }
+
+        $nivel->update($validatedData);
+
+        return response()->json([
+            'message' => 'Desafío Roguelike actualizado correctamente',
+            'data' => $nivel
+        ], 200);
     }
 
 
