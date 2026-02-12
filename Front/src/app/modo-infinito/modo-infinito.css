@@ -1,0 +1,754 @@
+/* ===================================================
+   MODO INFINITO - EXTREME TENSION EFFECTS
+   =================================================== */
+
+/* =============================================
+   0. SCREEN CRACKS & BLACK VOID SYSTEM
+   ============================================= */
+
+/* --- Crack Container --- */
+.crack-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 48;
+  overflow: hidden;
+}
+
+/* --- SVG Crack Lines (draw themselves in) --- */
+@keyframes crack-draw {
+  0% { stroke-dashoffset: 1000; }
+  100% { stroke-dashoffset: 0; }
+}
+
+@keyframes crack-draw-slow {
+  0% { stroke-dashoffset: 1500; opacity: 0; }
+  10% { opacity: 0.8; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+
+.crack-line {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.85);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.8)) drop-shadow(0 0 6px rgba(220,38,38,0.3));
+}
+
+.crack-line-thin {
+  stroke-width: 2;
+  animation: crack-draw 3s ease-out forwards;
+}
+
+.crack-line-medium {
+  stroke-width: 3;
+  animation: crack-draw 2.5s ease-out forwards;
+}
+
+.crack-line-thick {
+  stroke-width: 4.5;
+  animation: crack-draw-slow 4s ease-out forwards;
+  filter: drop-shadow(0 0 3px rgba(0,0,0,1)) drop-shadow(0 0 8px rgba(220,38,38,0.4));
+}
+
+/* Branch cracks (smaller, delayed) */
+.crack-branch {
+  stroke-width: 1.5;
+  stroke: rgba(0, 0, 0, 0.7);
+  animation: crack-draw 2s ease-out forwards;
+}
+
+
+
+
+/* --- Edge Shatter (broken glass pieces at edges) --- */
+@keyframes edge-shatter-in {
+  0% { opacity: 0; transform: scale(0.3); }
+  50% { opacity: 1; }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.edge-shatter {
+  position: fixed;
+  pointer-events: none;
+  z-index: 47;
+  animation: edge-shatter-in 1.5s ease-out forwards;
+}
+
+.edge-shatter-piece {
+  background: black;
+  position: absolute;
+}
+
+/* Top-left corner crack cluster */
+.shatter-top-left {
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+}
+
+.shatter-top-left .piece-1 {
+  top: 0; left: 0;
+  width: 90px; height: 45px;
+  clip-path: polygon(0% 0%, 100% 0%, 70% 100%, 0% 60%);
+  opacity: 0.85;
+}
+
+.shatter-top-left .piece-2 {
+  top: 0; left: 60px;
+  width: 80px; height: 55px;
+  clip-path: polygon(30% 0%, 100% 0%, 100% 40%, 50% 100%, 0% 70%);
+  opacity: 0.7;
+}
+
+.shatter-top-left .piece-3 {
+  top: 30px; left: 0;
+  width: 60px; height: 70px;
+  clip-path: polygon(0% 0%, 80% 20%, 100% 100%, 0% 100%);
+  opacity: 0.6;
+}
+
+/* Top-right corner */
+.shatter-top-right {
+  top: 0;
+  right: 0;
+  width: 180px;
+  height: 180px;
+}
+
+.shatter-top-right .piece-1 {
+  top: 0; right: 0;
+  width: 100px; height: 50px;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 30% 100%);
+  opacity: 0.8;
+}
+
+.shatter-top-right .piece-2 {
+  top: 0; right: 70px;
+  width: 70px; height: 60px;
+  clip-path: polygon(40% 0%, 100% 0%, 70% 100%, 0% 80%);
+  opacity: 0.65;
+}
+
+.shatter-top-right .piece-3 {
+  top: 35px; right: 0;
+  width: 55px; height: 65px;
+  clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 80%);
+  opacity: 0.55;
+}
+
+/* Bottom-left corner */
+.shatter-bottom-left {
+  bottom: 0;
+  left: 0;
+  width: 160px;
+  height: 160px;
+}
+
+.shatter-bottom-left .piece-1 {
+  bottom: 0; left: 0;
+  width: 85px; height: 50px;
+  clip-path: polygon(0% 30%, 100% 0%, 80% 100%, 0% 100%);
+  opacity: 0.75;
+}
+
+.shatter-bottom-left .piece-2 {
+  bottom: 30px; left: 0;
+  width: 50px; height: 60px;
+  clip-path: polygon(0% 0%, 100% 20%, 80% 100%, 0% 100%);
+  opacity: 0.6;
+}
+
+/* Bottom-right corner */
+.shatter-bottom-right {
+  bottom: 0;
+  right: 0;
+  width: 170px;
+  height: 170px;
+}
+
+.shatter-bottom-right .piece-1 {
+  bottom: 0; right: 0;
+  width: 90px; height: 45px;
+  clip-path: polygon(20% 0%, 100% 30%, 100% 100%, 0% 100%);
+  opacity: 0.8;
+}
+
+.shatter-bottom-right .piece-2 {
+  bottom: 25px; right: 0;
+  width: 55px; height: 55px;
+  clip-path: polygon(30% 0%, 100% 0%, 100% 100%, 0% 80%);
+  opacity: 0.55;
+}
+
+/* --- Extra crack that grows over time --- */
+@keyframes crack-spread {
+  0% { clip-path: inset(0 100% 0 0); }
+  100% { clip-path: inset(0 0% 0 0); }
+}
+
+.crack-spread-line {
+  position: fixed;
+  pointer-events: none;
+  z-index: 46;
+  background: linear-gradient(90deg, 
+    rgba(0,0,0,0.9) 0%, 
+    rgba(0,0,0,0.7) 70%, 
+    transparent 100%
+  );
+  animation: crack-spread 5s ease-out forwards;
+}
+
+.crack-h-1 {
+  top: 25%;
+  left: 0;
+  width: 35%;
+  height: 3px;
+  transform: rotate(2deg);
+  animation-delay: 0.5s;
+}
+
+.crack-h-2 {
+  top: 60%;
+  right: 0;
+  left: auto;
+  width: 25%;
+  height: 2px;
+  transform: rotate(-1.5deg);
+  background: linear-gradient(270deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 70%, transparent 100%);
+  animation-delay: 1.5s;
+}
+
+.crack-v-1 {
+  top: 0;
+  left: 20%;
+  width: 2px;
+  height: 30%;
+  transform: rotate(1deg);
+  background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 70%, transparent 100%);
+  animation-delay: 2s;
+}
+
+.crack-v-2 {
+  bottom: 0;
+  top: auto;
+  right: 15%;
+  width: 2.5px;
+  height: 20%;
+  transform: rotate(-0.8deg);
+  background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 70%, transparent 100%);
+  animation-delay: 3s;
+}
+
+/* =============================================
+   1. TIMER ANIMATIONS
+   ============================================= */
+
+@keyframes timer-shake {
+  0%, 100% { transform: translateX(0); }
+  10% { transform: translateX(-3px) rotate(-1deg); }
+  20% { transform: translateX(3px) rotate(1deg); }
+  30% { transform: translateX(-3px) rotate(-1deg); }
+  40% { transform: translateX(3px) rotate(1deg); }
+  50% { transform: translateX(-2px); }
+  60% { transform: translateX(2px); }
+  70% { transform: translateX(-1px); }
+  80% { transform: translateX(1px); }
+  90% { transform: translateX(0); }
+}
+
+.animate-timer-shake {
+  animation: timer-shake 0.6s ease-in-out infinite;
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+
+/* =============================================
+   2. SCREEN SHAKE (Intermittent trembling)
+   ============================================= */
+
+/* Light shake - warning */
+@keyframes screen-tremble-light {
+  0%, 85%, 100% { transform: translate(0, 0); }
+  86% { transform: translate(-1px, 1px); }
+  88% { transform: translate(1px, -1px); }
+  90% { transform: translate(-1px, 0); }
+  92% { transform: translate(1px, 1px); }
+  94% { transform: translate(0, -1px); }
+  96% { transform: translate(-1px, 1px); }
+  98% { transform: translate(1px, 0); }
+}
+
+/* Heavy shake - critical */
+@keyframes screen-tremble-heavy {
+  0%, 70%, 100% { transform: translate(0, 0); }
+  71% { transform: translate(-3px, 2px); }
+  73% { transform: translate(4px, -3px); }
+  75% { transform: translate(-2px, 4px); }
+  77% { transform: translate(3px, -2px); }
+  79% { transform: translate(-4px, 1px); }
+  81% { transform: translate(2px, -4px); }
+  83% { transform: translate(-3px, 3px); }
+  85% { transform: translate(4px, -1px); }
+  87% { transform: translate(-1px, 2px); }
+  89% { transform: translate(3px, -3px); }
+  91% { transform: translate(-2px, 1px); }
+  93% { transform: translate(0, 0); }
+}
+
+/* Earthquake - about to die */
+@keyframes screen-earthquake {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  5% { transform: translate(-5px, 3px) rotate(-0.3deg); }
+  10% { transform: translate(6px, -4px) rotate(0.5deg); }
+  15% { transform: translate(-4px, 5px) rotate(-0.4deg); }
+  20% { transform: translate(5px, -3px) rotate(0.3deg); }
+  25% { transform: translate(-6px, 2px) rotate(-0.5deg); }
+  30% { transform: translate(3px, -5px) rotate(0.2deg); }
+  35% { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+.screen-shake-light {
+  animation: screen-tremble-light 3s ease-in-out infinite;
+}
+
+.screen-shake-heavy {
+  animation: screen-tremble-heavy 2s ease-in-out infinite;
+}
+
+.screen-shake-earthquake {
+  animation: screen-earthquake 1.5s ease-in-out infinite;
+}
+
+/* =============================================
+   3. SCREEN CRACK / SHATTERING FRAGMENTS
+   ============================================= */
+
+@keyframes fragment-fall-1 {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  30% { opacity: 1; }
+  100% { transform: translate(-40px, 120vh) rotate(-45deg); opacity: 0; }
+}
+
+@keyframes fragment-fall-2 {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  25% { opacity: 1; }
+  100% { transform: translate(30px, 120vh) rotate(60deg); opacity: 0; }
+}
+
+@keyframes fragment-fall-3 {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  35% { opacity: 1; }
+  100% { transform: translate(-20px, 120vh) rotate(-30deg); opacity: 0; }
+}
+
+@keyframes fragment-fall-4 {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  20% { opacity: 1; }
+  100% { transform: translate(50px, 120vh) rotate(90deg); opacity: 0; }
+}
+
+@keyframes fragment-fall-5 {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  40% { opacity: 1; }
+  100% { transform: translate(-60px, 120vh) rotate(-75deg); opacity: 0; }
+}
+
+.screen-fragment {
+  position: fixed;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.7));
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.2), inset 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 50;
+  pointer-events: none;
+  clip-path: polygon(10% 0%, 90% 5%, 100% 85%, 15% 100%, 0% 40%);
+}
+
+.fragment-1 {
+  top: 0; left: 5%;
+  width: 80px; height: 60px;
+  animation: fragment-fall-1 4s ease-in infinite;
+  animation-delay: 0s;
+  clip-path: polygon(0% 0%, 100% 15%, 85% 100%, 10% 80%);
+}
+
+.fragment-2 {
+  top: 0; right: 10%;
+  width: 60px; height: 50px;
+  animation: fragment-fall-2 5s ease-in infinite;
+  animation-delay: 1.2s;
+  clip-path: polygon(15% 0%, 100% 0%, 90% 100%, 0% 85%);
+}
+
+.fragment-3 {
+  top: 0; left: 30%;
+  width: 45px; height: 40px;
+  animation: fragment-fall-3 3.5s ease-in infinite;
+  animation-delay: 2.5s;
+  clip-path: polygon(5% 10%, 95% 0%, 100% 90%, 20% 100%);
+}
+
+.fragment-4 {
+  top: 0; right: 35%;
+  width: 70px; height: 55px;
+  animation: fragment-fall-4 4.5s ease-in infinite;
+  animation-delay: 0.8s;
+  clip-path: polygon(0% 5%, 85% 0%, 100% 80%, 15% 100%);
+}
+
+.fragment-5 {
+  top: 0; left: 55%;
+  width: 55px; height: 45px;
+  animation: fragment-fall-5 5.5s ease-in infinite;
+  animation-delay: 3s;
+  clip-path: polygon(10% 0%, 100% 10%, 90% 95%, 0% 100%);
+}
+
+.fragment-6 {
+  top: 0; right: 55%;
+  width: 65px; height: 50px;
+  animation: fragment-fall-1 6s ease-in infinite;
+  animation-delay: 1.8s;
+  clip-path: polygon(0% 15%, 90% 0%, 100% 100%, 5% 85%);
+}
+
+.fragment-7 {
+  top: 0; left: 75%;
+  width: 50px; height: 40px;
+  animation: fragment-fall-3 4s ease-in infinite;
+  animation-delay: 4s;
+  clip-path: polygon(20% 0%, 100% 5%, 80% 100%, 0% 90%);
+}
+
+.fragment-8 {
+  top: 0; left: 15%;
+  width: 40px; height: 35px;
+  animation: fragment-fall-2 3.8s ease-in infinite;
+  animation-delay: 5s;
+  clip-path: polygon(0% 0%, 100% 20%, 85% 100%, 10% 80%);
+}
+
+/* Edge fragments (from sides) */
+.fragment-edge-left {
+  top: 20%; left: 0;
+  width: 50px; height: 70px;
+  animation: fragment-fall-4 5s ease-in infinite;
+  animation-delay: 2s;
+  clip-path: polygon(0% 0%, 80% 10%, 100% 90%, 0% 100%);
+}
+
+.fragment-edge-right {
+  top: 40%; right: 0;
+  width: 50px; height: 65px;
+  animation: fragment-fall-5 4.2s ease-in infinite;
+  animation-delay: 3.5s;
+  clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 85%);
+}
+
+/* =============================================
+   4. FIRE / EMBER OVERLAY (Bottom fire)
+   ============================================= */
+
+.fire-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  pointer-events: none;
+  z-index: 40;
+}
+
+.fire-glow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    to top,
+    rgba(220, 38, 38, 0.5) 0%,
+    rgba(234, 88, 12, 0.3) 30%,
+    rgba(251, 146, 60, 0.15) 60%,
+    transparent 100%
+  );
+}
+
+.fire-glow-intense {
+  height: 250px;
+  background: linear-gradient(
+    to top,
+    rgba(220, 38, 38, 0.7) 0%,
+    rgba(234, 88, 12, 0.5) 25%,
+    rgba(251, 146, 60, 0.3) 50%,
+    rgba(239, 68, 68, 0.1) 75%,
+    transparent 100%
+  );
+  animation: fire-flicker 0.15s ease-in-out infinite alternate;
+}
+
+.fire-glow-mild {
+  height: 150px;
+  background: linear-gradient(
+    to top,
+    rgba(220, 38, 38, 0.3) 0%,
+    rgba(234, 88, 12, 0.15) 40%,
+    transparent 100%
+  );
+  animation: fire-flicker 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes fire-flicker {
+  0% { opacity: 0.85; transform: scaleY(1); }
+  100% { opacity: 1; transform: scaleY(1.05); }
+}
+
+/* Side fire glow */
+.fire-side-left {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 100px;
+  pointer-events: none;
+  z-index: 40;
+  background: linear-gradient(
+    to right,
+    rgba(220, 38, 38, 0.15) 0%,
+    transparent 100%
+  );
+  animation: fire-flicker 0.2s ease-in-out infinite alternate;
+}
+
+.fire-side-right {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100px;
+  pointer-events: none;
+  z-index: 40;
+  background: linear-gradient(
+    to left,
+    rgba(220, 38, 38, 0.15) 0%,
+    transparent 100%
+  );
+  animation: fire-flicker 0.25s ease-in-out infinite alternate;
+}
+
+/* =============================================
+   5. SCAN LINE NOISE (CRT static effect)
+   ============================================= */
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.crt-scanline {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 45;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  opacity: 0.5;
+}
+
+/* =============================================
+   6. HEARTBEAT PULSE ON EDGES
+   ============================================= */
+
+@keyframes border-pulse-red {
+  0%, 100% { 
+    box-shadow: inset 0 0 30px rgba(239, 68, 68, 0);
+    border-color: rgba(239, 68, 68, 0.2);
+  }
+  50% { 
+    box-shadow: inset 0 0 50px rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.5);
+  }
+}
+
+.heartbeat-border {
+  animation: border-pulse-red 1s ease-in-out infinite;
+}
+
+.heartbeat-border-fast {
+  animation: border-pulse-red 0.5s ease-in-out infinite;
+}
+
+/* =============================================
+   7. GENERAL UI ANIMATIONS
+   ============================================= */
+
+/* Heart animations */
+@keyframes heart-break {
+  0% { transform: scale(1); opacity: 1; }
+  25% { transform: scale(1.3); opacity: 1; }
+  50% { transform: scale(0.8) rotate(15deg); opacity: 0.7; }
+  75% { transform: scale(0.4) rotate(-10deg); opacity: 0.3; }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+.animate-heart-break {
+  animation: heart-break 0.8s ease-out forwards;
+}
+
+.drop-shadow-heart {
+  filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.5));
+}
+
+/* Shake (for life lost banner) */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-6px); }
+  30% { transform: translateX(6px); }
+  45% { transform: translateX(-4px); }
+  60% { transform: translateX(4px); }
+  75% { transform: translateX(-2px); }
+  90% { transform: translateX(2px); }
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Game Over */
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 2s ease-in-out infinite;
+}
+
+@keyframes glitch {
+  0%, 100% { 
+    text-shadow: 2px 0 #ff0000, -2px 0 #00ff00;
+    transform: translate(0);
+  }
+  20% { 
+    text-shadow: -3px 0 #ff0000, 3px 0 #00ff00;
+    transform: translate(-2px, 1px);
+  }
+  40% { 
+    text-shadow: 3px 0 #ff0000, -3px 0 #00ff00;
+    transform: translate(2px, -1px);
+  }
+  60% { 
+    text-shadow: -2px 0 #ff0000, 2px 0 #00ff00;
+    transform: translate(1px, 2px);
+  }
+  80% { 
+    text-shadow: 2px 0 #ff0000, -2px 0 #00ff00;
+    transform: translate(-1px, -2px);
+  }
+}
+
+.animate-glitch {
+  animation: glitch 1.5s ease-in-out infinite;
+}
+
+/* Fade Ins */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out;
+}
+
+.scale-in-center {
+  animation: scale-in-center 0.3s ease-out;
+}
+
+@keyframes scale-in-center {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Ejecutar button shadow */
+.hover\:shadow-green:hover {
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+}
+
+/* =============================================
+   8. URGENCY STATE CLASSES
+   ============================================= */
+
+.header-danger {
+  background: linear-gradient(180deg, rgba(220, 38, 38, 0.05) 0%, transparent 100%) !important;
+}
+
+/* Critical flash for the whole page */
+@keyframes critical-flash {
+  0%, 100% { background-color: rgb(15, 23, 42); }
+  50% { background-color: rgb(30, 15, 15); }
+}
+
+.urgency-critical-bg {
+  animation: critical-flash 2s ease-in-out infinite;
+}
+
+/* =============================================
+   9. BG HELPER CLASSES
+   ============================================= */
+
+.bg-green-500-10 { background-color: rgba(34, 197, 94, 0.1); }
+.bg-red-500-10 { background-color: rgba(239, 68, 68, 0.1); }
+
+/* =============================================
+   10. CUSTOM SCROLLBAR
+   ============================================= */
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* =============================================
+   11. TOKEN COLORS (Syntax Highlighting)
+   ============================================= */
+
+.token-string { color: #a5d6a7; }
+.token-comment { color: #6a737d; font-style: italic; }
+.token-variable { color: #ef9a9a; }
+.token-keyword { color: #c792ea; font-weight: bold; }
+.token-function { color: #82aaff; }
+.token-number { color: #f78c6c; }

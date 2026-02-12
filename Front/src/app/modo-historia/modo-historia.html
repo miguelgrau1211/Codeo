@@ -151,7 +151,7 @@
             <div class="h-12 border-b border-white/10 flex items-center justify-between px-4 bg-slate-900/20 backdrop-blur-sm relative z-10">
                 <div class="flex items-center gap-2">
                     <div class="px-3 py-1.5 rounded-lg bg-slate-900/50 border border-white/10 flex items-center gap-2 text-xs font-mono text-slate-300 shadow-sm">
-                        main.php
+                        main.py
                     </div>
                 </div>
                 
@@ -224,7 +224,7 @@
                         <span class="text-slate-500 font-mono font-bold text-sm mr-1">$_</span> 
                         Terminal
                     </span>
-                    <span class="text-[10px] text-slate-600">PHP 8.2 Execution Environment</span>
+                    <span class="text-[10px] text-slate-600">Python 3.12 Execution Environment</span>
                 </div>
                 <div class="flex-1 p-4 font-mono text-xs overflow-y-auto">
                 <div class="flex-1 p-4 font-mono text-xs overflow-y-auto bg-black border-t border-white/5">
@@ -256,6 +256,22 @@
                                  </button>
                              }
                          </div>
+
+                         <!-- Rewards Banner -->
+                         @if (recompensas()) {
+                             <div class="mb-4 p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center gap-4 animate-fade-in">
+                                 <span class="text-2xl">🏆</span>
+                                 <div class="flex items-center gap-4 text-sm">
+                                     <div class="flex items-center gap-1.5">
+                                         <span class="text-yellow-400 font-bold">+{{ recompensas().xp }} XP</span>
+                                     </div>
+                                     <div class="flex items-center gap-1.5">
+                                         <span class="text-yellow-400 font-bold">+{{ recompensas().monedas }} 🪙</span>
+                                     </div>
+                                 </div>
+                                 <span class="text-xs text-slate-400 ml-auto">{{ recompensas().mensaje }}</span>
+                             </div>
+                         }
             
                          <!-- Critical Error -->
                          @if (executionResult().error) {

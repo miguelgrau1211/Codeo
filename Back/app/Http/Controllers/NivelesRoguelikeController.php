@@ -105,9 +105,7 @@ class NivelesRoguelikeController extends Controller
         // Determinar probabilidades según niveles completados
         if ($nivelesCompletados < 4) {
             // Inicio: Mayoría fácil
-            $probs = ['fácil' => 60, 'medio' => 20, 'difícil' => 0]; // (El resto 20% podría ser error o fallback) -> Ajustemos a 100%
-            // 80% Facil, 20% Medio, 0% Dificil
-            $p_facil = 80; 
+            $p_facil = 80;
             $p_medio = 20;
             $p_dificil = 0;
         } elseif ($nivelesCompletados < 8) {
