@@ -13,9 +13,9 @@ class Logros extends Model
         'nombre',
         'descripcion',
         'icono_url',
+        'rareza',
         'requisito_tipo',
-        'requisito_cantidad'
-        
+        'requisito_cantidad',
     ];
 
     protected $casts = [
