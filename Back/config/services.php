@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'aws' => [
+        'lambda_url' => env('AWS_LAMBDA_URL'),
+    ],
+
 ];

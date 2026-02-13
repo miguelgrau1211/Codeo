@@ -9,23 +9,31 @@ export interface NivelRoguelike {
   descripcion: string;
   recompensa_monedas: number;
   test_cases?: any[];
-  // codigo_inicial? - Not in DB yet, handle in frontend
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RoguelikeService {
   private apiUrl = 'http://localhost/api/niveles-roguelike/aleatorio';
 
-  // Signal to hold current level data
   nivelActual = signal<NivelRoguelike | null>(null);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
+
+  private getHeaders() {
+    const token = sessionStorage.getItem('token') || '';
+    return {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    };
+  }
 
   getNivelAleatorio(nivelesCompletados: number = 0): Observable<NivelRoguelike> {
-    return this.http.get<NivelRoguelike>(`${this.apiUrl}?niveles_completados=${nivelesCompletados}`).pipe(
-      tap(nivel => this.nivelActual.set(nivel))
-    );
+    return this.http
+      .get<NivelRoguelike>(`${this.apiUrl}?niveles_completados=${nivelesCompletados}`, {
+        headers: this.getHeaders(),
+      })
+      .pipe(tap((nivel) => this.nivelActual.set(nivel)));
   }
 }

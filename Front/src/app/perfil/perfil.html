@@ -72,14 +72,30 @@
 
                     <!-- Identity -->
                     <div class="text-center space-y-3 mb-10">
-                        <h2 class="text-3xl font-black text-white tracking-tight">CodeMaster_2077</h2>
+                        <h2 class="text-3xl font-black text-white tracking-tight">{{userData().nickname}}</h2>
                         <div class="flex items-center justify-center gap-2">
                             <span
-                                class="px-3 py-1 rounded-lg bg-white/5 text-slate-400 font-bold text-[10px] uppercase tracking-widest border border-white/5">Pro
-                                Player</span>
+                                class="px-3 py-1 rounded-lg bg-white/5 text-slate-400 font-bold text-[10px] uppercase tracking-widest border border-white/5">
+                            
+                            @if(userData().level === 1){
+                                novato
+                                
+                            }else if(userData().level === 5){
+                                intermedio
+                                
+                            }else if(userData().level === 10){
+                                experto
+                                
+                            }else if(userData().level === 15){
+                                maestro
+                                
+                            } else {
+                                legendario
+                            }
+                            </span>
                             <span
                                 class="px-3 py-1 rounded-lg bg-purple-500/20 text-purple-400 font-black text-[10px] uppercase tracking-widest border border-purple-500/20">Lvl
-                                12</span>
+                                {{userData().level}}</span>
                         </div>
                     </div>
 
@@ -89,9 +105,9 @@
                             <div>
                                 <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none">
                                     Experiencia</p>
-                                <p class="text-sm font-bold text-slate-300">12,450 XP</p>
+                                <p class="text-sm font-bold text-slate-300">{{userData().experience}} XP</p>
                             </div>
-                            <p class="text-3xl font-black text-white italic">84<span
+                            <p class="text-3xl font-black text-white italic">{{userData().total_levels_completed}}<span
                                     class="text-xs font-bold opacity-30 not-italic ml-0.5">%</span></p>
                         </div>
                         <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden p-0.5 border border-white/5">

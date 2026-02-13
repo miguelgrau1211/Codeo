@@ -11,6 +11,7 @@ use App\Http\Controllers\MejorasController;
 use App\Http\Controllers\EjecutarCodigo;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\NivelesHistoriaController;
+use App\Http\Controllers\RoguelikeSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,8 +30,8 @@ Route::post('/users', [UserController::class, 'store']); // Registro
 Route::get('/ranking', [UserController::class, 'getRanking']);
 
 // Datos del juego (pueden ser públicos para mostrar en landing page)
-Route::get('/niveles-roguelike/aleatorio', [NivelesRoguelikeController::class, 'getNivelModoInfinito']);
-Route::apiResource('niveles-roguelike', NivelesRoguelikeController::class)->only(['index', 'show']);
+
+Route::apiResource('niveles-roguelike', NivelesRoguelikeController::class)->only(['index']);
 Route::get('/mejoras/random', [MejorasController::class, 'getTresMejorasRandom']);
 Route::apiResource('mejoras', MejorasController::class)->only(['index', 'show']);
 
@@ -72,8 +73,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/mejor-run', [RunsRoguelikeController::class, 'getNivelMejorRunUsuario']);
 
 
-    //ejecutar codigo
+    // Niveles Roguelike (protegido: devuelve test_cases)
+    Route::get('/niveles-roguelike/aleatorio', [NivelesRoguelikeController::class, 'getNivelModoInfinito']);
+
+    // Ejecutar código
     Route::post('/ejecutar-codigo', [EjecutarCodigo::class, 'ejecutarCodigo']);
+
+    // Roguelike Session Management (Anti-Cheat)
+    Route::post('/roguelike/start-session', [RoguelikeSessionController::class, 'startSession']);
+    Route::post('/roguelike/start-level', [RoguelikeSessionController::class, 'startLevel']);
+    Route::get('/roguelike/check-time', [RoguelikeSessionController::class, 'checkTime']);
+    Route::post('/roguelike/failure', [RoguelikeSessionController::class, 'registerFailure']);
+    Route::post('/roguelike/success', [RoguelikeSessionController::class, 'registerSuccess']);
+    Route::get('/roguelike/session', [RoguelikeSessionController::class, 'getSessionStatus']);
+    Route::post('/roguelike/buy-mejora', [RoguelikeSessionController::class, 'buyMejora']);
+
+    //Perfil
+    Route::get('/users/data', [UserController::class, 'getUserData']);
 
     // Administración de contenido y usuarios (Solo Admin)
     Route::middleware('admin')->group(function () {
