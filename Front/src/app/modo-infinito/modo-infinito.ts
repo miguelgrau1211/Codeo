@@ -177,17 +177,20 @@ export class ModoInfinito implements OnInit, OnDestroy {
           if (res.game_over) {
             this.triggerGameOver(res.stats!);
           } else {
+            // Reiniciar timer a 90 segundos (respuesta del servidor)
+            this.timeRemaining.set(res.time_remaining ?? 90);
+            this.startTimer();
+
             this.executionResult.set({
               correcto: false,
-              message: '⏱️ ¡Se acabó el tiempo! Pierdes una vida.',
+              message: '⏱️ ¡Se acabó el tiempo! Pierdes una vida. Tienes 1:30 extra.',
               detalles: [],
             });
-            setTimeout(() => this.loadRandomLevel(), 2500);
           }
         }
       },
       error: () => {
-        // Fallback: lose a life locally
+        // Fallback: lose a life locally, reset to 90s
         this.lives.update(l => Math.max(0, l - 1));
         if (this.lives() <= 0) {
           this.triggerGameOver({
@@ -196,6 +199,9 @@ export class ModoInfinito implements OnInit, OnDestroy {
             xp_ganada: this.nivelesCompletados() * 25,
             vidas_restantes: 0,
           });
+        } else {
+          this.timeRemaining.set(90);
+          this.startTimer();
         }
       },
     });

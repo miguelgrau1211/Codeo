@@ -1,15 +1,8 @@
-import { Component, signal, computed, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal, computed, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProgresoHistoriaService } from '../services/progreso-historia-service';
-
-interface UserStats {
-  level: number;
-  xp: number;
-  xpToNextLevel: number;
-  streak: number;
-  coins: number;
-}
+import { UserDataService } from '../services/user-data-service';
 
 interface Activity {
   id: number;
@@ -34,29 +27,9 @@ interface StatsHistoria {
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardComponent {
-  constructor(private progresoHistoriaService: ProgresoHistoriaService) {}
-  
-  // User State
-  user = signal({
-    name: 'DevMaster_99',
-    avatar: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Felix',
-    role: 'Novato'
-  });
-
-  stats = signal<UserStats>({
-    level: 5,
-    xp: 2450,
-    xpToNextLevel: 3000,
-    streak: 7,
-    coins: 150
-  });
-
-  // Computed Progress
-  xpProgress = computed(() => {
-    const { xp, xpToNextLevel } = this.stats();
-    return (xp / xpToNextLevel) * 100;
-  });
+export class DashboardComponent implements OnInit {
+  private readonly progresoHistoriaService = inject(ProgresoHistoriaService);
+  private readonly userDataService = inject(UserDataService);
 
   // Recent Activity Data
   recentActivity = signal<Activity[]>([
@@ -86,13 +59,41 @@ export class DashboardComponent {
       };
   });
 
+  userData = computed(() => {
+    const data = this.userDataService.userDataSignal();
+    if (data) {
+      return {
+        nickname: data.nickname,
+        avatar: data.avatar,
+        level: data.level,
+        experience: data.experience,
+        coins: data.coins,
+        streak: data.streak ?? 0,
+        n_achievements: data.n_achievements,
+        total_levels_completed: data.total_levels_completed
+      };
+    }
+    return {
+      nickname: "...",
+      avatar: "",
+      level: 0,
+      experience: 0,
+      coins: 0,
+      streak: 0,
+      n_achievements: 0,
+      total_levels_completed: 0
+    };
+  });
+
   // Init logic
   ngOnInit() {
       if (!this.serviceProgreso()) {
           this.progresoHistoriaService.getProgresoHistoria().subscribe();
       }
+      if (!this.userDataService.userDataSignal()) {
+        this.userDataService.getUserData().subscribe();
+      }
   }
-
 
   // Sidebar State
   isSidebarOpen = signal(true);

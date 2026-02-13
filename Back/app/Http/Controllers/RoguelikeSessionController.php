@@ -104,31 +104,38 @@ class RoguelikeSessionController extends Controller
         }
 
         $elapsed = now()->diffInSeconds($session['level_started_at']);
-        $timeRemaining = max(0, self::TIME_PER_LEVEL - $elapsed);
+        $allocatedTime = $session['time_remaining'] ?? self::TIME_PER_LEVEL;
+        $timeRemaining = max(0, $allocatedTime - $elapsed);
 
         if ($timeRemaining <= 0) {
             // Evitar doble resta: solo restar si aún tiene tiempo en cache
             if ($session['time_remaining'] > 0) {
                 $session['lives'] = max(0, $session['lives'] - 1);
-                $session['time_remaining'] = 0;
-                $session['level_started_at'] = null; // Invalidar nivel
+
+                // Reiniciar temporizador a 90 segundos (1.5 min)
+                $session['time_remaining'] = 90;
+                $session['level_started_at'] = now()->toISOString();
                 $this->saveSession($userId, $session);
             }
 
             $gameOver = $session['lives'] <= 0;
 
             if ($gameOver) {
+                $session['time_remaining'] = 0;
+                $session['level_started_at'] = null;
+                $this->saveSession($userId, $session);
                 $this->saveRun($session);
             }
 
             return response()->json([
-                'time_expired' => true,
-                'lives'        => $session['lives'],
-                'game_over'    => $gameOver,
-                'stats'        => $gameOver ? $this->getSessionStats($session) : null,
-                'message'      => $gameOver
+                'time_expired'   => true,
+                'lives'          => $session['lives'],
+                'time_remaining' => $session['time_remaining'],
+                'game_over'      => $gameOver,
+                'stats'          => $gameOver ? $this->getSessionStats($session) : null,
+                'message'        => $gameOver
                     ? '¡Game Over! Se acabaron tus vidas.'
-                    : '¡Se acabó el tiempo! Pierdes una vida.',
+                    : '¡Se acabó el tiempo! Pierdes una vida. Tienes 1:30 extra.',
             ], 200);
         }
 

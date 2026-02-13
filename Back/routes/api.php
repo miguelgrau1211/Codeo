@@ -88,6 +88,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/roguelike/session', [RoguelikeSessionController::class, 'getSessionStatus']);
     Route::post('/roguelike/buy-mejora', [RoguelikeSessionController::class, 'buyMejora']);
 
+    //Perfil
+    Route::get('/users/data', [UserController::class, 'getUserData']);
+
     // Administración de contenido y usuarios (Solo Admin)
     Route::middleware('admin')->group(function () {
         // Admin Routes for Roguelike Levels

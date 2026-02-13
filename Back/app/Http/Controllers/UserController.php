@@ -13,6 +13,8 @@ use App\Models\ProgresoHistoria;
 use App\Models\NivelesHistoria;
 use App\Models\AdminLog;
 use App\Http\Controllers\UsuarioDesactivadoController;
+use App\Models\UsuarioLogro;
+use App\Models\RunsRoguelike;
 
 class UserController extends Controller
 {
@@ -471,5 +473,39 @@ class UserController extends Controller
             \Illuminate\Support\Facades\Log::error('Error en toggleStatus: ' . $e->getMessage());
             return response()->json(['message' => 'Error interno del servidor: ' . $e->getMessage()], 500);
         }
+    }
+
+    public function getUserData() {
+        $id = Auth::id();
+
+
+        if (!$id) {
+            return response()->json(['message' => 'Usuario no autenticado'], 401);
+        }
+        $usuario = Usuario::find($id);
+
+        if (!$usuario) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+        $n_achievements = UsuarioLogro::where('usuario_id', $id)->count() ?? 0;
+        $total_levels_completed = RunsRoguelike::where('usuario_id', $id)->sum('niveles_superados') + ProgresoHistoria::where('usuario_id', $id)->count() ?? 0;
+        $nickname = $usuario->nickname;
+        $avatar = $usuario->avatar_url;
+        $level = $usuario->nivel_global;
+        $experience = $usuario->exp_total;
+        $coins = $usuario->monedas;
+        $streak = $usuario->streak;
+        
+        
+        return response()->json([
+            'nickname' => $nickname,
+            'avatar' => $avatar,
+            'level' => $level,
+            'experience' => $experience,
+            'coins' => $coins,
+            'streak' => $streak,
+            'n_achievements' => $n_achievements,
+            'total_levels_completed' => $total_levels_completed
+        ], 200);
     }
 }

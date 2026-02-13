@@ -102,7 +102,7 @@
                     <div class="overflow-hidden">
                         <div
                             class="font-bold text-slate-800 dark:text-white text-sm truncate whitespace-nowrap block pl-2">
-                            {{ user().name }}</div>
+                            {{ userData().nickname }}</div>
                         <div class="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap block pl-2">Novato
                         </div>
                     </div>
@@ -121,7 +121,7 @@
             <!-- Breadcrumb / Welcome -->
             <div>
                 <h1 class="text-xl font-bold text-white">Panel de Control</h1>
-                <p class="text-slate-500 text-sm">Bienvenido de nuevo, {{user().name}}</p>
+                <p class="text-slate-500 text-sm">Bienvenido de nuevo, {{userData().nickname}}</p>
             </div>
 
             <!-- Stats Bar -->
@@ -130,14 +130,14 @@
                 <div
                     class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-orange-500/10 border border-orange-500/20">
                     <span class="text-orange-500">🔥</span>
-                    <span class="font-bold text-orange-400">{{ stats().streak }} días</span>
+                    <span class="font-bold text-orange-400">{{ userData().streak }} días</span>
                 </div>
 
                 <!-- Coins -->
                 <div
                     class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
                     <img src="/common/icons/credits.png" class="w-5 h-5 object-contain">
-                    <span class="font-bold text-yellow-400">{{ stats().coins }}</span>
+                    <span class="font-bold text-yellow-400">{{ userData().coins }}</span>
                 </div>
             </div>
         </header>
@@ -149,7 +149,7 @@
             <div class="animate-fade-in-up">
                 <h2 class="text-4xl md:text-5xl font-black text-white font-jersey tracking-wide mb-2">
                     Hola, <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">{{
-                        user().name }}</span>.
+                        userData().nickname }}</span>.
                 </h2>
                 <p class="text-slate-400 text-lg">¿Listo para escribir código legendario?</p>
             </div>
@@ -314,7 +314,7 @@
                             <div
                                 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">
                                 Total XP</div>
-                            <div class="text-3xl font-black text-slate-800 dark:text-white font-jersey">2,450</div>
+                            <div class="text-3xl font-black text-slate-800 dark:text-white font-jersey">{{userData().experience}}</div>
                         </div>
                     </div>
                 </div>
@@ -330,7 +330,7 @@
                             <div
                                 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">
                                 Nivel Actual</div>
-                            <div class="text-3xl font-black text-slate-800 dark:text-white font-jersey">5</div>
+                            <div class="text-3xl font-black text-slate-800 dark:text-white font-jersey">{{userData().level}}</div>
                         </div>
                     </div>
                 </div>
@@ -346,7 +346,7 @@
                             <div
                                 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">
                                 Racha</div>
-                            <div class="text-3xl font-black text-slate-800 dark:text-white font-jersey">7 Días</div>
+                            <div class="text-3xl font-black text-slate-800 dark:text-white font-jersey">{{userData().streak}} Días</div>
                         </div>
                     </div>
                 </div>
