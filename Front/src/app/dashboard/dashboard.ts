@@ -70,7 +70,7 @@ export class DashboardComponent implements OnInit {
         coins: data.coins,
         streak: data.streak ?? 0,
         n_achievements: data.n_achievements,
-        total_levels_completed: data.total_levels_completed
+        story_levels_completed: data.story_levels_completed
       };
     }
     return {
@@ -81,7 +81,7 @@ export class DashboardComponent implements OnInit {
       coins: 0,
       streak: 0,
       n_achievements: 0,
-      total_levels_completed: 0
+      story_levels_completed: 0
     };
   });
 

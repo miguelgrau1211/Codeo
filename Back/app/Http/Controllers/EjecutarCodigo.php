@@ -92,8 +92,24 @@ class EjecutarCodigo extends Controller
                 ], 200);
             }
 
-            // 3. Procesar resultados
+            // 3. Procesar resultados — normalizar floats enteros (1.0 → 1)
             $resultadosTests = $lambdaResult['results'] ?? [];
+
+            foreach ($resultadosTests as &$res) {
+                if (isset($res['output'])) {
+                    $val = $res['output'];
+                    // Si el resultado es un float que es un número entero (ej: "1.0"), convertir a "1"
+                    if (is_numeric($val) && floatval($val) == intval($val) && str_contains((string)$val, '.')) {
+                        $res['output'] = (string)intval($val);
+                    }
+                    // Re-evaluar si pasa el test
+                    if (isset($res['expected'])) {
+                        $res['passed'] = trim((string)$res['output']) === trim((string)$res['expected']);
+                    }
+                }
+            }
+            unset($res);
+
             $todasPasadas = !empty($resultadosTests);
 
             foreach ($resultadosTests as $res) {

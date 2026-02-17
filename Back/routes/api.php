@@ -90,6 +90,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Perfil
     Route::get('/users/data', [UserController::class, 'getUserData']);
+    Route::get('/users/mi-posicion', [UserController::class, 'getMiPosicionRanking']);
+
+
 
     // Administración de contenido y usuarios (Solo Admin)
     Route::middleware('admin')->group(function () {
