@@ -1,3 +1,4 @@
+@if (isReady()) {
 <div class="min-h-screen bg-slate-950 pb-20 relative overflow-hidden font-sans">
 
     <!-- Background Layer: Re-positioned to feel "further away" -->
@@ -58,7 +59,7 @@
                             <div
                                 class="w-40 h-40 rounded-full p-1 bg-gradient-to-tr from-purple-500 via-blue-400 to-indigo-600 shadow-2xl shadow-purple-500/20 transform group-hover:scale-105 transition-all duration-700">
                                 <div class="w-full h-full rounded-full bg-slate-950 p-1">
-                                    <img src="{{userData().avatar}}"
+                                    <img src="{{userData()!.avatar}}"
                                         alt="User Avatar" class="w-full h-full rounded-full object-cover">
                                 </div>
                             </div>
@@ -72,17 +73,17 @@
 
                     <!-- Identity -->
                     <div class="text-center space-y-3 mb-10">
-                        <h2 class="text-3xl font-black text-white tracking-tight">{{userData().nickname}}</h2>
+                        <h2 class="text-3xl font-black text-white tracking-tight">{{userData()!.nickname}}</h2>
                         <div class="flex items-center justify-center gap-2">
                             <span
                                 class="px-3 py-1 rounded-lg bg-white/5 text-slate-400 font-bold text-[10px] uppercase tracking-widest border border-white/5">
-                                @if (userData().level === 1) {
+                                @if (userData()!.level === 1) {
                                     novato
-                                } @else if (userData().level === 5) {
+                                } @else if (userData()!.level === 5) {
                                     intermedio
-                                } @else if (userData().level === 10) {
+                                } @else if (userData()!.level === 10) {
                                     experto
-                                } @else if (userData().level === 15) {
+                                } @else if (userData()!.level === 15) {
                                     maestro
                                 } @else {
                                     legendario
@@ -90,7 +91,7 @@
                             </span>
                             <span
                                 class="px-3 py-1 rounded-lg bg-purple-500/20 text-purple-400 font-black text-[10px] uppercase tracking-widest border border-purple-500/20">Lvl
-                                {{userData().level}}</span>
+                                {{userData()!.level}}</span>
                         </div>
                     </div>
 
@@ -100,7 +101,7 @@
                             <div>
                                 <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none">
                                     Experiencia</p>
-                                <p class="text-sm font-bold text-slate-300">{{userData().experience}} XP</p>
+                                <p class="text-sm font-bold text-slate-300">{{userData()!.experience}} XP</p>
                             </div>
                             <p class="text-3xl font-black text-white italic">{{experiencePercentage()}}<span
                                     class="text-xs font-bold opacity-30 not-italic ml-0.5">%</span></p>
@@ -112,7 +113,7 @@
                             </div>
                         </div>
                         <p class="text-center text-[9px] font-bold text-slate-600 uppercase tracking-widest italic">
-                            {{(userData().level * 500) - userData().experience}} XP para el Nivel {{userData().level + 1}}</p>
+                            {{(userData()!.level * 500) - userData()!.experience}} XP para el Nivel {{userData()!.level + 1}}</p>
                     </div>
 
                     <!-- Primary Actions -->
@@ -131,12 +132,12 @@
                     <div
                         class="bg-slate-900/40 backdrop-blur-2xl border border-white/5 rounded-3xl p-5 hover:bg-white/5 transition-all text-center">
                         <p class="text-[9px] text-slate-500 font-black uppercase mb-1 tracking-widest">Inscrito</p>
-                        <p class="text-white font-black text-xs tracking-tighter">{{userData().subscription_date}}</p>
+                        <p class="text-white font-black text-xs tracking-tighter">{{userData()!.subscription_date}}</p>
                     </div>
                     <div
                         class="bg-slate-900/40 backdrop-blur-2xl border border-white/5 rounded-3xl p-5 hover:bg-white/5 transition-all text-center">
                         <p class="text-[9px] text-slate-500 font-black uppercase mb-1 tracking-widest">Ranking</p>
-                        <p class="text-yellow-400 font-black text-xs tracking-tighter italic">TOP #{{userData().rank}}</p>
+                        <p class="text-yellow-400 font-black text-xs tracking-tighter italic">TOP #{{userData()!.rank}}</p>
                     </div>
                 </div>
             </div>
@@ -168,7 +169,7 @@
                                 class="text-purple-500/20 font-black text-4xl group-hover:text-purple-500/40 transition-colors">01</span>
                         </div>
                         <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Niveles historia completados</p>
-                        <p class="text-4xl font-black text-white italic tracking-tighter">{{userData().story_levels_completed}}</p>
+                        <p class="text-4xl font-black text-white italic tracking-tighter">{{userData()!.story_levels_completed}}</p>
                     </div>
 
                     <div
@@ -187,7 +188,7 @@
                                 class="text-orange-500/20 font-black text-4xl group-hover:text-orange-500/40 transition-colors">02</span>
                         </div>
                         <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Roguelike</p>
-                        <p class="text-4xl font-black text-white italic tracking-tighter">{{userData().roguelike_levels_played}} <small
+                        <p class="text-4xl font-black text-white italic tracking-tighter">{{userData()!.roguelike_levels_played}} <small
                                 class="text-xs opacity-40 font-bold uppercase not-italic">Niveles</small></p>
                     </div>
 
@@ -211,7 +212,7 @@
                                 class="text-blue-500/20 font-black text-4xl group-hover:text-blue-500/40 transition-colors">03</span>
                         </div>
                         <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Racha</p>
-                        <p class="text-4xl font-black text-white italic tracking-tighter">{{userData().streak}}<small
+                        <p class="text-4xl font-black text-white italic tracking-tighter">{{userData()!.streak}}<small
                                 class="text-xs opacity-40 font-bold uppercase not-italic ml-1">Días</small></p>
                     </div>
                 </div>
@@ -229,14 +230,14 @@
                         <div>
                              <div class="flex justify-between items-end mb-2">
                                 <span class="text-sm font-black text-slate-200 uppercase tracking-widest">General</span>
-                                <span class="text-xl font-black text-purple-400">{{userData().story_levels_completed}} / <span class="opacity-50 font-bold text-xs">{{totalStoryLevels()}}</span></span>
+                                <span class="text-xl font-black text-purple-400">{{userData()!.story_levels_completed}} / <span class="opacity-50 font-bold text-xs">{{totalStoryLevels()}}</span></span>
                             </div>
                             <!-- Progress Bar -->
                             <div class="h-4 bg-slate-950 rounded-full overflow-hidden border border-white/5 p-0.5 relative">
                                 <!-- Glow effect behind bar -->
                                 <div class="absolute inset-0 bg-purple-500/5 filter blur-md"></div>
                                 <div class="h-full bg-gradient-to-r from-purple-600 via-indigo-500 to-blue-500 rounded-full shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all duration-1000 relative z-10"
-                                     [style.width.%]="(userData().story_levels_completed / totalStoryLevels()) * 100">
+                                     [style.width.%]="(userData()!.story_levels_completed / totalStoryLevels()) * 100">
                                      <!-- Shine effect -->
                                      <div class="absolute top-0 right-0 bottom-0 w-20 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"></div>
                                 </div>
@@ -247,7 +248,7 @@
                         <div class="bg-white/5 rounded-2xl p-6 border border-white/5 flex justify-between items-center hover:bg-white/10 transition-colors group">
                              <div>
                                 <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1 group-hover:text-purple-400 transition-colors">Último nivel completado</p>
-                                <p class="text-white font-bold text-lg leading-none tracking-tight">{{userData().last_story_level_title || 'Ninguno'}}</p>
+                                <p class="text-white font-bold text-lg leading-none tracking-tight">{{userData()!.last_story_level_title || 'Ninguno'}}</p>
                              </div>
                              <div class="h-12 w-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400 border border-green-500/20 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(74,222,128,0.2)]">
                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -391,3 +392,16 @@
         </div>
     </div>
 </div>
+} @else {
+<div class="min-h-screen bg-slate-950 flex items-center justify-center">
+    <div class="flex flex-col items-center gap-6">
+        <span class="text-purple-500 text-5xl font-jersey animate-pulse">&gt;_</span>
+        <div class="flex items-center gap-3">
+            <div class="w-3 h-3 bg-purple-500 rounded-full animate-bounce" style="animation-delay: 0ms"></div>
+            <div class="w-3 h-3 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 150ms"></div>
+            <div class="w-3 h-3 bg-pink-400 rounded-full animate-bounce" style="animation-delay: 300ms"></div>
+        </div>
+        <p class="text-slate-500 text-sm font-medium">Cargando perfil...</p>
+    </div>
+</div>
+}

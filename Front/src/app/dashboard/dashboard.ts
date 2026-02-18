@@ -59,6 +59,9 @@ export class DashboardComponent implements OnInit {
       };
   });
 
+  // Signal que indica si los datos del usuario están listos
+  isReady = computed(() => !!this.userDataService.userDataSignal());
+
   userData = computed(() => {
     const data = this.userDataService.userDataSignal();
     if (data) {
@@ -70,29 +73,19 @@ export class DashboardComponent implements OnInit {
         coins: data.coins,
         streak: data.streak ?? 0,
         n_achievements: data.n_achievements,
-        story_levels_completed: data.story_levels_completed
+        story_levels_completed: data.story_levels_completed,
+        rank: data.rank
       };
     }
-    return {
-      nickname: "...",
-      avatar: "",
-      level: 0,
-      experience: 0,
-      coins: 0,
-      streak: 0,
-      n_achievements: 0,
-      story_levels_completed: 0
-    };
+    return null;
   });
 
-  // Init logic
+  // Init logic — el servicio cachea internamente, no hay llamadas duplicadas
   ngOnInit() {
       if (!this.serviceProgreso()) {
           this.progresoHistoriaService.getProgresoHistoria().subscribe();
       }
-      if (!this.userDataService.userDataSignal()) {
-        this.userDataService.getUserData().subscribe();
-      }
+      this.userDataService.getUserData().subscribe();
   }
 
   // Sidebar State

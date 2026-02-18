@@ -1,10 +1,8 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap, map } from 'rxjs';
+import { Observable, tap, map, of } from 'rxjs';
 
-
-
-interface UserData {
+export interface UserData {
   nickname: string;
   avatar: string;
   level: number;
@@ -36,10 +34,30 @@ export class UserDataService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = 'http://localhost/api/users';
 
-  // UserData
-  userDataSignal = signal<UserData | null>(null);
+  // --- Estado central del usuario (singleton caché) ---
+  readonly userDataSignal = signal<UserData | null>(null);
 
-  getUserData(): Observable<UserData> {
+  /** True cuando se ha cargado al menos una vez */
+  private readonly _loaded = signal(false);
+
+  /** True mientras la petición está en vuelo */
+  readonly isLoading = signal(false);
+
+  /** Indica si hay datos disponibles */
+  readonly isLoaded = computed(() => this._loaded());
+
+  /**
+   * Carga los datos del usuario.
+   * Si ya están cacheados y no se fuerza, devuelve los datos existentes sin llamar a la API.
+   */
+  getUserData(forceRefresh = false): Observable<UserData> {
+    // Si ya tenemos datos y no forzamos recarga, devolvemos los cacheados
+    if (this._loaded() && !forceRefresh) {
+      return of(this.userDataSignal()!);
+    }
+
+    this.isLoading.set(true);
+
     const token = sessionStorage.getItem('token');
     return this.http.get<UserData>(this.apiUrl + '/data', {
       headers: {
@@ -49,6 +67,8 @@ export class UserDataService {
     }).pipe(
       tap(data => {
         this.userDataSignal.set(data);
+        this._loaded.set(true);
+        this.isLoading.set(false);
       })
     );
   }
@@ -75,19 +95,11 @@ export class UserDataService {
         'Accept': 'application/json'
       }
     }).pipe(
-      tap(() => {
-        // Optimistic update or refetch could go here. 
-        // For now, we rely on the component to refetch or updater to update the signal manually if needed, 
-        // but let's at least allow the backend response to drive it.
-        // We can invalidate the cache or just update local signal if the backend returns the new user.
-        // The backend returns { message: string, data: User }.
-      }),
       tap((res: any) => {
-         if (res.data) {
-             // Correctly mapping the response to match UserData interface if needed
-             // But simpler to just force a refresh of the data
-             this.getUserData().subscribe(); 
-         }
+        if (res.data) {
+          // Forzar recarga para obtener los datos actualizados del backend
+          this.getUserData(true).subscribe();
+        }
       })
     );
   }
@@ -104,8 +116,11 @@ export class UserDataService {
     );
   }
 
-
-
-
-
+  /**
+   * Invalida la caché, forzando que la próxima llamada recargue desde la API.
+   * Útil tras acciones que modifiquen datos del usuario (comprar mejora, subir nivel, etc.)
+   */
+  invalidateCache(): void {
+    this._loaded.set(false);
+  }
 }

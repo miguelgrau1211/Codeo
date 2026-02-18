@@ -16,6 +16,8 @@ export class Perfil {
 
   private readonly userDataService = inject(UserDataService);
 
+  isReady = computed(() => !!this.userDataService.userDataSignal());
+
   userData = computed(() => {
     const data = this.userDataService.userDataSignal();
     if (data) {
@@ -35,23 +37,7 @@ export class Perfil {
         rank: data.rank
       };
     }
-    return {
-      nickname: "...",
-      avatar: "",
-      level: 0,
-      experience: 0,
-      coins: 0,
-      streak: 0,
-      n_achievements: 0,
-      story_levels_completed: 0,
-      total_story_levels: 0,
-      last_story_level_title: "",
-      roguelike_levels_played: 0,
-      subscription_date: "",
-      rank: 0
-    };
-
-
+    return null;
   });
 
 
@@ -65,7 +51,7 @@ export class Perfil {
     return 0;
   });
 
-  totalStoryLevels = computed(() => this.userData().total_story_levels || 1);
+  totalStoryLevels = computed(() => this.userData()?.total_story_levels || 1);
 
   recentActivity = signal<ActivityItem[]>([]);
   isLoadingActivity = signal(true);
@@ -78,6 +64,7 @@ export class Perfil {
   saveFeedback = signal<string | null>(null);
 
   constructor() {
+    // Usa la caché del servicio (si el dashboard ya cargó los datos, no los re-pide)
     this.userDataService.getUserData().subscribe();
     this.userDataService.getMiPosicionRanking().subscribe();
     this.userDataService.getRecentActivity().subscribe({
@@ -91,6 +78,7 @@ export class Perfil {
 
   openEditModal() {
     const user = this.userData();
+    if (!user) return;
     this.editNickname.set(user.nickname);
     this.editAvatarUrl.set(user.avatar);
     this.isEditModalOpen.set(true);
