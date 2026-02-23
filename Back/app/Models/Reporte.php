@@ -13,10 +13,12 @@ class Reporte extends Model
 
     protected $fillable = [
         'usuario_id',
+        'email_contacto',
         'titulo',
         'descripcion',
-        'descripcion',
-        'estado'
+        'tipo',
+        'estado',
+        'prioridad'
     ];
 
 

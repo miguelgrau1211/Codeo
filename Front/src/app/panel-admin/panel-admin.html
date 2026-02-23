@@ -23,10 +23,10 @@
     </header>
 
     <!-- Main Layout -->
-    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-8 relative z-10">
 
         <!-- Sidebar Navigation -->
-        <aside class="space-y-2">
+        <aside class="w-full md:w-64 space-y-2">
             <button (click)="setTab('users')"
                 class="w-full text-left px-5 py-4 rounded-xl font-bold transition-all flex items-center gap-3 border"
                 [class.bg-white]="activeTab() === 'users'" [class.dark:bg-slate-800]="activeTab() === 'users'"
@@ -68,10 +68,20 @@
                 [class.dark:hover:bg-slate-900]="activeTab() !== 'logs'">
                 <span>📋</span> Logs del Sistema
             </button>
+            <button (click)="setTab('reportes')"
+                class="w-full text-left px-5 py-4 rounded-xl font-bold transition-all flex items-center gap-3 border"
+                [class.bg-white]="activeTab() === 'reportes'" [class.dark:bg-slate-800]="activeTab() === 'reportes'"
+                [class.border-red-500]="activeTab() === 'reportes'" [class.text-red-500]="activeTab() === 'reportes'"
+                [class.border-transparent]="activeTab() !== 'reportes'"
+                [class.text-slate-500]="activeTab() !== 'reportes'"
+                [class.hover:bg-slate-100]="activeTab() !== 'reportes'"
+                [class.dark:hover:bg-slate-900]="activeTab() !== 'reportes'">
+                <span>🚩</span> Reportes
+            </button>
         </aside>
 
         <!-- Content Area -->
-        <main class="md:col-span-3">
+        <main class="flex-1 overflow-x-hidden">
 
             <!-- STATS PREVIEW -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -509,6 +519,102 @@
             </div>
             }
 
+            <!-- REPORTES TAB -->
+            @if (activeTab() === 'reportes') {
+            <div class="bg-white dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200 dark:border-white/5 shadow-xl transition-all"
+                [class.opacity-50]="isReportesLoading()">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Centro de Reportes</h2>
+                        <div class="text-sm text-slate-400">Total: {{ reportes().length }} reportes recibidos</div>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-slate-500 uppercase bg-slate-50 dark:bg-slate-800/50">
+                            <tr>
+                                <th class="px-6 py-3 rounded-l-lg">Usuario / Contacto</th>
+                                <th class="px-6 py-3">Reporte</th>
+                                <th class="px-6 py-3">Prioridad / Estado</th>
+                                <th class="px-6 py-3">Enviado el</th>
+                                <th class="px-6 py-3 rounded-r-lg text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (rep of reportes(); track rep.id) {
+                            <tr
+                                class="border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5">
+                                <td class="px-6 py-4">
+                                    <div class="font-bold text-slate-800 dark:text-white">
+                                        {{ rep.usuario?.nickname || 'Invitado' }}
+                                    </div>
+                                    <div class="text-xs text-slate-500">{{ rep.email_contacto }}</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span
+                                            class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-[10px] font-black uppercase text-slate-500 border border-slate-200 dark:border-white/5">
+                                            {{ rep.tipo }}
+                                        </span>
+                                        <span class="font-bold text-slate-700 dark:text-slate-200">{{ rep.titulo
+                                            }}</span>
+                                    </div>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 max-w-xs line-clamp-2"
+                                        [title]="rep.descripcion">
+                                        {{ rep.descripcion }}
+                                    </p>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex flex-col gap-1.5">
+                                        <span
+                                            class="inline-flex w-fit px-2 py-0.5 rounded text-[10px] font-bold uppercase transition-colors"
+                                            [class.bg-red-500/10]="rep.prioridad === 'critica' || rep.prioridad === 'alta'"
+                                            [class.text-red-500]="rep.prioridad === 'critica' || rep.prioridad === 'alta'"
+                                            [class.bg-yellow-500/10]="rep.prioridad === 'media'"
+                                            [class.text-yellow-500]="rep.prioridad === 'media'"
+                                            [class.bg-green-500/10]="rep.prioridad === 'baja'"
+                                            [class.text-green-500]="rep.prioridad === 'baja'">
+                                            {{ rep.prioridad }}
+                                        </span>
+                                        <select (change)="updateReportStatus(rep.id, $any($event.target).value)"
+                                            class="bg-slate-50 dark:bg-slate-800 border-none rounded text-xs py-1 px-2 focus:ring-1 focus:ring-red-500 transition-all outline-none">
+                                            <option value="pendiente" [selected]="rep.estado === 'pendiente'">Pendiente
+                                            </option>
+                                            <option value="en revision" [selected]="rep.estado === 'en revision'">En
+                                                Revisión</option>
+                                            <option value="solucionado" [selected]="rep.estado === 'solucionado'">
+                                                Solucionado</option>
+                                            <option value="rechazado" [selected]="rep.estado === 'rechazado'">
+                                                Rechazado</option>
+                                            <option value="spam" [selected]="rep.estado === 'spam'">
+                                                ⚠️ SPAM</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-xs text-slate-500">
+                                    {{ rep.created_at | date:'medium' }}
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <button (click)="deleteReport(rep.id)"
+                                        class="p-2 hover:bg-red-500/10 rounded-lg text-red-500 transition-colors"
+                                        title="Eliminar reporte permanentemente">
+                                        🗑️
+                                    </button>
+                                </td>
+                            </tr>
+                            }
+                            @if (reportes().length === 0 && !isReportesLoading()) {
+                            <tr>
+                                <td colspan="5" class="px-6 py-10 text-center text-slate-500 italic">No hay reportes
+                                    pendientes. ¡Buen trabajo! 🚀</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            }
         </main>
     </div>
 

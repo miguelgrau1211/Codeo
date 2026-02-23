@@ -95,11 +95,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/temas/{tema}/comprar', [TemaController::class, 'comprar']);
     Route::post('/temas/{tema}/activar', [TemaController::class, 'activar']);
 
-    //Perfil
+    // Perfil
     Route::get('/users/data', [UserController::class, 'getUserData']);
     Route::get('/users/mi-posicion', [UserController::class, 'getMiPosicionRanking']);
 
-
+    // Reportes (Usuario común manda reportes)
+    Route::post('/reportes', [\App\Http\Controllers\ReporteController::class, 'store'])->middleware('throttle:3,10');
 
     // Administración de contenido y usuarios (Solo Admin)
     Route::middleware('admin')->group(function () {
@@ -116,6 +117,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/admin/users', [UserController::class, 'index']);
         Route::delete('/admin/users/{id}', [UserController::class, 'destroy']);
         Route::post('/admin/users/{id}/toggle-status', [UserController::class, 'toggleStatus']);
+
+        // Gestión de Reportes (Admin revisa)
+        Route::get('/admin/reportes', [\App\Http\Controllers\ReporteController::class, 'index']);
+        Route::get('/admin/reportes/{id}', [\App\Http\Controllers\ReporteController::class, 'show']);
+        Route::put('/admin/reportes/{id}', [\App\Http\Controllers\ReporteController::class, 'update']); // Para cambiar estado/prioridad
+        Route::delete('/admin/reportes/{id}', [\App\Http\Controllers\ReporteController::class, 'destroy']);
 
         // Gestión de Niveles Historia
         Route::get('/admin/niveles-historia', [NivelesHistoriaController::class, 'indexAdmin']); // Listar todos paginados

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AdminService, User, DashboardStats, AdminLog, StoryLevel, RoguelikeLevel } from '../services/admin-service';
+import { ReporteService } from '../services/reporte.service';
 import { AdminStatCard } from './components/admin-stat-card/admin-stat-card';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { LevelEditorModalComponent } from '../components/level-editor-modal/level-editor-modal.component';
@@ -16,12 +17,18 @@ import { LevelEditorModalComponent } from '../components/level-editor-modal/leve
 })
 export class PanelAdmin implements OnInit, OnDestroy {
   private adminService = inject(AdminService);
+  private reporteService = inject(ReporteService);
+
   // Loading states per section
   isStoryLoading = signal(false);
   isRoguelikeLoading = signal(false);
+  isReportesLoading = signal(false);
 
-  activeTab = signal<'users' | 'story' | 'roguelike' | 'logs'>('users');
+  activeTab = signal<'users' | 'story' | 'roguelike' | 'logs' | 'reportes'>('users');
   isLoading = signal(false);
+
+  // Reportes
+  reportes = signal<any[]>([]);
 
   // Stats
   stats = signal<DashboardStats>({
@@ -130,7 +137,7 @@ export class PanelAdmin implements OnInit, OnDestroy {
   roguelikeTotalPages = signal(this.adminService.roguelikeState().last_page || 1);
 
   // View Helpers
-  setTab(tab: 'users' | 'story' | 'roguelike' | 'logs') {
+  setTab(tab: 'users' | 'story' | 'roguelike' | 'logs' | 'reportes') {
     this.activeTab.set(tab);
     if (tab === 'logs') {
       this.loadLogs();
@@ -138,7 +145,45 @@ export class PanelAdmin implements OnInit, OnDestroy {
       this.loadStoryLevels();
     } else if (tab === 'roguelike') {
       this.loadRoguelikeLevels();
+    } else if (tab === 'reportes') {
+      this.loadReportes();
     }
+  }
+
+  loadReportes() {
+    this.isReportesLoading.set(true);
+    this.reporteService.getReportes().subscribe({
+      next: (res) => {
+        this.reportes.set(res);
+        this.isReportesLoading.set(false);
+      },
+      error: (err) => {
+        console.error('Error loading reports', err);
+        this.isReportesLoading.set(false);
+      }
+    });
+  }
+
+  updateReportStatus(id: number, status: string) {
+    this.reporteService.actualizarEstado(id, { estado: status }).subscribe({
+      next: () => {
+        alert('Estado del reporte actualizado');
+        this.loadReportes();
+      },
+      error: (err) => alert('Error al actualizar: ' + (err.error?.message || err.message))
+    });
+  }
+
+  deleteReport(id: number) {
+    if (!confirm('¿Seguro que quieres eliminar este reporte permanentemente?')) return;
+
+    this.reporteService.eliminarReporte(id).subscribe({
+      next: () => {
+        alert('Reporte eliminado');
+        this.loadReportes();
+      },
+      error: (err) => alert('Error al eliminar: ' + (err.error?.message || err.message))
+    });
   }
 
   loadStats() {
