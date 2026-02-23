@@ -32,43 +32,31 @@ class RoguelikeSessionController extends Controller
 
         // Crear la run en BD inmediatamente
         $run = RunsRoguelike::create([
-            'usuario_id'        => $userId,
-            'vidas_restantes'   => self::INITIAL_LIVES,
+            'usuario_id' => $userId,
+            'vidas_restantes' => self::INITIAL_LIVES,
             'niveles_superados' => 0,
             'monedas_obtenidas' => 0,
-            'estado'            => 'activo',
-            'data_partida'      => [
-                'xp_earned'  => 0,
+            'estado' => 'activo',
+            'data_partida' => [
+                'xp_earned' => 0,
                 'started_at' => now()->toISOString(),
             ],
         ]);
 
         $session = [
-<<<<<<< HEAD
             'user_id' => $userId,
+            'run_id' => $run->id,
             'lives' => self::INITIAL_LIVES,
-=======
-            'user_id'          => $userId,
-            'run_id'           => $run->id,
-            'lives'            => self::INITIAL_LIVES,
->>>>>>> f7397d5e1e595f5e69d77efc84f12b4dff65ba39
             'levels_completed' => 0,
             'coins_earned' => 0,
             'xp_earned' => 0,
             'level_started_at' => null,
-<<<<<<< HEAD
             'time_remaining' => self::TIME_PER_LEVEL,
             'started_at' => now()->toISOString(),
             'mejoras_activas' => [],
             'coin_multiplier' => 1,
-=======
-            'time_remaining'   => self::TIME_PER_LEVEL,
-            'started_at'       => now()->toISOString(),
-            'mejoras_activas'  => [],
-            'coin_multiplier'  => 1,
             'current_level_id' => null,
-            'used_level_ids'   => [],
->>>>>>> f7397d5e1e595f5e69d77efc84f12b4dff65ba39
+            'used_level_ids' => [],
         ];
 
         Cache::put($cacheKey, $session, self::CACHE_TTL);
@@ -250,12 +238,10 @@ class RoguelikeSessionController extends Controller
 
         $this->saveSession($userId, $session);
 
-<<<<<<< HEAD
-        $nuevosLogros = (new CheckAchievementsAction())->execute();
-=======
         // Actualizar la run en BD con cada nivel completado
         $this->updateRun($session);
->>>>>>> f7397d5e1e595f5e69d77efc84f12b4dff65ba39
+
+        $nuevosLogros = (new CheckAchievementsAction())->execute();
 
         return response()->json([
             'lives' => $session['lives'],
@@ -465,13 +451,13 @@ class RoguelikeSessionController extends Controller
             $run = RunsRoguelike::find($session['run_id']);
             if ($run) {
                 $run->update([
-                    'vidas_restantes'   => $session['lives'],
+                    'vidas_restantes' => $session['lives'],
                     'niveles_superados' => $session['levels_completed'],
                     'monedas_obtenidas' => $session['coins_earned'],
-                    'data_partida'      => [
-                        'xp_earned'  => $session['xp_earned'],
+                    'data_partida' => [
+                        'xp_earned' => $session['xp_earned'],
                         'started_at' => $session['started_at'],
-                        'ended_at'   => now()->toISOString(),
+                        'ended_at' => now()->toISOString(),
                     ],
                 ]);
             }
@@ -489,14 +475,14 @@ class RoguelikeSessionController extends Controller
             $run = RunsRoguelike::find($session['run_id']);
             if ($run) {
                 $run->update([
-                    'vidas_restantes'   => $session['lives'],
+                    'vidas_restantes' => $session['lives'],
                     'niveles_superados' => $session['levels_completed'],
                     'monedas_obtenidas' => $session['coins_earned'],
-                    'estado'            => 'fallido', // Assuming saveRun is called on game over/failure
-                    'data_partida'      => [
-                        'xp_earned'  => $session['xp_earned'],
+                    'estado' => 'fallido', // Assuming saveRun is called on game over/failure
+                    'data_partida' => [
+                        'xp_earned' => $session['xp_earned'],
                         'started_at' => $session['started_at'],
-                        'ended_at'   => now()->toISOString(),
+                        'ended_at' => now()->toISOString(),
                     ],
                 ]);
             } else {
