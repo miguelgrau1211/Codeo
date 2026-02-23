@@ -1,39 +1,45 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-
-interface Player {
-  rank: number;
-  name: string;
-  xp: number;
-  level: number;
-  avatar: string;
-  badges: string[];
-}
+import { RankingService, User } from '../services/ranking-service';
+import { UserDataService } from '../services/user-data-service';
 
 @Component({
   selector: 'app-ranking',
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './ranking.html',
-  styleUrl: './ranking.css'
+  styleUrl: './ranking.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Ranking {
-  players: Player[] = [
-    { rank: 1, name: 'CyberWitch_99', xp: 15420, level: 42, avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Cyber', badges: ['👑', '🔥'] },
-    { rank: 2, name: 'CodeNinja_X', xp: 14200, level: 39, avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ninja', badges: ['⚡'] },
-    { rank: 3, name: 'NullPointer', xp: 12850, level: 35, avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Null', badges: ['🐛'] },
-    { rank: 4, name: 'DevOps_Master', xp: 11000, level: 30, avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=DevOps', badges: [] },
-    { rank: 5, name: 'GitPushForce', xp: 10500, level: 28, avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Git', badges: [] },
-    { rank: 6, name: 'TypeScript_God', xp: 9800, level: 25, avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=TS', badges: [] },
-    { rank: 7, name: 'Pythonista', xp: 9200, level: 24, avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Py', badges: [] },
-  ];
+  private readonly rankingService = inject(RankingService);
+  private readonly userDataService = inject(UserDataService);
 
-  get topThree() {
-    return this.players.slice(0, 3);
-  }
+  // Datos del usuario desde caché global (cargados en el dashboard)
+  userData = this.userDataService.userDataSignal;
 
-  get restOfPlayers() {
-    return this.players.slice(3);
+  players = signal<User[]>([]);
+  isLoading = signal(true);
+  hasError = signal(false);
+
+  topThree = computed(() => this.players().slice(0, 3));
+  restOfPlayers = computed(() => this.players().slice(3));
+
+  constructor() {
+    // Asegura que userData está cargado (usa caché si ya existe)
+    this.userDataService.getUserData().subscribe();
+
+    this.rankingService.getRanking().subscribe({
+      next: (data) => {
+        this.players.set(data);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error('Error fetching ranking:', err);
+        this.isLoading.set(false);
+        this.hasError.set(true);
+      }
+    });
   }
 }

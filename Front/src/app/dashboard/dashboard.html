@@ -1,3 +1,4 @@
+@if (isReady()) {
 <div
     class="min-h-screen bg-slate-50 dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-300 flex overflow-hidden transition-colors duration-300">
 
@@ -95,14 +96,14 @@
                 [class.gap-0]="!isSidebarOpen()" [class.justify-center]="!isSidebarOpen()">
                 <div
                     class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 overflow-hidden shrink-0">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="w-full h-full object-cover">
+                    <img [src]="userData()?.avatar || ''" class="w-full h-full object-cover">
                 </div>
                 <div class="grid transition-[grid-template-columns] duration-500 ease-in-out"
                     [class.grid-cols-[1fr]]="isSidebarOpen()" [class.grid-cols-[0fr]]="!isSidebarOpen()">
                     <div class="overflow-hidden">
                         <div
                             class="font-bold text-slate-800 dark:text-white text-sm truncate whitespace-nowrap block pl-2">
-                            {{ userData().nickname }}</div>
+                            {{ userData()?.nickname }}</div>
                         <div class="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap block pl-2">Novato
                         </div>
                     </div>
@@ -121,7 +122,7 @@
             <!-- Breadcrumb / Welcome -->
             <div>
                 <h1 class="text-xl font-bold text-white">Panel de Control</h1>
-                <p class="text-slate-500 text-sm">Bienvenido de nuevo, {{userData().nickname}}</p>
+                <p class="text-slate-500 text-sm">Bienvenido de nuevo, {{ userData()?.nickname }}</p>
             </div>
 
             <!-- Stats Bar -->
@@ -130,14 +131,14 @@
                 <div
                     class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-orange-500/10 border border-orange-500/20">
                     <span class="text-orange-500">🔥</span>
-                    <span class="font-bold text-orange-400">{{ userData().streak }} días</span>
+                    <span class="font-bold text-orange-400">{{ userData()?.streak }} días</span>
                 </div>
 
                 <!-- Coins -->
                 <div
                     class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
                     <img src="/common/icons/credits.png" class="w-5 h-5 object-contain">
-                    <span class="font-bold text-yellow-400">{{ userData().coins }}</span>
+                    <span class="font-bold text-yellow-400">{{ userData()?.coins }}</span>
                 </div>
             </div>
         </header>
@@ -149,7 +150,7 @@
             <div class="animate-fade-in-up">
                 <h2 class="text-4xl md:text-5xl font-black text-white font-jersey tracking-wide mb-2">
                     Hola, <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">{{
-                        userData().nickname }}</span>.
+                        userData()?.nickname }}</span>.
                 </h2>
                 <p class="text-slate-400 text-lg">¿Listo para escribir código legendario?</p>
             </div>
@@ -314,7 +315,7 @@
                             <div
                                 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">
                                 Total XP</div>
-                            <div class="text-3xl font-black text-slate-800 dark:text-white font-jersey">{{userData().experience}}</div>
+                            <div class="text-3xl font-black text-slate-800 dark:text-white font-jersey">{{ userData()?.experience }}</div>
                         </div>
                     </div>
                 </div>
@@ -330,7 +331,7 @@
                             <div
                                 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">
                                 Nivel Actual</div>
-                            <div class="text-3xl font-black text-slate-800 dark:text-white font-jersey">{{userData().level}}</div>
+                            <div class="text-3xl font-black text-slate-800 dark:text-white font-jersey">{{ userData()?.level }}</div>
                         </div>
                     </div>
                 </div>
@@ -346,7 +347,7 @@
                             <div
                                 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">
                                 Racha</div>
-                            <div class="text-3xl font-black text-slate-800 dark:text-white font-jersey">{{userData().streak}} Días</div>
+                            <div class="text-3xl font-black text-slate-800 dark:text-white font-jersey">{{ userData()?.streak }} Días</div>
                         </div>
                     </div>
                 </div>
@@ -410,3 +411,17 @@
     </div>
 
 </div>
+} @else {
+<!-- Loading Screen — se muestra hasta que userData esté listo -->
+<div class="min-h-screen bg-slate-950 flex items-center justify-center">
+    <div class="flex flex-col items-center gap-6">
+        <span class="text-purple-500 text-5xl font-jersey animate-pulse">&gt;_</span>
+        <div class="flex items-center gap-3">
+            <div class="w-3 h-3 bg-purple-500 rounded-full animate-bounce" style="animation-delay: 0ms"></div>
+            <div class="w-3 h-3 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 150ms"></div>
+            <div class="w-3 h-3 bg-pink-400 rounded-full animate-bounce" style="animation-delay: 300ms"></div>
+        </div>
+        <p class="text-slate-500 text-sm font-medium">Cargando tu aventura...</p>
+    </div>
+</div>
+}

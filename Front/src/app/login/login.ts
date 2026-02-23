@@ -68,7 +68,7 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
     v2.loop = true;
 
     // Start V1
-    v1.play().catch(e => console.error(e));
+    v1.play().catch(() => {});
 
     // Schedule V2 to start exactly halfway
     const startV2 = () => {
@@ -79,7 +79,7 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
 
       // Wait for offset
       setTimeout(() => {
-        v2.play().catch(e => console.error(e));
+        v2.play().catch(() => {});
       }, offset * 1000);
     };
 

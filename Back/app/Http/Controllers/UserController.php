@@ -289,58 +289,101 @@ class UserController extends Controller
     public function getActividadUsuarioReciente()
     {
         $id = Auth::id();
-        //Valida usuario
         $usuario = Usuario::find($id);
-        if (!$usuario) {
-            return response()->json(['message' => 'Usuario no encontrado'], 404);
+
+        $historia = [];
+        try {
+            $historia = \App\Models\ProgresoHistoria::where('usuario_id', $id)
+                ->where('completado', true)
+                ->with('nivel')
+                ->orderBy('updated_at', 'desc')
+                ->limit(5)
+                ->get()
+                ->map(fn($item) => [
+                    'titulo' => $item->nivel?->titulo ?? 'Nivel desconocido',
+                    'subtitulo' => 'Desafío Completado',
+                    'xp' => $item->nivel?->recompensa_exp ?? 0,
+                    'tipo' => 'historia',
+                    'fecha_raw' => $item->updated_at,
+                    'fecha' => $item->updated_at->diffForHumans()
+                ]);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Error fetching historia: ' . $e->getMessage());
         }
 
-        //últimos 3 niveles de historia superados
-        $historia = \App\Models\ProgresoHistoria::where('usuario_id', $id)
-            ->where('completado', true)
-            ->with('nivel')
-            ->orderBy('updated_at', 'desc')
-            ->limit(3)
-            ->get()
-            ->map(fn($item) => [
-                'tipo' => 'Historia',
-                'descripcion' => 'Completaste el nivel: ' . $item->nivel->titulo,
-                'fecha' => $item->updated_at->diffForHumans() // Ejemplo: "hace 2 horas"
-            ]);
+        $logros = [];
+        try {
+            $logros = \App\Models\UsuarioLogro::where('usuario_id', $id)
+                ->with('logro')
+                ->orderBy('fecha_desbloqueo', 'desc')
+                ->limit(5)
+                ->get()
+                ->map(fn($item) => [
+                    'titulo' => $item->logro?->nombre ?? 'Logro desconocido',
+                    'subtitulo' => 'Logro Desbloqueado',
+                    'xp' => 0,
+                    'tipo' => 'logro',
+                    'fecha_raw' => \Carbon\Carbon::parse($item->fecha_desbloqueo),
+                    'fecha' => \Carbon\Carbon::parse($item->fecha_desbloqueo)->diffForHumans()
+                ]);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Error fetching logros: ' . $e->getMessage());
+        }
 
-        //  últimos 3 logros desbloqueados
-        $logros = \App\Models\UsuarioLogro::where('usuario_id', $id)
-            ->with('logro')
-            ->orderBy('fecha_desbloqueo', 'desc')
-            ->limit(3)
-            ->get()
-            ->map(fn($item) => [
-                'tipo' => 'Logro',
-                'descripcion' => 'Ganaste el logro: ' . $item->logro->nombre,
-                'fecha' => \Carbon\Carbon::parse($item->fecha_desbloqueo)->diffForHumans()
-            ]);
+        $runs = [];
+        try {
+            $runs = \App\Models\RunsRoguelike::where('usuario_id', $id)
+                ->orderBy('updated_at', 'desc')
+                ->limit(5)
+                ->get()
+                ->map(function ($item) {
+                    $data = $item->data_partida;
+                    if (is_string($data))
+                        $data = json_decode($data, true);
+                    if (!is_array($data))
+                        $data = [];
 
-        //última run de Roguelike
-        $run = \App\Models\RunsRoguelike::where('usuario_id', $id)
-            ->orderBy('created_at', 'desc')
-            ->limit(1)
-            ->get()
-            ->map(fn($item) => [
-                'tipo' => 'Roguelike',
-                'descripcion' => "Llegaste al nivel {$item->niveles_superados} con estado: {$item->estado}",
-                'fecha' => $item->created_at->diffForHumans()
-            ]);
+                    $xp = $data['xp_earned'] ?? ($item->monedas_obtenidas * 2);
+                    $estado = ucfirst($item->estado);
+                    $nivel = $item->niveles_superados;
 
-        // Unir  y ordenar por lo más reciente 
+                    return [
+                        'titulo' => "Run Roguelike (Nivel {$nivel})",
+                        'subtitulo' => "Partida {$estado}",
+                        'xp' => $xp,
+                        'tipo' => 'roguelike',
+                        'fecha_raw' => $item->updated_at,
+                        'fecha' => $item->updated_at->diffForHumans()
+                    ];
+                });
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Error fetching roguelike: ' . $e->getMessage());
+        }
+
+        // Merge
         $actividadGlobal = collect($historia)
             ->merge($logros)
-            ->merge($run)
-            ->sortByDesc(fn($item) => $item['fecha']) // Aunque diffForHumans es texto, esto es ilustrativo
-            ->values();
+            ->merge($runs)
+            ->sortByDesc('fecha_raw')
+            ->values()
+            ->take(5);
 
+        // Clean
+        $actividadFinal = $actividadGlobal->map(function ($item) {
+            unset($item['fecha_raw']);
+            return $item;
+        });
+
+        return response()->json(['actividad' => $actividadFinal], 200);
+    }
+
+    public function getMiPosicionRanking()
+    {
+        $id = Auth::id();
+        $usuario = Usuario::find($id);
+        $posicion = Usuario::where('exp_total', '>', $usuario->exp_total)->count() + 1;
         return response()->json([
-            'usuario' => $usuario->nickname,
-            'actividad' => $actividadGlobal
+            'posicion' => $posicion
         ], 200);
     }
 
@@ -350,9 +393,9 @@ class UserController extends Controller
      */
     public function getRanking()
     {
-        //usuarios ordenados por nivel (desc) y luego por experiencia (desc)
+        //usuarios ordenados por experiencia (desc)
 
-        $ranking = Usuario::select('id', 'nickname', 'avatar_url', 'nivel_global', 'exp_total')->orderByDesc('nivel_global')->orderByDesc('exp_total')
+        $ranking = Usuario::select('nickname', 'avatar_url', 'nivel_global', 'exp_total')->orderByDesc('exp_total')
             // Paginar para no saturar el Frontend si hay muchos  usuarios    
             ->paginate(10); // Devuelve de 10 en 10
 
@@ -360,11 +403,11 @@ class UserController extends Controller
         $items = $ranking->getCollection()->map(function ($usuario, $key) use ($ranking) {
             return [
                 'posicion' => (($ranking->currentPage() - 1) * $ranking->perPage()) + $key + 1,
-                'id' => $usuario->id,
+
                 'nickname' => $usuario->nickname,
-                'avatar_url' => $usuario->avatar_url,
-                'nivel' => $usuario->nivel_global,
-                'puntos' => $usuario->exp_total
+                'avatar_url' => $usuario->avatar_url ?? 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . $usuario->nickname,
+                'nivel' => $usuario->nivel_global ?? 1,
+                'puntos' => $usuario->exp_total ?? 0
             ];
         });
 
@@ -485,7 +528,6 @@ class UserController extends Controller
     {
         $id = Auth::id();
 
-
         if (!$id) {
             return response()->json(['message' => 'Usuario no autenticado'], 401);
         }
@@ -495,7 +537,18 @@ class UserController extends Controller
             return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
         $n_achievements = UsuarioLogro::where('usuario_id', $id)->count() ?? 0;
-        $total_levels_completed = RunsRoguelike::where('usuario_id', $id)->sum('niveles_superados') + ProgresoHistoria::where('usuario_id', $id)->count() ?? 0;
+        $story_levels_completed = ProgresoHistoria::where('usuario_id', $id)->where('completado', true)->count();
+        $roguelike_levels_played = RunsRoguelike::where('usuario_id', $id)->sum('niveles_superados');
+
+        $total_story_levels = NivelesHistoria::count();
+        $last_level_record = ProgresoHistoria::where('usuario_id', $id)
+            ->where('completado', true)
+            ->with('nivel')
+            ->orderByDesc('updated_at')
+            ->first();
+
+        $last_story_level_title = $last_level_record && $last_level_record->nivel ? $last_level_record->nivel->titulo : null;
+
         $nickname = $usuario->nickname;
         $avatar = $usuario->avatar_url;
         $level = $usuario->nivel_global;
@@ -503,6 +556,8 @@ class UserController extends Controller
         $coins = $usuario->monedas;
         $streak = $usuario->streak;
 
+        $subscription_date = $usuario->created_at->format('d/m/Y');
+        $rank = Usuario::where('exp_total', '>', $usuario->exp_total)->count() + 1;
 
         $nuevosLogros = (new \App\Actions\CheckAchievementsAction())->execute(['visitar_perfil' => 1]);
 
@@ -514,7 +569,12 @@ class UserController extends Controller
             'coins' => $coins,
             'streak' => $streak,
             'n_achievements' => $n_achievements,
-            'total_levels_completed' => $total_levels_completed,
+            'story_levels_completed' => $story_levels_completed,
+            'total_story_levels' => $total_story_levels,
+            'last_story_level_title' => $last_story_level_title,
+            'roguelike_levels_played' => $roguelike_levels_played,
+            'subscription_date' => $subscription_date,
+            'rank' => $rank,
             'nuevos_logros' => $nuevosLogros
         ], 200);
     }

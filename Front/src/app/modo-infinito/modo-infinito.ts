@@ -239,8 +239,19 @@ export class ModoInfinito implements OnInit, OnDestroy {
     this.recompensas.set(null);
     this.stopTimer();
 
+    // Safety timeout: if checking takes too long, force error state
+    const safetyTimeout = setTimeout(() => {
+        if (this.showIntro()) {
+            console.error('Level load timeout - forcing UI unlock');
+            this.titulo.set('Error de tiempo de espera');
+            this.startExit.set(true);
+            this.showIntro.set(false);
+        }
+    }, 5000);
+
     this.roguelikeSessionService.startLevel().subscribe({
       next: (res) => {
+        clearTimeout(safetyTimeout);
         if (res.game_over) {
           this.triggerGameOver(res.stats!);
           return;
@@ -252,13 +263,23 @@ export class ModoInfinito implements OnInit, OnDestroy {
 
         this.fetchLevel();
       },
-      error: () => this.fetchLevel(),
+      error: () => {
+        clearTimeout(safetyTimeout);
+        this.fetchLevel();
+      },
     });
   }
 
   private fetchLevel() {
     this.roguelikeService.getNivelAleatorio(this.nivelesCompletados()).subscribe({
       next: (nivel: NivelRoguelike) => {
+        if (!nivel) {
+            console.error('Nivel inválido (null/undefined)');
+            this.titulo.set('Error de datos');
+            this.startExit.set(true);
+            this.showIntro.set(false);
+            return;
+        }
         this.nivelId.set(nivel.id);
         this.titulo.set(nivel.titulo);
         this.descripcion.set(nivel.descripcion);
