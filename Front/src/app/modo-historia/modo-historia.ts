@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { EjecutarCodigoService } from '../services/ejecutar-codigo-service';
 import { ProgresoHistoriaService } from '../services/progreso-historia-service';
+import { ThemeService } from '../services/theme-service';
 
 @Component({
   selector: 'app-modo-historia',
@@ -53,7 +54,8 @@ export class ModoHistoria implements OnInit {
   constructor(
     private sanitizer: DomSanitizer,
     private ejecutarCodigoService: EjecutarCodigoService,
-    private progresoHistoriaService: ProgresoHistoriaService
+    private progresoHistoriaService: ProgresoHistoriaService,
+    public themeService: ThemeService
   ) {
     this.updateCode(this.codeContent());
 

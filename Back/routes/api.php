@@ -12,6 +12,7 @@ use App\Http\Controllers\EjecutarCodigo;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\NivelesHistoriaController;
 use App\Http\Controllers\RoguelikeSessionController;
+use App\Http\Controllers\Api\TemaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,6 +88,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/roguelike/success', [RoguelikeSessionController::class, 'registerSuccess']);
     Route::get('/roguelike/session', [RoguelikeSessionController::class, 'getSessionStatus']);
     Route::post('/roguelike/buy-mejora', [RoguelikeSessionController::class, 'buyMejora']);
+
+    // Temas
+    Route::get('/temas', [TemaController::class, 'index']);
+    Route::get('/temas/mis-temas', [TemaController::class, 'misTemas']);
+    Route::post('/temas/{tema}/comprar', [TemaController::class, 'comprar']);
+    Route::post('/temas/{tema}/activar', [TemaController::class, 'activar']);
 
     //Perfil
     Route::get('/users/data', [UserController::class, 'getUserData']);

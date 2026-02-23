@@ -5,6 +5,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { RoguelikeService, NivelRoguelike } from '../services/roguelike-service';
 import { RoguelikeSessionService, RunStats } from '../services/roguelike-session-service';
 import { EjecutarCodigoService } from '../services/ejecutar-codigo-service';
+import { ThemeService } from '../services/theme-service';
 
 @Component({
   selector: 'app-modo-infinito',
@@ -92,7 +93,8 @@ export class ModoInfinito implements OnInit, OnDestroy {
     private sanitizer: DomSanitizer,
     private roguelikeService: RoguelikeService,
     private roguelikeSessionService: RoguelikeSessionService,
-    private ejecutarCodigoService: EjecutarCodigoService
+    private ejecutarCodigoService: EjecutarCodigoService,
+    public themeService: ThemeService
   ) {
     this.updateCode(this.codeContent());
   }

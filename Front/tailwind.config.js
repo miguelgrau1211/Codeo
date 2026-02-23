@@ -13,6 +13,11 @@ module.exports = {
         'editor-bg': '#282C34',
         'sidebar-bg': '#21252B',
         'ui-bg': '#333842',
+        'primary-bg': 'var(--primary-bg)',
+        'secondary-bg': 'var(--secondary-bg)',
+        'accent-color': 'var(--accent-color)',
+        'text-main': 'var(--text-main)',
+        'text-muted': 'var(--text-muted)',
       },
       animation: {
         blob: "blob 7s infinite",

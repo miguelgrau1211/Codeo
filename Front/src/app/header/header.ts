@@ -14,8 +14,8 @@ export class Header {
   platformId = inject(PLATFORM_ID);
   
   // States
-  isDarkMode = signal(true);
   isLoggedIn = signal(false);
+  isDashboard = signal(false);
   
   // Computed signal directly from service
   isAdmin = this.authService.isAdminSignal;
@@ -25,12 +25,12 @@ export class Header {
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
         this.checkAuthStatus();
-        this.initTheme();
 
-        // Listen for route changes to update auth status dynamically
+        // Listen for route changes to update status and layout
         this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
                 this.checkAuthStatus();
+                this.isDashboard.set(this.router.url.includes('/dashboard'));
             }
         });
     }
@@ -41,13 +41,9 @@ export class Header {
     
     if (token) {
         this.isLoggedIn.set(true);
-        // We don't verify here because Login already did it, 
-        // OR if refreshing page, we should trigger re-fetch if signal is false?
-        // For robustness: if signal is false but we have token, fetch it.
         if (!this.isAdmin()) {
              this.authService.esAdmin(token).subscribe({
                  error: (err) => {
-                     // If token is invalid/expired (401), logout
                      if (err.status === 401) {
                          this.logout();
                      }
@@ -66,31 +62,5 @@ export class Header {
     this.isLoggedIn.set(false);
     this.isAdmin.set(false);
     this.router.navigate(['/login']);
-  }
-
-  initTheme() {
-    const savedTheme = localStorage.getItem('theme');
-    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
-        this.isDarkMode.set(true);
-    } else {
-        this.isDarkMode.set(false);
-    }
-
-    effect(() => {
-        const isDark = this.isDarkMode();
-        if (isDark) {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-            localStorage.setItem('theme', 'light');
-        }
-    });
-  }
-
-  toggleTheme() {
-    this.isDarkMode.update(prev => !prev);
   }
 }

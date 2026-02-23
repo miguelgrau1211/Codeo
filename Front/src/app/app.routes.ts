@@ -11,6 +11,7 @@ import { Ranking } from './ranking/ranking';
 import { Configuracion } from './configuracion/configuracion';
 import { Perfil } from './perfil/perfil';
 import { PanelAdmin } from './panel-admin/panel-admin';
+import { TiendaTemasComponent } from './tienda-temas/tienda-temas.component';
 
 export const routes: Routes = [
     { path: '', component: LandingPageComponent },
@@ -25,5 +26,6 @@ export const routes: Routes = [
     { path: 'ajustes', component: Configuracion },
     { path: 'perfil', component: Perfil },
     { path: 'panel-admin', component: PanelAdmin },
+    { path: 'tienda-temas', component: TiendaTemasComponent },
     
 ];

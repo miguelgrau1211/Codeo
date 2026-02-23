@@ -13,9 +13,6 @@ import { FormsModule } from '@angular/forms';
 export class Configuracion {
   platformId = inject(PLATFORM_ID);
   
-  // Theme State
-  isDarkMode = signal(true);
-  
   // Mock User Settings
   userSettings = signal({
     notifications: true,
@@ -26,29 +23,7 @@ export class Configuracion {
   });
 
   constructor() {
-    // Initialize theme state from system/storage
-    if (isPlatformBrowser(this.platformId)) {
-      const savedTheme = localStorage.getItem('theme');
-      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      
-      this.isDarkMode.set(savedTheme === 'dark' || (!savedTheme && systemDark));
-
-      // Effect to apply theme changes
-      effect(() => {
-        const isDark = this.isDarkMode();
-        if (isDark) {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-            localStorage.setItem('theme', 'light');
-        }
-      });
-    }
-  }
-
-  toggleTheme() {
-    this.isDarkMode.update(prev => !prev);
+    // Other initializations...
   }
 
   toggleSetting(key: keyof typeof this.userSettings) {

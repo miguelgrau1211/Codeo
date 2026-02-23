@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Tema;
+use App\Http\Resources\TemaResource;
+use App\Actions\ComprarTemaAction;
+
+class TemaController extends Controller
+{
+    public function index()
+    {
+        $temas = Tema::all();
+        return TemaResource::collection($temas);
+    }
+
+    public function misTemas(Request $request)
+    {
+        $usuario = $request->user();
+        return TemaResource::collection($usuario->temas);
+    }
+
+    public function comprar(Request $request, Tema $tema, ComprarTemaAction $comprarTemaAction)
+    {
+        try {
+            $comprarTemaAction->execute($request->user(), $tema);
+            return response()->json(['message' => 'Tema comprado correctamente.']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+    public function activar(Request $request, Tema $tema)
+    {
+        $usuario = $request->user();
+
+        // Check if user owns the theme (or if it's a default/free theme if we have any)
+        if (!$usuario->temas()->where('tema_id', $tema->id)->exists() && $tema->precio > 0) {
+            return response()->json(['message' => 'No posees este tema.'], 403);
+        }
+
+        $usuario->update(['tema_actual_id' => $tema->id]);
+
+        return response()->json(['message' => 'Tema activado correctamente.', 'tema' => new TemaResource($tema)]);
+    }
+}

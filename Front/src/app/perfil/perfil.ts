@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { UserDataService, ActivityItem } from '../services/user-data-service';
+import { ThemeService } from '../services/theme-service';
 
 
 
@@ -15,6 +16,7 @@ import { UserDataService, ActivityItem } from '../services/user-data-service';
 export class Perfil {
 
   private readonly userDataService = inject(UserDataService);
+  public readonly themeService = inject(ThemeService);
 
   isReady = computed(() => !!this.userDataService.userDataSignal());
 

@@ -4,7 +4,9 @@
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300;
+    background-color: var(--primary-bg, #050a14);
+    color: var(--text-main, #e2e8f0);
+    @apply transition-colors duration-300 font-sans;
   }
 }
 

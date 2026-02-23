@@ -16,6 +16,7 @@ export interface UserData {
   roguelike_levels_played: number;
   subscription_date: string;
   rank: number;
+  tema_actual_id?: number | null;
 }
 
 export interface ActivityItem {

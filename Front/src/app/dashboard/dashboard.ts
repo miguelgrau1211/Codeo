@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProgresoHistoriaService } from '../services/progreso-historia-service';
 import { UserDataService } from '../services/user-data-service';
+import { ThemeService } from '../services/theme-service';
 
 interface Activity {
   id: number;
@@ -30,6 +31,7 @@ interface StatsHistoria {
 export class DashboardComponent implements OnInit {
   private readonly progresoHistoriaService = inject(ProgresoHistoriaService);
   private readonly userDataService = inject(UserDataService);
+  public readonly themeService = inject(ThemeService);
 
   // Recent Activity Data
   recentActivity = signal<Activity[]>([

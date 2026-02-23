@@ -1,33 +1,25 @@
-<div class="min-h-screen transition-colors duration-700 pb-20 pt-6 overflow-hidden relative" [ngClass]="{
-        'bg-slate-900': !isEasterEggActive,
+<div class="min-height-screen transition-colors duration-700 pb-20 pt-6 overflow-hidden relative" [ngClass]="{
+        'bg-primary-bg': !isEasterEggActive,
         'bg-black': isEasterEggActive
     }">
 
     <!-- Background Effects (Normal) -->
     <div *ngIf="!isEasterEggActive" class="absolute inset-0 pointer-events-none overflow-hidden h-full w-full">
-        <!-- Background Image: Full Opacity (opacity-100), Standard Rendering -->
-        <div class="absolute inset-0 bg-[url('/logros/fondoNormal.png')] bg-cover bg-center bg-no-repeat h-full w-full">
-        </div>
-
-        <!-- Minimal Overlay: Very transparent black just to prevent white-text washouts on bright spots -->
-        <div class="absolute inset-0 bg-black/10"></div>
+        <!-- Overlay: Subtle gradient to ensure text readability on top of potential background image -->
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-bg via-primary-bg/80 to-secondary-bg/50"></div>
+        <div class="absolute top-0 left-0 w-96 h-96 bg-accent-color/10 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-accent-color/5 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2"></div>
     </div>
 
     <!-- Background Effects (Easter Egg / Hacker Mode - Red/Black) -->
     <div *ngIf="isEasterEggActive" class="absolute inset-0 pointer-events-none overflow-hidden z-0">
-        <!-- Static background image -->
-        <div class="absolute inset-0 bg-[url('/logros/fondoHack.png')] opacity-60 bg-cover bg-center mix-blend-screen">
-        </div>
-        <!-- Red overlay for atmosphere -->
-        <div class="absolute inset-0 bg-gradient-to-t from-red-900/30 via-transparent to-black pointer-events-none">
-        </div>
+        <div class="absolute inset-0 bg-black opacity-90"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-red-900/30 via-transparent to-black pointer-events-none"></div>
     </div>
 
-    <!-- Matrix/Gamer 'Glitch' Overlay instead of Confetti -->
+    <!-- Matrix/Gamer 'Glitch' Overlay -->
     <div *ngIf="showConfetti"
         class="fixed inset-0 pointer-events-none z-50 overflow-hidden flex flex-col items-center justify-center bg-black/80">
-
-        <!-- Animated Glitch Text -->
         <div class="relative">
             <h1 class="text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-500 animate-pulse tracking-tighter"
                 style="text-shadow: 0 0 30px rgba(220, 38, 38, 0.8);">
@@ -39,22 +31,6 @@
                 class="absolute inset-0 text-9xl font-black text-blue-600 mix-blend-screen opacity-50 animate-glitch-2">
                 HACKED</div>
         </div>
-
-        <!-- Falling Binary/Code Particles (CSS Only Implementation for performance) -->
-        <div class="absolute inset-0 w-full h-full opacity-60 z-[-1]">
-            <div class="absolute top-0 text-green-500/80 text-sm font-bold font-mono animate-fall-1 drop-shadow-sm"
-                style="left: 10%">01 010 11</div>
-            <div class="absolute top-0 text-red-500/80 text-base font-bold font-mono animate-fall-2 drop-shadow-sm"
-                style="left: 20%">ERROR 404</div>
-            <div class="absolute top-0 text-green-500/80 text-sm font-bold font-mono animate-fall-3 drop-shadow-sm"
-                style="left: 40%">10 11 00</div>
-            <div class="absolute top-0 text-red-500/80 text-xl font-bold font-mono animate-fall-1 drop-shadow-md"
-                style="left: 60%">SYSTEM FAILURE</div>
-            <div class="absolute top-0 text-green-500/80 text-sm font-bold font-mono animate-fall-2 drop-shadow-sm"
-                style="left: 80%">111 000 111</div>
-            <div class="absolute top-0 text-red-500/80 text-base font-bold font-mono animate-fall-3 drop-shadow-sm"
-                style="left: 90%">ACCESS GRANTED</div>
-        </div>
     </div>
 
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
@@ -63,7 +39,7 @@
         <header class="relative">
             <!-- Breadcrumb / Back -->
             <button routerLink="/dashboard"
-                class="group flex items-center gap-2 text-slate-400 hover:text-white mb-6 transition-all"
+                class="group flex items-center gap-2 text-text-muted hover:text-text-main mb-6 transition-all"
                 [class.text-red-500]="isEasterEggActive">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -77,13 +53,13 @@
                 <!-- Title & Intro -->
                 <div class="max-w-2xl">
                     <h1 (click)="triggerEasterEgg()"
-                        class="text-6xl md:text-7xl font-black text-white tracking-tighter uppercase cursor-pointer select-none transition-all duration-300 hover:tracking-widest"
+                        class="text-6xl md:text-7xl font-black text-text-main tracking-tighter uppercase cursor-pointer select-none transition-all duration-300 hover:tracking-widest"
                         [ngClass]="{'animate-pulse text-red-500 drop-shadow-[0_0_15px_rgba(220,38,38,0.8)]': isEasterEggActive}">
                         <span *ngIf="!isEasterEggActive">Logros <span
-                                class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">Legendarios</span></span>
+                                class="text-transparent bg-clip-text bg-gradient-to-r from-accent-color to-pink-500">Legendarios</span></span>
                         <span *ngIf="isEasterEggActive">SYSTEM <span class="text-red-600">BREACHED</span></span>
                     </h1>
-                    <p class="text-xl text-slate-400 mt-4 font-light leading-relaxed border-l-4 border-purple-500 pl-4"
+                    <p class="text-xl text-text-muted mt-4 font-light leading-relaxed border-l-4 border-accent-color pl-4"
                         [class.border-red-600]="isEasterEggActive" [class.text-red-400]="isEasterEggActive">
                         Domina el código, desbloquea insignias y construye tu legado en el ranking global.
                     </p>
@@ -91,29 +67,29 @@
 
                 <!-- Global Rank Badge -->
                 <div class="relative group cursor-help">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"
+                    <div class="absolute -inset-1 bg-gradient-to-r from-accent-color to-pink-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"
                         [class.from-red-900]="isEasterEggActive" [class.to-red-600]="isEasterEggActive"></div>
                     <div
-                        class="relative bg-slate-800 ring-1 ring-white/10 rounded-xl p-6 flex items-center gap-6 backdrop-blur-xl">
-                        <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-slate-700 to-slate-600 p-1">
+                        class="relative bg-secondary-bg ring-1 ring-white/10 rounded-xl p-6 flex items-center gap-6 backdrop-blur-xl">
+                        <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-secondary-bg to-primary-bg p-1 border border-white/10">
                             <div
-                                class="w-full h-full rounded-full bg-slate-800 flex items-center justify-center overflow-hidden relative">
-                                <div class="absolute inset-0 bg-purple-500/20 animate-spin-slow origin-center"
+                                class="w-full h-full rounded-full bg-secondary-bg flex items-center justify-center overflow-hidden relative">
+                                <div class="absolute inset-0 bg-accent-color/20 animate-spin-slow origin-center"
                                     [class.bg-red-600/20]="isEasterEggActive"></div>
-                                <span class="relative text-2xl font-black text-white z-10">24</span>
+                                <span class="relative text-2xl font-black text-text-main z-10">24</span>
                             </div>
                         </div>
                         <div>
-                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Nivel Actual
+                            <div class="text-xs font-bold text-text-muted uppercase tracking-widest mb-1">Nivel Actual
                             </div>
-                            <div class="text-3xl font-black text-white tracking-wide">Desarrollador Senior
+                            <div class="text-3xl font-black text-text-main tracking-wide">Desarrollador Senior
                             </div>
-                            <div class="w-full h-1.5 bg-slate-700 rounded-full mt-3 overflow-hidden">
-                                <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 w-[70%]"
+                            <div class="w-full h-1.5 bg-primary-bg rounded-full mt-3 overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-accent-color to-pink-500 w-[70%]"
                                     [class.from-red-600]="isEasterEggActive" [class.to-red-900]="isEasterEggActive">
                                 </div>
                             </div>
-                            <div class="text-[10px] text-right text-slate-500 mt-1">1,250 / 2,000 XP</div>
+                            <div class="text-[10px] text-right text-text-muted mt-1">1,250 / 2,000 XP</div>
                         </div>
                     </div>
                 </div>
@@ -125,7 +101,7 @@
             class="grid grid-cols-1 md:grid-cols-3 gap-6 transform hover:scale-[1.01] transition-transform duration-500">
             <!-- Stat 1 -->
             <div
-                class="bg-slate-800/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-slate-800/60 transition-colors group relative overflow-hidden">
+                class="bg-secondary-bg/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-secondary-bg/60 transition-colors group relative overflow-hidden">
                 <div
                     class="absolute right-0 top-0 w-24 h-24 bg-yellow-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-yellow-500/20 transition-all">
                 </div>
@@ -142,15 +118,15 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-slate-400 text-sm font-bold uppercase tracking-wider">Trofeos</h3>
-                    <p class="text-4xl font-black text-white">4 <span class="text-lg text-slate-600">/
+                    <h3 class="text-text-muted text-sm font-bold uppercase tracking-wider">Trofeos</h3>
+                    <p class="text-4xl font-black text-text-main">4 <span class="text-lg text-text-muted">/
                             8</span></p>
                 </div>
             </div>
 
             <!-- Stat 2 -->
             <div
-                class="bg-slate-800/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-slate-800/60 transition-colors group relative overflow-hidden">
+                class="bg-secondary-bg/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-secondary-bg/60 transition-colors group relative overflow-hidden">
                 <div
                     class="absolute right-0 top-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-blue-500/20 transition-all">
                 </div>
@@ -164,14 +140,14 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-slate-400 text-sm font-bold uppercase tracking-wider">Total XP</h3>
-                    <p class="text-4xl font-black text-white">900</p>
+                    <h3 class="text-text-muted text-sm font-bold uppercase tracking-wider">Total XP</h3>
+                    <p class="text-4xl font-black text-text-main">900</p>
                 </div>
             </div>
 
             <!-- Stat 3 -->
             <div
-                class="bg-slate-800/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-slate-800/60 transition-colors group relative overflow-hidden">
+                class="bg-secondary-bg/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-secondary-bg/60 transition-colors group relative overflow-hidden">
                 <div
                     class="absolute right-0 top-0 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-orange-500/20 transition-all">
                 </div>
@@ -184,28 +160,28 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-slate-400 text-sm font-bold uppercase tracking-wider">Racha</h3>
-                    <p class="text-4xl font-black text-white">5 Días</p>
+                    <h3 class="text-text-muted text-sm font-bold uppercase tracking-wider">Racha</h3>
+                    <p class="text-4xl font-black text-text-main">5 Días</p>
                 </div>
             </div>
         </section>
 
         <!-- 3. Filter Navigation -->
         <nav class="flex justify-center md:justify-start">
-            <div class="inline-flex p-1 bg-slate-900/80 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl">
+            <div class="inline-flex p-1 bg-secondary-bg/80 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl">
                 <button
                     class="relative px-6 py-2 rounded-lg text-sm font-bold text-white transition-all overflow-hidden group">
                     <span
-                        class="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-600 opacity-100 group-hover:opacity-90 transition-opacity"
+                        class="absolute inset-0 bg-gradient-to-r from-accent-color to-indigo-600 opacity-100 group-hover:opacity-90 transition-opacity"
                         [class.from-red-700]="isEasterEggActive" [class.to-red-900]="isEasterEggActive"></span>
                     <span class="relative z-10">Todos</span>
                 </button>
                 <button
-                    class="px-6 py-2 rounded-lg text-sm font-bold text-slate-400 hover:text-white hover:bg-white/5 transition-all">
+                    class="px-6 py-2 rounded-lg text-sm font-bold text-text-muted hover:text-text-main hover:bg-white/5 transition-all">
                     Desbloqueados
                 </button>
                 <button
-                    class="px-6 py-2 rounded-lg text-sm font-bold text-slate-400 hover:text-white hover:bg-white/5 transition-all">
+                    class="px-6 py-2 rounded-lg text-sm font-bold text-text-muted hover:text-text-main hover:bg-white/5 transition-all">
                     Bloqueados
                 </button>
             </div>

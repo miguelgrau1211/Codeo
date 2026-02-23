@@ -40,6 +40,7 @@ class Usuario extends Authenticatable
         'preferencias',
         'terminos_aceptados',
         'es_admin',
+        'tema_actual_id',
     ];
 
     /**
@@ -68,5 +69,18 @@ class Usuario extends Authenticatable
         'exp_total' => 'integer',
         'racha_dias' => 'integer',
         'es_admin' => 'boolean',
+        'tema_actual_id' => 'integer',
     ];
+
+    public function temas()
+    {
+        return $this->belongsToMany(Tema::class, 'usuario_tema')
+                    ->withPivot('comprado_at')
+                    ->withTimestamps();
+    }
+
+    public function temaActual()
+    {
+        return $this->belongsTo(Tema::class, 'tema_actual_id');
+    }
 }

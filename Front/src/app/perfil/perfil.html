@@ -1,34 +1,28 @@
 @if (isReady()) {
-<div class="min-h-screen bg-slate-950 pb-20 relative overflow-hidden font-sans">
+<div class="min-h-screen bg-primary-bg pb-20 relative overflow-hidden font-sans text-text-main transition-colors duration-500">
 
-    <!-- Background Layer: Re-positioned to feel "further away" -->
-    <div class="fixed inset-0 pointer-events-none z-0 flex items-center justify-center">
-        <!-- 
-            - Reduced scale to 90% to pull the image "back" in perspective
-            - Using 'contain' or a large percentage to show more of the image without it being "in your face"
-            - Removed heavy blur to maintain texture but kept it subtle
-        -->
-        <div
-            class="absolute inset-0 bg-[url('/perfil/fondoPerfil.png')] bg-no-repeat bg-center bg-[size:90%] opacity-30 blur-[2px] transform scale-110">
+    <!-- Background Layer with Static Image -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <!-- Static Background Image -->
+        <div class="absolute inset-0 bg-primary-bg">
+            <img src="/perfil/fondoPerfil.png" class="w-full h-full object-cover opacity-40" alt="">
         </div>
 
-        <!-- Depth Gradient: Darkens the edges to create a "tunnel" or "distant" effect -->
-        <div
-            class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(2,6,23,0.8)_70%,rgba(2,6,23,1)_100%)]">
-        </div>
-
-        <!-- Ambient atmospheric glows -->
-        <div class="absolute -top-1/4 -right-1/4 w-full h-full bg-purple-600/5 rounded-full blur-[150px]"></div>
-        <div class="absolute -bottom-1/4 -left-1/4 w-full h-full bg-blue-600/5 rounded-full blur-[150px]"></div>
+        <!-- Ambient atmospheric glows to blend with the image -->
+        <div class="absolute -top-1/4 -right-1/4 w-full h-full bg-accent-color/10 rounded-full blur-[150px] opacity-20"></div>
+        <div class="absolute -bottom-1/4 -left-1/4 w-full h-full bg-accent-color/10 rounded-full blur-[150px] opacity-20"></div>
+        
+        <!-- Gradient Overlay for readability -->
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary-bg/50 to-primary-bg"></div>
     </div>
 
     <!-- 1. Navigation / Top Bar -->
     <div class="h-32 relative w-full z-10 flex items-center">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <button routerLink="/dashboard"
-                class="px-5 py-3 rounded-2xl bg-white/5 hover:bg-white/10 backdrop-blur-xl border border-white/10 text-slate-200 hover:text-white transition-all flex items-center gap-3 group">
+                class="px-5 py-3 rounded-2xl bg-secondary-bg/50 hover:bg-secondary-bg backdrop-blur-xl border border-white/10 text-text-muted hover:text-text-main transition-all flex items-center gap-3 group">
                 <div
-                    class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center border border-white/5 group-hover:border-purple-500/50 transition-colors">
+                    class="w-8 h-8 rounded-lg bg-primary-bg flex items-center justify-center border border-white/5 group-hover:border-accent-color/50 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                         class="group-hover:-translate-x-1 transition-transform">
@@ -48,24 +42,24 @@
             <div class="lg:col-span-4 space-y-6">
                 <!-- Main Profile Card -->
                 <div
-                    class="bg-slate-900/40 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden group">
+                    class="bg-secondary-bg/40 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden group">
                     <!-- Subtle glass highlight at the top -->
                     <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none">
                     </div>
 
-                    <!-- Avatar with "Remote" Presence -->
+                    <!-- Avatar -->
                     <div class="relative mb-10 flex justify-center pt-2">
                         <div class="relative">
                             <div
-                                class="w-40 h-40 rounded-full p-1 bg-gradient-to-tr from-purple-500 via-blue-400 to-indigo-600 shadow-2xl shadow-purple-500/20 transform group-hover:scale-105 transition-all duration-700">
-                                <div class="w-full h-full rounded-full bg-slate-950 p-1">
+                                class="w-40 h-40 rounded-full p-1 bg-gradient-to-tr from-accent-color via-blue-400 to-indigo-600 shadow-2xl shadow-accent-color/20 transform group-hover:scale-105 transition-all duration-700">
+                                <div class="w-full h-full rounded-full bg-secondary-bg p-1">
                                     <img src="{{userData()!.avatar}}"
                                         alt="User Avatar" class="w-full h-full rounded-full object-cover">
                                 </div>
                             </div>
                             <!-- Live status indicator -->
                             <div
-                                class="absolute bottom-3 right-3 w-6 h-6 bg-green-500 border-4 border-slate-900 rounded-full flex items-center justify-center">
+                                class="absolute bottom-3 right-3 w-6 h-6 bg-green-500 border-4 border-secondary-bg rounded-full flex items-center justify-center">
                                 <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                             </div>
                         </div>
@@ -73,10 +67,10 @@
 
                     <!-- Identity -->
                     <div class="text-center space-y-3 mb-10">
-                        <h2 class="text-3xl font-black text-white tracking-tight">{{userData()!.nickname}}</h2>
+                        <h2 class="text-3xl font-black text-text-main tracking-tight">{{userData()!.nickname}}</h2>
                         <div class="flex items-center justify-center gap-2">
                             <span
-                                class="px-3 py-1 rounded-lg bg-white/5 text-slate-400 font-bold text-[10px] uppercase tracking-widest border border-white/5">
+                                class="px-3 py-1 rounded-lg bg-white/5 text-text-muted font-bold text-[10px] uppercase tracking-widest border border-white/5">
                                 @if (userData()!.level === 1) {
                                     novato
                                 } @else if (userData()!.level === 5) {
@@ -90,7 +84,7 @@
                                 }
                             </span>
                             <span
-                                class="px-3 py-1 rounded-lg bg-purple-500/20 text-purple-400 font-black text-[10px] uppercase tracking-widest border border-purple-500/20">Lvl
+                                class="px-3 py-1 rounded-lg bg-accent-color/20 text-accent-color font-black text-[10px] uppercase tracking-widest border border-accent-color/20">Lvl
                                 {{userData()!.level}}</span>
                         </div>
                     </div>
@@ -99,20 +93,20 @@
                     <div class="space-y-4 mb-10">
                         <div class="flex justify-between items-end px-1">
                             <div>
-                                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none">
+                                <p class="text-[10px] font-black text-text-muted uppercase tracking-widest leading-none">
                                     Experiencia</p>
-                                <p class="text-sm font-bold text-slate-300">{{userData()!.experience}} XP</p>
+                                <p class="text-sm font-bold text-text-muted">{{userData()!.experience}} XP</p>
                             </div>
-                            <p class="text-3xl font-black text-white italic">{{experiencePercentage()}}<span
+                            <p class="text-3xl font-black text-text-main italic">{{experiencePercentage()}}<span
                                     class="text-xs font-bold opacity-30 not-italic ml-0.5">%</span></p>
                         </div>
-                        <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden p-0.5 border border-white/5">
+                        <div class="w-full h-2.5 bg-primary-bg rounded-full overflow-hidden p-0.5 border border-white/5">
                             <div
                                 [style.width.%]="experiencePercentage()"
-                                class="h-full bg-gradient-to-r from-purple-600 to-indigo-400 rounded-full shadow-[0_0_15px_rgba(168,85,247,0.5)] transition-all duration-1000">
+                                class="h-full bg-gradient-to-r from-accent-color to-indigo-400 rounded-full shadow-[0_0_15px_rgba(168,85,247,0.5)] transition-all duration-1000">
                             </div>
                         </div>
-                        <p class="text-center text-[9px] font-bold text-slate-600 uppercase tracking-widest italic">
+                        <p class="text-center text-[9px] font-bold text-text-muted uppercase tracking-widest italic opacity-60">
                             {{(userData()!.level * 500) - userData()!.experience}} XP para el Nivel {{userData()!.level + 1}}</p>
                     </div>
 
@@ -120,23 +114,22 @@
                     <div class="flex gap-3">
                         <button
                             (click)="openEditModal()"
-                            class="flex-1 py-4 rounded-2xl bg-white text-slate-950 font-black text-xs uppercase tracking-widest hover:bg-slate-200 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-white/10">
+                            class="flex-1 py-4 rounded-2xl bg-text-main text-primary-bg font-black text-xs uppercase tracking-widest hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-accent-color/10">
                             Editar Perfil
                         </button>
-
                     </div>
                 </div>
 
                 <!-- Footer Stats Info -->
                 <div class="grid grid-cols-2 gap-4">
                     <div
-                        class="bg-slate-900/40 backdrop-blur-2xl border border-white/5 rounded-3xl p-5 hover:bg-white/5 transition-all text-center">
-                        <p class="text-[9px] text-slate-500 font-black uppercase mb-1 tracking-widest">Inscrito</p>
-                        <p class="text-white font-black text-xs tracking-tighter">{{userData()!.subscription_date}}</p>
+                        class="bg-secondary-bg/40 backdrop-blur-2xl border border-white/5 rounded-3xl p-5 hover:bg-white/5 transition-all text-center">
+                        <p class="text-[9px] text-text-muted font-black uppercase mb-1 tracking-widest">Inscrito</p>
+                        <p class="text-text-main font-black text-xs tracking-tighter">{{userData()!.subscription_date}}</p>
                     </div>
                     <div
-                        class="bg-slate-900/40 backdrop-blur-2xl border border-white/5 rounded-3xl p-5 hover:bg-white/5 transition-all text-center">
-                        <p class="text-[9px] text-slate-500 font-black uppercase mb-1 tracking-widest">Ranking</p>
+                        class="bg-secondary-bg/40 backdrop-blur-2xl border border-white/5 rounded-3xl p-5 hover:bg-white/5 transition-all text-center">
+                        <p class="text-[9px] text-text-muted font-black uppercase mb-1 tracking-widest">Ranking</p>
                         <p class="text-yellow-400 font-black text-xs tracking-tighter italic">TOP #{{userData()!.rank}}</p>
                     </div>
                 </div>
@@ -148,10 +141,10 @@
                 <!-- Quick Stats -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div
-                        class="bg-slate-900/40 backdrop-blur-3xl border border-white/10 rounded-[2rem] p-8 group hover:bg-slate-800/60 transition-all">
+                        class="bg-secondary-bg/40 backdrop-blur-3xl border border-white/10 rounded-[2rem] p-8 group hover:bg-secondary-bg transition-all">
                         <div class="flex justify-between items-start mb-4">
                             <div
-                                class="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+                                class="w-12 h-12 rounded-2xl bg-accent-color/10 flex items-center justify-center text-accent-color group-hover:scale-110 transition-transform">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                     stroke-linejoin="round">
@@ -166,14 +159,14 @@
                                 </svg>
                             </div>
                             <span
-                                class="text-purple-500/20 font-black text-4xl group-hover:text-purple-500/40 transition-colors">01</span>
+                                class="text-accent-color/20 font-black text-4xl group-hover:text-accent-color/40 transition-colors">01</span>
                         </div>
-                        <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Niveles historia completados</p>
-                        <p class="text-4xl font-black text-white italic tracking-tighter">{{userData()!.story_levels_completed}}</p>
+                        <p class="text-text-muted text-[10px] font-black uppercase tracking-[0.3em] mb-1">Niveles historia completados</p>
+                        <p class="text-4xl font-black text-text-main italic tracking-tighter">{{userData()!.story_levels_completed}}</p>
                     </div>
 
                     <div
-                        class="bg-slate-900/40 backdrop-blur-3xl border border-white/10 rounded-[2rem] p-8 group hover:bg-slate-800/60 transition-all">
+                        class="bg-secondary-bg/40 backdrop-blur-3xl border border-white/10 rounded-[2rem] p-8 group hover:bg-secondary-bg transition-all">
                         <div class="flex justify-between items-start mb-4">
                             <div
                                 class="w-12 h-12 rounded-2xl bg-orange-500/10 flex items-center justify-center text-orange-400 group-hover:scale-110 transition-transform">
@@ -187,13 +180,13 @@
                             <span
                                 class="text-orange-500/20 font-black text-4xl group-hover:text-orange-500/40 transition-colors">02</span>
                         </div>
-                        <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Roguelike</p>
-                        <p class="text-4xl font-black text-white italic tracking-tighter">{{userData()!.roguelike_levels_played}} <small
+                        <p class="text-text-muted text-[10px] font-black uppercase tracking-[0.3em] mb-1">Roguelike</p>
+                        <p class="text-4xl font-black text-text-main italic tracking-tighter">{{userData()!.roguelike_levels_played}} <small
                                 class="text-xs opacity-40 font-bold uppercase not-italic">Niveles</small></p>
                     </div>
 
                     <div
-                        class="bg-slate-900/40 backdrop-blur-3xl border border-white/10 rounded-[2rem] p-8 group hover:bg-slate-800/60 transition-all">
+                        class="bg-secondary-bg/40 backdrop-blur-3xl border border-white/10 rounded-[2rem] p-8 group hover:bg-secondary-bg transition-all">
                         <div class="flex justify-between items-start mb-4">
                             <div
                                 class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
@@ -211,32 +204,32 @@
                             <span
                                 class="text-blue-500/20 font-black text-4xl group-hover:text-blue-500/40 transition-colors">03</span>
                         </div>
-                        <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Racha</p>
-                        <p class="text-4xl font-black text-white italic tracking-tighter">{{userData()!.streak}}<small
+                        <p class="text-text-muted text-[10px] font-black uppercase tracking-[0.3em] mb-1">Racha</p>
+                        <p class="text-4xl font-black text-text-main italic tracking-tighter">{{userData()!.streak}}<small
                                 class="text-xs opacity-40 font-bold uppercase not-italic ml-1">Días</small></p>
                     </div>
                 </div>
 
                 <!-- Story Mode Progress -->
-                <div class="bg-slate-900/40 backdrop-blur-3xl border border-white/10 rounded-[3rem] p-10">
+                <div class="bg-secondary-bg/40 backdrop-blur-3xl border border-white/10 rounded-[3rem] p-10">
                     <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-2xl font-black text-white uppercase tracking-tighter truncate">
+                        <h3 class="text-2xl font-black text-text-main uppercase tracking-tighter truncate">
                             Progreso Historia
                         </h3>
-                        <div class="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_10px_#a855f7]"></div>
+                        <div class="w-2 h-2 rounded-full bg-accent-color shadow-[0_0_10px_var(--accent-color)]"></div>
                     </div>
                     
                     <div class="space-y-6">
                         <div>
                              <div class="flex justify-between items-end mb-2">
-                                <span class="text-sm font-black text-slate-200 uppercase tracking-widest">General</span>
-                                <span class="text-xl font-black text-purple-400">{{userData()!.story_levels_completed}} / <span class="opacity-50 font-bold text-xs">{{totalStoryLevels()}}</span></span>
+                                <span class="text-sm font-black text-text-main uppercase tracking-widest">General</span>
+                                <span class="text-xl font-black text-accent-color">{{userData()!.story_levels_completed}} / <span class="opacity-50 font-bold text-xs">{{totalStoryLevels()}}</span></span>
                             </div>
                             <!-- Progress Bar -->
-                            <div class="h-4 bg-slate-950 rounded-full overflow-hidden border border-white/5 p-0.5 relative">
+                            <div class="h-4 bg-primary-bg rounded-full overflow-hidden border border-white/5 p-0.5 relative">
                                 <!-- Glow effect behind bar -->
-                                <div class="absolute inset-0 bg-purple-500/5 filter blur-md"></div>
-                                <div class="h-full bg-gradient-to-r from-purple-600 via-indigo-500 to-blue-500 rounded-full shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all duration-1000 relative z-10"
+                                <div class="absolute inset-0 bg-accent-color/5 filter blur-md"></div>
+                                <div class="h-full bg-gradient-to-r from-accent-color via-indigo-500 to-blue-500 rounded-full shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all duration-1000 relative z-10"
                                      [style.width.%]="(userData()!.story_levels_completed / totalStoryLevels()) * 100">
                                      <!-- Shine effect -->
                                      <div class="absolute top-0 right-0 bottom-0 w-20 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"></div>
@@ -247,8 +240,8 @@
                          <!-- Last Level Info -->
                         <div class="bg-white/5 rounded-2xl p-6 border border-white/5 flex justify-between items-center hover:bg-white/10 transition-colors group">
                              <div>
-                                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1 group-hover:text-purple-400 transition-colors">Último nivel completado</p>
-                                <p class="text-white font-bold text-lg leading-none tracking-tight">{{userData()!.last_story_level_title || 'Ninguno'}}</p>
+                                <p class="text-[10px] font-black text-text-muted uppercase tracking-widest mb-1 group-hover:text-accent-color transition-colors">Último nivel completado</p>
+                                <p class="text-text-main font-bold text-lg leading-none tracking-tight">{{userData()!.last_story_level_title || 'Ninguno'}}</p>
                              </div>
                              <div class="h-12 w-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400 border border-green-500/20 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(74,222,128,0.2)]">
                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -260,25 +253,25 @@
                 <!-- Latest History -->
                 <div class="space-y-4">
                     <h3
-                        class="text-lg font-black text-slate-400 uppercase tracking-widest px-4 flex items-center gap-3">
+                        class="text-lg font-black text-text-muted uppercase tracking-widest px-4 flex items-center gap-3">
                         Actividad Reciente
                         <span class="w-full h-px bg-white/5"></span>
                     </h3>
                     <div class="grid grid-cols-1 gap-3">
                         @if (isLoadingActivity()) {
                             <div class="flex justify-center items-center py-10">
-                                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-text-main"></div>
                             </div>
                         } @else {
                             @for (item of recentActivity(); track $index) {
                             <div
-                                class="bg-slate-900/30 backdrop-blur-xl border border-white/5 p-6 rounded-[2rem] flex items-center justify-between group hover:bg-white/5 transition-all">
+                                class="bg-secondary-bg/30 backdrop-blur-xl border border-white/5 p-6 rounded-[2rem] flex items-center justify-between group hover:bg-white/5 transition-all">
                                 <div class="flex items-center gap-6">
                                     <!-- Icon based on type -->
                                     <div
                                         class="w-14 h-14 rounded-2xl flex items-center justify-center transition-colors font-bold"
                                         [ngClass]="{
-                                            'bg-purple-500/10 text-purple-400': item.tipo === 'historia',
+                                            'bg-accent-color/10 text-accent-color': item.tipo === 'historia',
                                             'bg-yellow-500/10 text-yellow-400': item.tipo === 'logro',
                                             'bg-red-500/10 text-red-400': item.tipo === 'roguelike'
                                         }">
@@ -292,116 +285,116 @@
                                         }
                                     </div>
                                     <div class="space-y-1">
-                                        <h4 class="text-white font-black text-base italic tracking-tight uppercase">{{item.titulo}}</h4>
-                                        <p class="text-slate-500 text-[10px] uppercase font-black tracking-widest">{{item.subtitulo}}</p>
+                                        <h4 class="text-text-main font-black text-base italic tracking-tight uppercase">{{item.titulo}}</h4>
+                                        <p class="text-text-muted text-[10px] uppercase font-black tracking-widest">{{item.subtitulo}}</p>
                                     </div>
                                 </div>
                                 <div class="text-right">
                                     @if (item.xp > 0) {
                                         <span class="text-green-400 font-black text-xl italic">+{{item.xp}}<span class="text-xs opacity-50 not-italic ml-1">XP</span></span>
                                     }
-                                    <p class="text-slate-600 text-[10px] font-bold uppercase tracking-widest">{{item.fecha}}</p>
+                                    <p class="text-text-muted text-[10px] font-bold uppercase tracking-widest">{{item.fecha}}</p>
                                 </div>
                             </div>
-                        } @empty {
-                            <div class="bg-slate-900/30 backdrop-blur-xl border border-white/5 p-6 rounded-[2rem] text-center text-slate-500">
-                                <p class="text-xs font-bold uppercase tracking-widest">No hay actividad reciente</p>
+                            } @empty {
+                                <div class="bg-secondary-bg/30 backdrop-blur-xl border border-white/5 p-6 rounded-[2rem] text-center text-text-muted">
+                                    <p class="text-xs font-bold uppercase tracking-widest">No hay actividad reciente</p>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <!-- EDIT PROFILE MODAL -->
+                @if (isEditModalOpen()) {
+                <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    <!-- Backdrop -->
+                    <div class="absolute inset-0 bg-primary-bg/80 backdrop-blur-sm" (click)="closeEditModal()"></div>
+                    
+                    <!-- Modal Content -->
+                    <div class="relative w-full max-w-lg bg-secondary-bg border border-white/10 rounded-3xl p-8 shadow-2xl animate-fade-in-up z-10">
+                         <div class="absolute -top-3 -right-3">
+                            <button (click)="closeEditModal()" class="w-8 h-8 rounded-full bg-primary-bg text-text-main flex items-center justify-center hover:opacity-80 transition-colors">
+                                ✕
+                            </button>
+                        </div>
+
+                        <h2 class="text-2xl font-black text-text-main font-jersey tracking-wide mb-6 text-center">Editar Perfil</h2>
+
+                        <div class="space-y-6">
+                            <!-- Avatar Preview & Edit -->
+                            <div class="flex flex-col items-center gap-4">
+                                <div class="w-32 h-32 rounded-full bg-primary-bg border-4 border-secondary-bg shadow-2xl overflow-hidden relative group cursor-pointer"
+                                    (click)="generateRandomAvatar()">
+                                    @if (editAvatarUrl()) {
+                                        <img [src]="editAvatarUrl()" class="w-full h-full object-cover">
+                                    } @else {
+                                         <div class="w-full h-full flex items-center justify-center text-text-muted text-xs">Sin Avatar</div>
+                                    }
+                                    <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <span class="text-white text-xs font-bold">Generar Random</span>
+                                    </div>
+                                </div>
                             </div>
-                        }
-                        }
-                        <!-- EDIT PROFILE MODAL -->
-    @if (isEditModalOpen()) {
-    <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" (click)="closeEditModal()"></div>
-        
-        <!-- Modal Content -->
-        <div class="relative w-full max-w-lg bg-slate-900 border border-white/10 rounded-3xl p-8 shadow-2xl animate-fade-in-up z-10">
-             <div class="absolute -top-3 -right-3">
-                <button (click)="closeEditModal()" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center hover:bg-slate-700 transition-colors">
-                    ✕
-                </button>
-            </div>
 
-            <h2 class="text-2xl font-black text-white font-jersey tracking-wide mb-6 text-center">Editar Perfil</h2>
+                            <!-- Fields Wrapper -->
+                            <div class="space-y-4">
+                                <!-- Nickname Input -->
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-black text-text-muted uppercase tracking-widest pl-1">Nickname</label>
+                                    <input type="text" 
+                                        [value]="editNickname()"
+                                        (input)="updateNickname($event)"
+                                        class="w-full bg-primary-bg border border-white/10 rounded-xl px-4 py-3 text-text-main focus:outline-none focus:border-accent-color transition-colors font-bold">
+                                </div>
+                                
+                                <p class="text-[10px] text-text-muted text-center italic mt-2 opacity-60">
+                                    * Haz click en la imagen de arriba para generar un nuevo avatar aleatorio.
+                                </p>
+                            </div>
 
-            <div class="space-y-6">
-                <!-- Avatar Preview & Edit -->
-                <div class="flex flex-col items-center gap-4">
-                    <div class="w-32 h-32 rounded-full bg-slate-800 border-4 border-slate-950 shadow-2xl overflow-hidden relative group cursor-pointer"
-                        (click)="generateRandomAvatar()">
-                        @if (editAvatarUrl()) {
-                            <img [src]="editAvatarUrl()" class="w-full h-full object-cover">
-                        } @else {
-                             <div class="w-full h-full flex items-center justify-center text-slate-500 text-xs">Sin Avatar</div>
-                        }
-                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <span class="text-white text-xs font-bold">Generar Random</span>
+                            <!-- Feedback Message -->
+                            @if (saveFeedback()) {
+                                <div class="p-4 rounded-xl text-center text-sm font-bold animate-pulse"
+                                    [ngClass]="saveFeedback()?.includes('Error') ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-green-500/10 text-green-400 border border-green-500/20'">
+                                    {{ saveFeedback() }}
+                                </div>
+                            }
+
+                            <!-- Actions -->
+                            <div class="flex gap-3 pt-4 border-t border-white/5">
+                                <button (click)="closeEditModal()"
+                                    class="flex-1 py-3.5 rounded-xl bg-primary-bg hover:opacity-80 text-text-muted font-bold transition-colors text-sm uppercase tracking-wider">
+                                    Cancelar
+                                </button>
+                                <button (click)="saveProfile()"
+                                    [disabled]="isSaving()"
+                                    class="flex-1 py-3.5 rounded-xl bg-accent-color hover:opacity-90 text-white font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm uppercase tracking-wider shadow-lg shadow-accent-color/20">
+                                    @if (isSaving()) {
+                                        <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                    }
+                                    Guardar
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Fields Wrapper -->
-                <div class="space-y-4">
-                    <!-- Nickname Input -->
-                    <div class="space-y-2">
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Nickname</label>
-                        <input type="text" 
-                            [value]="editNickname()"
-                            (input)="updateNickname($event)"
-                            class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-colors font-bold">
-                    </div>
-                    
-                    <p class="text-[10px] text-slate-500 text-center italic mt-2">
-                        * Haz click en la imagen de arriba para generar un nuevo avatar aleatorio.
-                    </p>
-                </div>
-
-                <!-- Feedback Message -->
-                @if (saveFeedback()) {
-                    <div class="p-4 rounded-xl text-center text-sm font-bold animate-pulse"
-                        [ngClass]="saveFeedback()?.includes('Error') ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-green-500/10 text-green-400 border border-green-500/20'">
-                        {{ saveFeedback() }}
-                    </div>
                 }
 
-                <!-- Actions -->
-                <div class="flex gap-3 pt-4 border-t border-white/5">
-                    <button (click)="closeEditModal()"
-                        class="flex-1 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors text-sm uppercase tracking-wider">
-                        Cancelar
-                    </button>
-                    <button (click)="saveProfile()"
-                        [disabled]="isSaving()"
-                        class="flex-1 py-3.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm uppercase tracking-wider shadow-lg shadow-purple-500/20">
-                        @if (isSaving()) {
-                            <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                        }
-                        Guardar
-                    </button>
-                </div>
             </div>
-        </div>
-    </div>
-    }
-
-</div>
-                </div>
-            </div>
-
         </div>
     </div>
 </div>
 } @else {
-<div class="min-h-screen bg-slate-950 flex items-center justify-center">
+<div class="min-h-screen bg-primary-bg flex items-center justify-center">
     <div class="flex flex-col items-center gap-6">
-        <span class="text-purple-500 text-5xl font-jersey animate-pulse">&gt;_</span>
+        <span class="text-accent-color text-5xl font-jersey animate-pulse">&gt;_</span>
         <div class="flex items-center gap-3">
-            <div class="w-3 h-3 bg-purple-500 rounded-full animate-bounce" style="animation-delay: 0ms"></div>
-            <div class="w-3 h-3 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 150ms"></div>
-            <div class="w-3 h-3 bg-pink-400 rounded-full animate-bounce" style="animation-delay: 300ms"></div>
+            <div class="w-3 h-3 bg-accent-color rounded-full animate-bounce" style="animation-delay: 0ms"></div>
+            <div class="w-3 h-3 bg-accent-color/80 rounded-full animate-bounce" style="animation-delay: 150ms"></div>
+            <div class="w-3 h-3 bg-accent-color/60 rounded-full animate-bounce" style="animation-delay: 300ms"></div>
         </div>
-        <p class="text-slate-500 text-sm font-medium">Cargando perfil...</p>
+        <p class="text-text-muted text-sm font-medium">Cargando perfil...</p>
     </div>
 </div>
 }

@@ -1,5 +1,5 @@
-<div class="min-h-screen text-slate-200 font-sans selection:bg-purple-500/30 overflow-hidden flex flex-col relative"
-     [class.bg-ui-bg]="urgencyLevel <= 1"
+<div class="min-h-screen text-text-main font-sans selection:bg-accent-color/30 overflow-hidden flex flex-col relative transition-colors duration-500"
+     [class.bg-primary-bg]="urgencyLevel <= 1"
      [class.urgency-critical-bg]="urgencyLevel >= 3"
      [class.screen-shake-light]="urgencyLevel === 2"
      [class.screen-shake-heavy]="urgencyLevel === 3 && timeRemaining() > 15"
@@ -220,29 +220,29 @@
                 <h1 class="text-5xl font-black text-red-500 font-jersey mb-2 tracking-wider animate-glitch">
                     GAME OVER
                 </h1>
-                <p class="text-slate-400 mb-10 text-lg">Tu aventura ha terminado...</p>
+                <p class="text-text-muted mb-10 text-lg font-medium">Tu aventura ha terminado...</p>
 
                 <!-- Stats Card -->
                 @if (gameOverStats()) {
-                    <div class="bg-slate-900/80 border border-red-500/20 rounded-2xl p-8 mb-8 shadow-[0_0_60px_rgba(239,68,68,0.15)]">
-                        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">Estadísticas de la Partida</h3>
+                    <div class="bg-secondary-bg border border-red-500/20 rounded-3xl p-8 mb-8 shadow-[0_0_60px_rgba(239,68,68,0.15)]">
+                        <h3 class="text-[10px] font-black text-text-muted uppercase tracking-widest mb-6">Estadísticas de Supervivencia</h3>
                         
-                        <div class="grid grid-cols-2 gap-6">
-                            <div class="bg-slate-800/50 rounded-xl p-4 border border-white/5">
-                                <div class="text-3xl font-black text-white font-jersey">{{ gameOverStats()!.niveles_superados }}</div>
-                                <div class="text-xs text-slate-400 mt-1">Niveles Superados</div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-primary-bg rounded-2xl p-4 border border-white/5">
+                                <div class="text-3xl font-black text-text-main font-jersey">{{ gameOverStats()!.niveles_superados }}</div>
+                                <div class="text-[9px] text-text-muted uppercase font-black mt-1">Niveles</div>
                             </div>
-                            <div class="bg-slate-800/50 rounded-xl p-4 border border-white/5">
+                            <div class="bg-primary-bg rounded-2xl p-4 border border-white/5">
                                 <div class="text-3xl font-black text-yellow-400 font-jersey">{{ gameOverStats()!.monedas_obtenidas }}</div>
-                                <div class="text-xs text-slate-400 mt-1">Monedas Ganadas</div>
+                                <div class="text-[9px] text-text-muted uppercase font-black mt-1">Créditos</div>
                             </div>
-                            <div class="bg-slate-800/50 rounded-xl p-4 border border-white/5">
-                                <div class="text-3xl font-black text-purple-400 font-jersey">{{ gameOverStats()!.xp_ganada }}</div>
-                                <div class="text-xs text-slate-400 mt-1">XP Obtenida</div>
+                            <div class="bg-primary-bg rounded-2xl p-4 border border-white/5">
+                                <div class="text-3xl font-black text-accent-color font-jersey">{{ gameOverStats()!.xp_ganada }}</div>
+                                <div class="text-[9px] text-text-muted uppercase font-black mt-1">XP Total</div>
                             </div>
-                            <div class="bg-slate-800/50 rounded-xl p-4 border border-white/5">
+                            <div class="bg-primary-bg rounded-2xl p-4 border border-white/5">
                                 <div class="text-3xl font-black text-red-400 font-jersey">{{ gameOverStats()!.vidas_restantes }}</div>
-                                <div class="text-xs text-slate-400 mt-1">Vidas Restantes</div>
+                                <div class="text-[9px] text-text-muted uppercase font-black mt-1">Vidas</div>
                             </div>
                         </div>
                     </div>
@@ -250,11 +250,11 @@
 
                 <!-- Actions -->
                 <div class="flex items-center gap-4 justify-center">
-                    <a routerLink="/dashboard" class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-all border border-white/10">
-                        Volver al Dashboard
+                    <a routerLink="/dashboard" class="px-6 py-3 rounded-xl bg-secondary-bg hover:bg-white/5 text-text-muted font-black uppercase text-xs tracking-widest transition-all border border-white/5">
+                        <span class="mr-2">🏠</span> Abandonar
                     </a>
-                    <button (click)="restartGame()" class="px-8 py-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold transition-all shadow-[0_0_30px_rgba(239,68,68,0.3)] hover:shadow-[0_0_40px_rgba(239,68,68,0.5)] hover:scale-105 transform">
-                        🔄 Reintentar
+                    <button (click)="restartGame()" class="px-8 py-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-black uppercase text-xs tracking-widest transition-all shadow-[0_0_30px_rgba(239,68,68,0.3)] hover:scale-105 transform">
+                        🔄 Iniciar Nueva Simulación
                     </button>
                 </div>
             </div>
@@ -262,18 +262,19 @@
     }
 
     <!-- Header -->
-    <header class="h-16 border-b border-white/5 bg-ui-bg backdrop-blur-md flex items-center justify-between px-6 z-20 shrink-0 relative"
+    <!-- Header -->
+    <header class="h-16 border-b border-white/5 bg-secondary-bg/80 backdrop-blur-md flex items-center justify-between px-6 z-20 shrink-0 relative transition-colors duration-500"
             [class.header-danger]="urgencyLevel >= 2">
         <!-- Left: Back Button -->
         <div class="flex items-center gap-6">
-            <a routerLink="/dashboard" class="group flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
+            <a routerLink="/dashboard" class="group flex items-center gap-2 text-text-muted hover:text-text-main transition-colors">
                 <div class="p-2 rounded-lg bg-white/5 group-hover:bg-white/10 border border-white/5 transition-colors">
                     <img src="/common/icons/flecha_atras.png" class="w-4 h-4 opacity-70 group-hover:opacity-100" alt="Volver">
                 </div>
             </a>
 
             <!-- Difficulty Badge -->
-            <div class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border"
+            <div class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border"
                  [ngClass]="{
                     'bg-green-500/10 border-green-500/30 text-green-400': dificultad() === 'fácil',
                     'bg-yellow-500/10 border-yellow-500/30 text-yellow-400': dificultad() === 'medio',
@@ -284,17 +285,17 @@
         </div>
 
         <!-- Center: Timer -->
-        <div class="absolute left-1/2 -translate-x-1/2 flex items-center gap-3 px-5 py-2 rounded-xl border transition-all duration-300"
+        <div class="absolute left-1/2 -translate-x-1/2 flex items-center gap-4 px-6 py-2.5 rounded-2xl border transition-all duration-300 shadow-xl"
              [ngClass]="{
-                'bg-slate-900/50 border-white/5': urgencyLevel === 0,
+                'bg-primary-bg/80 border-white/10': urgencyLevel === 0,
                 'bg-yellow-900/30 border-yellow-500/30': urgencyLevel === 1,
                 'bg-orange-900/40 border-orange-500/40 animate-pulse': urgencyLevel === 2,
                 'bg-red-900/50 border-red-500/50 animate-timer-shake': urgencyLevel === 3
              }">
             <span class="text-xl" [class.animate-spin-slow]="urgencyLevel >= 2">⏱️</span>
-            <span class="font-mono text-xl font-bold tracking-widest transition-colors duration-300"
+            <span class="font-mono text-2xl font-black tracking-[0.2em] transition-colors duration-300"
                   [ngClass]="{
-                    'text-white': urgencyLevel === 0,
+                    'text-text-main': urgencyLevel === 0,
                     'text-yellow-400': urgencyLevel === 1,
                     'text-orange-400': urgencyLevel === 2,
                     'text-red-400 animate-pulse': urgencyLevel === 3
@@ -302,20 +303,20 @@
                 {{ formattedTime }}
             </span>
             @if (timerPaused()) {
-                <span class="text-[10px] text-blue-400 font-bold uppercase tracking-widest animate-pulse">PAUSA</span>
+                <span class="text-[9px] text-accent-color font-black uppercase tracking-[0.2em] animate-pulse">PAUSED</span>
             }
         </div>
 
         <!-- Right: Stats (Hearts & Coins) -->
         <div class="flex items-center gap-6">
             <!-- Level Counter -->
-            <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-purple-500/10 border border-purple-500/20">
+            <div class="flex items-center gap-3 px-4 py-2 rounded-xl bg-accent-color/10 border border-accent-color/20">
                 <span class="text-sm">🏔️</span>
-                <span class="font-bold text-purple-400 font-mono text-sm">Nivel {{ nivelesCompletados() + 1 }}</span>
+                <span class="font-black text-accent-color font-jersey text-base tracking-wider uppercase italic">Nivel {{ nivelesCompletados() + 1 }}</span>
             </div>
 
             <!-- Lives -->
-            <div class="flex items-center gap-1">
+            <div class="flex items-center gap-1.5 grayscale-0">
                 @for (heart of [1,2,3]; track heart) {
                     <span class="text-2xl transition-all duration-500"
                           [class.drop-shadow-heart]="heart <= lives()"
@@ -329,9 +330,9 @@
             </div>
 
             <!-- Coins -->
-            <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-yellow-500/10 border border-yellow-500/20 shadow-[0_0_15px_rgba(234,179,8,0.2)]">
-                <img src="/common/icons/credits.png" class="w-5 h-5 object-contain">
-                <span class="font-bold text-yellow-400 font-mono">{{ coins() }}</span>
+            <div class="flex items-center gap-3 px-4 py-2 rounded-xl bg-yellow-500/10 border border-yellow-500/20 shadow-[0_0_15px_rgba(234,179,8,0.2)]">
+                <img src="/common/icons/credits.png" class="w-6 h-6 object-contain">
+                <span class="font-black text-yellow-500 font-mono text-base">{{ coins() }}</span>
             </div>
         </div>
     </header>
@@ -341,8 +342,12 @@
         <div class="fixed inset-0 z-[100] bg-black flex items-center justify-center overflow-hidden transition-opacity duration-500"
              [class.opacity-0]="startExit()">
             <div class="relative w-full h-full flex items-center justify-center">
+                @if (themeService.currentTheme()?.nombre === 'Deep Space') {
                 <img src="/landing/espiral.png" 
                      class="w-[80vw] h-[80vw] md:w-[40vw] md:h-[40vw] object-contain animate-spin-zoom opacity-0">
+                } @else {
+                    <div class="w-20 h-20 rounded-full border-4 border-accent-color/20 border-t-accent-color animate-spin"></div>
+                }
                 <div class="absolute bottom-20 text-white font-mono text-sm animate-pulse tracking-widest">
                     CARGANDO MODO INFINITO...
                 </div>
@@ -353,43 +358,43 @@
     <!-- Improvements Overlay -->
     @if (showMejoras()) {
         <div class="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm flex items-center justify-center animate-fade-in p-4">
-            <div class="bg-slate-900 border border-purple-500/30 rounded-3xl p-8 max-w-4xl w-full shadow-[0_0_50px_rgba(168,85,247,0.2)]">
-                <h2 class="text-3xl font-black text-center text-white font-jersey mb-2">¡Mejora Desbloqueada!</h2>
-                <p class="text-center text-slate-400 mb-8">Elige sabiamente. Se descontarán 100 monedas.</p>
+            <div class="bg-secondary-bg border border-accent-color/30 rounded-[2.5rem] p-10 max-w-4xl w-full shadow-[0_0_80px_rgba(var(--accent-color-rgb),0.15)]">
+                <h2 class="text-4xl font-black text-center text-text-main font-jersey mb-2 tracking-widest italic">¡SISTEMA ACTUALIZADO!</h2>
+                <p class="text-center text-text-muted mb-10 font-medium uppercase text-[10px] tracking-[0.2em]">Selección de módulo obligatoria. Coste: 100 créditos.</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     @for (mejora of mejorasDisponibles(); track mejora.id) {
                         <button (click)="selectUpgrade(mejora)" 
-                                class="group relative bg-slate-800/50 hover:bg-slate-800 border border-white/10 hover:border-purple-500 rounded-2xl p-6 text-left transition-all hover:scale-105 hover:shadow-xl">
+                                class="group relative bg-primary-bg/40 hover:bg-primary-bg border border-white/5 hover:border-accent-color rounded-[2rem] p-8 text-left transition-all hover:scale-[1.03] hover:shadow-2xl">
                             
                             <!-- Type badge -->
-                            <div class="absolute top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider"
+                            <div class="absolute top-4 right-4 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest"
                                  [ngClass]="{
                                     'bg-red-500/20 text-red-400': mejora.tipo === 'vidas_extra',
                                     'bg-blue-500/20 text-blue-400': mejora.tipo === 'tiempo_extra',
                                     'bg-yellow-500/20 text-yellow-400': mejora.tipo === 'multiplicador',
                                     'bg-green-500/20 text-green-400': mejora.tipo === 'pista'
                                  }">
-                                {{ mejora.tipo === 'vidas_extra' ? '❤️ Vida' : 
-                                   mejora.tipo === 'tiempo_extra' ? '⏱️ Tiempo' : 
-                                   mejora.tipo === 'multiplicador' ? '💰 x2' : '💡 Pista' }}
+                                {{ mejora.tipo === 'vidas_extra' ? '❤️ Nucleo' : 
+                                   mejora.tipo === 'tiempo_extra' ? '⏱️ Fase' : 
+                                   mejora.tipo === 'multiplicador' ? '💰 Data' : '💡 Algoritmo' }}
                             </div>
 
-                            <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">
+                            <div class="text-5xl mb-6 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
                                 {{ mejora.tipo === 'vidas_extra' ? '❤️' : 
                                    mejora.tipo === 'tiempo_extra' ? '⏱️' : 
                                    mejora.tipo === 'multiplicador' ? '💰' : '💡' }}
                             </div>
-                            <h3 class="font-bold text-white text-lg mb-2 group-hover:text-purple-400">{{ mejora.nombre }}</h3>
-                            <p class="text-sm text-slate-400 leading-relaxed">{{ mejora.descripcion }}</p>
+                            <h3 class="font-black text-text-main text-xl mb-3 group-hover:text-accent-color font-jersey italic tracking-wide transition-colors">{{ mejora.nombre }}</h3>
+                            <p class="text-xs text-text-muted leading-relaxed font-medium">{{ mejora.descripcion }}</p>
                         </button>
                     }
                 </div>
 
-                <div class="mt-6 text-center">
+                <div class="mt-10 text-center">
                     <button (click)="showMejoras.set(false)" 
-                            class="px-6 py-2 rounded-lg bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition text-sm">
-                        Cancelar
+                            class="px-8 py-2.5 rounded-xl bg-primary-bg text-text-muted hover:text-text-main hover:bg-white/5 transition-all text-[10px] font-black uppercase tracking-[0.2em]">
+                        Omitir Instalación
                     </button>
                 </div>
             </div>
@@ -399,12 +404,12 @@
     <!-- Reset Confirmation Overlay -->
     @if (showResetConfirm()) {
         <div class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center animate-fade-in p-4">
-            <div class="bg-slate-900 border border-white/10 rounded-2xl p-6 max-w-sm w-full shadow-2xl scale-in-center">
-                <h3 class="text-xl font-bold text-white mb-2">¿Reiniciar Código?</h3>
-                <p class="text-slate-400 text-sm mb-6">Tu código actual se perderá y volverás al estado inicial del nivel.</p>
-                <div class="flex items-center gap-3">
-                    <button (click)="cancelReset()" class="flex-1 py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Cancelar</button>
-                    <button (click)="confirmReset()" class="flex-1 py-2 rounded-lg bg-red-600 text-white hover:bg-red-500 transition font-bold">Reiniciar</button>
+            <div class="bg-secondary-bg border border-white/10 rounded-3xl p-8 max-w-sm w-full shadow-2xl scale-in-center">
+                <h3 class="text-2xl font-black text-text-main mb-3 font-jersey italic tracking-wider">¿REINICIAR CÓDIGO?</h3>
+                <p class="text-text-muted text-sm mb-8 font-medium">Esta acción purgará tu buffer actual y restaurará el estado inicial.</p>
+                <div class="flex items-center gap-4">
+                    <button (click)="cancelReset()" class="flex-1 py-3 rounded-xl bg-primary-bg text-text-muted hover:text-text-main hover:bg-white/5 font-black uppercase text-[10px] tracking-widest transition">Cancelar</button>
+                    <button (click)="confirmReset()" class="flex-1 py-3 rounded-xl bg-red-600 text-white hover:bg-red-500 transition font-black uppercase text-[10px] tracking-widest shadow-lg shadow-red-600/20">Reiniciar</button>
                 </div>
             </div>
         </div>
@@ -417,95 +422,95 @@
         <!-- Toggle Button for Sidebar (Visible when closed) -->
         @if (!isInstructionsOpen()) {
             <button (click)="toggleInstructions()" 
-                class="absolute left-4 top-4 z-30 p-3 rounded-xl bg-sidebar-bg border border-white/10 text-white hover:bg-slate-700 hover:scale-105 transition-all shadow-lg shadow-black/50">
+                class="absolute left-4 top-4 z-30 p-3 rounded-xl bg-secondary-bg border border-white/10 text-text-main hover:bg-primary-bg hover:scale-105 transition-all shadow-lg shadow-black/50">
                 <span class="scale-x-[-1] inline-block">➜</span>
             </button>
         }
 
         <!-- Left Sidebar (Shop & Upgrades) -->
-        <aside class="flex transition-all duration-300 ease-in-out border-r border-white/5 bg-sidebar-bg relative"
-               [class.w-96]="isInstructionsOpen()"
+        <aside class="flex transition-all duration-300 ease-in-out border-r border-white/5 bg-secondary-bg relative"
+               [class.w-112]="isInstructionsOpen()"
                [class.w-0]="!isInstructionsOpen()"
                [class.opacity-100]="isInstructionsOpen()"
                [class.opacity-0]="!isInstructionsOpen()"
                [class.overflow-hidden]="!isInstructionsOpen()">
             
-            <div class="w-96 h-full flex flex-col p-6 overflow-y-auto custom-scrollbar">
+            <div class="w-112 h-full flex flex-col p-6 overflow-y-auto custom-scrollbar">
                 
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="font-jersey text-xl text-white flex items-center gap-2">
-                        <span class="text-base">💀</span> Supervivencia
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="font-jersey text-2xl text-text-main flex items-center gap-3 italic tracking-wide">
+                        <span class="text-xl text-red-500 animate-pulse">💀</span> SUPERVIVENCIA
                     </h2>
-                    <button (click)="toggleInstructions()" class="text-slate-500 hover:text-white p-1 rounded-lg hover:bg-white/5 transition-colors">
+                    <button (click)="toggleInstructions()" class="text-text-muted hover:text-text-main p-1 rounded-lg hover:bg-white/5 transition-colors">
                         ✕
                     </button>
                 </div>
 
                 <!-- Mission Statement -->
-                <div class="mb-8 p-5 bg-slate-900/80 rounded-2xl border border-red-500/20 shadow-lg relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-3 opacity-10">
-                        <img src="/common/icons/roguelike_mode.png" class="w-16 h-16">
+                <div class="mb-8 p-6 bg-primary-bg rounded-[2rem] border border-red-500/10 shadow-xl relative overflow-hidden group">
+                    <div class="absolute -top-4 -right-4 p-8 opacity-5 group-hover:scale-110 transition-transform">
+                        <img src="/common/icons/roguelike_mode.png" class="w-24 h-24">
                     </div>
                     
-                    <h3 class="text-red-400 font-bold text-lg mb-2 relative z-10">{{ titulo() }}</h3>
-                    <p class="text-slate-300 text-sm mb-5 leading-relaxed relative z-10">
+                    <h3 class="text-accent-color font-black text-xl mb-4 relative z-10 font-jersey italic tracking-wider">{{ titulo() }}</h3>
+                    <p class="text-text-main text-sm mb-6 leading-relaxed relative z-10 font-medium">
                         {{ descripcion() }}
                     </p>
                     
-                    <div class="grid grid-cols-1 gap-3 text-xs font-mono relative z-10">
+                    <div class="grid grid-cols-1 gap-4 text-xs font-mono relative z-10">
                         @if (testCases().length > 0) {
                             @for (test of testCases(); track $index) {
-                                <div class="bg-black/30 rounded-lg border border-white/5 overflow-hidden">
-                                    <div class="bg-white/5 px-3 py-1.5 text-[10px] font-bold text-slate-500 uppercase flex justify-between">
-                                        <span>Caso {{ $index + 1 }}</span>
+                                <div class="bg-black/20 rounded-2xl border border-white/5 overflow-hidden transition-all hover:border-accent-color/30">
+                                    <div class="bg-white/5 px-4 py-2 text-[9px] font-black text-text-muted uppercase flex justify-between tracking-widest">
+                                        <span>Vector {{ $index + 1 }}</span>
                                     </div>
-                                    <div class="p-3 space-y-2">
+                                    <div class="p-4 space-y-3">
                                         <div class="flex justify-between items-start gap-4">
-                                            <span class="text-slate-500 shrink-0">Input:</span>
-                                            <span class="text-slate-300 text-right break-all">{{ test.input }}</span>
+                                            <span class="text-text-muted/60 shrink-0 uppercase text-[8px] font-black tracking-tighter">Entrada</span>
+                                            <span class="text-text-main text-right break-all font-bold tracking-tight">{{ test.input }}</span>
                                         </div>
-                                        <div class="flex justify-between items-start gap-4 border-t border-white/5 pt-2">
-                                            <span class="text-slate-500 shrink-0">Output:</span>
-                                            <span class="text-purple-400 font-bold text-right break-all">{{ test.output }}</span>
+                                        <div class="flex justify-between items-start gap-4 border-t border-white/5 pt-3">
+                                            <span class="text-text-muted/60 shrink-0 uppercase text-[8px] font-black tracking-tighter">Salida</span>
+                                            <span class="text-accent-color font-black text-right break-all">{{ test.output }}</span>
                                         </div>
                                     </div>
                                 </div>
                             }
                         } @else {
-                             <div class="bg-black/30 rounded-lg border border-white/5 overflow-hidden p-3 text-slate-500 italic text-center">
-                                Cargando ejemplos...
+                             <div class="bg-black/20 rounded-2xl border border-white/5 overflow-hidden p-6 text-text-muted/40 italic text-center font-black uppercase text-[10px] tracking-widest animate-pulse">
+                                Sincronizando datos...
                             </div>
                         }
                     </div>
                 </div>
 
                 <!-- Shop Section Header -->
-                <div class="flex items-center gap-2 mb-4 pt-4 border-t border-white/5">
+                <div class="flex items-center gap-3 mb-6 pt-6 border-t border-white/5">
                     <span class="text-xl">🛒</span>
-                    <h3 class="font-jersey text-xl text-white">Mercado Negro</h3>
+                    <h3 class="font-jersey text-2xl text-text-main italic tracking-wide">MERCADO NEGRO</h3>
                 </div>
 
                 <!-- Buy Lootbox -->
-                <div class="mb-8">
+                <div class="mb-10">
                     <button (click)="buyBox()" 
-                            class="w-full relative group overflow-hidden rounded-2xl p-1 transition-transform active:scale-95"
-                            [class.opacity-50]="isLoadingMejoras() || coins() < 100"
+                            class="w-full relative group overflow-hidden rounded-[2rem] p-0.5 transition-all active:scale-[0.98] shadow-2xl hover:shadow-accent-color/10"
+                            [class.opacity-40]="isLoadingMejoras() || coins() < 100"
                             [class.cursor-not-allowed]="coins() < 100"
                             [disabled]="isLoadingMejoras()">
-                        <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 group-hover:animate-pulse"></div>
-                        <div class="relative bg-slate-900 rounded-xl p-6 flex flex-col items-center gap-3 border border-white/10">
+                        <div class="absolute inset-0 bg-gradient-to-br from-accent-color via-pink-600 to-purple-800 opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                        <div class="relative bg-secondary-bg/90 backdrop-blur-xl rounded-[1.95rem] p-8 flex flex-col items-center gap-4 border border-white/10 group-hover:bg-secondary-bg/70 transition-colors">
                             @if (isLoadingMejoras()) {
-                                <span class="text-5xl animate-spin inline-block">⏳</span>
+                                <img src="/landing/espiral.png" class="w-16 h-16 animate-spin invert opacity-80">
                             } @else {
-                                <span class="text-5xl group-hover:-translate-y-1 transition-transform inline-block">🎁</span>
+                                <div class="text-6xl group-hover:-translate-y-2 transition-transform duration-300 drop-shadow-2xl">🎁</div>
                             }
                             <div class="text-center">
-                                <h3 class="font-bold text-white text-lg">Caja de Mejoras</h3>
-                                <p class="text-xs text-purple-300">Contiene items aleatorios</p>
+                                <h3 class="font-black text-text-main text-xl font-jersey italic tracking-widest">SUMINISTRO ALEATORIO</h3>
+                                <p class="text-[9px] text-accent-color font-black uppercase tracking-[0.2em] mt-1">Nivel de rarete: ALPHA</p>
                             </div>
-                            <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-yellow-500/30 text-yellow-400 font-bold text-sm">
-                                <span>100</span>
-                                <span>🪙</span>
+                            <div class="flex items-center gap-3 px-5 py-2 rounded-full bg-primary-bg border border-yellow-500/30 text-yellow-500 font-black text-base shadow-inner">
+                                <span class="tracking-tighter font-mono">100</span>
+                                <span class="text-xs">🪙</span>
                             </div>
                         </div>
                     </button>
@@ -513,28 +518,31 @@
 
                 <!-- Feedback Toast -->
                 @if (mejoraFeedback()) {
-                    <div class="mb-4 p-3 rounded-xl bg-purple-500/20 border border-purple-500/30 text-purple-300 text-sm text-center animate-fade-in">
+                    <div class="mb-6 p-4 rounded-2xl bg-accent-color/10 border border-accent-color/30 text-accent-color text-[10px] font-black uppercase tracking-widest text-center animate-fade-in shadow-xl">
                         {{ mejoraFeedback() }}
                     </div>
                 }
 
                 <!-- Active Upgrades -->
                 <div class="flex-1">
-                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 pl-1">Mejoras Activas</h3>
+                    <h3 class="text-[10px] font-black text-text-muted uppercase tracking-[0.3em] mb-6 pl-1 italic">Módulos Instalados</h3>
                     
                     @if (purchasedUpgrades().length === 0) {
-                        <div class="p-8 border-2 border-dashed border-slate-800 rounded-2xl flex flex-col items-center justify-center text-center gap-3 opacity-50">
-                            <span class="text-4xl grayscale">🎒</span>
-                            <p class="text-sm text-slate-500">Inventario vacío</p>
+                        <div class="p-10 border-2 border-dashed border-white/5 rounded-3xl flex flex-col items-center justify-center text-center gap-4 opacity-30 select-none">
+                            <span class="text-5xl grayscale">🎒</span>
+                            <p class="text-[10px] font-black uppercase tracking-[0.2em]">Buffer Vacío</p>
                         </div>
                     } @else {
-                        <div class="space-y-3">
+                        <div class="space-y-4">
                             @for (upgrade of purchasedUpgrades(); track upgrade.id) {
-                                <div class="bg-slate-800/50 border border-white/5 rounded-xl p-3 flex items-center gap-4 animate-fade-in-up">
-                                    <div class="text-2xl">{{ upgrade.icon }}</div>
-                                    <div>
-                                        <h4 class="font-bold text-white text-sm">{{ upgrade.nombre }}</h4>
-                                        <p class="text-[10px] text-slate-400 uppercase">{{ upgrade.tipo }}</p>
+                                <div class="bg-primary-bg/50 border border-white/5 rounded-2xl p-4 flex items-center gap-5 animate-fade-in-up hover:border-accent-color/20 transition-colors group">
+                                    <div class="text-3xl group-hover:scale-110 transition-transform">{{ upgrade.icon }}</div>
+                                    <div class="flex-1">
+                                        <h4 class="font-black text-text-main text-sm font-jersey tracking-wider">{{ upgrade.nombre }}</h4>
+                                        <div class="flex items-center justify-between">
+                                            <p class="text-[8px] text-accent-color font-black uppercase tracking-widest">{{ upgrade.tipo }}</p>
+                                            <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                                        </div>
                                     </div>
                                 </div>
                             }
@@ -545,12 +553,14 @@
         </aside>
 
         <!-- Editor Area -->
-        <section class="flex-1 flex flex-col bg-editor-bg relative z-0 overflow-hidden">
+        <section class="flex-1 flex flex-col bg-slate-950 relative z-0 overflow-hidden">
             
             <!-- Animated Background -->
-            <div class="absolute inset-0 z-0 opacity-10 pointer-events-none editor-background-animate bg-cover bg-center"
-                 style="background-image: url('/modo-historia/fondo-alternativo.png');">
-            </div>
+            @if (themeService.currentTheme()?.css_variables?.['--editor-bg-img']) {
+                <div class="absolute inset-0 z-0 opacity-20 pointer-events-none editor-background-animate bg-cover bg-center"
+                     [style.backgroundImage]="'url(' + themeService.currentTheme()?.css_variables?.['--editor-bg-img'] + ')'">
+                </div>
+            }
 
             <!-- Urgency Border Effect -->
             @if (urgencyLevel >= 2) {
@@ -563,30 +573,30 @@
             }
 
             <!-- Toolbar -->
-            <div class="h-12 border-b border-white/10 flex items-center justify-between px-4 bg-slate-900/20 backdrop-blur-sm relative z-10">
-                <div class="flex items-center gap-2">
-                    <div class="px-3 py-1.5 rounded-lg bg-slate-900/50 border border-white/10 flex items-center gap-2 text-xs font-mono text-slate-300 shadow-sm">
+            <div class="h-14 border-b border-white/5 flex items-center justify-between px-6 bg-secondary-bg/40 backdrop-blur-sm relative z-10">
+                <div class="flex items-center gap-4">
+                    <div class="px-4 py-1.5 rounded-full bg-primary-bg border border-white/10 flex items-center gap-3 text-[10px] font-black text-text-muted shadow-sm tracking-[0.2em] uppercase italic">
+                        <span class="w-2 h-2 rounded-full bg-accent-color animate-pulse"></span>
                         main.py
                     </div>
                 </div>
                 
-                <div class="flex items-center gap-2">
-                    <button (click)="requestReset()" class="px-3 py-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white text-xs font-bold transition-colors flex items-center gap-2">
-                        <span>↺</span> Reset
+                <div class="flex items-center gap-3">
+                    <button (click)="requestReset()" class="px-4 py-2 rounded-xl hover:bg-white/5 text-text-muted hover:text-text-main text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2">
+                        <span>↺</span> Purgar
                     </button>
                     <button (click)="ejecutarCodigo()" 
-                            class="pl-3 pr-4 py-1.5 rounded-lg text-white text-xs font-bold transition-all flex items-center gap-2 transform active:scale-95 group shadow-lg"
-                            [class.bg-green-600]="!isExecuting()"
-                            [class.hover:bg-green-500]="!isExecuting()"
-                            [class.hover:shadow-green]="!isExecuting()"
-                            [class.bg-slate-600]="isExecuting()"
+                            class="pl-5 pr-6 py-2.5 rounded-xl text-white text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-3 transform active:scale-95 group shadow-2xl"
+                            [class.bg-accent-color]="!isExecuting()"
+                            [class.hover:opacity-90]="!isExecuting()"
+                            [class.bg-secondary-bg]="isExecuting()"
                             [class.cursor-not-allowed]="isExecuting()"
                             [disabled]="isExecuting()">
                         @if (isExecuting()) {
-                            <img src="/landing/espiral.png" class="w-4 h-4 animate-spin opacity-70">
-                            Ejecutando...
+                            <img src="/landing/espiral.png" class="w-4 h-4 animate-spin grayscale invert">
+                            Procesando...
                         } @else {
-                            <span class="group-hover:translate-x-0.5 transition-transform">▶</span> Ejecutar Código
+                            <span class="group-hover:translate-x-0.5 transition-transform text-lg">▶</span> Ejecutar Envío
                         }
                     </button>
                 </div>
@@ -595,9 +605,9 @@
             <!-- Code Editor -->
             <div class="flex-1 flex overflow-hidden font-mono text-sm group relative z-10" onclick="document.getElementById('code-input').focus()">
                 <!-- Line Numbers -->
-                <div #lineNumbersRef class="w-12 bg-slate-900/20 backdrop-blur-sm text-slate-500 text-right pr-3 pt-4 pb-16 select-none border-r border-white/5 flex flex-col shrink-0 z-20 overflow-hidden">
+                <div #lineNumbersRef class="w-14 bg-primary-bg/20 backdrop-blur-sm text-text-muted/40 text-right pr-4 pt-4 pb-16 select-none border-r border-white/5 flex flex-col shrink-0 z-20 overflow-hidden italic">
                     @for (num of lineNumbers(); track num) {
-                        <div class="h-6 leading-6 text-xs flex items-center justify-end">{{num}}</div>
+                        <div class="h-6 leading-6 text-[11px] flex items-center justify-end">{{num}}</div>
                     }
                 </div>
                 
@@ -607,14 +617,14 @@
                     <div #scrollContainer class="code-scroll-container absolute inset-0 overflow-hidden pointer-events-none z-0">
                         <!-- Active Line Highlight -->
                         @if (currentLine() !== null) {
-                            <div class="absolute w-full bg-purple-500/10 border-l-2 border-purple-500 box-border"
+                            <div class="absolute w-full bg-accent-color/10 border-l-4 border-accent-color box-border"
                                  [style.top.px]="(currentLine() || 0) * 24 + 16"
                                  [style.height.px]="24">
                             </div>
                         }
 
                         <!-- Syntax Highlighted Code -->
-                        <pre class="bg-transparent text-slate-200 whitespace-pre font-mono z-0" 
+                        <pre class="bg-transparent text-text-main whitespace-pre font-mono z-0" 
                              style="font-family: monospace !important; font-size: 14px !important; line-height: 24px !important; padding: 16px 16px 64px 16px !important; margin: 0 !important; border: none !important;"
                              [innerHTML]="highlightedCode()">
                         </pre>
@@ -622,140 +632,146 @@
 
                     <!-- Input Layer -->
                     <textarea id="code-input" #textarea
-                              class="absolute inset-0 w-full h-full bg-transparent text-transparent caret-white resize-none focus:outline-none font-mono z-10 whitespace-pre overflow-auto" 
-                              style="font-family: monospace !important; font-size: 14px !important; line-height: 24px !important; padding: 16px !important; margin: 0 !important; border: none !important; outline: none !important;"
-                              [value]="codeContent()"
-                              spellcheck="false" 
-                              autocapitalize="off"
-                              autocomplete="off"
-                              autocorrect="off"
-                              (click)="onCursorActivity($event)"
-                              (keyup)="onCursorActivity($event)"
-                              (blur)="onBlur()"
-                              (focus)="onFocus($event)"
-                              (input)="onCodeInput($event); syncScroll($event, lineNumbersRef, scrollContainer)"
-                              (scroll)="syncScroll($event, lineNumbersRef, scrollContainer)"></textarea>
+                               class="absolute inset-0 w-full h-full bg-transparent text-transparent caret-accent-color resize-none focus:outline-none font-mono z-10 whitespace-pre overflow-auto" 
+                               style="font-family: monospace !important; font-size: 14px !important; line-height: 24px !important; padding: 16px !important; margin: 0 !important; border: none !important; outline: none !important;"
+                               [value]="codeContent()"
+                               spellcheck="false" 
+                               autocapitalize="off"
+                               autocomplete="off"
+                               autocorrect="off"
+                               (click)="onCursorActivity($event)"
+                               (keyup)="onCursorActivity($event)"
+                               (blur)="onBlur()"
+                               (focus)="onFocus($event)"
+                               (input)="onCodeInput($event); syncScroll($event, lineNumbersRef, scrollContainer)"
+                               (scroll)="syncScroll($event, lineNumbersRef, scrollContainer)"></textarea>
                 </div>
             </div>
 
             <!-- Console / Output -->
-            <div class="h-1/3 border-t border-white/5 bg-ui-bg backdrop-blur flex flex-col">
-                <div class="h-10 border-b border-white/5 flex items-center px-4 justify-between bg-black/20">
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                        <span class="text-slate-500 font-mono font-bold text-sm mr-1">$_</span> 
-                        Terminal
+            <div class="h-1/3 border-t border-white/10 bg-secondary-bg/95 backdrop-blur-2xl flex flex-col shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+                <div class="h-10 border-b border-white/5 flex items-center px-6 justify-between bg-black/40">
+                    <span class="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] flex items-center gap-2 italic">
+                        <span class="text-accent-color font-mono font-bold text-sm mr-1">$_</span> 
+                        Salida de Sistema Infinito
                     </span>
-                    <span class="text-[10px] text-slate-600">PHP 8.2 Execution Environment</span>
+                    <span class="text-[9px] text-text-muted/40 font-mono tracking-tighter">ENVIRONMENT: LINUX_WASM_X64 // STATUS: ACTIVE_TENSION</span>
                 </div>
-            <div class="flex-1 p-4 font-mono text-xs overflow-y-auto bg-black border-t border-white/5">
+            <div class="flex-1 p-6 font-mono text-xs overflow-y-auto">
                 @if (!executionResult()) {
-                     <div class="h-full flex flex-col items-center justify-center text-slate-500 opacity-50">
-                        <span class="text-2xl mb-2">⌨️</span>
-                        <p>Escribe tu código y pulsa "Ejecutar"</p>
+                     <div class="h-full flex flex-col items-center justify-center text-text-muted opacity-30 select-none">
+                        <span class="text-3xl mb-3">⌨️</span>
+                        <p class="font-black uppercase tracking-widest text-[10px]">Esperando ejecución de código...</p>
                      </div>
                 } @else if (executionResult().loading) {
-                     <div class="h-full flex flex-col items-center justify-center gap-3">
-                        <img src="/landing/espiral.png" class="w-8 h-8 animate-spin opacity-50">
-                        <span class="text-yellow-500 animate-pulse">Compilando y ejecutando tests...</span>
+                     <div class="h-full flex flex-col items-center justify-center gap-4">
+                        <img src="/landing/espiral.png" class="w-10 h-10 animate-spin opacity-50">
+                        <span class="text-accent-color animate-pulse font-black uppercase text-[10px] tracking-widest italic">Compilando y validando simulación...</span>
                      </div>
                 } @else {
                      <!-- Message -->
-                     <div class="mb-4 font-bold p-3 rounded-lg flex items-center justify-between gap-3" 
-                          [class.bg-green-500-10]="executionResult().correcto" 
+                     <div class="mb-6 font-black p-4 rounded-2xl flex items-center justify-between gap-4 border" 
+                          [class.bg-green-500/10]="executionResult().correcto" 
                           [class.text-green-400]="executionResult().correcto" 
-                          [class.bg-red-500-10]="!executionResult().correcto"
-                          [class.text-red-400]="!executionResult().correcto">
-                         <div class="flex items-center gap-3">
-                             <span class="text-xl">{{ executionResult().correcto ? '✓' : '✕' }}</span>
-                             {{ executionResult().message }}
+                          [class.border-green-500/20]="executionResult().correcto"
+                          [class.bg-red-500/10]="!executionResult().correcto"
+                          [class.text-red-400]="!executionResult().correcto"
+                          [class.border-red-500/20]="!executionResult().correcto">
+                         <div class="flex items-center gap-4">
+                             <span class="text-2xl">{{ executionResult().correcto ? '✓' : '✕' }}</span>
+                             <span class="uppercase tracking-tight">{{ executionResult().message }}</span>
                          </div>
 
                          @if (showNextLevelButton()) {
-                             <button (click)="goToNextLevel()" class="px-4 py-1.5 rounded-lg bg-green-500 hover:bg-green-600 text-white text-xs uppercase font-bold tracking-wider transition-all animate-pulse border border-white/20 shadow-lg transform hover:scale-105">
-                                 Siguiente Nivel ➜
+                             <button (click)="goToNextLevel()" class="px-6 py-2 rounded-xl bg-green-500 hover:bg-green-600 text-white text-[10px] uppercase font-black tracking-widest transition-all animate-pulse border border-white/20 shadow-xl shadow-green-500/20 transform hover:scale-[1.05]">
+                                 Ascender - Siguiente Nivel ➜
                              </button>
                          }
                      </div>
 
                      <!-- Rewards Banner -->
                      @if (recompensas()) {
-                         <div class="mb-4 p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center gap-4 animate-fade-in">
-                             <span class="text-2xl">🏆</span>
-                             <div class="flex items-center gap-4 text-sm">
-                                 <div class="flex items-center gap-1.5">
-                                     <span class="text-yellow-400 font-bold">+{{ recompensas().xp }} XP</span>
+                         <div class="mb-6 p-4 rounded-2xl bg-yellow-500/10 border border-yellow-500/30 flex items-center gap-6 animate-fade-in shadow-lg shadow-yellow-500/5">
+                             <span class="text-3xl">🏆</span>
+                             <div class="flex items-center gap-6 text-sm">
+                                 <div class="flex items-center gap-2">
+                                     <span class="text-yellow-500 font-black italic">+{{ recompensas().xp }} XP</span>
                                  </div>
-                                 <div class="flex items-center gap-1.5">
-                                     <span class="text-yellow-400 font-bold">+{{ recompensas().monedas }} 🪙</span>
+                                 <div class="flex items-center gap-2">
+                                     <span class="text-yellow-500 font-black italic">+{{ recompensas().monedas }} 🪙</span>
                                  </div>
                              </div>
-                             <span class="text-xs text-slate-400 ml-auto">{{ recompensas().message }}</span>
+                             <span class="text-[10px] font-black text-text-muted/60 ml-auto uppercase tracking-widest">{{ recompensas().message }}</span>
                          </div>
                      }
 
                      <!-- Life Lost Indicator -->
                      @if (!executionResult().correcto && !executionResult().loading) {
-                         <div class="mb-4 p-2 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center gap-3 animate-shake text-sm">
-                             <span class="text-xl">💔</span>
-                             <span class="text-red-400 font-bold">-1 Vida</span>
-                             <span class="text-xs text-slate-500 ml-auto">Vidas restantes: {{ lives() }}</span>
+                         <div class="mb-6 p-4 rounded-2xl bg-red-950/40 border border-red-500/30 flex items-center gap-4 animate-shake text-sm shadow-xl">
+                             <span class="text-3xl">💔</span>
+                             <div class="flex flex-col">
+                                <span class="text-red-400 font-black uppercase tracking-widest text-[10px]">DAÑO RECIBIDO</span>
+                                <span class="text-text-muted font-medium text-xs">Vidas restantes: {{ lives() }}</span>
+                             </div>
                          </div>
                      }
         
                      <!-- Critical Error -->
                      @if (executionResult().error) {
-                         <div class="text-red-500 p-4 bg-red-900/20 rounded-lg border border-red-500/20 whitespace-pre-wrap font-mono text-xs">
-                             <span class="block font-bold mb-2 text-red-400">RUNTIME ERROR:</span>
+                         <div class="text-red-500 p-5 bg-red-950/40 rounded-2xl border border-red-500/30 whitespace-pre-wrap font-mono text-[11px] shadow-xl">
+                             <span class="block font-black mb-3 text-red-400 uppercase tracking-widest text-[10px]">⚡ FALLO EN TIEMPO DE EJECUCIÓN:</span>
                              {{ executionResult().error }}
                          </div>
                      }
         
                      <!-- Test Details -->
                      @if (executionResult().detalles && executionResult().detalles.length > 0) {
-                         <div class="space-y-2">
+                         <div class="space-y-4">
                              @for (test of executionResult().detalles; track $index) {
-                                 <div class="p-3 rounded-lg border transition-all" 
+                                 <div class="p-4 rounded-2xl border transition-all duration-300" 
                                       [ngClass]="{
-                                        'border-green-500/30 bg-green-500/5': test.passed,
-                                        'border-red-500/30 bg-red-500/5': !test.passed
+                                        'border-green-500/20 bg-green-500/5 hover:bg-green-500/10': test.passed,
+                                        'border-red-500/20 bg-red-500/5 hover:bg-red-500/10': !test.passed
                                       }">
-                                     <div class="flex items-center gap-2 mb-2">
-                                         <span class="font-bold" [class.text-green-400]="test.passed" [class.text-red-400]="!test.passed">
-                                             Test Case #{{ $index + 1 }}
+                                     <div class="flex items-center gap-3 mb-4">
+                                         <span class="font-black italic uppercase text-[10px] tracking-widest" [class.text-green-400]="test.passed" [class.text-red-400]="!test.passed">
+                                             TEST #{{ $index + 1 }}
                                          </span>
                                          @if (!test.passed) {
-                                            <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 border border-red-500/30">FAILED</span>
+                                            <span class="text-[9px] px-2 py-0.5 rounded-full bg-red-500 text-white font-black border border-red-500/30 uppercase">Fallo</span>
                                          } @else {
-                                            <span class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 border border-green-500/30">PASSED</span>
+                                            <span class="text-[9px] px-2 py-0.5 rounded-full bg-green-500 text-white font-black border border-green-500/30 uppercase">Éxito</span>
                                          }
                                      </div>
                                      
-                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-slate-400 text-[11px]">
+                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-text-muted text-[11px]">
                                          <div>
-                                             <span class="block text-[10px] uppercase text-slate-600 mb-1">Input</span>
-                                             <div class="text-slate-300 bg-black/40 px-2 py-1.5 rounded border border-white/5 font-mono">
-                                                {{ test.input }}
+                                             <span class="block text-[10px] font-black uppercase text-text-muted/40 mb-2 tracking-widest">Entrada</span>
+                                             <div class="text-text-main bg-black/40 px-3 py-2 rounded-xl border border-white/5 font-mono font-bold">
+                                                {{ test.input || '(Vacio)' }}
                                              </div>
                                          </div>
                                          
                                          <div>
-                                             <span class="block text-[10px] uppercase text-slate-600 mb-1">Resultado</span>
-                                             <div class="flex items-center gap-2">
-                                                <span class="text-slate-500">Esperado:</span>
-                                                <span class="text-green-400 font-bold bg-green-900/20 px-1.5 rounded">{{ test.expected }}</span>
-                                             </div>
-                                             @if (!test.passed) {
-                                                <div class="flex items-center gap-2 mt-1">
-                                                    <span class="text-slate-500">Obtenido:</span>
-                                                    <span class="text-red-400 font-bold bg-red-900/20 px-1.5 rounded">{{ test.output || '(Vacío)' }}</span>
+                                             <span class="block text-[10px] font-black uppercase text-text-muted/40 mb-2 tracking-widest">Resultado</span>
+                                             <div class="space-y-2">
+                                                <div class="flex items-center justify-between bg-black/20 p-2 rounded-lg border border-white/5">
+                                                   <span class="text-text-muted/60 text-[9px] uppercase font-bold">Esperado</span>
+                                                   <span class="text-green-400 font-bold font-mono">{{ test.expected }}</span>
                                                 </div>
-                                             }
+                                                @if (!test.passed) {
+                                                   <div class="flex items-center justify-between bg-black/20 p-2 rounded-lg border border-red-500/20">
+                                                       <span class="text-red-400/60 text-[9px] uppercase font-bold">Obtenido</span>
+                                                       <span class="text-red-400 font-bold font-mono">{{ test.output || 'NULL' }}</span>
+                                                   </div>
+                                                }
+                                             </div>
                                          </div>
                                      </div>
                                      
                                      @if (test.error) {
-                                          <div class="mt-2 pt-2 border-t border-red-500/10 text-red-300 text-[10px]">
-                                            <span class="font-bold">Error:</span> {{ test.error }}
+                                          <div class="mt-3 pt-3 border-t border-red-500/10 text-red-300 font-bold text-[10px] tracking-tight">
+                                            <span class="uppercase">Detalle:</span> {{ test.error }}
                                           </div>
                                      }
                                  </div>

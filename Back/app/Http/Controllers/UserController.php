@@ -562,7 +562,8 @@ class UserController extends Controller
             'last_story_level_title' => $last_story_level_title,
             'roguelike_levels_played' => $roguelike_levels_played,
             'subscription_date' => $subscription_date,
-            'rank' => $rank
+            'rank' => $rank,
+            'tema_actual_id' => $usuario->tema_actual_id
         ], 200);
     }
 }
