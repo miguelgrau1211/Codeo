@@ -406,7 +406,13 @@ class UserController extends Controller
 
     public function getPerfilUsuario()
     {
-        return response()->json(Auth::user());
+        $usuario = Auth::user();
+        $nuevosLogros = (new \App\Actions\CheckAchievementsAction())->execute(['visitar_perfil' => 1]);
+
+        return response()->json([
+            'user' => $usuario,
+            'nuevos_logros' => $nuevosLogros
+        ]);
     }
 
     /**
@@ -475,7 +481,8 @@ class UserController extends Controller
         }
     }
 
-    public function getUserData() {
+    public function getUserData()
+    {
         $id = Auth::id();
 
 
@@ -495,8 +502,10 @@ class UserController extends Controller
         $experience = $usuario->exp_total;
         $coins = $usuario->monedas;
         $streak = $usuario->streak;
-        
-        
+
+
+        $nuevosLogros = (new \App\Actions\CheckAchievementsAction())->execute(['visitar_perfil' => 1]);
+
         return response()->json([
             'nickname' => $nickname,
             'avatar' => $avatar,
@@ -505,7 +514,8 @@ class UserController extends Controller
             'coins' => $coins,
             'streak' => $streak,
             'n_achievements' => $n_achievements,
-            'total_levels_completed' => $total_levels_completed
+            'total_levels_completed' => $total_levels_completed,
+            'nuevos_logros' => $nuevosLogros
         ], 200);
     }
 }

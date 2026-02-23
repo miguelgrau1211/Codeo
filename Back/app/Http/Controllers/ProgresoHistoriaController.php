@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Actions\CheckAchievementsAction;
 
 class ProgresoHistoriaController extends Controller
 {
@@ -30,8 +31,8 @@ class ProgresoHistoriaController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nivel_id'                => 'required|exists:niveles_historia,id',
-            'completado'              => 'required|boolean',
+            'nivel_id' => 'required|exists:niveles_historia,id',
+            'completado' => 'required|boolean',
             'codigo_solucion_usuario' => 'nullable|string|max:10000',
         ]);
 
@@ -49,10 +50,10 @@ class ProgresoHistoriaController extends Controller
         $progreso = ProgresoHistoria::updateOrCreate(
             [
                 'usuario_id' => $userId,
-                'nivel_id'   => $nivelId,
+                'nivel_id'  => $nivelId,
             ],
             [
-                'completado'              => $validatedData['completado'],
+                'completado' => $validatedData['completado'],
                 'codigo_solucion_usuario' => $validatedData['codigo_solucion_usuario'],
             ]
         );
@@ -78,13 +79,13 @@ class ProgresoHistoriaController extends Controller
 
                 Log::info('Recompensas otorgadas - Historia', [
                     'usuario_id' => $userId,
-                    'nivel_id'   => $nivelId,
-                    'xp'         => $xpGanada,
-                    'monedas'    => $monedasGanadas,
+                    'nivel_id' => $nivelId,
+                    'xp' => $xpGanada,
+                    'monedas' => $monedasGanadas,
                 ]);
 
                 $recompensas = [
-                    'xp'      => $xpGanada,
+                    'xp' => $xpGanada,
                     'monedas' => $monedasGanadas,
                     'mensaje' => "¡Nivel completado! Ganaste {$xpGanada} XP y {$monedasGanadas} monedas.",
                 ];
@@ -93,10 +94,16 @@ class ProgresoHistoriaController extends Controller
             }
         }
 
+        $nuevosLogros = [];
+        if ($validatedData['completado']) {
+            $nuevosLogros = (new CheckAchievementsAction())->execute();
+        }
+
         return response()->json([
-            'message'     => 'Progreso guardado correctamente',
-            'data'        => $progreso,
+            'message' => 'Progreso guardado correctamente',
+            'data' => $progreso,
             'recompensas' => $recompensas,
+            'nuevos_logros' => $nuevosLogros,
         ], 200);
     }
 
@@ -121,21 +128,21 @@ class ProgresoHistoriaController extends Controller
             $progreso = $progresoUsuario->get($nivel->id);
 
             return [
-                'id'                      => $progreso?->id,
-                'usuario_id'              => $progreso?->usuario_id ?? $idUsuario,
-                'nivel_id'                => $nivel->id,
-                'completado'              => $progreso?->completado ?? 0,
+                'id' => $progreso?->id,
+                'usuario_id' => $progreso?->usuario_id ?? $idUsuario,
+                'nivel_id' => $nivel->id,
+                'completado' => $progreso?->completado ?? 0,
                 'codigo_solucion_usuario' => $progreso?->codigo_solucion_usuario ?? $nivel->codigo_inicial,
-                'created_at'              => $progreso?->created_at,
-                'updated_at'              => $progreso?->updated_at,
+                'created_at' => $progreso?->created_at,
+                'updated_at' => $progreso?->updated_at,
 
                 // Datos del Nivel
-                'titulo'             => $nivel->titulo,
-                'orden'              => $nivel->orden,
-                'codigo_inicial'     => $nivel->codigo_inicial,
-                'descripcion'        => $nivel->descripcion,
-                'contenido_teorico'  => $nivel->contenido_teorico,
-                'test_cases'         => $nivel->test_cases,
+                'titulo' => $nivel->titulo,
+                'orden' => $nivel->orden,
+                'codigo_inicial' => $nivel->codigo_inicial,
+                'descripcion' => $nivel->descripcion,
+                'contenido_teorico' => $nivel->contenido_teorico,
+                'test_cases' => $nivel->test_cases,
             ];
         });
 
@@ -152,10 +159,10 @@ class ProgresoHistoriaController extends Controller
             : 'Inicio';
 
         return response()->json([
-            'usuario_id'        => $idUsuario,
-            'stats'             => [
-                'total_niveles'       => $totalNiveles,
-                'completados'         => $nivelesCompletados,
+            'usuario_id' => $idUsuario,
+            'stats' => [
+                'total_niveles' => $totalNiveles,
+                'completados' => $nivelesCompletados,
                 'porcentaje_progreso' => $porcentaje . '%',
                 'titulo_ultimo_nivel' => $tituloUltimo,
             ],
@@ -189,9 +196,9 @@ class ProgresoHistoriaController extends Controller
 
         return response()->json([
             'usuario_id' => (int) $idUsuario,
-            'stats'      => [
-                'total_niveles'       => $totalNiveles,
-                'completados'         => $nivelesCompletados,
+            'stats' => [
+                'total_niveles' => $totalNiveles,
+                'completados' => $nivelesCompletados,
                 'porcentaje_progreso' => $porcentaje . '%',
             ],
             'progreso_detallado' => $progreso,
