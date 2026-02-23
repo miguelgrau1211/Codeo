@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use App\Actions\CheckAchievementsAction;
 
 class RoguelikeSessionController extends Controller
 {
@@ -31,31 +32,31 @@ class RoguelikeSessionController extends Controller
 
         // Crear la run en BD inmediatamente
         $run = RunsRoguelike::create([
-            'usuario_id'        => $userId,
-            'vidas_restantes'   => self::INITIAL_LIVES,
+            'usuario_id' => $userId,
+            'vidas_restantes' => self::INITIAL_LIVES,
             'niveles_superados' => 0,
             'monedas_obtenidas' => 0,
-            'estado'            => 'activo',
-            'data_partida'      => [
-                'xp_earned'  => 0,
+            'estado' => 'activo',
+            'data_partida' => [
+                'xp_earned' => 0,
                 'started_at' => now()->toISOString(),
             ],
         ]);
 
         $session = [
-            'user_id'          => $userId,
-            'run_id'           => $run->id,
-            'lives'            => self::INITIAL_LIVES,
+            'user_id' => $userId,
+            'run_id' => $run->id,
+            'lives' => self::INITIAL_LIVES,
             'levels_completed' => 0,
-            'coins_earned'     => 0,
-            'xp_earned'        => 0,
+            'coins_earned' => 0,
+            'xp_earned' => 0,
             'level_started_at' => null,
-            'time_remaining'   => self::TIME_PER_LEVEL,
-            'started_at'       => now()->toISOString(),
-            'mejoras_activas'  => [],
-            'coin_multiplier'  => 1,
+            'time_remaining' => self::TIME_PER_LEVEL,
+            'started_at' => now()->toISOString(),
+            'mejoras_activas' => [],
+            'coin_multiplier' => 1,
             'current_level_id' => null,
-            'used_level_ids'   => [],
+            'used_level_ids' => [],
         ];
 
         Cache::put($cacheKey, $session, self::CACHE_TTL);
@@ -63,11 +64,11 @@ class RoguelikeSessionController extends Controller
         Log::info('Roguelike session started', ['user_id' => $userId, 'run_id' => $run->id]);
 
         return response()->json([
-            'message'          => 'Sesión iniciada',
-            'lives'            => $session['lives'],
-            'time_remaining'   => $session['time_remaining'],
-            'coins_earned'     => $session['coins_earned'],
-            'mejoras_activas'  => $session['mejoras_activas'],
+            'message' => 'Sesión iniciada',
+            'lives' => $session['lives'],
+            'time_remaining' => $session['time_remaining'],
+            'coins_earned' => $session['coins_earned'],
+            'mejoras_activas' => $session['mejoras_activas'],
         ], 200);
     }
 
@@ -86,9 +87,9 @@ class RoguelikeSessionController extends Controller
 
         if ($session['lives'] <= 0) {
             return response()->json([
-                'message'   => 'Game Over. No te quedan vidas.',
+                'message' => 'Game Over. No te quedan vidas.',
                 'game_over' => true,
-                'stats'     => $this->getSessionStats($session),
+                'stats' => $this->getSessionStats($session),
             ], 200);
         }
 
@@ -99,9 +100,9 @@ class RoguelikeSessionController extends Controller
         $this->saveSession($userId, $session);
 
         return response()->json([
-            'message'          => 'Nivel iniciado',
-            'lives'            => $session['lives'],
-            'time_remaining'   => $session['time_remaining'],
+            'message' => 'Nivel iniciado',
+            'lives' => $session['lives'],
+            'time_remaining' => $session['time_remaining'],
             'levels_completed' => $session['levels_completed'],
         ], 200);
     }
@@ -144,21 +145,21 @@ class RoguelikeSessionController extends Controller
             }
 
             return response()->json([
-                'time_expired'   => true,
-                'lives'          => $session['lives'],
+                'time_expired' => true,
+                'lives' => $session['lives'],
                 'time_remaining' => $session['time_remaining'],
-                'game_over'      => $gameOver,
-                'stats'          => $gameOver ? $this->getSessionStats($session) : null,
-                'message'        => $gameOver
+                'game_over' => $gameOver,
+                'stats' => $gameOver ? $this->getSessionStats($session) : null,
+                'message' => $gameOver
                     ? '¡Game Over! Se acabaron tus vidas.'
                     : '¡Se acabó el tiempo! Pierdes una vida. Tienes 1:30 extra.',
             ], 200);
         }
 
         return response()->json([
-            'time_expired'   => false,
+            'time_expired' => false,
             'time_remaining' => $timeRemaining,
-            'lives'          => $session['lives'],
+            'lives' => $session['lives'],
         ], 200);
     }
 
@@ -178,10 +179,10 @@ class RoguelikeSessionController extends Controller
         // Evitar abusos: si ya no tiene vidas, no resta más
         if ($session['lives'] <= 0) {
             return response()->json([
-                'lives'     => 0,
+                'lives' => 0,
                 'game_over' => true,
-                'stats'     => $this->getSessionStats($session),
-                'message'   => '¡Game Over!',
+                'stats' => $this->getSessionStats($session),
+                'message' => '¡Game Over!',
             ], 200);
         }
 
@@ -195,16 +196,16 @@ class RoguelikeSessionController extends Controller
         }
 
         Log::info('Roguelike failure registered', [
-            'user_id'   => $userId,
-            'lives'     => $session['lives'],
+            'user_id' => $userId,
+            'lives' => $session['lives'],
             'game_over' => $gameOver,
         ]);
 
         return response()->json([
-            'lives'     => $session['lives'],
+            'lives' => $session['lives'],
             'game_over' => $gameOver,
-            'stats'     => $gameOver ? $this->getSessionStats($session) : null,
-            'message'   => $gameOver
+            'stats' => $gameOver ? $this->getSessionStats($session) : null,
+            'message' => $gameOver
                 ? '¡Game Over!'
                 : '¡Código incorrecto! Pierdes una vida.',
         ], 200);
@@ -240,11 +241,14 @@ class RoguelikeSessionController extends Controller
         // Actualizar la run en BD con cada nivel completado
         $this->updateRun($session);
 
+        $nuevosLogros = (new CheckAchievementsAction())->execute();
+
         return response()->json([
-            'lives'            => $session['lives'],
+            'lives' => $session['lives'],
             'levels_completed' => $session['levels_completed'],
-            'coins_earned'     => $session['coins_earned'],
-            'xp_earned'        => $session['xp_earned'],
+            'coins_earned' => $session['coins_earned'],
+            'xp_earned' => $session['xp_earned'],
+            'nuevos_logros' => $nuevosLogros,
         ], 200);
     }
 
@@ -276,9 +280,9 @@ class RoguelikeSessionController extends Controller
 
         if ($session['coins_earned'] < $costeCaja) {
             return response()->json([
-                'message'      => 'No tienes suficientes monedas.',
+                'message' => 'No tienes suficientes monedas.',
                 'coins_earned' => $session['coins_earned'],
-                'coste'        => $costeCaja,
+                'coste' => $costeCaja,
             ], 400);
         }
 
@@ -313,32 +317,32 @@ class RoguelikeSessionController extends Controller
         // Registrar mejora activa
         $session['mejoras_activas'] = $session['mejoras_activas'] ?? [];
         $session['mejoras_activas'][] = [
-            'id'     => $mejora->id,
+            'id' => $mejora->id,
             'nombre' => $mejora->nombre,
-            'tipo'   => $mejora->tipo,
-            'icon'   => $this->getMejoraIcon($mejora->tipo),
+            'tipo' => $mejora->tipo,
+            'icon' => $this->getMejoraIcon($mejora->tipo),
         ];
 
         $this->saveSession($userId, $session);
 
         Log::info('Mejora comprada', [
-            'user_id'  => $userId,
-            'mejora'   => $mejora->nombre,
-            'tipo'     => $mejora->tipo,
+            'user_id' => $userId,
+            'mejora' => $mejora->nombre,
+            'tipo' => $mejora->tipo,
         ]);
 
         return response()->json([
-            'message'         => '¡Mejora activada! ' . $efectoAplicado,
-            'efecto'          => $efectoAplicado,
-            'mejora'          => [
-                'id'     => $mejora->id,
+            'message' => '¡Mejora activada! ' . $efectoAplicado,
+            'efecto' => $efectoAplicado,
+            'mejora' => [
+                'id' => $mejora->id,
                 'nombre' => $mejora->nombre,
-                'tipo'   => $mejora->tipo,
-                'icon'   => $this->getMejoraIcon($mejora->tipo),
+                'tipo' => $mejora->tipo,
+                'icon' => $this->getMejoraIcon($mejora->tipo),
             ],
-            'lives'           => $session['lives'],
-            'time_remaining'  => $session['time_remaining'],
-            'coins_earned'    => $session['coins_earned'],
+            'lives' => $session['lives'],
+            'time_remaining' => $session['time_remaining'],
+            'coins_earned' => $session['coins_earned'],
             'coin_multiplier' => $session['coin_multiplier'] ?? 1,
             'mejoras_activas' => $session['mejoras_activas'],
         ], 200);
@@ -350,11 +354,11 @@ class RoguelikeSessionController extends Controller
     private function getMejoraIcon(string $tipo): string
     {
         return match ($tipo) {
-            'vidas_extra'    => '❤️',
-            'tiempo_extra'   => '⏱️',
-            'multiplicador'  => '💰',
-            'pista'          => '💡',
-            default          => '⚡',
+            'vidas_extra' => '❤️',
+            'tiempo_extra' => '⏱️',
+            'multiplicador' => '💰',
+            'pista' => '💡',
+            default => '⚡',
         };
     }
 
@@ -378,12 +382,12 @@ class RoguelikeSessionController extends Controller
         }
 
         return response()->json([
-            'active'           => true,
-            'lives'            => $session['lives'],
-            'time_remaining'   => $timeRemaining,
+            'active' => true,
+            'lives' => $session['lives'],
+            'time_remaining' => $timeRemaining,
             'levels_completed' => $session['levels_completed'],
-            'coins_earned'     => $session['coins_earned'],
-            'xp_earned'        => $session['xp_earned'],
+            'coins_earned' => $session['coins_earned'],
+            'xp_earned' => $session['xp_earned'],
         ], 200);
     }
 
@@ -431,10 +435,10 @@ class RoguelikeSessionController extends Controller
     private function getSessionStats(array $session): array
     {
         return [
-            'niveles_superados'  => $session['levels_completed'],
-            'monedas_obtenidas'  => $session['coins_earned'],
-            'xp_ganada'          => $session['xp_earned'],
-            'vidas_restantes'    => $session['lives'],
+            'niveles_superados' => $session['levels_completed'],
+            'monedas_obtenidas' => $session['coins_earned'],
+            'xp_ganada' => $session['xp_earned'],
+            'vidas_restantes' => $session['lives'],
         ];
     }
 
@@ -447,13 +451,13 @@ class RoguelikeSessionController extends Controller
             $run = RunsRoguelike::find($session['run_id']);
             if ($run) {
                 $run->update([
-                    'vidas_restantes'   => $session['lives'],
+                    'vidas_restantes' => $session['lives'],
                     'niveles_superados' => $session['levels_completed'],
                     'monedas_obtenidas' => $session['coins_earned'],
-                    'data_partida'      => [
-                        'xp_earned'  => $session['xp_earned'],
+                    'data_partida' => [
+                        'xp_earned' => $session['xp_earned'],
                         'started_at' => $session['started_at'],
-                        'ended_at'   => now()->toISOString(),
+                        'ended_at' => now()->toISOString(),
                     ],
                 ]);
             }
@@ -471,14 +475,28 @@ class RoguelikeSessionController extends Controller
             $run = RunsRoguelike::find($session['run_id']);
             if ($run) {
                 $run->update([
-                    'vidas_restantes'   => $session['lives'],
+                    'vidas_restantes' => $session['lives'],
                     'niveles_superados' => $session['levels_completed'],
                     'monedas_obtenidas' => $session['coins_earned'],
-                    'estado'            => 'fallido',
-                    'data_partida'      => [
-                        'xp_earned'  => $session['xp_earned'],
+                    'estado' => 'fallido', // Assuming saveRun is called on game over/failure
+                    'data_partida' => [
+                        'xp_earned' => $session['xp_earned'],
                         'started_at' => $session['started_at'],
-                        'ended_at'   => now()->toISOString(),
+                        'ended_at' => now()->toISOString(),
+                    ],
+                ]);
+            } else {
+                // Fallback if run_id is not found, or if it's a new run being saved as final
+                RunsRoguelike::create([
+                    'usuario_id' => $session['user_id'],
+                    'vidas_restantes' => $session['lives'],
+                    'niveles_superados' => $session['levels_completed'],
+                    'monedas_obtenidas' => $session['coins_earned'],
+                    'estado' => 'finalizada', // Or 'fallido' depending on context
+                    'data_partida' => [
+                        'xp_earned' => $session['xp_earned'],
+                        'started_at' => $session['started_at'],
+                        'ended_at' => now()->toISOString(),
                     ],
                 ]);
             }

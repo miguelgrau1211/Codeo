@@ -1,6 +1,22 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { NotificationService } from './notification.service';
+
+export interface RunStats {
+  niveles_superados: number;
+  monedas_obtenidas: number;
+  xp_ganada: number;
+  vidas_restantes: number;
+}
+
+export interface Achievement {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  icono_url: string | null;
+  rareza: string;
+}
 
 export interface RoguelikeSession {
   lives: number;
@@ -13,13 +29,7 @@ export interface RoguelikeSession {
   stats?: RunStats;
   message?: string;
   time_expired?: boolean;
-}
-
-export interface RunStats {
-  niveles_superados: number;
-  monedas_obtenidas: number;
-  xp_ganada: number;
-  vidas_restantes: number;
+  nuevos_logros?: Achievement[];
 }
 
 @Injectable({
@@ -27,6 +37,7 @@ export interface RunStats {
 })
 export class RoguelikeSessionService {
   private apiUrl = 'http://localhost/api/roguelike';
+  private notificationService = inject(NotificationService);
 
   constructor(private http: HttpClient) { }
 
@@ -70,6 +81,14 @@ export class RoguelikeSessionService {
     return this.http.post<RoguelikeSession>(
       `${this.apiUrl}/success`, {},
       { headers: this.getHeaders() }
+    ).pipe(
+      tap(res => {
+        if (res.nuevos_logros && res.nuevos_logros.length > 0) {
+          res.nuevos_logros.forEach(logro => {
+            this.notificationService.showAchievement(logro);
+          });
+        }
+      })
     );
   }
 

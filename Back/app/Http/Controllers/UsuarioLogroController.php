@@ -22,14 +22,14 @@ class UsuarioLogroController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'logro_id'   => 'required|exists:logros,id',
+            'logro_id' => 'required|exists:logros,id',
         ]);
 
         //crear el registro
         try {
             $nuevoLogro = UsuarioLogro::create([
                 'usuario_id' => Auth::id(),
-                'logro_id'   => $validatedData['logro_id'],
+                'logro_id' => $validatedData['logro_id'],
                 'fecha_desbloqueo' => now()
             ]);
 
@@ -51,14 +51,14 @@ class UsuarioLogroController extends Controller
     {
         // En este caso, si destruimos por ID de logro para el usuario auth
         // O si destroy recibe el ID de la tabla usuario_logros
-        
+
         // Vamos a asumir que quieres revocar un logro específico. 
         // Si la ruta es apiResource, destroy recibe el ID principal.
         // Pero tu implementación anterior usaba un request body.
         // Adaptamos para usar el parámetro de ruta o request pero validando Auth.
-        
+
         $request->validate([
-            'logro_id'   => 'required|exists:logros,id',
+            'logro_id' => 'required|exists:logros,id',
         ]);
 
         UsuarioLogro::where('usuario_id', Auth::id())
@@ -75,26 +75,26 @@ class UsuarioLogroController extends Controller
     public function getLogrosUsuario()
     {
         $idUsuario = Auth::id();
-        
+
         // obtenemos los logros del usuario
         $logrosConseguidos = UsuarioLogro::where('usuario_id', $idUsuario)
-            ->with('logro') 
+            ->with('logro')
             ->get();
 
         // mapeamos los datos para que el objeto 'logro' esté al mismo nivel que la fecha
         $resultado = $logrosConseguidos->map(function ($item) {
             return [
-                'logro_id'         => $item->logro_id,
-                'nombre'           => $item->logro->nombre,
-                'descripcion'      => $item->logro->descripcion,
-                'icono_url'        => $item->logro->icono_url,
+                'logro_id' => $item->logro_id,
+                'nombre' => $item->logro->nombre,
+                'descripcion' => $item->logro->descripcion,
+                'icono_url' => $item->logro->icono_url,
                 'fecha_desbloqueo' => $item->fecha_desbloqueo,
-                'requisito_tipo'   => $item->logro->requisito_tipo,
+                'requisito_tipo' => $item->logro->requisito_tipo,
             ];
         });
 
         return response()->json([
-            'usuario_id' => (int)$idUsuario,
+            'usuario_id' => (int) $idUsuario,
             'total_logros' => $resultado->count(),
             'logros' => $resultado
         ], 200);
@@ -108,7 +108,7 @@ class UsuarioLogroController extends Controller
     public function getLogrosDesbloqueados()
     {
         $idUsuario = Auth::id();
-        
+
         // logros disponibles, todossss
         $todosLosLogros = Logros::all();
 
@@ -117,20 +117,21 @@ class UsuarioLogroController extends Controller
             ->pluck('logro_id')
             ->toArray();
 
-            
+
 
         $resultado = $todosLosLogros->map(function ($logro) use ($logrosUsuarioIds, $idUsuario) {
             $desbloqueado = in_array($logro->id, $logrosUsuarioIds);
-            
+
             return [
                 'id' => $logro->id,
                 'nombre' => $logro->nombre,
                 'descripcion' => $logro->descripcion,
                 'icono_url' => $logro->icono_url,
+                'rareza' => $logro->rareza,
                 'requisito_tipo' => $logro->requisito_tipo,
                 'requisito_cantidad' => $logro->requisito_cantidad,
                 'desbloqueado' => $desbloqueado,//clave para el CSS de Angular
-                'fecha_obtencion' => $desbloqueado ? 
+                'fecha_obtencion' => $desbloqueado ?
                     UsuarioLogro::where('usuario_id', $idUsuario)
                         ->where('logro_id', $logro->id)
                         ->value('fecha_desbloqueo') : null
@@ -138,7 +139,7 @@ class UsuarioLogroController extends Controller
         });
 
         return response()->json([
-            'usuario_id' => (int)$idUsuario,
+            'usuario_id' => (int) $idUsuario,
             'progreso_logros' => count($logrosUsuarioIds) > 0 ? count($logrosUsuarioIds) . '/' . $todosLosLogros->count() : '0/0',
             'lista_completa' => $resultado
         ], 200);
@@ -167,7 +168,7 @@ class UsuarioLogroController extends Controller
         $porcentaje = ($logrosUsuario / $totalLogros) * 100;
 
         return response()->json([
-            'usuario_id' => (int)$idUsuario,
+            'usuario_id' => (int) $idUsuario,
             'logros_obtenidos' => $logrosUsuario,
             'total_disponibles' => $totalLogros,
             'porcentaje' => round($porcentaje, 2),
@@ -175,6 +176,6 @@ class UsuarioLogroController extends Controller
         ], 200);
     }
 
-    
+
 }
 

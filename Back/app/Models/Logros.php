@@ -15,6 +15,7 @@ class Logros extends Model
         'icono_url',
         'rareza',
         'requisito_tipo',
+        'requisito_operador',
         'requisito_cantidad',
     ];
 

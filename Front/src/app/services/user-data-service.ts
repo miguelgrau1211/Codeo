@@ -1,6 +1,15 @@
 import { inject, Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap, map, of } from 'rxjs';
+import { NotificationService } from './notification.service';
+
+export interface ActivityItem {
+  titulo: string;
+  subtitulo: string;
+  xp: number;
+  tipo: 'historia' | 'logro' | 'roguelike';
+  fecha: string;
+}
 
 export interface UserData {
   nickname: string;
@@ -17,14 +26,7 @@ export interface UserData {
   subscription_date: string;
   rank: number;
   tema_actual_id?: number | null;
-}
-
-export interface ActivityItem {
-  titulo: string;
-  subtitulo: string;
-  xp: number;
-  tipo: 'historia' | 'logro' | 'roguelike';
-  fecha: string;
+  nuevos_logros?: any[];
 }
 
 @Injectable({
@@ -33,6 +35,7 @@ export interface ActivityItem {
 export class UserDataService {
 
   private readonly http = inject(HttpClient);
+  private readonly notificationService = inject(NotificationService);
   private readonly apiUrl = 'http://localhost/api/users';
 
   // --- Estado central del usuario (singleton caché) ---
@@ -68,6 +71,11 @@ export class UserDataService {
     }).pipe(
       tap(data => {
         this.userDataSignal.set(data);
+        if (data.nuevos_logros && data.nuevos_logros.length > 0) {
+          data.nuevos_logros.forEach(logro => {
+            this.notificationService.showAchievement(logro);
+          });
+        }
         this._loaded.set(true);
         this.isLoading.set(false);
       })

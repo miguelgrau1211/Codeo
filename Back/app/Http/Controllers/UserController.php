@@ -290,7 +290,7 @@ class UserController extends Controller
     {
         $id = Auth::id();
         $usuario = Usuario::find($id);
-        
+
         $historia = [];
         try {
             $historia = \App\Models\ProgresoHistoria::where('usuario_id', $id)
@@ -336,11 +336,13 @@ class UserController extends Controller
                 ->orderBy('updated_at', 'desc')
                 ->limit(5)
                 ->get()
-                ->map(function($item) {
+                ->map(function ($item) {
                     $data = $item->data_partida;
-                    if (is_string($data)) $data = json_decode($data, true);
-                    if (!is_array($data)) $data = [];
-                    
+                    if (is_string($data))
+                        $data = json_decode($data, true);
+                    if (!is_array($data))
+                        $data = [];
+
                     $xp = $data['xp_earned'] ?? ($item->monedas_obtenidas * 2);
                     $estado = ucfirst($item->estado);
                     $nivel = $item->niveles_superados;
@@ -367,7 +369,7 @@ class UserController extends Controller
             ->take(5);
 
         // Clean
-        $actividadFinal = $actividadGlobal->map(function($item) {
+        $actividadFinal = $actividadGlobal->map(function ($item) {
             unset($item['fecha_raw']);
             return $item;
         });
@@ -375,7 +377,8 @@ class UserController extends Controller
         return response()->json(['actividad' => $actividadFinal], 200);
     }
 
-    public function getMiPosicionRanking() {
+    public function getMiPosicionRanking()
+    {
         $id = Auth::id();
         $usuario = Usuario::find($id);
         $posicion = Usuario::where('exp_total', '>', $usuario->exp_total)->count() + 1;
@@ -400,7 +403,7 @@ class UserController extends Controller
         $items = $ranking->getCollection()->map(function ($usuario, $key) use ($ranking) {
             return [
                 'posicion' => (($ranking->currentPage() - 1) * $ranking->perPage()) + $key + 1,
-            
+
                 'nickname' => $usuario->nickname,
                 'avatar_url' => $usuario->avatar_url ?? 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . $usuario->nickname,
                 'nivel' => $usuario->nivel_global ?? 1,
@@ -446,7 +449,13 @@ class UserController extends Controller
 
     public function getPerfilUsuario()
     {
-        return response()->json(Auth::user());
+        $usuario = Auth::user();
+        $nuevosLogros = (new \App\Actions\CheckAchievementsAction())->execute(['visitar_perfil' => 1]);
+
+        return response()->json([
+            'user' => $usuario,
+            'nuevos_logros' => $nuevosLogros
+        ]);
     }
 
     /**
@@ -515,9 +524,9 @@ class UserController extends Controller
         }
     }
 
-    public function getUserData() {
+    public function getUserData()
+    {
         $id = Auth::id();
-
 
         if (!$id) {
             return response()->json(['message' => 'Usuario no autenticado'], 401);
@@ -530,14 +539,14 @@ class UserController extends Controller
         $n_achievements = UsuarioLogro::where('usuario_id', $id)->count() ?? 0;
         $story_levels_completed = ProgresoHistoria::where('usuario_id', $id)->where('completado', true)->count();
         $roguelike_levels_played = RunsRoguelike::where('usuario_id', $id)->sum('niveles_superados');
-        
+
         $total_story_levels = NivelesHistoria::count();
         $last_level_record = ProgresoHistoria::where('usuario_id', $id)
             ->where('completado', true)
             ->with('nivel')
             ->orderByDesc('updated_at')
             ->first();
-        
+
         $last_story_level_title = $last_level_record && $last_level_record->nivel ? $last_level_record->nivel->titulo : null;
 
         $nickname = $usuario->nickname;
@@ -546,9 +555,12 @@ class UserController extends Controller
         $experience = $usuario->exp_total;
         $coins = $usuario->monedas;
         $streak = $usuario->streak;
+
         $subscription_date = $usuario->created_at->format('d/m/Y');
-        $rank = $usuario->ranking;
-        
+        $rank = Usuario::where('exp_total', '>', $usuario->exp_total)->count() + 1;
+
+        $nuevosLogros = (new \App\Actions\CheckAchievementsAction())->execute(['visitar_perfil' => 1]);
+
         return response()->json([
             'nickname' => $nickname,
             'avatar' => $avatar,
@@ -563,7 +575,8 @@ class UserController extends Controller
             'roguelike_levels_played' => $roguelike_levels_played,
             'subscription_date' => $subscription_date,
             'rank' => $rank,
-            'tema_actual_id' => $usuario->tema_actual_id
+            'tema_actual_id' => $usuario->tema_actual_id,
+            'nuevos_logros' => $nuevosLogros
         ], 200);
     }
 }
