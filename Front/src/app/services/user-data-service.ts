@@ -1,8 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-
-
+import { NotificationService } from './notification.service';
 
 interface UserData {
   nickname: string;
@@ -13,6 +12,7 @@ interface UserData {
   streak: number;
   n_achievements: number;
   total_levels_completed: number;
+  nuevos_logros?: any[];
 }
 
 @Injectable({
@@ -21,6 +21,7 @@ interface UserData {
 export class UserDataService {
 
   private readonly http = inject(HttpClient);
+  private readonly notificationService = inject(NotificationService);
   private readonly apiUrl = 'http://localhost/api/users/data';
 
   // UserData
@@ -36,6 +37,11 @@ export class UserDataService {
     }).pipe(
       tap(data => {
         this.userDataSignal.set(data);
+        if (data.nuevos_logros && data.nuevos_logros.length > 0) {
+          data.nuevos_logros.forEach(logro => {
+            this.notificationService.showAchievement(logro);
+          });
+        }
       })
     );
   }

@@ -5,29 +5,22 @@
 
     <!-- Background Effects (Normal) -->
     <div *ngIf="!isEasterEggActive" class="absolute inset-0 pointer-events-none overflow-hidden h-full w-full">
-        <!-- Background Image: Full Opacity (opacity-100), Standard Rendering -->
         <div class="absolute inset-0 bg-[url('/logros/fondoNormal.png')] bg-cover bg-center bg-no-repeat h-full w-full">
         </div>
-
-        <!-- Minimal Overlay: Very transparent black just to prevent white-text washouts on bright spots -->
         <div class="absolute inset-0 bg-black/10"></div>
     </div>
 
-    <!-- Background Effects (Easter Egg / Hacker Mode - Red/Black) -->
+    <!-- Background Effects (Easter Egg / Hacker Mode) -->
     <div *ngIf="isEasterEggActive" class="absolute inset-0 pointer-events-none overflow-hidden z-0">
-        <!-- Static background image -->
         <div class="absolute inset-0 bg-[url('/logros/fondoHack.png')] opacity-60 bg-cover bg-center mix-blend-screen">
         </div>
-        <!-- Red overlay for atmosphere -->
         <div class="absolute inset-0 bg-gradient-to-t from-red-900/30 via-transparent to-black pointer-events-none">
         </div>
     </div>
 
-    <!-- Matrix/Gamer 'Glitch' Overlay instead of Confetti -->
+    <!-- Matrix Glitch Overlay -->
     <div *ngIf="showConfetti"
         class="fixed inset-0 pointer-events-none z-50 overflow-hidden flex flex-col items-center justify-center bg-black/80">
-
-        <!-- Animated Glitch Text -->
         <div class="relative">
             <h1 class="text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-500 animate-pulse tracking-tighter"
                 style="text-shadow: 0 0 30px rgba(220, 38, 38, 0.8);">
@@ -39,8 +32,6 @@
                 class="absolute inset-0 text-9xl font-black text-blue-600 mix-blend-screen opacity-50 animate-glitch-2">
                 HACKED</div>
         </div>
-
-        <!-- Falling Binary/Code Particles (CSS Only Implementation for performance) -->
         <div class="absolute inset-0 w-full h-full opacity-60 z-[-1]">
             <div class="absolute top-0 text-green-500/80 text-sm font-bold font-mono animate-fall-1 drop-shadow-sm"
                 style="left: 10%">01 010 11</div>
@@ -89,8 +80,8 @@
                     </p>
                 </div>
 
-                <!-- Global Rank Badge -->
-                <div class="relative group cursor-help">
+                <!-- Global Progress Badge -->
+                <div class="relative group cursor-help" *ngIf="stats()">
                     <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"
                         [class.from-red-900]="isEasterEggActive" [class.to-red-600]="isEasterEggActive"></div>
                     <div
@@ -100,20 +91,23 @@
                                 class="w-full h-full rounded-full bg-slate-800 flex items-center justify-center overflow-hidden relative">
                                 <div class="absolute inset-0 bg-purple-500/20 animate-spin-slow origin-center"
                                     [class.bg-red-600/20]="isEasterEggActive"></div>
-                                <span class="relative text-2xl font-black text-white z-10">24</span>
+                                <span class="relative text-2xl font-black text-white z-10">{{ porcentaje() }}%</span>
                             </div>
                         </div>
                         <div>
-                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Nivel Actual
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Progreso
                             </div>
-                            <div class="text-3xl font-black text-white tracking-wide">Desarrollador Senior
+                            <div class="text-3xl font-black text-white tracking-wide">
+                                {{ totalDesbloqueados() }}<span class="text-lg text-slate-600"> / {{ totalLogros()
+                                    }}</span>
                             </div>
                             <div class="w-full h-1.5 bg-slate-700 rounded-full mt-3 overflow-hidden">
-                                <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 w-[70%]"
-                                    [class.from-red-600]="isEasterEggActive" [class.to-red-900]="isEasterEggActive">
+                                <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-700"
+                                    [style.width.%]="porcentaje()" [class.from-red-600]="isEasterEggActive"
+                                    [class.to-red-900]="isEasterEggActive">
                                 </div>
                             </div>
-                            <div class="text-[10px] text-right text-slate-500 mt-1">1,250 / 2,000 XP</div>
+                            <div class="text-[10px] text-right text-slate-500 mt-1">{{ stats()?.texto }}</div>
                         </div>
                     </div>
                 </div>
@@ -123,13 +117,12 @@
         <!-- 2. Dashboard Stats (Floating Cards) -->
         <section
             class="grid grid-cols-1 md:grid-cols-3 gap-6 transform hover:scale-[1.01] transition-transform duration-500">
-            <!-- Stat 1 -->
+            <!-- Stat 1: Trofeos desbloqueados -->
             <div
                 class="bg-slate-800/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-slate-800/60 transition-colors group relative overflow-hidden">
                 <div
                     class="absolute right-0 top-0 w-24 h-24 bg-yellow-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-yellow-500/20 transition-all">
                 </div>
-                <!-- SVG Trophy -->
                 <div class="w-12 h-12 text-yellow-500 group-hover:scale-110 transition-transform duration-300">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                         stroke-linejoin="round">
@@ -142,19 +135,18 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-slate-400 text-sm font-bold uppercase tracking-wider">Trofeos</h3>
-                    <p class="text-4xl font-black text-white">4 <span class="text-lg text-slate-600">/
-                            8</span></p>
+                    <h3 class="text-slate-400 text-sm font-bold uppercase tracking-wider">Desbloqueados</h3>
+                    <p class="text-4xl font-black text-white">{{ totalDesbloqueados() }} <span
+                            class="text-lg text-slate-600">/ {{ totalLogros() }}</span></p>
                 </div>
             </div>
 
-            <!-- Stat 2 -->
+            <!-- Stat 2: Porcentaje -->
             <div
                 class="bg-slate-800/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-slate-800/60 transition-colors group relative overflow-hidden">
                 <div
                     class="absolute right-0 top-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-blue-500/20 transition-all">
                 </div>
-                <!-- SVG Diamond/Gem -->
                 <div class="w-12 h-12 text-blue-400 group-hover:scale-110 transition-transform duration-300">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                         stroke-linejoin="round">
@@ -164,28 +156,27 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-slate-400 text-sm font-bold uppercase tracking-wider">Total XP</h3>
-                    <p class="text-4xl font-black text-white">900</p>
+                    <h3 class="text-slate-400 text-sm font-bold uppercase tracking-wider">Completado</h3>
+                    <p class="text-4xl font-black text-white">{{ porcentaje() }}%</p>
                 </div>
             </div>
 
-            <!-- Stat 3 -->
+            <!-- Stat 3: Total logros -->
             <div
                 class="bg-slate-800/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-slate-800/60 transition-colors group relative overflow-hidden">
                 <div
-                    class="absolute right-0 top-0 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-orange-500/20 transition-all">
+                    class="absolute right-0 top-0 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-purple-500/20 transition-all">
                 </div>
-                <!-- SVG Flame -->
-                <div class="w-12 h-12 text-orange-500 group-hover:scale-110 transition-transform duration-300">
+                <div class="w-12 h-12 text-purple-400 group-hover:scale-110 transition-transform duration-300">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path
-                            d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.115.385-2.256 1-3.24" />
+                            d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-slate-400 text-sm font-bold uppercase tracking-wider">Racha</h3>
-                    <p class="text-4xl font-black text-white">5 Días</p>
+                    <h3 class="text-slate-400 text-sm font-bold uppercase tracking-wider">Total Logros</h3>
+                    <p class="text-4xl font-black text-white">{{ totalLogros() }}</p>
                 </div>
             </div>
         </section>
@@ -193,49 +184,66 @@
         <!-- 3. Filter Navigation -->
         <nav class="flex justify-center md:justify-start">
             <div class="inline-flex p-1 bg-slate-900/80 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl">
-                <button
-                    class="relative px-6 py-2 rounded-lg text-sm font-bold text-white transition-all overflow-hidden group">
-                    <span
-                        class="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-600 opacity-100 group-hover:opacity-90 transition-opacity"
+                <button (click)="setFiltro('todos')"
+                    class="relative px-6 py-2 rounded-lg text-sm font-bold transition-all overflow-hidden"
+                    [ngClass]="filtroActivo() === 'todos' ? 'text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'">
+                    <span *ngIf="filtroActivo() === 'todos'"
+                        class="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-600"
                         [class.from-red-700]="isEasterEggActive" [class.to-red-900]="isEasterEggActive"></span>
                     <span class="relative z-10">Todos</span>
                 </button>
-                <button
-                    class="px-6 py-2 rounded-lg text-sm font-bold text-slate-400 hover:text-white hover:bg-white/5 transition-all">
-                    Desbloqueados
+                <button (click)="setFiltro('desbloqueados')"
+                    class="relative px-6 py-2 rounded-lg text-sm font-bold transition-all overflow-hidden"
+                    [ngClass]="filtroActivo() === 'desbloqueados' ? 'text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'">
+                    <span *ngIf="filtroActivo() === 'desbloqueados'"
+                        class="absolute inset-0 bg-gradient-to-r from-green-600 to-emerald-600"></span>
+                    <span class="relative z-10">Desbloqueados</span>
                 </button>
-                <button
-                    class="px-6 py-2 rounded-lg text-sm font-bold text-slate-400 hover:text-white hover:bg-white/5 transition-all">
-                    Bloqueados
+                <button (click)="setFiltro('bloqueados')"
+                    class="relative px-6 py-2 rounded-lg text-sm font-bold transition-all overflow-hidden"
+                    [ngClass]="filtroActivo() === 'bloqueados' ? 'text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'">
+                    <span *ngIf="filtroActivo() === 'bloqueados'"
+                        class="absolute inset-0 bg-gradient-to-r from-slate-600 to-slate-700"></span>
+                    <span class="relative z-10">Bloqueados</span>
                 </button>
             </div>
         </nav>
 
-        <!-- 4. Achievements Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 perspective-1000">
+        <!-- 4. Loading State -->
+        <div *ngIf="loading()" class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <div *ngFor="let skeleton of [1,2,3,4,5,6]"
+                class="bg-slate-800/40 backdrop-blur-md rounded-2xl p-5 border border-white/5 animate-pulse flex items-center gap-5">
+                <div class="flex-1 space-y-3">
+                    <div class="w-16 h-4 bg-slate-700 rounded-full"></div>
+                    <div class="w-3/4 h-5 bg-slate-700 rounded"></div>
+                    <div class="w-full h-3 bg-slate-700 rounded"></div>
+                    <div class="w-20 h-3 bg-slate-700 rounded"></div>
+                </div>
+                <div class="w-28 h-28 bg-slate-700 rounded-2xl flex-shrink-0"></div>
+            </div>
+        </div>
 
-            <!-- Loop items manually for now since we don't have a data array -->
-            <app-logro title="Primer Paso" description="Completa tu primer desafío" [points]="50" rarity="Común"
-                icon="step" [isLocked]="false"
-                class="transition-all duration-500 hover:z-20 hover:scale-105"></app-logro>
-            <app-logro title="Pythonista" description="Completa 50 desafíos" [points]="500" rarity="Épico" icon="code"
-                [isLocked]="false" class="transition-all duration-500 hover:z-20 hover:scale-105"></app-logro>
-            <app-logro title="Racha de Fuego" description="Practica 10 días" [points]="200" rarity="Raro" icon="fire"
-                [isLocked]="false" class="transition-all duration-500 hover:z-20 hover:scale-105"></app-logro>
+        <!-- 5. Error State -->
+        <div *ngIf="error()" class="text-center py-20">
+            <div class="text-red-400 text-lg font-bold mb-4">{{ error() }}</div>
+            <button (click)="cargarLogros()"
+                class="px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl transition-colors">
+                Reintentar
+            </button>
+        </div>
 
-            <!-- Specific Easter Egg Item that only appears/glows when active? Or just style changes on all -->
-            <app-logro title="Hacker" description="Encuentra el secreto" [points]="9999" rarity="Legendario"
-                icon="hacker" [isLocked]="!isEasterEggActive" [class.hidden]="!isEasterEggActive"></app-logro>
+        <!-- 6. Achievements Grid -->
+        <div *ngIf="!loading() && !error()" class="grid grid-cols-1 lg:grid-cols-2 gap-5 perspective-1000">
+            <app-logro *ngFor="let logro of logrosFiltrados(); trackBy: trackByLogro" [nombre]="logro.nombre"
+                [descripcion]="logro.descripcion" [iconoUrl]="logro.icono_url" [rareza]="logro.rareza"
+                [desbloqueado]="logro.desbloqueado" [fechaObtencion]="logro.fecha_obtencion"
+                class="transition-all duration-500 hover:z-20 hover:scale-[1.02]">
+            </app-logro>
+        </div>
 
-            <app-logro title="Velocista" description="Nivel < 2 min" [points]="150" rarity="Raro" icon="lightning"
-                [isLocked]="false" class="transition-all duration-500 hover:z-20 hover:scale-105"></app-logro>
-            <app-logro title="Perfeccionista" description="100/100 en 5 desafíos" [points]="300" rarity="Épico"
-                icon="target" [isLocked]="true" [currentProgress]="3" [maxProgress]="5"></app-logro>
-            <app-logro title="Maestro" description="Completa todo" [points]="1000" rarity="Legendario" icon="crown"
-                [isLocked]="true" [currentProgress]="47" [maxProgress]="100"></app-logro>
-            <app-logro title="Bug Hunter" description="Reporta 3 bugs" [points]="200" rarity="Raro" icon="bug"
-                [isLocked]="true" [currentProgress]="1" [maxProgress]="3"></app-logro>
-
+        <!-- 7. Empty State -->
+        <div *ngIf="!loading() && !error() && logrosFiltrados().length === 0" class="text-center py-20">
+            <div class="text-slate-500 text-lg">No hay logros en esta categoría.</div>
         </div>
 
     </div>
