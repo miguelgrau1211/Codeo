@@ -1,60 +1,42 @@
-<div class="min-height-screen transition-colors duration-700 pb-20 pt-6 overflow-hidden relative" [ngClass]="{
-        'bg-primary-bg': !isEasterEggActive,
-        'bg-black': isEasterEggActive
-    }">
+<div class="min-h-screen transition-colors duration-700 pb-20 pt-6 overflow-hidden relative"
+    [ngClass]="{ 'bg-primary-bg': !isEasterEggActive, 'bg-black': isEasterEggActive }">
 
-    <!-- Background Effects (Normal) -->
+    <!-- ═══ BACKGROUND: Normal ═══ -->
     <div *ngIf="!isEasterEggActive" class="absolute inset-0 pointer-events-none overflow-hidden h-full w-full">
-        <!-- Background Image from Friend -->
-        <div class="absolute inset-0 bg-[url('/logros/fondoNormal.png')] bg-cover bg-center bg-no-repeat h-full w-full opacity-30"></div>
-        <!-- My Refined Gradients -->
+        <div class="absolute inset-0 bg-[url('/logros/fondoNormal.png')] bg-cover bg-center bg-no-repeat opacity-30"></div>
         <div class="absolute inset-0 bg-gradient-to-br from-primary-bg via-primary-bg/80 to-secondary-bg/50"></div>
         <div class="absolute top-0 left-0 w-96 h-96 bg-accent-color/10 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2"></div>
         <div class="absolute bottom-0 right-0 w-96 h-96 bg-accent-color/5 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2"></div>
     </div>
 
-    <!-- Background Effects (Easter Egg / Hacker Mode) -->
+    <!-- ═══ BACKGROUND: Hacker Mode ═══ -->
     <div *ngIf="isEasterEggActive" class="absolute inset-0 pointer-events-none overflow-hidden z-0">
         <div class="absolute inset-0 bg-[url('/logros/fondoHack.png')] opacity-60 bg-cover bg-center mix-blend-screen"></div>
         <div class="absolute inset-0 bg-black opacity-90"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-red-900/30 via-transparent to-black pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-red-900/30 via-transparent to-black"></div>
     </div>
 
-    <!-- Matrix Glitch Overlay -->
+    <!-- ═══ MATRIX GLITCH OVERLAY ═══ -->
     <div *ngIf="showConfetti"
         class="fixed inset-0 pointer-events-none z-50 overflow-hidden flex flex-col items-center justify-center bg-black/80">
         <div class="relative">
-            <h1 class="text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-500 animate-pulse tracking-tighter"
-                style="text-shadow: 0 0 30px rgba(220, 38, 38, 0.8);">
-                HACKED
-            </h1>
-            <div class="absolute inset-0 text-9xl font-black text-red-600 mix-blend-screen opacity-50 animate-glitch-1">
-                HACKED</div>
-            <div
-                class="absolute inset-0 text-9xl font-black text-blue-600 mix-blend-screen opacity-50 animate-glitch-2">
-                HACKED</div>
+            <h1 class="text-9xl font-black text-red-600 animate-pulse tracking-tighter">HACKED</h1>
+            <div class="absolute inset-0 text-9xl font-black text-red-600 mix-blend-screen opacity-50">HACKED</div>
+            <div class="absolute inset-0 text-9xl font-black text-blue-600 mix-blend-screen opacity-50">HACKED</div>
         </div>
-        <div class="absolute inset-0 w-full h-full opacity-60 z-[-1]">
-            <div class="absolute top-0 text-green-500/80 text-sm font-bold font-mono animate-fall-1 drop-shadow-sm"
-                style="left: 10%">01 010 11</div>
-            <div class="absolute top-0 text-red-500/80 text-base font-bold font-mono animate-fall-2 drop-shadow-sm"
-                style="left: 20%">ERROR 404</div>
-            <div class="absolute top-0 text-green-500/80 text-sm font-bold font-mono animate-fall-3 drop-shadow-sm"
-                style="left: 40%">10 11 00</div>
-            <div class="absolute top-0 text-red-500/80 text-xl font-bold font-mono animate-fall-1 drop-shadow-md"
-                style="left: 60%">SYSTEM FAILURE</div>
-            <div class="absolute top-0 text-green-500/80 text-sm font-bold font-mono animate-fall-2 drop-shadow-sm"
-                style="left: 80%">111 000 111</div>
-            <div class="absolute top-0 text-red-500/80 text-base font-bold font-mono animate-fall-3 drop-shadow-sm"
-                style="left: 90%">ACCESS GRANTED</div>
+        <div class="absolute inset-0 opacity-60 -z-10">
+            <div class="absolute top-0 text-green-500/80 text-sm font-mono animate-bounce" style="left: 10%">01 010 11</div>
+            <div class="absolute top-0 text-red-500/80 text-base font-mono animate-pulse" style="left: 30%">ERROR 404</div>
+            <div class="absolute top-0 text-green-500/80 text-sm font-mono animate-bounce" style="left: 60%">ACCESS GRANTED</div>
+            <div class="absolute top-0 text-red-500/80 text-xl font-mono animate-pulse" style="left: 80%">SYSTEM FAILURE</div>
         </div>
     </div>
 
+    <!-- ═══ MAIN CONTENT ═══ -->
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
 
-        <!-- 1. Header Hero Section -->
-        <header class="relative">
-            <!-- Breadcrumb / Back -->
+        <!-- 1. Header -->
+        <header>
             <button routerLink="/dashboard"
                 class="group flex items-center gap-2 text-text-muted hover:text-text-main mb-6 transition-all"
                 [class.text-red-500]="isEasterEggActive">
@@ -67,47 +49,42 @@
             </button>
 
             <div class="flex flex-col md:flex-row justify-between items-end gap-8">
-                <!-- Title & Intro -->
                 <div class="max-w-2xl">
                     <h1 (click)="triggerEasterEgg()"
                         class="text-6xl md:text-7xl font-black text-text-main tracking-tighter uppercase cursor-pointer select-none transition-all duration-300 hover:tracking-widest"
-                        [ngClass]="{'animate-pulse text-red-500 drop-shadow-[0_0_15px_rgba(220,38,38,0.8)]': isEasterEggActive}">
-                        <span *ngIf="!isEasterEggActive">Logros <span
-                                class="text-transparent bg-clip-text bg-gradient-to-r from-accent-color to-pink-500">Legendarios</span></span>
+                        [ngClass]="{ 'animate-pulse text-red-500': isEasterEggActive }">
+                        <span *ngIf="!isEasterEggActive">
+                            Logros <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-color to-pink-500">Legendarios</span>
+                        </span>
                         <span *ngIf="isEasterEggActive">SYSTEM <span class="text-red-600">BREACHED</span></span>
                     </h1>
-                    <p class="text-xl text-text-muted mt-4 font-light leading-relaxed border-l-4 border-accent-color pl-4"
+                    <p class="text-xl text-text-muted mt-4 leading-relaxed border-l-4 border-accent-color pl-4"
                         [class.border-red-600]="isEasterEggActive" [class.text-red-400]="isEasterEggActive">
                         Domina el código, desbloquea insignias y construye tu legado en el ranking global.
                     </p>
                 </div>
 
-                <!-- Global Progress Badge -->
                 <div class="relative group cursor-help" *ngIf="stats()">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-accent-color to-pink-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"
+                    <div class="absolute -inset-1 bg-gradient-to-r from-accent-color to-pink-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000"
                         [class.from-red-900]="isEasterEggActive" [class.to-red-600]="isEasterEggActive"></div>
-                    <div
-                        class="relative bg-secondary-bg ring-1 ring-white/10 rounded-xl p-6 flex items-center gap-6 backdrop-blur-xl">
+                    <div class="relative bg-secondary-bg ring-1 ring-white/10 rounded-xl p-6 flex items-center gap-6 backdrop-blur-xl">
                         <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-secondary-bg to-primary-bg p-1 border border-white/10">
-                            <div
-                                class="w-full h-full rounded-full bg-secondary-bg flex items-center justify-center overflow-hidden relative">
-                                <div class="absolute inset-0 bg-accent-color/20 animate-spin-slow origin-center"
+                            <div class="w-full h-full rounded-full bg-secondary-bg flex items-center justify-center overflow-hidden relative">
+                                <div class="absolute inset-0 bg-accent-color/20 origin-center"
                                     [class.bg-red-600/20]="isEasterEggActive"></div>
                                 <span class="relative text-2xl font-black text-text-main z-10">{{ porcentaje() }}%</span>
                             </div>
                         </div>
                         <div>
-                            <div class="text-xs font-bold text-text-muted uppercase tracking-widest mb-1">Progreso
-                            </div>
+                            <div class="text-xs font-bold text-text-muted uppercase tracking-widest mb-1">Progreso</div>
                             <div class="text-3xl font-black text-text-main tracking-wide">
-                                {{ totalDesbloqueados() }}<span class="text-lg text-text-muted"> / {{ totalLogros()
-                                    }}</span>
+                                {{ totalDesbloqueados() }}<span class="text-lg text-text-muted"> / {{ totalLogros() }}</span>
                             </div>
                             <div class="w-full h-1.5 bg-primary-bg rounded-full mt-3 overflow-hidden">
                                 <div class="h-full bg-gradient-to-r from-accent-color to-pink-500 transition-all duration-700"
-                                    [style.width.%]="porcentaje()" [class.from-red-600]="isEasterEggActive"
-                                    [class.to-red-900]="isEasterEggActive">
-                                </div>
+                                    [style.width.%]="porcentaje()"
+                                    [class.from-red-600]="isEasterEggActive"
+                                    [class.to-red-900]="isEasterEggActive"></div>
                             </div>
                             <div class="text-[10px] text-right text-text-muted mt-1">{{ stats()?.texto }}</div>
                         </div>
@@ -116,18 +93,14 @@
             </div>
         </header>
 
-        <!-- 2. Dashboard Stats (Floating Cards) -->
-        <section
-            class="grid grid-cols-1 md:grid-cols-3 gap-6 transform hover:scale-[1.01] transition-transform duration-500">
-            <!-- Stat 1: Trofeos desbloqueados -->
-            <div
-                class="bg-secondary-bg/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-secondary-bg/60 transition-colors group relative overflow-hidden">
-                <div
-                    class="absolute right-0 top-0 w-24 h-24 bg-yellow-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-yellow-500/20 transition-all">
-                </div>
+        <!-- 2. Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <!-- Stat 1: Desbloqueados -->
+            <div class="bg-secondary-bg/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-secondary-bg/60 transition-colors group relative overflow-hidden">
+                <div class="absolute right-0 top-0 w-24 h-24 bg-yellow-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-yellow-500/20 transition-all"></div>
                 <div class="w-12 h-12 text-yellow-500 group-hover:scale-110 transition-transform duration-300">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                        stroke-linejoin="round">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
                         <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
                         <path d="M4 22h16" />
@@ -138,20 +111,15 @@
                 </div>
                 <div>
                     <h3 class="text-text-muted text-sm font-bold uppercase tracking-wider">Desbloqueados</h3>
-                    <p class="text-4xl font-black text-text-main">{{ totalDesbloqueados() }} <span
-                            class="text-lg text-text-muted">/ {{ totalLogros() }}</span></p>
+                    <p class="text-4xl font-black text-text-main">{{ totalDesbloqueados() }} <span class="text-lg text-text-muted">/ {{ totalLogros() }}</span></p>
                 </div>
             </div>
 
             <!-- Stat 2: Porcentaje -->
-            <div
-                class="bg-secondary-bg/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-secondary-bg/60 transition-colors group relative overflow-hidden">
-                <div
-                    class="absolute right-0 top-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-blue-500/20 transition-all">
-                </div>
+            <div class="bg-secondary-bg/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-secondary-bg/60 transition-colors group relative overflow-hidden">
+                <div class="absolute right-0 top-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-blue-500/20 transition-all"></div>
                 <div class="w-12 h-12 text-blue-400 group-hover:scale-110 transition-transform duration-300">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                        stroke-linejoin="round">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M6 3h12l4 6-10 13L2 9Z" />
                         <path d="M11 3 8 9l4 13 4-13-3-6" />
                         <path d="M2 9h20" />
@@ -163,17 +131,12 @@
                 </div>
             </div>
 
-            <!-- Stat 3: Total logros -->
-            <div
-                class="bg-secondary-bg/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-secondary-bg/60 transition-colors group relative overflow-hidden">
-                <div
-                    class="absolute right-0 top-0 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-purple-500/20 transition-all">
-                </div>
+            <!-- Stat 3: Total -->
+            <div class="bg-secondary-bg/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-secondary-bg/60 transition-colors group relative overflow-hidden">
+                <div class="absolute right-0 top-0 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-purple-500/20 transition-all"></div>
                 <div class="w-12 h-12 text-purple-400 group-hover:scale-110 transition-transform duration-300">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path
-                            d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                     </svg>
                 </div>
                 <div>
@@ -181,7 +144,8 @@
                     <p class="text-4xl font-black text-text-main">{{ totalLogros() }}</p>
                 </div>
             </div>
-        </section>
+
+        </div>
 
         <!-- 3. Filter Navigation -->
         <nav class="flex justify-center md:justify-start">
@@ -211,7 +175,7 @@
             </div>
         </nav>
 
-        <!-- 4. Loading State -->
+        <!-- 4. Loading Skeletons -->
         <div *ngIf="loading()" class="grid grid-cols-1 lg:grid-cols-2 gap-5">
             <div *ngFor="let skeleton of [1,2,3,4,5,6]"
                 class="bg-secondary-bg/40 backdrop-blur-md rounded-2xl p-5 border border-white/5 animate-pulse flex items-center gap-5">
@@ -235,10 +199,14 @@
         </div>
 
         <!-- 6. Achievements Grid -->
-        <div *ngIf="!loading() && !error()" class="grid grid-cols-1 lg:grid-cols-2 gap-5 perspective-1000">
-            <app-logro *ngFor="let logro of logrosFiltrados(); trackBy: trackByLogro" [nombre]="logro.nombre"
-                [descripcion]="logro.descripcion" [iconoUrl]="logro.icono_url" [rareza]="logro.rareza"
-                [desbloqueado]="logro.desbloqueado" [fechaObtencion]="logro.fecha_obtencion"
+        <div *ngIf="!loading() && !error()" class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <app-logro *ngFor="let logro of logrosFiltrados(); trackBy: trackByLogro"
+                [nombre]="logro.nombre"
+                [descripcion]="logro.descripcion"
+                [iconoUrl]="logro.icono_url"
+                [rareza]="logro.rareza"
+                [desbloqueado]="logro.desbloqueado"
+                [fechaObtencion]="logro.fecha_obtencion"
                 class="transition-all duration-500 hover:z-20 hover:scale-[1.02]">
             </app-logro>
         </div>

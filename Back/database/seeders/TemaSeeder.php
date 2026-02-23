@@ -92,7 +92,10 @@ class TemaSeeder extends Seeder
         ];
 
         foreach ($temas as $tema) {
-            Tema::create($tema);
+            Tema::firstOrCreate(
+                ['nombre' => $tema['nombre']],
+                $tema
+            );
         }
     }
 }

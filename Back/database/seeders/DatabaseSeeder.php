@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
 
         // 3. Llamar a los otros seeders
         $this->call([
+            TemaSeeder::class,
             LogrosSeeder::class,
             NivelesHistoriaSeeder::class,
             NivelRoguelikeSeeder::class,
