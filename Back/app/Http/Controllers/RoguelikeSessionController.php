@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use App\Actions\CheckAchievementsAction;
+use App\Actions\ProcessLevelUpAction;
+use App\Actions\UpdateUserStreakAction;
+use Illuminate\Support\Facades\DB;
 
 class RoguelikeSessionController extends Controller
 {
@@ -63,12 +66,15 @@ class RoguelikeSessionController extends Controller
 
         Log::info('Roguelike session started', ['user_id' => $userId, 'run_id' => $run->id]);
 
+        $nuevosLogros = (new CheckAchievementsAction())->execute();
+
         return response()->json([
             'message' => 'Sesión iniciada',
             'lives' => $session['lives'],
             'time_remaining' => $session['time_remaining'],
             'coins_earned' => $session['coins_earned'],
             'mejoras_activas' => $session['mejoras_activas'],
+            'nuevos_logros' => $nuevosLogros
         ], 200);
     }
 
@@ -136,12 +142,14 @@ class RoguelikeSessionController extends Controller
             }
 
             $gameOver = $session['lives'] <= 0;
+            $nuevosLogros = [];
 
             if ($gameOver) {
                 $session['time_remaining'] = 0;
                 $session['level_started_at'] = null;
                 $this->saveSession($userId, $session);
                 $this->saveRun($session);
+                $nuevosLogros = (new CheckAchievementsAction())->execute();
             }
 
             return response()->json([
@@ -150,6 +158,7 @@ class RoguelikeSessionController extends Controller
                 'time_remaining' => $session['time_remaining'],
                 'game_over' => $gameOver,
                 'stats' => $gameOver ? $this->getSessionStats($session) : null,
+                'nuevos_logros' => $nuevosLogros,
                 'message' => $gameOver
                     ? '¡Game Over! Se acabaron tus vidas.'
                     : '¡Se acabó el tiempo! Pierdes una vida. Tienes 1:30 extra.',
@@ -190,9 +199,11 @@ class RoguelikeSessionController extends Controller
         $this->saveSession($userId, $session);
 
         $gameOver = $session['lives'] <= 0;
+        $nuevosLogros = [];
 
         if ($gameOver) {
             $this->saveRun($session);
+            $nuevosLogros = (new CheckAchievementsAction())->execute();
         }
 
         Log::info('Roguelike failure registered', [
@@ -205,6 +216,7 @@ class RoguelikeSessionController extends Controller
             'lives' => $session['lives'],
             'game_over' => $gameOver,
             'stats' => $gameOver ? $this->getSessionStats($session) : null,
+            'nuevos_logros' => $nuevosLogros,
             'message' => $gameOver
                 ? '¡Game Over!'
                 : '¡Código incorrecto! Pierdes una vida.',
@@ -241,7 +253,30 @@ class RoguelikeSessionController extends Controller
         // Actualizar la run en BD con cada nivel completado
         $this->updateRun($session);
 
+        // Recompensas globales en tiempo real
+        try {
+            DB::transaction(function () use ($userId, $coinsGained) {
+                DB::table('usuarios')
+                    ->where('id', $userId)
+                    ->lockForUpdate()
+                    ->increment('exp_total', 25); // 25 XP por nivel roguelike
+
+                DB::table('usuarios')
+                    ->where('id', $userId)
+                    ->increment('monedas', $coinsGained);
+            });
+        } catch (\Throwable $e) {
+            Log::error('Error otorgando recompensas globales Roguelike: ' . $e->getMessage());
+        }
+
         $nuevosLogros = (new CheckAchievementsAction())->execute();
+        
+        /** @var \App\Models\Usuario $user */
+        $user = Auth::user();
+        $rachaData = (new UpdateUserStreakAction())->execute($user);
+        
+        // Procesar subida de nivel
+        $levelUpData = (new ProcessLevelUpAction())->execute($user);
 
         return response()->json([
             'lives' => $session['lives'],
@@ -249,6 +284,8 @@ class RoguelikeSessionController extends Controller
             'coins_earned' => $session['coins_earned'],
             'xp_earned' => $session['xp_earned'],
             'nuevos_logros' => $nuevosLogros,
+            'racha' => $rachaData,
+            'level_up' => $levelUpData
         ], 200);
     }
 

@@ -342,12 +342,8 @@
         <div class="fixed inset-0 z-[100] bg-black flex items-center justify-center overflow-hidden transition-opacity duration-500"
              [class.opacity-0]="startExit()">
             <div class="relative w-full h-full flex items-center justify-center">
-                @if (themeService.currentTheme()?.nombre === 'Deep Space') {
                 <img src="/landing/espiral.png" 
-                     class="w-[80vw] h-[80vw] md:w-[40vw] md:h-[40vw] object-contain animate-spin-zoom opacity-0">
-                } @else {
-                    <div class="w-20 h-20 rounded-full border-4 border-accent-color/20 border-t-accent-color animate-spin"></div>
-                }
+                     class="w-[150vw] h-[150vw] md:w-[120vw] md:h-[120vw] object-contain animate-spin-zoom">
                 <div class="absolute bottom-20 text-white font-mono text-sm animate-pulse tracking-widest">
                     CARGANDO MODO INFINITO...
                 </div>

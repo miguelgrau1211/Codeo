@@ -5,24 +5,55 @@
   <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent-color/5 rounded-full blur-[120px] pointer-events-none translate-y-1/2 -translate-x-1/2"></div>
 
   <header class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 mb-12 max-w-7xl mx-auto bg-secondary-bg/50 backdrop-blur-xl p-8 rounded-[2.5rem] border border-white/5 shadow-2xl">
-    <div>
-      <h1 class="text-4xl md:text-5xl font-black text-text-main font-jersey tracking-wide">
-        TIENDA DE <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-color to-pink-600">PERSONALIZACIÓN</span>
-      </h1>
-      <p class="text-text-muted mt-2 font-medium">Transforma tu entorno de desarrollo con temas exclusivos.</p>
+    <div class="flex items-center gap-6">
+      <a routerLink="/dashboard" class="group flex items-center justify-center w-14 h-14 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all hover:-translate-x-1 active:scale-95 shadow-lg shrink-0">
+        <img src="/common/icons/atras.jpg" alt="Volver" class="w-8 h-8 object-contain group-hover:scale-110 transition-transform">
+      </a>
+      <div>
+        <h1 class="text-4xl md:text-5xl font-black text-text-main font-jersey tracking-wide">
+          TIENDA DE <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-color to-pink-600">PERSONALIZACIÓN</span>
+        </h1>
+        <p class="text-text-muted mt-2 font-medium">Transforma tu entorno de desarrollo con temas exclusivos.</p>
+      </div>
     </div>
     
     <div class="flex items-center gap-4 bg-yellow-500/10 px-6 py-3 rounded-2xl border border-yellow-500/20 shadow-lg shadow-yellow-500/5">
-      <img src="assets/coin.png" alt="Coins" class="w-8 h-8 drop-shadow-[0_0_8px_rgba(234,179,8,0.5)]">
+      <img src="/common/icons/credits.png" alt="Coins" class="w-8 h-8 drop-shadow-[0_0_8px_rgba(234,179,8,0.5)]">
       <span class="text-2xl font-black text-yellow-500 font-jersey tracking-wider">{{ userCoins() }}</span>
     </div>
   </header>
 
   <div class="relative z-10 max-w-7xl mx-auto">
     @if (isLoading()) {
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        @for (i of [1,2,3,4]; track i) {
-          <div class="h-[400px] bg-secondary-bg/40 rounded-[2.5rem] border border-white/5 animate-pulse"></div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 animate-fade-in">
+        @for (i of [1,2,3,4,5,6,7,8]; track i) {
+          <div class="bg-secondary-bg/40 rounded-[2.5rem] border border-white/5 overflow-hidden flex flex-col h-[450px]">
+            <!-- Skeleton Preview -->
+            <div class="h-48 bg-white/5 animate-pulse flex items-center justify-center p-6">
+              <div class="w-full h-full rounded-xl bg-white/5 border border-white/5 flex flex-col overflow-hidden">
+                <div class="h-4 w-full bg-white/5"></div>
+                <div class="p-3 space-y-2">
+                  <div class="h-1.5 w-16 rounded-full bg-white/10"></div>
+                  <div class="h-1 w-full bg-white/5 rounded-full"></div>
+                  <div class="h-1 w-3/4 bg-white/5 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+            <!-- Skeleton Info -->
+            <div class="p-8 flex-1 flex flex-col">
+              <div class="flex justify-between mb-4">
+                <div class="h-6 w-32 bg-white/10 rounded-lg animate-pulse"></div>
+                <div class="h-6 w-12 bg-white/5 rounded-lg animate-pulse"></div>
+              </div>
+              <div class="space-y-2 mb-8">
+                <div class="h-3 w-full bg-white/5 rounded-full animate-pulse"></div>
+                <div class="h-3 w-2/3 bg-white/5 rounded-full animate-pulse"></div>
+              </div>
+              <div class="mt-auto">
+                <div class="h-12 w-full bg-white/10 rounded-2xl animate-pulse"></div>
+              </div>
+            </div>
+          </div>
         }
       </div>
     } @else {
@@ -39,8 +70,8 @@
                 <div class="h-4 w-full" [style.background]="tema.css_variables['--secondary-bg']"></div>
                 <div class="p-3 space-y-2">
                   <div class="h-1.5 w-16 rounded-full" [style.background]="tema.css_variables['--accent-color']"></div>
-                  <div class="h-1 w-full bg-white/10 rounded-full"></div>
-                  <div class="h-1 w-3/4 bg-white/10 rounded-full"></div>
+                  <div class="h-1 w-full rounded-full opacity-40" [style.background]="tema.css_variables['--text-main']"></div>
+                  <div class="h-1 w-3/4 rounded-full opacity-20" [style.background]="tema.css_variables['--text-muted']"></div>
                 </div>
               </div>
 
@@ -58,7 +89,7 @@
                 @if (!isOwned(tema.id) && tema.precio > 0) {
                   <div class="flex items-center gap-1 bg-white/5 px-2 py-1 rounded-lg border border-white/5">
                     <span class="text-xs font-black text-yellow-500 italic">{{ tema.precio }}</span>
-                    <img src="assets/coin.png" class="w-3 h-3">
+                    <img src="/common/icons/credits.png" class="w-3 h-3">
                   </div>
                 }
               </div>
@@ -75,6 +106,11 @@
                           [ngClass]="activeThemeId() === tema.id ? 'bg-white/5 text-text-muted border border-white/5' : 'bg-accent-color text-white hover:opacity-90 hover:scale-[1.02] shadow-lg shadow-accent-color/20'">
                     {{ activeThemeId() === tema.id ? 'Equipado' : 'Equipar' }}
                   </button>
+                } @else if (tema.es_exclusivo) {
+                  <div class="w-full py-4 rounded-2xl bg-white/5 border border-white/10 text-center relative group/lock">
+                    <span class="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] group-hover/lock:hidden">Bloqueado</span>
+                    <span class="text-[10px] font-black text-accent-color uppercase tracking-[0.1em] hidden group-hover/lock:block animate-pulse py-1">Desbloqueo vía Pase de Batalla</span>
+                  </div>
                 } @else if (tema.precio === 0) {
                   <button (click)="activarTema(tema)" 
                           class="w-full py-4 rounded-2xl bg-white text-primary-bg font-black text-xs uppercase tracking-widest hover:bg-slate-200 hover:scale-[1.02] transition-all duration-300 shadow-xl shadow-white/10">
@@ -94,4 +130,76 @@
       </div>
     }
   </div>
+
+  <!-- Buy Confirmation & Feedback Modal -->
+  @if (showBuyModal()) {
+    <div class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-primary-bg/80 backdrop-blur-md animate-fade-in">
+      <div 
+        class="relative w-full max-w-md bg-secondary-bg border border-white/10 rounded-[3rem] p-10 shadow-2xl overflow-hidden animate-zoom-in"
+        (click)="$event.stopPropagation()">
+        
+        <!-- Decoration in modal -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-accent-color/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+        
+        <div class="relative z-10 flex flex-col items-center text-center">
+          
+          @if (buySuccess()) {
+            <!-- Success State -->
+            <div class="w-24 h-24 bg-green-500/20 rounded-full flex items-center justify-center mb-6 border border-green-500/30">
+              <span class="text-5xl">✅</span>
+            </div>
+            <h2 class="text-3xl font-black text-text-main mb-4 font-jersey tracking-wide">¡TEMA ADQUIRIDO!</h2>
+            <p class="text-text-muted font-medium mb-8 italic">
+              El tema "<span class="text-text-main">{{ selectedTema()?.nombre }}</span>" ya es tuyo. ¡Disfruta de tu nuevo entorno!
+            </p>
+            <button (click)="closeModal()" 
+                    class="w-full py-4 rounded-2xl bg-white text-primary-bg font-black text-xs uppercase tracking-widest hover:bg-slate-200 transition-all shadow-xl shadow-white/10">
+              Genial
+            </button>
+          } @else if (buyError()) {
+            <!-- Error State (e.g. No coins) -->
+            <div class="w-24 h-24 bg-red-500/20 rounded-full flex items-center justify-center mb-6 border border-red-500/30">
+              <span class="text-5xl">❌</span>
+            </div>
+            <h2 class="text-3xl font-black text-text-main mb-4 font-jersey tracking-wide uppercase">Operación Fallida</h2>
+            <p class="text-text-muted font-medium mb-8">
+              {{ buyError() }}
+            </p>
+            <button (click)="closeModal()" 
+                    class="w-full py-4 rounded-2xl bg-white text-primary-bg font-black text-xs uppercase tracking-widest hover:bg-slate-200 transition-all border border-white/5">
+              Entendido
+            </button>
+          } @else {
+            <!-- Confirmation State -->
+            <div class="w-24 h-24 bg-accent-color/20 rounded-full flex items-center justify-center mb-6 border border-accent-color/30">
+              <span class="text-5xl italic font-jersey">?</span>
+            </div>
+            <h2 class="text-3xl font-black text-text-main mb-2 font-jersey tracking-wide uppercase">Confirmar Compra</h2>
+            <p class="text-text-muted font-medium mb-8">
+              ¿Deseas desbloquear el tema "<span class="text-text-main">{{ selectedTema()?.nombre }}</span>" por <span class="text-yellow-500">{{ selectedTema()?.precio }} monedas</span>?
+            </p>
+
+            <div class="w-full space-y-3">
+              <button (click)="confirmPurchase()" 
+                      [disabled]="isBuying()"
+                      class="w-full py-4 rounded-2xl bg-accent-color text-white font-black text-xs uppercase tracking-widest hover:bg-accent-color/90 disabled:opacity-50 disabled:cursor-wait transition-all shadow-lg shadow-accent-color/20 relative overflow-hidden group">
+                <span [class.opacity-0]="isBuying()">Confirmar Adquisición</span>
+                @if (isBuying()) {
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  </div>
+                }
+              </button>
+              <button (click)="closeModal()" 
+                      [disabled]="isBuying()"
+                      class="w-full py-4 rounded-2xl bg-white/5 text-text-muted font-black text-xs uppercase tracking-widest hover:bg-white/10 transition-all border border-white/5 disabled:opacity-50">
+                Quizás después
+              </button>
+            </div>
+          }
+          
+        </div>
+      </div>
+    </div>
+  }
 </div>

@@ -41,6 +41,12 @@ export class UserDataService {
   // --- Estado central del usuario (singleton caché) ---
   readonly userDataSignal = signal<UserData | null>(null);
 
+  /** Signals reactivos para valores que cambian frecuentemente */
+  readonly streak = computed(() => this.userDataSignal()?.streak ?? 0);
+  readonly coins = computed(() => this.userDataSignal()?.coins ?? 0);
+  readonly experience = computed(() => this.userDataSignal()?.experience ?? 0);
+  readonly level = computed(() => this.userDataSignal()?.level ?? 1);
+
   /** True cuando se ha cargado al menos una vez */
   private readonly _loaded = signal(false);
 
@@ -123,6 +129,50 @@ export class UserDataService {
     }).pipe(
       map(response => response.actividad)
     );
+  }
+
+  /**
+   * Actualiza el streak manualmente tras una acción
+   */
+  setStreak(newStreak: number): void {
+    this.userDataSignal.update(current => current ? { ...current, streak: newStreak } : current);
+  }
+
+  /**
+   * Actualiza monedas y XP manualmente tras una acción
+   */
+  updateEconomy(coins?: number, xp?: number): void {
+    this.userDataSignal.update(current => {
+      if (!current) return null;
+      return {
+        ...current,
+        coins: coins !== undefined ? coins : current.coins,
+        experience: xp !== undefined ? xp : current.experience
+      };
+    });
+  }
+
+  /**
+   * Actualiza el nivel manualmente
+   */
+  setLevel(level: number): void {
+    this.userDataSignal.update(current => current ? { ...current, level: level } : current);
+  }
+
+  /**
+   * Procesa el resultado de level_up del backend
+   */
+  handleLevelUpResult(levelUpData: any): void {
+    if (!levelUpData) return;
+
+    if (levelUpData.leveled_up) {
+      this.setLevel(levelUpData.current_level);
+      this.notificationService.showLevelUp(levelUpData.current_level);
+    }
+    
+    if (levelUpData.exp_total !== undefined) {
+      this.userDataSignal.update(current => current ? { ...current, experience: levelUpData.exp_total } : current);
+    }
   }
 
   /**

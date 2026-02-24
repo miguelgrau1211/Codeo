@@ -13,6 +13,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\NivelesHistoriaController;
 use App\Http\Controllers\RoguelikeSessionController;
 use App\Http\Controllers\Api\TemaController;
+use App\Http\Controllers\GoogleAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,10 @@ use App\Http\Controllers\Api\TemaController;
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/users', [UserController::class, 'store']); // Registro
 Route::get('/ranking', [UserController::class, 'getRanking']);
+
+// Google Auth
+Route::get('/auth/google', [GoogleAuthController::class, 'redirectToGoogle']);
+Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
 
 // Datos del juego (pueden ser públicos para mostrar en landing page)
 

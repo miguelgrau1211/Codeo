@@ -19,6 +19,7 @@ class TemaResource extends JsonResource
             'nombre' => $this->nombre,
             'descripcion' => $this->descripcion,
             'precio' => $this->precio,
+            'es_exclusivo' => (bool) $this->es_exclusivo,
             'css_variables' => $this->css_variables,
             'preview_img' => $this->preview_img,
         ];

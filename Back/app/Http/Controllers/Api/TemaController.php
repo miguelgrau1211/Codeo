@@ -24,6 +24,10 @@ class TemaController extends Controller
 
     public function comprar(Request $request, Tema $tema, ComprarTemaAction $comprarTemaAction)
     {
+        if ($tema->es_exclusivo) {
+            return response()->json(['message' => 'Este tema es exclusivo del Pase de Batalla.'], 403);
+        }
+
         try {
             $comprarTemaAction->execute($request->user(), $tema);
             return response()->json(['message' => 'Tema comprado correctamente.']);

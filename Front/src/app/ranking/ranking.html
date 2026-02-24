@@ -6,14 +6,16 @@
 
     <!-- Header -->
     <header class="relative z-10 flex items-center justify-between mb-16 max-w-5xl mx-auto">
-        <div>
-            <a routerLink="/dashboard" class="group flex items-center gap-2 text-text-muted hover:text-accent-color transition-colors mb-2">
-                <span class="transform group-hover:-translate-x-1 transition-transform">←</span> Volver al Dashboard
+        <div class="flex items-center gap-6">
+            <a routerLink="/dashboard" class="group flex items-center justify-center w-14 h-14 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all hover:-translate-x-1 active:scale-95 shadow-lg shrink-0">
+                <img src="/common/icons/atras.jpg" alt="Volver" class="w-8 h-8 object-contain group-hover:scale-110 transition-transform">
             </a>
-            <h1 class="text-5xl md:text-6xl font-black text-text-main font-jersey tracking-wide">
-                SALÓN DE LA <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-color to-pink-600">FAMA</span>
-            </h1>
-            <p class="text-text-muted mt-2 font-medium">Los mejores desarrolladores de Codeo compiten aquí.</p>
+            <div>
+                <h1 class="text-5xl md:text-6xl font-black text-text-main font-jersey tracking-wide">
+                    SALÓN DE LA <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-color to-pink-600">FAMA</span>
+                </h1>
+                <p class="text-text-muted mt-2 font-medium">Los mejores desarrolladores de Codeo compiten aquí.</p>
+            </div>
         </div>
         
         <!-- User Stats (Brief) -->

@@ -1,17 +1,17 @@
 @if (isOpen) {
 <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
     <div
-        class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-4xl border border-slate-200 dark:border-white/10 flex flex-col max-h-[90vh]">
+        class="bg-secondary-bg rounded-2xl shadow-2xl w-full max-w-4xl border border-white/10 flex flex-col max-h-[90vh]">
 
         <!-- Header -->
         <div
-            class="p-6 border-b border-slate-100 dark:border-white/5 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50">
-            <h2 class="text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-3">
+            class="p-6 border-b border-white/5 flex justify-between items-center bg-primary-bg/50">
+            <h2 class="text-2xl font-bold text-text-main flex items-center gap-3">
                 @if (levelType === 'story') { <span>📖</span> } @else { <span>💀</span> }
                 {{ levelData ? 'Editar' : 'Crear' }} Nivel {{ levelType === 'story' ? 'Historia' : 'Roguelike' }}
             </h2>
             <button (click)="closeModal()"
-                class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-white/10 text-slate-500 transition-colors">
+                class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-text-muted transition-colors">
                 ✕
             </button>
         </div>
@@ -23,26 +23,26 @@
                 <!-- Common Fields -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Título</label>
+                        <label class="block text-sm font-bold text-text-muted mb-2">Título</label>
                         <input type="text" [(ngModel)]="formData.titulo" name="titulo"
-                            class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-slate-800 dark:text-white focus:ring-2 focus:ring-purple-500 outline-none"
+                            class="w-full bg-primary-bg border border-white/10 rounded-lg px-4 py-2 text-text-main focus:ring-2 focus:ring-accent-color outline-none"
                             placeholder="Ej. El Bucle Infinito" required>
                     </div>
 
                     @if (levelType === 'story') {
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Orden /
+                        <label class="block text-sm font-bold text-text-muted mb-2">Orden /
                             Capítulo</label>
                         <input type="number" [(ngModel)]="formData.orden" name="orden"
-                            class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-slate-800 dark:text-white"
+                            class="w-full bg-primary-bg border border-white/10 rounded-lg px-4 py-2 text-text-main focus:ring-2 focus:ring-accent-color outline-none"
                             required>
                     </div>
                     } @else {
                     <div>
                         <label
-                            class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Dificultad</label>
+                            class="block text-sm font-bold text-text-muted mb-2">Dificultad</label>
                         <select [(ngModel)]="formData.dificultad" name="dificultad"
-                            class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-slate-800 dark:text-white">
+                            class="w-full bg-primary-bg border border-white/10 rounded-lg px-4 py-2 text-text-main focus:ring-2 focus:ring-accent-color outline-none">
                             <option value="fácil">Fácil</option>
                             <option value="medio">Medio</option>
                             <option value="difícil">Difícil</option>
@@ -53,9 +53,9 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Descripción</label>
+                    <label class="block text-sm font-bold text-text-muted mb-2">Descripción</label>
                     <textarea [(ngModel)]="formData.descripcion" name="descripcion" rows="3"
-                        class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-slate-800 dark:text-white"
+                        class="w-full bg-primary-bg border border-white/10 rounded-lg px-4 py-2 text-text-main focus:ring-2 focus:ring-accent-color outline-none"
                         placeholder="Breve descripción del desafío..." required></textarea>
                 </div>
 
@@ -63,44 +63,44 @@
                 <!-- Story Specific Fields -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Contenido Teórico
+                        <label class="block text-sm font-bold text-text-muted mb-2">Contenido Teórico
                             (HTML/Markdown)</label>
                         <textarea [(ngModel)]="formData.contenido_teorico" name="contenido_teorico" rows="6"
-                            class="w-full font-mono text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-slate-800 dark:text-white"></textarea>
+                            class="w-full font-mono text-sm bg-primary-bg border border-white/10 rounded-lg px-4 py-2 text-text-main focus:ring-2 focus:ring-accent-color outline-none"></textarea>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Código Inicial
+                        <label class="block text-sm font-bold text-text-muted mb-2">Código Inicial
                             (PHP)</label>
                         <textarea [(ngModel)]="formData.codigo_inicial" name="codigo_inicial" rows="6"
-                            class="w-full font-mono text-sm bg-slate-900 text-green-400 border border-slate-700 rounded-lg px-4 py-2"></textarea>
+                            class="w-full font-mono text-sm bg-black/40 text-green-400 border border-white/10 rounded-lg px-4 py-2 focus:ring-2 focus:ring-accent-color outline-none"></textarea>
                     </div>
                 </div>
                 }
 
                 <!-- Rewards -->
                 <div
-                    class="grid grid-cols-2 gap-6 p-4 bg-slate-50 dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-white/5">
+                    class="grid grid-cols-2 gap-6 p-4 bg-primary-bg/30 rounded-xl border border-white/5">
                     @if (levelType === 'story') {
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">XP Recompensa</label>
+                        <label class="block text-xs font-bold text-text-muted uppercase mb-1">XP Recompensa</label>
                         <input type="number" [(ngModel)]="formData.recompensa_exp" name="recompensa_exp"
-                            class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded px-3 py-1">
+                            class="w-full bg-secondary-bg border border-white/10 rounded px-3 py-1 text-text-main focus:ring-1 focus:ring-accent-color outline-none">
                     </div>
                     }
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Monedas Recompensa</label>
+                        <label class="block text-xs font-bold text-text-muted uppercase mb-1">Monedas Recompensa</label>
                         <input type="number" [(ngModel)]="formData.recompensa_monedas" name="recompensa_monedas"
-                            class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded px-3 py-1">
+                            class="w-full bg-secondary-bg border border-white/10 rounded px-3 py-1 text-text-main focus:ring-1 focus:ring-accent-color outline-none">
                     </div>
                 </div>
 
                 <!-- Test Cases Editor -->
                 <div>
                     <div class="flex justify-between items-center mb-4">
-                        <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Test Cases
+                        <label class="text-sm font-bold text-text-main">Test Cases
                             (Validación)</label>
                         <button type="button" (click)="addTestCase()"
-                            class="text-xs bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 px-3 py-1 rounded font-bold transition-colors">
+                            class="text-xs bg-white/5 hover:bg-white/10 text-text-main px-3 py-1 rounded font-bold transition-colors border border-white/10">
                             + Añadir Caso
                         </button>
                     </div>
@@ -108,26 +108,26 @@
                     <div class="space-y-3">
                         @for (ac of testCases(); track $index) {
                         <div
-                            class="flex gap-4 items-start p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-white/5 group">
+                            class="flex gap-4 items-start p-3 bg-primary-bg/50 rounded-lg border border-white/5 group transition-colors hover:border-accent-color/30">
                             <div class="flex-1">
-                                <label class="text-[10px] uppercase text-slate-400 font-bold">Input (Stdin/Args)</label>
+                                <label class="text-[10px] uppercase text-text-muted font-bold">Input (Stdin/Args)</label>
                                 <textarea [(ngModel)]="ac.input" [name]="'input'+$index" rows="1"
-                                    class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded px-2 py-1 text-xs font-mono"></textarea>
+                                    class="w-full bg-secondary-bg border border-white/10 rounded px-2 py-1 text-xs font-mono text-text-main focus:ring-1 focus:ring-accent-color outline-none"></textarea>
                             </div>
                             <div class="flex-1">
-                                <label class="text-[10px] uppercase text-slate-400 font-bold">Output Esperado</label>
+                                <label class="text-[10px] uppercase text-text-muted font-bold">Output Esperado</label>
                                 <textarea [(ngModel)]="ac.output" [name]="'output'+$index" rows="1"
-                                    class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded px-2 py-1 text-xs font-mono"></textarea>
+                                    class="w-full bg-secondary-bg border border-white/10 rounded px-2 py-1 text-xs font-mono text-text-main focus:ring-1 focus:ring-accent-color outline-none"></textarea>
                             </div>
                             <button type="button" (click)="removeTestCase($index)"
-                                class="mt-5 text-slate-400 hover:text-red-500">
+                                class="mt-5 text-text-muted hover:text-accent-color transition-colors">
                                 🗑️
                             </button>
                         </div>
                         }
                         @if (testCases().length === 0) {
                         <div
-                            class="text-center py-4 text-slate-400 text-sm italic border border-dashed border-slate-300 rounded-lg">
+                            class="text-center py-4 text-text-muted text-sm italic border border-dashed border-white/10 rounded-lg">
                             No hay casos de prueba definidos.
                         </div>
                         }
@@ -135,13 +135,13 @@
                 </div>
 
                 <!-- Footer Actions -->
-                <div class="flex justify-end gap-3 pt-6 border-t border-slate-100 dark:border-white/5">
+                <div class="flex justify-end gap-3 pt-6 border-t border-white/5">
                     <button type="button" (click)="closeModal()"
-                        class="px-6 py-2 rounded-lg font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        class="px-6 py-2 rounded-lg font-bold text-text-muted hover:bg-white/5 transition-colors">
                         Cancelar
                     </button>
                     <button type="submit"
-                        class="px-6 py-2 rounded-lg font-bold text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 shadow-lg shadow-purple-500/20 transform hover:-translate-y-0.5 transition-all">
+                        class="px-6 py-2 rounded-lg font-bold text-white bg-gradient-to-r from-accent-color to-blue-600 hover:scale-105 shadow-lg shadow-accent-color/20 transform transition-all active:scale-95">
                         {{ levelData ? 'Guardar Cambios' : 'Crear Nivel' }}
                     </button>
                 </div>
