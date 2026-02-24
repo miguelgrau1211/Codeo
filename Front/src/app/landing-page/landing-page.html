@@ -30,20 +30,19 @@
             <div
                 class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/80 border border-slate-800 text-sm font-medium text-purple-400 mb-4 animate-fade-in-up font-mono">
                 <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                v1.0 Ahora disponible
+                {{ 'LANDING.BADGE' | translate }}
             </div>
 
             <h1
                 class="text-6xl md:text-8xl lg:text-9xl font-black tracking-wide text-white leading-[0.9] text-center max-w-5xl animate-fade-in-up font-jersey">
-                Domina el código.<br>
-                <span class="text-gradient-purple">Construye el futuro.</span>
+                {{ 'LANDING.HERO_LINE1' | translate }}<br>
+                <span class="text-gradient-purple">{{ 'LANDING.HERO_LINE2' | translate }}</span>
             </h1>
 
             <!-- Kept font-sans for readability as requested in critique -->
             <p
                 class="text-lg md:text-2xl text-slate-400 max-w-3xl text-center leading-relaxed animate-fade-in-up delay-100 font-light">
-                La plataforma definitiva para aprender PHP. Sin aburrimiento, sin teoría vacía. Solo tú, el código y
-                retos reales.
+                {{ 'LANDING.HERO_DESC' | translate }}
             </p>
 
             <div
@@ -54,7 +53,7 @@
                         class="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-700 ease-out -skew-x-12 origin-left -translate-x-full">
                     </div>
                     <span class="relative z-10 flex items-center justify-center gap-2">
-                        Empezar Gratis
+                        {{ 'LANDING.CTA' | translate }}
                         <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
@@ -70,9 +69,8 @@
     <section class="py-32 px-6 relative z-20">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-24">
-                <h2 class="text-4xl md:text-5xl font-black text-white mb-6">Elige tu Camino</h2>
-                <p class="text-xl text-slate-400 max-w-2xl mx-auto">Dos metodologías diseñadas para diferentes tipos de
-                    aprendizaje.</p>
+                <h2 class="text-4xl md:text-5xl font-black text-white mb-6">{{ 'LANDING.MODES_TITLE' | translate }}</h2>
+                <p class="text-xl text-slate-400 max-w-2xl mx-auto">{{ 'LANDING.MODES_DESC' | translate }}</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16">
@@ -92,20 +90,21 @@
                                 class="w-16 h-16 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-8 text-3xl text-purple-400">
                                 <img src="/common/icons/history_mode.png" class="w-12 h-12 object-contain">
                             </div>
-                            <h3 class="text-3xl font-bold text-white mb-4">Modo Historia</h3>
+                            <h3 class="text-3xl font-bold text-white mb-4">{{ 'LANDING.MODE1_TITLE' | translate }}</h3>
                             <p class="text-lg text-slate-400 leading-relaxed max-w-md">
-                                Una aventura narrativa guiada. Empieza desde cero ("Hello World") y avanza capítulo a
-                                capítulo dominando variables, bucles y funciones mientras desentrañas la trama.
+                                {{ 'LANDING.MODE1_DESC' | translate }}
                             </p>
                         </div>
 
                         <div
                             class="flex items-center gap-4 text-sm font-medium text-slate-500 border-t border-white/5 pt-8">
                             <span class="flex items-center gap-2">
-                                <div class="w-2 h-2 bg-green-500 rounded-full"></div> Principiante
+                                <div class="w-2 h-2 bg-green-500 rounded-full"></div> {{ 'LANDING.TAG_BEGINNER' |
+                                translate }}
                             </span>
                             <span class="flex items-center gap-2">
-                                <div class="w-2 h-2 bg-blue-500 rounded-full"></div> Narrativo
+                                <div class="w-2 h-2 bg-blue-500 rounded-full"></div> {{ 'LANDING.TAG_NARRATIVE' |
+                                translate }}
                             </span>
                         </div>
                     </div>
@@ -126,20 +125,21 @@
                                 class="w-16 h-16 rounded-2xl bg-red-500/20 flex items-center justify-center mb-8 text-3xl text-red-400">
                                 <img src="/common/icons/roguelike_mode.png" class="w-14 h-14 object-contain">
                             </div>
-                            <h3 class="text-3xl font-bold text-white mb-4">Modo Roguelike</h3>
+                            <h3 class="text-3xl font-bold text-white mb-4">{{ 'LANDING.MODE2_TITLE' | translate }}</h3>
                             <p class="text-lg text-slate-400 leading-relaxed max-w-md">
-                                ¿Sabes programar? Demuéstralo. Enfréntate a desafíos algorítmicos infinitos generados
-                                proceduralmente. Si fallas, pierdes tu racha. Solo para valientes.
+                                {{ 'LANDING.MODE2_DESC' | translate }}
                             </p>
                         </div>
 
                         <div
                             class="flex items-center gap-4 text-sm font-medium text-slate-500 border-t border-white/5 pt-8">
                             <span class="flex items-center gap-2">
-                                <div class="w-2 h-2 bg-orange-500 rounded-full"></div> Avanzado
+                                <div class="w-2 h-2 bg-orange-500 rounded-full"></div> {{ 'LANDING.TAG_ADVANCED' |
+                                translate }}
                             </span>
                             <span class="flex items-center gap-2">
-                                <div class="w-2 h-2 bg-red-500 rounded-full"></div> Hardcore
+                                <div class="w-2 h-2 bg-red-500 rounded-full"></div> {{ 'LANDING.TAG_HARDCORE' |
+                                translate }}
                             </span>
                         </div>
                     </div>
@@ -153,9 +153,9 @@
     <section class="py-32 px-6 bg-slate-900/50 border-y border-white/5">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-black text-white mb-6">Compite. Gana. Mejora.</h2>
-                <p class="text-slate-400 max-w-2xl mx-auto text-lg">La gamificación no es un adorno. Es el motor de tu
-                    aprendizaje.</p>
+                <h2 class="text-3xl md:text-5xl font-black text-white mb-6">{{ 'LANDING.ENGAGE_TITLE' | translate }}
+                </h2>
+                <p class="text-slate-400 max-w-2xl mx-auto text-lg">{{ 'LANDING.ENGAGE_DESC' | translate }}</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
@@ -171,8 +171,9 @@
                                 <img src="/common/icons/ranking.png" class="w-8 h-8 object-contain">
                             </div>
                             <div>
-                                <h4 class="text-xl font-bold text-white">Ranking Global</h4>
-                                <p class="text-slate-500 text-sm mt-1">Compite con amigos</p>
+                                <h4 class="text-xl font-bold text-white">{{ 'LANDING.FEAT_RANKING_TITLE' | translate }}
+                                </h4>
+                                <p class="text-slate-500 text-sm mt-1">{{ 'LANDING.FEAT_RANKING_SUB' | translate }}</p>
                             </div>
                         </div>
                     </button>
@@ -186,8 +187,9 @@
                                 <img src="/common/icons/logros.png" class="w-8 h-8 object-contain">
                             </div>
                             <div>
-                                <h4 class="text-xl font-bold text-white">Logros & Insignias</h4>
-                                <p class="text-slate-500 text-sm mt-1">Colecciona tu progreso</p>
+                                <h4 class="text-xl font-bold text-white">{{ 'LANDING.FEAT_BADGES_TITLE' | translate }}
+                                </h4>
+                                <p class="text-slate-500 text-sm mt-1">{{ 'LANDING.FEAT_BADGES_SUB' | translate }}</p>
                             </div>
                         </div>
                     </button>
@@ -201,8 +203,9 @@
                                 <img src="/common/icons/racha.png" class="w-8 h-8 object-contain">
                             </div>
                             <div>
-                                <h4 class="text-xl font-bold text-white">Racha Diaria</h4>
-                                <p class="text-slate-500 text-sm mt-1">La constancia paga</p>
+                                <h4 class="text-xl font-bold text-white">{{ 'LANDING.FEAT_STREAK_TITLE' | translate }}
+                                </h4>
+                                <p class="text-slate-500 text-sm mt-1">{{ 'LANDING.FEAT_STREAK_SUB' | translate }}</p>
                             </div>
                         </div>
                     </button>
@@ -218,10 +221,9 @@
                         @case ('ranking') {
                         <div class="w-full max-w-md animate-fade-in-up">
                             <div class="flex items-center justify-between mb-8">
-                                <h3 class="text-2xl font-bold text-white">Top Players</h3>
-                                <span
-                                    class="text-blue-400 text-sm font-mono bg-blue-500/10 px-3 py-1 rounded-full">Weekly
-                                    reset</span>
+                                <h3 class="text-2xl font-bold text-white">{{ 'LANDING.RANKING_TOP' | translate }}</h3>
+                                <span class="text-blue-400 text-sm font-mono bg-blue-500/10 px-3 py-1 rounded-full">{{
+                                    'LANDING.RANKING_RESET' | translate }}</span>
                             </div>
                             <!-- Mock Leaderboard -->
                             <div class="space-y-4">
@@ -260,7 +262,8 @@
                         }
                         @case ('logros') {
                         <div class="w-full max-w-lg animate-fade-in-up text-center">
-                            <h3 class="text-2xl font-bold text-white mb-8">Tu Vitrina de Trofeos</h3>
+                            <h3 class="text-2xl font-bold text-white mb-8">{{ 'LANDING.BADGES_TROPHY' | translate }}
+                            </h3>
                             <div class="grid grid-cols-3 gap-6">
                                 <!-- Mock Badges -->
                                 <div
@@ -277,8 +280,7 @@
                                     <span class="absolute inset-0 flex items-center justify-center text-4xl">🔒</span>
                                 </div>
                             </div>
-                            <p class="mt-8 text-slate-400">Desbloquea insignias únicas completando retos específicos.
-                            </p>
+                            <p class="mt-8 text-slate-400">{{ 'LANDING.BADGES_DESC' | translate }}</p>
                         </div>
                         }
                         @case ('racha') {
@@ -287,9 +289,10 @@
                                 class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-orange-500/10 mb-6 text-5xl border border-orange-500/20">
                                 🔥
                             </div>
-                            <h3 class="text-4xl font-black text-white mb-2">7 Días</h3>
-                            <p class="text-orange-400 uppercase tracking-widest text-sm font-bold mb-8">Racha
-                                Indestructible</p>
+                            <h3 class="text-4xl font-black text-white mb-2">7 {{ 'LANDING.STREAK_DAYS' | translate }}
+                            </h3>
+                            <p class="text-orange-400 uppercase tracking-widest text-sm font-bold mb-8">{{
+                                'LANDING.STREAK_LABEL' | translate }}</p>
 
                             <!-- Mock Calendar Grid -->
                             <div class="flex justify-between gap-2">
@@ -299,7 +302,8 @@
                                         [class]="day <= 7 ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-slate-800 text-slate-600'">
                                         {{day}}
                                     </div>
-                                    <span class="text-[10px] text-slate-500 uppercase">Day</span>
+                                    <span class="text-[10px] text-slate-500 uppercase">{{ 'LANDING.STREAK_DAY' |
+                                        translate }}</span>
                                 </div>
                                 }
                             </div>
@@ -311,7 +315,7 @@
                                 class="w-24 h-24 rounded-3xl bg-slate-800 mx-auto mb-6 flex items-center justify-center">
                                 <span class="text-4xl animate-bounce">👆</span>
                             </div>
-                            <p class="text-xl text-slate-400">Selecciona una característica<br>para verla en acción.</p>
+                            <p class="text-xl text-slate-400">{{ 'LANDING.SELECT_FEATURE' | translate }}</p>
                         </div>
                         }
                         }
@@ -331,10 +335,13 @@
                 &copy; 2026 Codeo Systems.
             </div>
             <div class="flex gap-6">
-                <a href="#" class="text-slate-500 hover:text-white transition-colors text-sm">Privacidad</a>
-                <a href="#" class="text-slate-500 hover:text-white transition-colors text-sm">Términos</a>
+                <a href="#" class="text-slate-500 hover:text-white transition-colors text-sm">{{
+                    'LANDING.FOOTER_PRIVACY' | translate }}</a>
+                <a href="#" class="text-slate-500 hover:text-white transition-colors text-sm">{{ 'LANDING.FOOTER_TERMS'
+                    | translate }}</a>
                 <a href="#" class="text-slate-500 hover:text-white transition-colors text-sm">Twitter</a>
             </div>
         </div>
     </footer>
+
 </div>

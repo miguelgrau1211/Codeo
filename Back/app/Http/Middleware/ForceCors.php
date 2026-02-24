@@ -8,20 +8,33 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ForceCors
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
+    /** CORS headers applied to every response, including errors. */
+    private const CORS_HEADERS = [
+        'Access-Control-Allow-Origin' => '*',
+        'Access-Control-Allow-Methods' => 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers' => 'X-Requested-With, Content-Type, X-Token-Auth, Authorization, Accept-Language',
+    ];
+
     public function handle(Request $request, Closure $next): Response
     {
-        $response = $next($request);
+        // Respond immediately to preflight OPTIONS requests
+        if ($request->isMethod('OPTIONS')) {
+            return response('', 204)->withHeaders(self::CORS_HEADERS);
+        }
 
-        // Asegurarse de que es una respuesta válida para añadir headers
-        if (method_exists($response, 'header')) {
-            $response->header('Access-Control-Allow-Origin', '*')
-                ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-                ->header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, X-Token-Auth, Authorization');
+        try {
+            $response = $next($request);
+        } catch (\Throwable $e) {
+            // Re-throw so Laravel's exception handler processes it normally,
+            // but wrap it so the CORS headers are still added.
+            $response = response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+
+        // Add CORS headers to every response (including 4xx/5xx)
+        foreach (self::CORS_HEADERS as $key => $value) {
+            $response->headers->set($key, $value);
         }
 
         return $response;

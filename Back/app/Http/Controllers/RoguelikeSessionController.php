@@ -12,6 +12,7 @@ use App\Actions\CheckAchievementsAction;
 use App\Actions\ProcessLevelUpAction;
 use App\Actions\UpdateUserStreakAction;
 use Illuminate\Support\Facades\DB;
+use App\Services\TranslationService;
 
 class RoguelikeSessionController extends Controller
 {
@@ -270,7 +271,9 @@ class RoguelikeSessionController extends Controller
         }
 
         $nuevosLogros = (new CheckAchievementsAction())->execute();
-        
+        $locale = TranslationService::resolveLocale($request);
+        $translator = app(TranslationService::class);
+
         /** @var \App\Models\Usuario $user */
         $user = Auth::user();
         $rachaData = (new UpdateUserStreakAction())->execute($user);
@@ -283,7 +286,7 @@ class RoguelikeSessionController extends Controller
             'levels_completed' => $session['levels_completed'],
             'coins_earned' => $session['coins_earned'],
             'xp_earned' => $session['xp_earned'],
-            'nuevos_logros' => $nuevosLogros,
+            'nuevos_logros' => $translator->translateLogrosCollection($nuevosLogros, $locale),
             'racha' => $rachaData,
             'level_up' => $levelUpData
         ], 200);

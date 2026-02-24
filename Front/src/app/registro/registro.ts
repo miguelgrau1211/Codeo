@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth-service';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 export const matchPasswordValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const password = control.get('password');
@@ -13,7 +14,7 @@ export const matchPasswordValidator: ValidatorFn = (control: AbstractControl): V
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, TranslatePipe],
   templateUrl: './registro.html',
   styleUrl: './registro.css',
   changeDetection: ChangeDetectionStrategy.OnPush

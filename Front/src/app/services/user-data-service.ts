@@ -26,6 +26,7 @@ export interface UserData {
   subscription_date: string;
   rank: number;
   tema_actual_id?: number | null;
+  preferencias?: any;
   nuevos_logros?: any[];
 }
 
@@ -181,5 +182,19 @@ export class UserDataService {
    */
   invalidateCache(): void {
     this._loaded.set(false);
+  }
+
+  savePreferencias(preferencias: any): Observable<any> {
+    const token = sessionStorage.getItem('token');
+    return this.http.post(this.apiUrl + '/preferencias', { preferencias }, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      }
+    }).pipe(
+      tap(() => {
+        this.userDataSignal.update(current => current ? { ...current, preferencias } : current);
+      })
+    );
   }
 }

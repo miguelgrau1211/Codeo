@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { RankingService, User } from '../services/ranking-service';
 import { UserDataService } from '../services/user-data-service';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 @Component({
   selector: 'app-ranking',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslatePipe],
   templateUrl: './ranking.html',
   styleUrl: './ranking.css',
   changeDetection: ChangeDetectionStrategy.OnPush

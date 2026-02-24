@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\NivelesHistoria;
 use App\Models\NivelHistoriaDesactivado;
 use App\Models\AdminLog;
+use App\Services\TranslationService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -25,10 +26,13 @@ class NivelesHistoriaController
         return response()->json($niveles, 200);
     }
 
-    public function show($id)
+    public function show($id, Request $request)
     {
         $nivel = NivelesHistoria::findOrFail($id);
-        return response()->json($nivel, 200);
+        $locale = TranslationService::resolveLocale($request);
+        $translator = app(TranslationService::class);
+        $data = $translator->translateNivel($nivel, $locale);
+        return response()->json($data, 200);
     }
 
     public function store(Request $request)

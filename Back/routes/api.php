@@ -103,6 +103,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // Perfil
     Route::get('/users/data', [UserController::class, 'getUserData']);
     Route::get('/users/mi-posicion', [UserController::class, 'getMiPosicionRanking']);
+    Route::post('/logout', [UserController::class, 'logout']);
+    Route::post('/users/preferencias', [UserController::class, 'updatePreferencias']);
+    Route::post('/users/desactivar', [UserController::class, 'desactivarPropiaCuenta']);
 
     // Reportes (Usuario común manda reportes)
     Route::post('/reportes', [\App\Http\Controllers\ReporteController::class, 'store'])->middleware('throttle:3,10');

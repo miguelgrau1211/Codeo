@@ -5,11 +5,12 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { AuthService } from '../services/auth-service';
 import { ProgresoHistoriaService } from '../services/progreso-historia-service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, TranslatePipe],
   templateUrl: './login.html',
   styles: [`
     video {
@@ -121,7 +122,7 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
     v2.loop = true;
 
     // Start V1
-    v1.play().catch(() => {});
+    v1.play().catch(() => { });
 
     // Schedule V2 to start exactly halfway
     const startV2 = () => {
@@ -132,7 +133,7 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
 
       // Wait for offset
       setTimeout(() => {
-        v2.play().catch(() => {});
+        v2.play().catch(() => { });
       }, offset * 1000);
     };
 
@@ -248,7 +249,7 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
 
           // Pre-fetch data for next screens while animation plays
           const token = response.access_token;
-          
+
           // Minimum animation time
           const minAnimationTime = new Promise(resolve => setTimeout(resolve, 1500));
 

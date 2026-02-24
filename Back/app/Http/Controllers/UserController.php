@@ -15,6 +15,7 @@ use App\Models\AdminLog;
 use App\Http\Controllers\UsuarioDesactivadoController;
 use App\Models\UsuarioLogro;
 use App\Models\RunsRoguelike;
+use App\Services\TranslationService;
 
 class UserController extends Controller
 {
@@ -223,6 +224,18 @@ class UserController extends Controller
             'nickname' => $usuario->nickname,
             'avatar_url' => $usuario->avatar_url
 
+        ], 200);
+    }
+
+    /**
+     * Cierra la sesión del usuario actual.
+     */
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'message' => 'Sesión cerrada correctamente'
         ], 200);
     }
 
@@ -451,14 +464,16 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function getPerfilUsuario()
+    public function getPerfilUsuario(Request $request)
     {
         $usuario = Auth::user();
+        $locale = TranslationService::resolveLocale($request);
+        $translator = app(TranslationService::class);
         $nuevosLogros = (new \App\Actions\CheckAchievementsAction())->execute(['visitar_perfil' => 1]);
 
         return response()->json([
             'user' => $usuario,
-            'nuevos_logros' => $nuevosLogros
+            'nuevos_logros' => $translator->translateLogrosCollection($nuevosLogros, $locale),
         ]);
     }
 
@@ -474,7 +489,7 @@ class UserController extends Controller
      * Alterna el estado de un usuario moviéndolo a la tabla de desactivados
      * o restaurándolo desde ella.
      */
-    public function toggleStatus(Request $request, $id)
+    public function toggleStatus(Request $request, $id, \App\Actions\DeactivateUserAction $action)
     {
         try {
             // 1. Intentar encontrar al usuario en la tabla principal para desactivarlo
@@ -482,34 +497,20 @@ class UserController extends Controller
 
             if ($usuario) {
                 if ($usuario->id === Auth::id()) {
-                    return response()->json(['message' => 'No puedes desactivarte a ti mismo'], 403);
+                    return response()->json(['message' => 'No puedes desactivarte a ti mismo desde aquí'], 403);
                 }
 
-                return DB::transaction(function () use ($usuario, $request) {
-                    // Mover a la tabla de desactivados
-                    UsuarioDesactivado::create([
-                        'usuario_id_original' => $usuario->id,
-                        'nickname' => $usuario->nickname,
-                        'nombre' => $usuario->nombre,
-                        'apellidos' => $usuario->apellidos,
-                        'email' => $usuario->email,
-                        'nivel_alcanzado' => $usuario->nivel_global,
-                        'motivo' => $request->input('motivo', 'Desactivado por el administrador'),
-                        'fecha_desactivacion' => now(),
-                    ]);
+                $motivo = $request->input('motivo', 'Desactivado por el administrador');
+                $action->execute($usuario, $motivo);
 
-                    // Eliminar de la tabla principal
-                    $usuario->delete();
+                // log
+                AdminLog::create([
+                    'user_id' => Auth::id(),
+                    'action' => 'BAN_USER',
+                    'details' => "Baneó a usuario ID: {$usuario->id} ({$usuario->nickname}) - Motivo: {$motivo}",
+                ]);
 
-                    // log
-                    AdminLog::create([
-                        'user_id' => Auth::id(),
-                        'action' => 'BAN_USER',
-                        'details' => "Baneó a usuario ID: {$usuario->id} ({$usuario->nickname}) - Motivo: " . $request->input('motivo', 'Desactivado por el administrador'),
-                    ]);
-
-                    return response()->json(['message' => 'Usuario desactivado y archivado correctamente', 'estado' => 'desactivado'], 200);
-                });
+                return response()->json(['message' => 'Usuario desactivado y archivado correctamente', 'estado' => 'desactivado'], 200);
             }
 
             // 2. Si no está en 'usuarios', intentar encontrarlo en 'usuarios_desactivados' para reactivarlo
@@ -528,7 +529,33 @@ class UserController extends Controller
         }
     }
 
-    public function getUserData()
+    /**
+     * Permite al usuario desactivar su propia cuenta.
+     */
+    public function desactivarPropiaCuenta(Request $request, \App\Actions\DeactivateUserAction $action)
+    {
+        try {
+            $usuario = Auth::user();
+
+            if (!$usuario) {
+                return response()->json(['message' => 'Usuario no encontrado'], 404);
+            }
+
+            $action->execute($usuario, 'Cuenta desactivada por el propio usuario');
+
+            // Revocar todos los tokens del usuario
+            $usuario->tokens()->delete();
+
+            return response()->json([
+                'message' => 'Tu cuenta ha sido desactivada correctamente. Lamentamos que te vayas.'
+            ], 200);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Error en desactivarPropiaCuenta: ' . $e->getMessage());
+            return response()->json(['message' => 'Error al desactivar la cuenta'], 500);
+        }
+    }
+
+    public function getUserData(Request $request)
     {
         $id = Auth::id();
 
@@ -570,6 +597,8 @@ class UserController extends Controller
         $rank = Usuario::where('exp_total', '>', $usuario->exp_total)->count() + 1;
 
         $nuevosLogros = (new \App\Actions\CheckAchievementsAction())->execute(['visitar_perfil' => 1]);
+        $locale = TranslationService::resolveLocale($request);
+        $translator = app(TranslationService::class);
 
         return response()->json([
             'nickname' => $nickname,
@@ -586,7 +615,32 @@ class UserController extends Controller
             'subscription_date' => $subscription_date,
             'rank' => $rank,
             'tema_actual_id' => $usuario->tema_actual_id,
-            'nuevos_logros' => $nuevosLogros
+            'preferencias' => $usuario->preferencias,
+            'nuevos_logros' => $translator->translateLogrosCollection($nuevosLogros, $locale),
         ], 200);
+    }
+
+    /**
+     * Actualiza las preferencias del usuario.
+     */
+    public function updatePreferencias(Request $request)
+    {
+        try {
+            $usuario = Auth::user();
+            if (!$usuario)
+                return response()->json(['message' => 'No session'], 401);
+
+            $request->validate([
+                'preferencias' => 'required|array'
+            ]);
+
+            $usuario->update([
+                'preferencias' => $request->input('preferencias')
+            ]);
+
+            return response()->json(['message' => 'Preferencias guardadas'], 200);
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'Error al guardar preferencias'], 500);
+        }
     }
 }

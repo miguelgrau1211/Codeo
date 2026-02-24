@@ -1,38 +1,85 @@
-import { Component, signal, effect, inject, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Component, signal, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { AudioService } from '../services/audio-service';
+import { AuthService } from '../services/auth-service';
+import { LanguageService, Language } from '../services/language-service';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 @Component({
   selector: 'app-configuracion',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule, TranslatePipe],
   templateUrl: './configuracion.html',
   styleUrl: './configuracion.css'
 })
 export class Configuracion {
-  platformId = inject(PLATFORM_ID);
-  
-  // Mock User Settings
-  userSettings = signal({
-    notifications: true,
-    sound: true,
-    music: false,
-    language: 'es',
-    autoSave: true
-  });
+  private audioService = inject(AudioService);
+  private authService = inject(AuthService);
+  public languageService = inject(LanguageService);
+  private router = inject(Router);
 
-  constructor() {
-    // Other initializations...
+  // Settings Signals
+  isMuted = this.audioService.isMuted;
+
+  // UI State
+  showDeleteModal = signal(false);
+  showLangModal = signal(false);
+  isProcessing = signal(false);
+
+  constructor() { }
+
+  toggleSound() {
+    this.audioService.toggleMute();
   }
 
-  toggleSetting(key: keyof typeof this.userSettings) {
-    // This is a bit tricky with signals of objects, simplified for now
-    /* 
-       Note: In a real app with nested signals, you might structure this differently.
-       For this mock, we just won't deeply mutate the signal for the UI toggles simple state.
-       Actually, let's just use local inputs in the HTML or simple methods.
-       We will bind the toggles in HTML to update a local mutable object or use update.
-    */
+  openLanguageSelector() {
+    this.showLangModal.set(true);
+  }
+
+  closeLanguageSelector() {
+    this.showLangModal.set(false);
+  }
+
+  selectLanguage(code: string) {
+    this.languageService.setLanguage(code);
+    this.closeLanguageSelector();
+  }
+
+  onLogout() {
+    this.isProcessing.set(true);
+    this.authService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        console.error('Error logging out:', err);
+        sessionStorage.clear();
+        this.router.navigate(['/']);
+      }
+    });
+  }
+
+  confirmDeleteAccount() {
+    this.showDeleteModal.set(true);
+  }
+
+  cancelDelete() {
+    this.showDeleteModal.set(false);
+  }
+
+  executeDeleteAccount() {
+    this.isProcessing.set(true);
+    this.authService.desactivarCuenta().subscribe({
+      next: () => {
+        this.showDeleteModal.set(false);
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        console.error('Error deleting account:', err);
+        this.isProcessing.set(false);
+      }
+    });
   }
 }

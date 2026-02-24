@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProgresoHistoria;
 use App\Models\NivelesHistoria;
+use App\Services\TranslationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -52,7 +53,7 @@ class ProgresoHistoriaController extends Controller
         $progreso = ProgresoHistoria::updateOrCreate(
             [
                 'usuario_id' => $userId,
-                'nivel_id'  => $nivelId,
+                'nivel_id' => $nivelId,
             ],
             [
                 'completado' => $validatedData['completado'],
@@ -101,7 +102,11 @@ class ProgresoHistoriaController extends Controller
         $levelUpData = [];
 
         if ($validatedData['completado']) {
-            $nuevosLogros = (new CheckAchievementsAction())->execute();
+            $rawLogros = (new CheckAchievementsAction())->execute();
+            $locale = TranslationService::resolveLocale($request);
+            $translator = app(TranslationService::class);
+            $nuevosLogros = $translator->translateLogrosCollection($rawLogros, $locale);
+
             /** @var \App\Models\Usuario $user */
             $user = Auth::user();
             $rachaData = (new UpdateUserStreakAction())->execute($user);
@@ -124,9 +129,10 @@ class ProgresoHistoriaController extends Controller
      * Obtiene el progreso detallado del usuario en el Modo Historia.
      * Incluye todos los niveles con su estado de progreso.
      */
-    public function getProgresoModoHistoriaUsuario()
+    public function getProgresoModoHistoriaUsuario(Request $request)
     {
         $idUsuario = Auth::id();
+        $locale = TranslationService::resolveLocale($request);
 
         // Todos los niveles ordenados
         $niveles = NivelesHistoria::orderBy('orden', 'asc')->get();
@@ -136,9 +142,14 @@ class ProgresoHistoriaController extends Controller
             ->get()
             ->keyBy('nivel_id');
 
-        // Mapear niveles + progreso
-        $progresoDetallado = $niveles->map(function ($nivel) use ($progresoUsuario, $idUsuario) {
+        // Mapear niveles + progreso, traduciendo campos de texto libre
+        $translator = app(TranslationService::class);
+        $nivelesTraducidos = collect($translator->translateCollection($niveles, $locale, 'nivel'))
+            ->keyBy('id');
+
+        $progresoDetallado = $niveles->map(function ($nivel) use ($progresoUsuario, $idUsuario, $nivelesTraducidos) {
             $progreso = $progresoUsuario->get($nivel->id);
+            $translated = $nivelesTraducidos->get($nivel->id);
 
             return [
                 'id' => $progreso?->id,
@@ -149,12 +160,12 @@ class ProgresoHistoriaController extends Controller
                 'created_at' => $progreso?->created_at,
                 'updated_at' => $progreso?->updated_at,
 
-                // Datos del Nivel
-                'titulo' => $nivel->titulo,
+                // Translated level data
+                'titulo' => $translated['titulo'],
                 'orden' => $nivel->orden,
-                'codigo_inicial' => $nivel->codigo_inicial,
-                'descripcion' => $nivel->descripcion,
-                'contenido_teorico' => $nivel->contenido_teorico,
+                'codigo_inicial' => $nivel->codigo_inicial,   // never translated
+                'descripcion' => $translated['descripcion'],
+                'contenido_teorico' => $translated['contenido_teorico'],
                 'test_cases' => $nivel->test_cases,
             ];
         });

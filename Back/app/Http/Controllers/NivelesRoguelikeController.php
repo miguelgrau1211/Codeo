@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\NivelRoguelike;
 use App\Models\NivelRoguelikeDesactivado;
 use App\Models\AdminLog;
+use App\Services\TranslationService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -14,11 +15,15 @@ use App\Http\Controllers\RoguelikeSessionController;
 class NivelesRoguelikeController extends Controller
 {
     // todos los niveles roguelike
-    public function index()
+    public function index(Request $request)
     {
-        // Solo mostraremos lo necesario
+        $locale = TranslationService::resolveLocale($request);
+        $translator = app(TranslationService::class);
+
         $niveles = NivelRoguelike::select('id', 'dificultad', 'titulo', 'recompensa_monedas')->orderBy('id')->get();
-        return response()->json($niveles, 200);
+        $translated = $translator->translateCollection($niveles, $locale, 'nivel');
+
+        return response()->json($translated, 200);
     }
 
     public function indexAdmin()
@@ -28,10 +33,13 @@ class NivelesRoguelikeController extends Controller
         return response()->json($niveles, 200);
     }
 
-    public function show($id)
+    public function show($id, Request $request)
     {
         $nivel = NivelRoguelike::findOrFail($id);
-        return response()->json($nivel, 200);
+        $locale = TranslationService::resolveLocale($request);
+        $translator = app(TranslationService::class);
+        $data = $translator->translateNivel($nivel, $locale);
+        return response()->json($data, 200);
     }
 
 
@@ -80,7 +88,7 @@ class NivelesRoguelikeController extends Controller
 
 
     // Obtener un nivel aleatorio según dificultad.
-    public function obtenerAleatorio($dificultad)
+    public function obtenerAleatorio($dificultad, Request $request)
     {
         $nivel = NivelRoguelike::where('dificultad', $dificultad)
             ->inRandomOrder()
@@ -90,7 +98,10 @@ class NivelesRoguelikeController extends Controller
             return response()->json(['message' => 'No hay niveles para esa dificultad'], 404);
         }
 
-        return response()->json($nivel, 200);
+        $locale = TranslationService::resolveLocale($request);
+        $translator = app(TranslationService::class);
+        $data = $translator->translateNivel($nivel, $locale);
+        return response()->json($data, 200);
     }
 
     //Eliminar un nivel
@@ -102,17 +113,20 @@ class NivelesRoguelikeController extends Controller
 
     public function getNivelModoInfinito(Request $request)
     {
+        $locale = TranslationService::resolveLocale($request);
         $userId = Auth::id();
         $cacheKey = RoguelikeSessionController::getCacheKey($userId);
         $session = Cache::get($cacheKey);
 
         // 1. Si hay sesión activa, priorizar la persistencia (anti-cheat y no repetición)
         if ($session) {
+            $translator = app(TranslationService::class);
             // A) Si ya hay un nivel asignado (ej: recarga de página), devolver el mismo
             if (!empty($session['current_level_id'])) {
                 $nivel = NivelRoguelike::find($session['current_level_id']);
                 if ($nivel) {
-                    return response()->json($nivel, 200);
+                    $data = $translator->translateNivel($nivel, $locale);
+                    return response()->json($data, 200);
                 }
             }
 
@@ -122,17 +136,26 @@ class NivelesRoguelikeController extends Controller
 
             // Lógica de dificultad basada en progreso de la sesión
             if ($nivelesCompletados < 4) {
-                $p_facil = 80; $p_medio = 20; $p_dificil = 0;
+                $p_facil = 80;
+                $p_medio = 20;
+                $p_dificil = 0;
             } elseif ($nivelesCompletados < 8) {
-                $p_facil = 40; $p_medio = 50; $p_dificil = 10;
+                $p_facil = 40;
+                $p_medio = 50;
+                $p_dificil = 10;
             } else {
-                $p_facil = 20; $p_medio = 50; $p_dificil = 30;
+                $p_facil = 20;
+                $p_medio = 50;
+                $p_dificil = 30;
             }
 
             $rand = rand(1, 100);
-            if ($rand <= $p_facil) $dificultad = 'fácil';
-            elseif ($rand <= ($p_facil + $p_medio)) $dificultad = 'medio';
-            else $dificultad = 'difícil';
+            if ($rand <= $p_facil)
+                $dificultad = 'fácil';
+            elseif ($rand <= ($p_facil + $p_medio))
+                $dificultad = 'medio';
+            else
+                $dificultad = 'difícil';
 
             // Buscar nivel no usado
             $nivel = null;
@@ -154,17 +177,18 @@ class NivelesRoguelikeController extends Controller
 
             // Último recurso: si ha jugado TODOS, permitir repetir (o mostrar fin de juego, pero por ahora repetir)
             if (!$nivel) {
-                 $nivel = NivelRoguelike::inRandomOrder()->first();
+                $nivel = NivelRoguelike::inRandomOrder()->first();
             }
 
             if ($nivel) {
                 // Guardar en sesión que este es el nivel actual
                 $session['current_level_id'] = $nivel->id;
                 Cache::put($cacheKey, $session, 7200); // 2h TTL (mismo que controller)
-                return response()->json($nivel, 200);
+                $data = $translator->translateNivel($nivel, $locale);
+                return response()->json($data, 200);
             }
 
-             return response()->json([
+            return response()->json([
                 'id' => 9999,
                 'titulo' => 'Nivel de Prueba (Base de Datos Vacía)',
                 'dificultad' => 'fácil',
@@ -173,19 +197,25 @@ class NivelesRoguelikeController extends Controller
                     ['input' => '"test"', 'output' => '"test"']
                 ],
                 'recompensa_monedas' => 10
-             ], 200);
-             // return response()->json(['message' => 'No hay niveles disponibles'], 404);
+            ], 200);
+            // return response()->json(['message' => 'No hay niveles disponibles'], 404);
         }
 
         // 2. Fallback sin sesión (comportamiento antiguo, solo aleatorio)
         $nivelesCompletados = $request->query('niveles_completados', 0);
-        
+
         if ($nivelesCompletados < 4) {
-            $p_facil = 80; $p_medio = 20; $p_dificil = 0;
+            $p_facil = 80;
+            $p_medio = 20;
+            $p_dificil = 0;
         } elseif ($nivelesCompletados < 8) {
-            $p_facil = 40; $p_medio = 50; $p_dificil = 10;
+            $p_facil = 40;
+            $p_medio = 50;
+            $p_dificil = 10;
         } else {
-            $p_facil = 20; $p_medio = 50; $p_dificil = 30;
+            $p_facil = 20;
+            $p_medio = 50;
+            $p_dificil = 30;
         }
 
         $rand = rand(1, 100);
@@ -198,20 +228,20 @@ class NivelesRoguelikeController extends Controller
         }
 
         if (!$nivel) {
-            // Fallback: If DB is empty, return a dummy level for testing
             return response()->json([
                 'id' => 9999,
                 'titulo' => 'Nivel de Prueba (Base de Datos Vacía)',
                 'descripcion' => 'No se encontraron niveles en la base de datos. Este es un nivel de prueba.',
                 'dificultad' => 'fácil',
                 'test_cases' => [
-                     ['input' => '"test"', 'output' => '"test"']
+                    ['input' => '"test"', 'output' => '"test"']
                 ],
                 'recompensa_monedas' => 10
             ], 200);
-            // return response()->json(['message' => 'No hay niveles disponibles'], 404);
         }
 
-        return response()->json($nivel, 200);
+        $translator = app(TranslationService::class);
+        $data = $translator->translateNivel($nivel, $locale);
+        return response()->json($data, 200);
     }
 }

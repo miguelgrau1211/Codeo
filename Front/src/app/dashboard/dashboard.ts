@@ -5,6 +5,7 @@ import { ProgresoHistoriaService } from '../services/progreso-historia-service';
 import { UserDataService } from '../services/user-data-service';
 import { ThemeService } from '../services/theme-service';
 import { AuthService } from '../services/auth-service';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 interface Activity {
   id: number;
@@ -33,7 +34,7 @@ interface BattlePassReward {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslatePipe],
   templateUrl: './dashboard.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -58,21 +59,21 @@ export class DashboardComponent implements OnInit {
   serviceProgreso = this.progresoHistoriaService.progresoSignal;
 
   stats_historia = computed(() => {
-      const data = this.serviceProgreso();
-      if (data) {
-          return {
-              actual_level: data.stats.total_niveles,
-              total_levels: data.stats.completados,
-              lvls_progress: data.stats.porcentaje_progreso,
-              titulo: data.stats.titulo_ultimo_nivel
-          };
-      }
+    const data = this.serviceProgreso();
+    if (data) {
       return {
-          actual_level: 0,
-          total_levels: 0,
-          lvls_progress: "0%",
-          titulo: "Cargando..."
+        actual_level: data.stats.total_niveles,
+        total_levels: data.stats.completados,
+        lvls_progress: data.stats.porcentaje_progreso,
+        titulo: data.stats.titulo_ultimo_nivel
       };
+    }
+    return {
+      actual_level: 0,
+      total_levels: 0,
+      lvls_progress: "0%",
+      titulo: "Cargando..."
+    };
   });
 
   // Signal que indica si los datos del usuario están listos
@@ -136,16 +137,16 @@ export class DashboardComponent implements OnInit {
 
   // Init logic — el servicio cachea internamente, no hay llamadas duplicadas
   ngOnInit() {
-      if (!this.serviceProgreso()) {
-          this.progresoHistoriaService.getProgresoHistoria().subscribe();
-      }
-      this.userDataService.getUserData().subscribe();
+    if (!this.serviceProgreso()) {
+      this.progresoHistoriaService.getProgresoHistoria().subscribe();
+    }
+    this.userDataService.getUserData().subscribe();
 
-      // Verificar si el usuario es admin usando el token del sessionStorage
-      const token = sessionStorage.getItem('token');
-      if (token) {
-          this.authService.esAdmin(token).subscribe();
-      }
+    // Verificar si el usuario es admin usando el token del sessionStorage
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      this.authService.esAdmin(token).subscribe();
+    }
   }
 
   // Sidebar State

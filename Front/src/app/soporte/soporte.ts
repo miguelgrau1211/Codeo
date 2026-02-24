@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ReporteService } from '../services/reporte.service';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 interface Faq {
   question: string;
@@ -13,7 +14,7 @@ interface Faq {
 @Component({
   selector: 'app-soporte',
   standalone: true,
-  imports: [RouterLink, CommonModule, ReactiveFormsModule],
+  imports: [RouterLink, CommonModule, ReactiveFormsModule, TranslatePipe],
   templateUrl: './soporte.html',
   styleUrl: './soporte.css',
 })

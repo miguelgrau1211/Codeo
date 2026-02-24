@@ -43,4 +43,38 @@ export class AuthService {
       }
     });
   }
+
+  logout(): Observable<any> {
+    const token = sessionStorage.getItem('token');
+    return this.http.post(`${this.apiUrl}/logout`, {}, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      }
+    }).pipe(
+      tap(() => {
+        this.clearSession();
+      })
+    );
+  }
+
+  desactivarCuenta(): Observable<any> {
+    const token = sessionStorage.getItem('token');
+    return this.http.post(`${this.apiUrl}/users/desactivar`, {}, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      }
+    }).pipe(
+      tap(() => {
+        this.clearSession();
+      })
+    );
+  }
+
+  private clearSession() {
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('nickname');
+    this.isAdminSignal.set(false);
+  }
 }
