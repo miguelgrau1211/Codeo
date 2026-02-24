@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { UserDataService, ActivityItem } from '../services/user-data-service';
 import { ThemeService } from '../services/theme-service';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslatePipe],
   templateUrl: './perfil.html',
   styleUrl: './perfil.css',
 })

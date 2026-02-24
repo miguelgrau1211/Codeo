@@ -1,5 +1,6 @@
 @if (isReady()) {
-<div class="min-h-screen bg-primary-bg pb-20 relative overflow-hidden font-sans text-text-main transition-colors duration-500">
+<div
+    class="min-h-screen bg-primary-bg pb-20 relative overflow-hidden font-sans text-text-main transition-colors duration-500">
 
     <!-- Background Layer with Static Image -->
     <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
@@ -9,9 +10,12 @@
         </div>
 
         <!-- Ambient atmospheric glows to blend with the image -->
-        <div class="absolute -top-1/4 -right-1/4 w-full h-full bg-accent-color/10 rounded-full blur-[150px] opacity-20"></div>
-        <div class="absolute -bottom-1/4 -left-1/4 w-full h-full bg-accent-color/10 rounded-full blur-[150px] opacity-20"></div>
-        
+        <div class="absolute -top-1/4 -right-1/4 w-full h-full bg-accent-color/10 rounded-full blur-[150px] opacity-20">
+        </div>
+        <div
+            class="absolute -bottom-1/4 -left-1/4 w-full h-full bg-accent-color/10 rounded-full blur-[150px] opacity-20">
+        </div>
+
         <!-- Gradient Overlay for readability -->
         <div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary-bg/50 to-primary-bg"></div>
     </div>
@@ -29,7 +33,7 @@
                         <path d="m15 18-6-6 6-6" />
                     </svg>
                 </div>
-                <span class="font-bold text-sm tracking-tight uppercase">Dashboard</span>
+                <span class="font-bold text-sm tracking-tight uppercase">{{ 'PROFILE.BACK' | translate }}</span>
             </button>
         </div>
     </div>
@@ -53,8 +57,8 @@
                             <div
                                 class="w-40 h-40 rounded-full p-1 bg-gradient-to-tr from-accent-color via-blue-400 to-indigo-600 shadow-2xl shadow-accent-color/20 transform group-hover:scale-105 transition-all duration-700">
                                 <div class="w-full h-full rounded-full bg-secondary-bg p-1">
-                                    <img src="{{userData()!.avatar}}"
-                                        alt="User Avatar" class="w-full h-full rounded-full object-cover">
+                                    <img src="{{userData()!.avatar}}" alt="User Avatar"
+                                        class="w-full h-full rounded-full object-cover">
                                 </div>
                             </div>
                             <!-- Live status indicator -->
@@ -71,15 +75,15 @@
                         <div class="flex items-center justify-center gap-2">
                             <span
                                 class="px-3 py-1 rounded-lg bg-white/5 text-text-muted font-bold text-[10px] uppercase tracking-widest border border-white/5">
-                                @if (userData()!.level < 5) { Novato } 
-                                @else if (userData()!.level >= 5 && userData()!.level < 10) { Intermedio } 
-                                @else if (userData()!.level >= 10 && userData()!.level < 15) { Experto } 
-                                @else if (userData()!.level >= 15 && userData()!.level < 20) { Maestro } 
-                                @else { Legendario }
-                            </span>
-                            <span
-                                class="px-3 py-1 rounded-lg bg-accent-color/20 text-accent-color font-black text-[10px] uppercase tracking-widest border border-accent-color/20">Lvl
-                                {{userData()!.level}}</span>
+                                @if (userData()!.level < 5) { {{ 'PROFILE.RANK_NOVICE' | translate }} } @else if
+                                    (userData()!.level>= 5 && userData()!.level < 10) { {{ 'PROFILE.RANK_INTERMEDIATE' |
+                                        translate }} } @else if (userData()!.level>= 10 && userData()!.level < 15) {
+                                            {{ 'PROFILE.RANK_EXPERT' | translate }} } @else if (userData()!.level>= 15
+                                            && userData()!.level < 20) { {{ 'PROFILE.RANK_MASTER' | translate }} } @else
+                                                { {{ 'PROFILE.RANK_LEGENDARY' | translate }} } </span>
+                                                <span
+                                                    class="px-3 py-1 rounded-lg bg-accent-color/20 text-accent-color font-black text-[10px] uppercase tracking-widest border border-accent-color/20">Lvl
+                                                    {{userData()!.level}}</span>
                         </div>
                     </div>
 
@@ -87,29 +91,31 @@
                     <div class="space-y-4 mb-10">
                         <div class="flex justify-between items-end px-1">
                             <div>
-                                <p class="text-[10px] font-black text-text-muted uppercase tracking-widest leading-none">
-                                    Experiencia</p>
+                                <p
+                                    class="text-[10px] font-black text-text-muted uppercase tracking-widest leading-none">
+                                    {{ 'PROFILE.EXPERIENCE' | translate }}</p>
                                 <p class="text-sm font-bold text-text-muted">{{userData()!.experience}} XP</p>
                             </div>
                             <p class="text-3xl font-black text-text-main italic">{{experiencePercentage()}}<span
                                     class="text-xs font-bold opacity-30 not-italic ml-0.5">%</span></p>
                         </div>
-                        <div class="w-full h-2.5 bg-primary-bg rounded-full overflow-hidden p-0.5 border border-white/5">
-                            <div
-                                [style.width.%]="experiencePercentage()"
+                        <div
+                            class="w-full h-2.5 bg-primary-bg rounded-full overflow-hidden p-0.5 border border-white/5">
+                            <div [style.width.%]="experiencePercentage()"
                                 class="h-full bg-gradient-to-r from-accent-color to-indigo-400 rounded-full shadow-[0_0_15px_rgba(168,85,247,0.5)] transition-all duration-1000">
                             </div>
                         </div>
-                        <p class="text-center text-[9px] font-bold text-text-muted uppercase tracking-widest italic opacity-60">
-                            {{(userData()!.level * 500) - userData()!.experience}} XP para el Nivel {{userData()!.level + 1}}</p>
+                        <p
+                            class="text-center text-[9px] font-bold text-text-muted uppercase tracking-widest italic opacity-60">
+                            {{(userData()!.level * 500) - userData()!.experience}} XP {{ 'PROFILE.XP_TO_LEVEL' |
+                            translate }} {{userData()!.level + 1}}</p>
                     </div>
 
                     <!-- Primary Actions -->
                     <div class="flex gap-3">
-                        <button
-                            (click)="openEditModal()"
+                        <button (click)="openEditModal()"
                             class="flex-1 py-4 rounded-2xl bg-text-main text-primary-bg font-black text-xs uppercase tracking-widest hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-accent-color/10">
-                            Editar Perfil
+                            {{ 'PROFILE.EDIT_PROFILE' | translate }}
                         </button>
                     </div>
                 </div>
@@ -118,13 +124,17 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div
                         class="bg-secondary-bg/40 backdrop-blur-2xl border border-white/5 rounded-3xl p-5 hover:bg-white/5 transition-all text-center">
-                        <p class="text-[9px] text-text-muted font-black uppercase mb-1 tracking-widest">Inscrito</p>
-                        <p class="text-text-main font-black text-xs tracking-tighter">{{userData()!.subscription_date}}</p>
+                        <p class="text-[9px] text-text-muted font-black uppercase mb-1 tracking-widest">{{
+                            'PROFILE.JOINED' | translate }}</p>
+                        <p class="text-text-main font-black text-xs tracking-tighter">{{userData()!.subscription_date}}
+                        </p>
                     </div>
                     <div
                         class="bg-secondary-bg/40 backdrop-blur-2xl border border-white/5 rounded-3xl p-5 hover:bg-white/5 transition-all text-center">
-                        <p class="text-[9px] text-text-muted font-black uppercase mb-1 tracking-widest">Ranking</p>
-                        <p class="text-yellow-400 font-black text-xs tracking-tighter italic">TOP #{{userData()!.rank}}</p>
+                        <p class="text-[9px] text-text-muted font-black uppercase mb-1 tracking-widest">{{
+                            'PROFILE.RANKING' | translate }}</p>
+                        <p class="text-yellow-400 font-black text-xs tracking-tighter italic">TOP #{{userData()!.rank}}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -155,8 +165,10 @@
                             <span
                                 class="text-accent-color/20 font-black text-4xl group-hover:text-accent-color/40 transition-colors">01</span>
                         </div>
-                        <p class="text-text-muted text-[10px] font-black uppercase tracking-[0.3em] mb-1">Niveles historia completados</p>
-                        <p class="text-4xl font-black text-text-main italic tracking-tighter">{{userData()!.story_levels_completed}}</p>
+                        <p class="text-text-muted text-[10px] font-black uppercase tracking-[0.3em] mb-1">{{
+                            'PROFILE.STORY_LEVELS' | translate }}</p>
+                        <p class="text-4xl font-black text-text-main italic tracking-tighter">
+                            {{userData()!.story_levels_completed}}</p>
                     </div>
 
                     <div
@@ -174,9 +186,12 @@
                             <span
                                 class="text-orange-500/20 font-black text-4xl group-hover:text-orange-500/40 transition-colors">02</span>
                         </div>
-                        <p class="text-text-muted text-[10px] font-black uppercase tracking-[0.3em] mb-1">Roguelike</p>
-                        <p class="text-4xl font-black text-text-main italic tracking-tighter">{{userData()!.roguelike_levels_played}} <small
-                                class="text-xs opacity-40 font-bold uppercase not-italic">Niveles</small></p>
+                        <p class="text-text-muted text-[10px] font-black uppercase tracking-[0.3em] mb-1">{{
+                            'PROFILE.ROGUELIKE' | translate }}</p>
+                        <p class="text-4xl font-black text-text-main italic tracking-tighter">
+                            {{userData()!.roguelike_levels_played}} <small
+                                class="text-xs opacity-40 font-bold uppercase not-italic">{{ 'PROFILE.LEVELS' |
+                                translate }}</small></p>
                     </div>
 
                     <div
@@ -198,9 +213,12 @@
                             <span
                                 class="text-blue-500/20 font-black text-4xl group-hover:text-blue-500/40 transition-colors">03</span>
                         </div>
-                        <p class="text-text-muted text-[10px] font-black uppercase tracking-[0.3em] mb-1">Racha</p>
-                        <p class="text-4xl font-black text-text-main italic tracking-tighter">{{userData()!.streak}}<small
-                                class="text-xs opacity-40 font-bold uppercase not-italic ml-1">Días</small></p>
+                        <p class="text-text-muted text-[10px] font-black uppercase tracking-[0.3em] mb-1">{{
+                            'PROFILE.STREAK' | translate }}</p>
+                        <p class="text-4xl font-black text-text-main italic tracking-tighter">
+                            {{userData()!.streak}}<small
+                                class="text-xs opacity-40 font-bold uppercase not-italic ml-1">{{ 'PROFILE.DAYS' |
+                                translate }}</small></p>
                     </div>
                 </div>
 
@@ -208,38 +226,53 @@
                 <div class="bg-secondary-bg/40 backdrop-blur-3xl border border-white/10 rounded-[3rem] p-10">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-2xl font-black text-text-main uppercase tracking-tighter truncate">
-                            Progreso Historia
+                            {{ 'PROFILE.STORY_PROGRESS' | translate }}
                         </h3>
                         <div class="w-2 h-2 rounded-full bg-accent-color shadow-[0_0_10px_var(--accent-color)]"></div>
                     </div>
 
                     <div class="space-y-6">
                         <div>
-                             <div class="flex justify-between items-end mb-2">
-                                <span class="text-sm font-black text-text-main uppercase tracking-widest">General</span>
-                                <span class="text-xl font-black text-accent-color">{{userData()!.story_levels_completed}} / <span class="opacity-50 font-bold text-xs">{{totalStoryLevels()}}</span></span>
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-sm font-black text-text-main uppercase tracking-widest">{{
+                                    'PROFILE.GENERAL' | translate }}</span>
+                                <span
+                                    class="text-xl font-black text-accent-color">{{userData()!.story_levels_completed}}
+                                    / <span class="opacity-50 font-bold text-xs">{{totalStoryLevels()}}</span></span>
                             </div>
                             <!-- Progress Bar -->
-                            <div class="h-4 bg-primary-bg rounded-full overflow-hidden border border-white/5 p-0.5 relative">
+                            <div
+                                class="h-4 bg-primary-bg rounded-full overflow-hidden border border-white/5 p-0.5 relative">
                                 <!-- Glow effect behind bar -->
                                 <div class="absolute inset-0 bg-accent-color/5 filter blur-md"></div>
                                 <div class="h-full bg-gradient-to-r from-accent-color via-indigo-500 to-blue-500 rounded-full shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all duration-1000 relative z-10"
-                                     [style.width.%]="(userData()!.story_levels_completed / totalStoryLevels()) * 100">
-                                     <!-- Shine effect -->
-                                     <div class="absolute top-0 right-0 bottom-0 w-20 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"></div>
+                                    [style.width.%]="(userData()!.story_levels_completed / totalStoryLevels()) * 100">
+                                    <!-- Shine effect -->
+                                    <div
+                                        class="absolute top-0 right-0 bottom-0 w-20 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        
-                         <!-- Last Level Info -->
-                        <div class="bg-white/5 rounded-2xl p-6 border border-white/5 flex justify-between items-center hover:bg-white/10 transition-colors group">
-                             <div>
-                                <p class="text-[10px] font-black text-text-muted uppercase tracking-widest mb-1 group-hover:text-accent-color transition-colors">Último nivel completado</p>
-                                <p class="text-text-main font-bold text-lg leading-none tracking-tight">{{userData()!.last_story_level_title || 'Ninguno'}}</p>
-                             </div>
-                             <div class="h-12 w-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400 border border-green-500/20 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(74,222,128,0.2)]">
-                                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                             </div>
+
+                        <!-- Last Level Info -->
+                        <div
+                            class="bg-white/5 rounded-2xl p-6 border border-white/5 flex justify-between items-center hover:bg-white/10 transition-colors group">
+                            <div>
+                                <p
+                                    class="text-[10px] font-black text-text-muted uppercase tracking-widest mb-1 group-hover:text-accent-color transition-colors">
+                                    {{ 'PROFILE.LAST_LEVEL' | translate }}</p>
+                                <p class="text-text-main font-bold text-lg leading-none tracking-tight">
+                                    {{userData()!.last_story_level_title || ('PROFILE.NONE' | translate)}}</p>
+                            </div>
+                            <div
+                                class="h-12 w-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400 border border-green-500/20 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(74,222,128,0.2)]">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -248,53 +281,79 @@
                 <div class="space-y-4">
                     <h3
                         class="text-lg font-black text-text-muted uppercase tracking-widest px-4 flex items-center gap-3">
-                        Actividad Reciente
+                        {{ 'PROFILE.RECENT_ACTIVITY' | translate }}
                         <span class="w-full h-px bg-white/5"></span>
                     </h3>
                     <div class="grid grid-cols-1 gap-3">
                         @if (isLoadingActivity()) {
-                            <div class="flex justify-center items-center py-10">
-                                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-text-main"></div>
-                            </div>
+                        <div class="flex justify-center items-center py-10">
+                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-text-main"></div>
+                        </div>
                         } @else {
-                            @for (item of recentActivity(); track $index) {
-                            <div
-                                class="bg-secondary-bg/30 backdrop-blur-xl border border-white/5 p-6 rounded-[2rem] flex items-center justify-between group hover:bg-white/5 transition-all">
-                                <div class="flex items-center gap-6">
-                                    <!-- Icon based on type -->
-                                    <div
-                                        class="w-14 h-14 rounded-2xl flex items-center justify-center transition-colors font-bold"
-                                        [ngClass]="{
+                        @for (item of recentActivity(); track $index) {
+                        <div
+                            class="bg-secondary-bg/30 backdrop-blur-xl border border-white/5 p-6 rounded-[2rem] flex items-center justify-between group hover:bg-white/5 transition-all">
+                            <div class="flex items-center gap-6">
+                                <!-- Icon based on type -->
+                                <div class="w-14 h-14 rounded-2xl flex items-center justify-center transition-colors font-bold"
+                                    [ngClass]="{
                                             'bg-accent-color/10 text-accent-color': item.tipo === 'historia',
                                             'bg-yellow-500/10 text-yellow-400': item.tipo === 'logro',
                                             'bg-red-500/10 text-red-400': item.tipo === 'roguelike'
                                         }">
-                                        
-                                        @if (item.tipo === 'historia') {
-                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                                        } @else if (item.tipo === 'logro') {
-                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
-                                        } @else {
-                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
-                                        }
-                                    </div>
-                                    <div class="space-y-1">
-                                        <h4 class="text-text-main font-black text-base italic tracking-tight uppercase">{{item.titulo}}</h4>
-                                        <p class="text-text-muted text-[10px] uppercase font-black tracking-widest">{{item.subtitulo}}</p>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    @if (item.xp > 0) {
-                                        <span class="text-green-400 font-black text-xl italic">+{{item.xp}}<span class="text-xs opacity-50 not-italic ml-1">XP</span></span>
+
+                                    @if (item.tipo === 'historia') {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M12 20h9" />
+                                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                                    </svg>
+                                    } @else if (item.tipo === 'logro') {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <circle cx="12" cy="8" r="7" />
+                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                                    </svg>
+                                    } @else {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M12 2v2" />
+                                        <path d="M12 20v2" />
+                                        <path d="m4.93 4.93 1.41 1.41" />
+                                        <path d="m17.66 17.66 1.41 1.41" />
+                                        <path d="M2 12h2" />
+                                        <path d="M20 12h2" />
+                                        <path d="m6.34 17.66-1.41 1.41" />
+                                        <path d="m19.07 4.93-1.41 1.41" />
+                                    </svg>
                                     }
-                                    <p class="text-text-muted text-[10px] font-bold uppercase tracking-widest">{{item.fecha}}</p>
+                                </div>
+                                <div class="space-y-1">
+                                    <h4 class="text-text-main font-black text-base italic tracking-tight uppercase">
+                                        {{item.titulo}}</h4>
+                                    <p class="text-text-muted text-[10px] uppercase font-black tracking-widest">
+                                        {{item.subtitulo}}</p>
                                 </div>
                             </div>
-                            } @empty {
-                                <div class="bg-secondary-bg/30 backdrop-blur-xl border border-white/5 p-6 rounded-[2rem] text-center text-text-muted">
-                                    <p class="text-xs font-bold uppercase tracking-widest">No hay actividad reciente</p>
-                                </div>
-                            }
+                            <div class="text-right">
+                                @if (item.xp > 0) {
+                                <span class="text-green-400 font-black text-xl italic">+{{item.xp}}<span
+                                        class="text-xs opacity-50 not-italic ml-1">XP</span></span>
+                                }
+                                <p class="text-text-muted text-[10px] font-bold uppercase tracking-widest">
+                                    {{item.fecha}}</p>
+                            </div>
+                        </div>
+                        } @empty {
+                        <div
+                            class="bg-secondary-bg/30 backdrop-blur-xl border border-white/5 p-6 rounded-[2rem] text-center text-text-muted">
+                            <p class="text-xs font-bold uppercase tracking-widest">{{ 'PROFILE.NO_ACTIVITY' | translate
+                                }}</p>
+                        </div>
+                        }
                         }
                     </div>
                 </div>
@@ -304,16 +363,19 @@
                 <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
                     <!-- Backdrop -->
                     <div class="absolute inset-0 bg-primary-bg/80 backdrop-blur-sm" (click)="closeEditModal()"></div>
-                    
+
                     <!-- Modal Content -->
-                    <div class="relative w-full max-w-lg bg-secondary-bg border border-white/10 rounded-3xl p-8 shadow-2xl animate-fade-in-up z-10">
-                         <div class="absolute -top-3 -right-3">
-                            <button (click)="closeEditModal()" class="w-8 h-8 rounded-full bg-primary-bg text-text-main flex items-center justify-center hover:opacity-80 transition-colors">
+                    <div
+                        class="relative w-full max-w-lg bg-secondary-bg border border-white/10 rounded-3xl p-8 shadow-2xl animate-fade-in-up z-10">
+                        <div class="absolute -top-3 -right-3">
+                            <button (click)="closeEditModal()"
+                                class="w-8 h-8 rounded-full bg-primary-bg text-text-main flex items-center justify-center hover:opacity-80 transition-colors">
                                 ✕
                             </button>
                         </div>
 
-                        <h2 class="text-2xl font-black text-text-main font-jersey tracking-wide mb-6 text-center">Editar Perfil</h2>
+                        <h2 class="text-2xl font-black text-text-main font-jersey tracking-wide mb-6 text-center">{{
+                            'PROFILE.EDIT_MODAL.TITLE' | translate }}</h2>
 
                         <div class="space-y-6">
                             <!-- Avatar Preview & Edit -->
@@ -321,12 +383,15 @@
                                 <div class="w-32 h-32 rounded-full bg-primary-bg border-4 border-secondary-bg shadow-2xl overflow-hidden relative group cursor-pointer"
                                     (click)="generateRandomAvatar()">
                                     @if (editAvatarUrl()) {
-                                        <img [src]="editAvatarUrl()" class="w-full h-full object-cover">
+                                    <img [src]="editAvatarUrl()" class="w-full h-full object-cover">
                                     } @else {
-                                         <div class="w-full h-full flex items-center justify-center text-text-muted text-xs">Sin Avatar</div>
+                                    <div class="w-full h-full flex items-center justify-center text-text-muted text-xs">
+                                        {{ 'PROFILE.EDIT_MODAL.NO_AVATAR' | translate }}</div>
                                     }
-                                    <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <span class="text-white text-xs font-bold">Generar Random</span>
+                                    <div
+                                        class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <span class="text-white text-xs font-bold">{{
+                                            'PROFILE.EDIT_MODAL.GENERATE_RANDOM' | translate }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -335,39 +400,39 @@
                             <div class="space-y-4">
                                 <!-- Nickname Input -->
                                 <div class="space-y-2">
-                                    <label class="text-[10px] font-black text-text-muted uppercase tracking-widest pl-1">Nickname</label>
-                                    <input type="text" 
-                                        [value]="editNickname()"
-                                        (input)="updateNickname($event)"
+                                    <label
+                                        class="text-[10px] font-black text-text-muted uppercase tracking-widest pl-1">Nickname</label>
+                                    <input type="text" [value]="editNickname()" (input)="updateNickname($event)"
                                         class="w-full bg-primary-bg border border-white/10 rounded-xl px-4 py-3 text-text-main focus:outline-none focus:border-accent-color transition-colors font-bold">
                                 </div>
-                                
+
                                 <p class="text-[10px] text-text-muted text-center italic mt-2 opacity-60">
-                                    * Haz click en la imagen de arriba para generar un nuevo avatar aleatorio.
+                                    {{ 'PROFILE.EDIT_MODAL.AVATAR_TIP' | translate }}
                                 </p>
                             </div>
 
                             <!-- Feedback Message -->
                             @if (saveFeedback()) {
-                                <div class="p-4 rounded-xl text-center text-sm font-bold animate-pulse"
-                                    [ngClass]="saveFeedback()?.includes('Error') ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-green-500/10 text-green-400 border border-green-500/20'">
-                                    {{ saveFeedback() }}
-                                </div>
+                            <div class="p-4 rounded-xl text-center text-sm font-bold animate-pulse"
+                                [ngClass]="saveFeedback()?.includes('Error') ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-green-500/10 text-green-400 border border-green-500/20'">
+                                {{ saveFeedback() }}
+                            </div>
                             }
 
                             <!-- Actions -->
                             <div class="flex gap-3 pt-4 border-t border-white/5">
                                 <button (click)="closeEditModal()"
                                     class="flex-1 py-3.5 rounded-xl bg-primary-bg hover:opacity-80 text-text-muted font-bold transition-colors text-sm uppercase tracking-wider">
-                                    Cancelar
+                                    {{ 'PROFILE.EDIT_MODAL.CANCEL' | translate }}
                                 </button>
-                                <button (click)="saveProfile()"
-                                    [disabled]="isSaving()"
+                                <button (click)="saveProfile()" [disabled]="isSaving()"
                                     class="flex-1 py-3.5 rounded-xl bg-accent-color hover:opacity-90 text-white font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm uppercase tracking-wider shadow-lg shadow-accent-color/20">
                                     @if (isSaving()) {
-                                        <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                    <div
+                                        class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin">
+                                    </div>
                                     }
-                                    Guardar
+                                    {{ 'PROFILE.EDIT_MODAL.SAVE' | translate }}
                                 </button>
                             </div>
                         </div>
@@ -388,7 +453,7 @@
             <div class="w-3 h-3 bg-accent-color/80 rounded-full animate-bounce" style="animation-delay: 150ms"></div>
             <div class="w-3 h-3 bg-accent-color/60 rounded-full animate-bounce" style="animation-delay: 300ms"></div>
         </div>
-        <p class="text-text-muted text-sm font-medium">Cargando perfil...</p>
+        <p class="text-text-muted text-sm font-medium">{{ 'PROFILE.LOADING' | translate }}</p>
     </div>
 </div>
 }

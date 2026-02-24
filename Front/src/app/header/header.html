@@ -7,47 +7,45 @@
             <!-- Logo (Left) -->
             <a routerLink="/dashboard" class="flex items-center gap-2 group">
                 <div
-                    class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-color to-blue-600 flex items-center justify-center text-white font-bold font-jersey text-xl shadow-lg shadow-accent-color/20 group-hover:scale-105 transition-transform">
+                    class="w-8 h-8 rounded-lg bg-accent-color flex items-center justify-center font-black text-white text-sm font-jersey transition-transform group-hover:scale-110">
                     C
                 </div>
-                <span
-                    class="font-jersey text-2xl text-text-main tracking-wide group-hover:text-accent-color transition-colors">Codeo</span>
+                <span class="font-bold text-text-main tracking-tight">Codeo</span>
             </a>
 
-            <!-- Right Side: Navigation + Theme Toggle -->
-            <div class="flex items-center gap-6">
-                <!-- Navigation (Only visible if logged in) -->
+            <!-- Nav Links (Center) -->
+            <nav class="hidden md:flex items-center gap-1">
+                <a routerLink="/dashboard" routerLinkActive="text-text-main bg-white/5"
+                    class="px-4 py-2 rounded-lg text-sm font-medium text-text-muted hover:text-text-main hover:bg-white/5 transition-all">
+                    {{ 'HEADER.DASHBOARD' | translate }}
+                </a>
+                <a routerLink="/modo-historia" routerLinkActive="text-text-main bg-white/5"
+                    class="px-4 py-2 rounded-lg text-sm font-medium text-text-muted hover:text-text-main hover:bg-white/5 transition-all">
+                    {{ 'HEADER.STORY' | translate }}
+                </a>
+                <a routerLink="/modo-infinito" routerLinkActive="text-text-main bg-white/5"
+                    class="px-4 py-2 rounded-lg text-sm font-medium text-text-muted hover:text-text-main hover:bg-white/5 transition-all">
+                    {{ 'HEADER.INFINITE' | translate }}
+                </a>
+            </nav>
+
+            <!-- Actions (Right) -->
+            <div class="flex items-center gap-3">
                 @if (isLoggedIn()) {
-                    <nav class="hidden md:flex items-center gap-1">
-                        <a routerLink="/dashboard" routerLinkActive="bg-accent-color/10 text-accent-color"
-                            class="px-4 py-2 rounded-lg text-sm font-medium text-text-muted hover:text-accent-color hover:bg-white/5 transition-all">
-                            Inicio
-                        </a>
-                        
-                        @if (isAdmin()) {
-                            <a routerLink="/panel-admin" routerLinkActive="bg-red-500/10 text-red-600"
-                                class="px-4 py-2 rounded-lg text-sm font-medium text-text-muted hover:text-red-600 hover:bg-white/5 transition-all flex items-center gap-2">
-                                Admin
-                            </a>
-                        }
-
-                        <a routerLink="/ranking" routerLinkActive="bg-accent-color/10 text-accent-color"
-                           class="px-4 py-2 rounded-lg text-sm font-medium text-text-muted hover:text-accent-color hover:bg-white/5 transition-all">
-                            Ranking
-                        </a>
-
-                        <a routerLink="/tienda-temas" routerLinkActive="bg-accent-color/10 text-accent-color"
-                            class="px-4 py-2 rounded-lg text-sm font-medium text-text-muted hover:text-accent-color hover:bg-white/5 transition-all flex items-center gap-2">
-                            Tienda
-                        </a>
-
-                        <a routerLink="/ajustes" routerLinkActive="bg-accent-color/10 text-accent-color"
-                            class="px-4 py-2 rounded-lg text-sm font-medium text-text-muted hover:text-accent-color hover:bg-white/5 transition-all">
-                            Ajustes
-                        </a>
-                    </nav>
+                <button (click)="logout()"
+                    class="px-4 py-2 rounded-lg text-sm font-medium text-text-muted hover:text-text-main hover:bg-white/5 transition-all">
+                    {{ 'HEADER.LOGOUT' | translate }}
+                </button>
+                } @else {
+                <a routerLink="/login"
+                    class="px-4 py-2 rounded-lg text-sm font-medium text-text-muted hover:text-text-main hover:bg-white/5 transition-all">
+                    {{ 'HEADER.LOGIN' | translate }}
+                </a>
+                <a routerLink="/registro"
+                    class="px-4 py-2 rounded-lg text-sm font-bold bg-accent-color text-white hover:bg-accent-color/90 transition-all">
+                    {{ 'HEADER.REGISTER' | translate }}
+                </a>
                 }
-                
             </div>
         </div>
     </div>

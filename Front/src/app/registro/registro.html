@@ -29,7 +29,7 @@
                     <path d="m15 18-6-6 6-6" />
                 </svg>
             </div>
-            <span class="font-medium text-xl">Volver al inicio</span>
+            <span class="font-medium text-xl">{{ 'LOGIN.BACK' | translate }}</span>
         </a>
     </nav>
 
@@ -44,17 +44,18 @@
             <div
                 class="text-center mb-10 transform transition-transform duration-500 group-focus-within/card:translate-y-[-5px] relative z-10">
                 <h1 class="text-5xl md:text-6xl font-black mb-4 tracking-wide drop-shadow-md">
-                    Únete a <span
+                    {{ 'REGISTER.TITLE' | translate }} <span
                         class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 animate-pulse">Codeo</span>
                 </h1>
-                <p class="text-slate-300 text-2xl">Crea tu cuenta y comienza tu leyenda.</p>
+                <p class="text-slate-300 text-2xl">{{ 'REGISTER.SUBTITLE' | translate }}</p>
             </div>
 
             <form [formGroup]="registroForm" (ngSubmit)="onSubmit()" class="space-y-6 relative z-10">
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
-                        <label for="nombre" class="text-xl text-slate-200 ml-1">Nombre</label>
+                        <label for="nombre" class="text-xl text-slate-200 ml-1">{{ 'REGISTER.FIRST_NAME' | translate
+                            }}</label>
                         <div class="relative group">
                             <div
                                 class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500 group-focus-within:text-pink-400 group-focus-within:drop-shadow-[0_0_8px_rgba(236,72,153,0.6)] transition-all duration-300">
@@ -65,20 +66,23 @@
                                     <circle cx="12" cy="7" r="4" />
                                 </svg>
                             </div>
-                            <input type="text" id="nombre" formControlName="nombre" placeholder="Tu Nombre"
+                            <input type="text" id="nombre" formControlName="nombre"
+                                [placeholder]="'REGISTER.FIRST_NAME_PH' | translate"
                                 class="w-full bg-slate-950/50 border border-slate-700 text-slate-100 placeholder:text-slate-600 text-xl rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 transform focus:scale-[1.02] focus:bg-slate-900/80 focus:shadow-[0_0_20px_rgba(168,85,247,0.3)]
                                 {{ registroForm.get('nombre')?.invalid && registroForm.get('nombre')?.touched ? 'border-red-500 focus:border-red-500 focus:ring-red-500/50' : '' }}">
                         </div>
                         @if(registroForm.get('nombre')?.invalid && registroForm.get('nombre')?.touched) {
                         <div class="text-red-400 text-sm ml-1 mt-1 animate-fade-in">
-                            @if(registroForm.get('nombre')?.hasError('required')) { El nombre es obligatorio. }
+                            @if(registroForm.get('nombre')?.hasError('required')) { {{ 'REGISTER.ERR_NAME_REQUIRED' |
+                            translate }} }
                             @if(registroForm.get('nombre')?.hasError('serverError')) { {{
                             registroForm.get('nombre')?.getError('serverError') }} }
                         </div>
                         }
                     </div>
                     <div class="space-y-2">
-                        <label for="apellidos" class="text-xl text-slate-200 ml-1">Apellidos</label>
+                        <label for="apellidos" class="text-xl text-slate-200 ml-1">{{ 'REGISTER.LAST_NAME' | translate
+                            }}</label>
                         <div class="relative group">
                             <div
                                 class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500 group-focus-within:text-pink-400 group-focus-within:drop-shadow-[0_0_8px_rgba(236,72,153,0.6)] transition-all duration-300">
@@ -91,13 +95,15 @@
                                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                                 </svg>
                             </div>
-                            <input type="text" id="apellidos" formControlName="apellidos" placeholder="Tus Apellidos"
+                            <input type="text" id="apellidos" formControlName="apellidos"
+                                [placeholder]="'REGISTER.LAST_NAME_PH' | translate"
                                 class="w-full bg-slate-950/50 border border-slate-700 text-slate-100 placeholder:text-slate-600 text-xl rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 transform focus:scale-[1.02] focus:bg-slate-900/80 focus:shadow-[0_0_20px_rgba(168,85,247,0.3)]
                                 {{ registroForm.get('apellidos')?.invalid && registroForm.get('apellidos')?.touched ? 'border-red-500 focus:border-red-500 focus:ring-red-500/50' : '' }}">
                         </div>
                         @if(registroForm.get('apellidos')?.invalid && registroForm.get('apellidos')?.touched) {
                         <div class="text-red-400 text-sm ml-1 mt-1 animate-fade-in">
-                            @if(registroForm.get('apellidos')?.hasError('required')) { Los apellidos son obligatorios. }
+                            @if(registroForm.get('apellidos')?.hasError('required')) { {{
+                            'REGISTER.ERR_LASTNAME_REQUIRED' | translate }} }
                             @if(registroForm.get('apellidos')?.hasError('serverError')) { {{
                             registroForm.get('apellidos')?.getError('serverError') }} }
                         </div>
@@ -106,7 +112,8 @@
                 </div>
 
                 <div class="space-y-2">
-                    <label for="username" class="text-xl text-slate-200 ml-1">Nombre de usuario</label>
+                    <label for="username" class="text-xl text-slate-200 ml-1">{{ 'REGISTER.USERNAME' | translate
+                        }}</label>
                     <div class="relative group">
                         <div
                             class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500 group-focus-within:text-pink-400 group-focus-within:drop-shadow-[0_0_8px_rgba(236,72,153,0.6)] transition-all duration-300">
@@ -117,13 +124,15 @@
                                 <circle cx="12" cy="7" r="4" />
                             </svg>
                         </div>
-                        <input type="text" id="username" formControlName="username" placeholder="Ej. CyberNinja"
+                        <input type="text" id="username" formControlName="username"
+                            [placeholder]="'REGISTER.USERNAME_PH' | translate"
                             class="w-full bg-slate-950/50 border border-slate-700 text-slate-100 placeholder:text-slate-600 text-xl rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 transform focus:scale-[1.02] focus:bg-slate-900/80 focus:shadow-[0_0_20px_rgba(168,85,247,0.3)]
                             {{ registroForm.get('username')?.invalid && registroForm.get('username')?.touched ? 'border-red-500 focus:border-red-500 focus:ring-red-500/50' : '' }}">
                     </div>
                     @if(registroForm.get('username')?.invalid && registroForm.get('username')?.touched) {
                     <div class="text-red-400 text-sm ml-1 mt-1 animate-fade-in">
-                        @if(registroForm.get('username')?.hasError('required')) { El nombre de usuario es obligatorio. }
+                        @if(registroForm.get('username')?.hasError('required')) { {{ 'REGISTER.ERR_USERNAME_REQUIRED' |
+                        translate }} }
                         @if(registroForm.get('username')?.hasError('serverError')) { {{
                         registroForm.get('username')?.getError('serverError') }} }
                     </div>
@@ -132,7 +141,7 @@
 
 
                 <div class="space-y-2">
-                    <label for="email" class="text-xl text-slate-200 ml-1">Correo electrónico</label>
+                    <label for="email" class="text-xl text-slate-200 ml-1">{{ 'REGISTER.EMAIL' | translate }}</label>
                     <div class="relative group">
                         <div
                             class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500 group-focus-within:text-pink-400 group-focus-within:drop-shadow-[0_0_8px_rgba(236,72,153,0.6)] transition-all duration-300">
@@ -143,14 +152,17 @@
                                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                             </svg>
                         </div>
-                        <input type="email" id="email" formControlName="email" placeholder="tu@email.com"
+                        <input type="email" id="email" formControlName="email"
+                            [placeholder]="'REGISTER.EMAIL_PH' | translate"
                             class="w-full bg-slate-950/50 border border-slate-700 text-slate-100 placeholder:text-slate-600 text-xl rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 transform focus:scale-[1.02] focus:bg-slate-900/80 focus:shadow-[0_0_20px_rgba(168,85,247,0.3)]
                             {{ registroForm.get('email')?.invalid && registroForm.get('email')?.touched ? 'border-red-500 focus:border-red-500 focus:ring-red-500/50' : '' }}">
                     </div>
                     @if(registroForm.get('email')?.invalid && registroForm.get('email')?.touched) {
                     <div class="text-red-400 text-sm ml-1 mt-1 animate-fade-in">
-                        @if(registroForm.get('email')?.hasError('required')) { El email es obligatorio. }
-                        @if(registroForm.get('email')?.hasError('email')) { Introduce un email válido. }
+                        @if(registroForm.get('email')?.hasError('required')) { {{ 'REGISTER.ERR_EMAIL_REQUIRED' |
+                        translate }} }
+                        @if(registroForm.get('email')?.hasError('email')) { {{ 'REGISTER.ERR_EMAIL_INVALID' | translate
+                        }} }
                         @if(registroForm.get('email')?.hasError('serverError')) { {{
                         registroForm.get('email')?.getError('serverError') }} }
                     </div>
@@ -160,7 +172,8 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
-                        <label for="password" class="text-xl text-slate-200 ml-1">Contraseña</label>
+                        <label for="password" class="text-xl text-slate-200 ml-1">{{ 'REGISTER.PASSWORD' | translate
+                            }}</label>
                         <div class="relative group">
                             <div
                                 class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500 group-focus-within:text-pink-400 group-focus-within:drop-shadow-[0_0_8px_rgba(236,72,153,0.6)] transition-all duration-300">
@@ -178,14 +191,17 @@
                         </div>
                         @if(registroForm.get('password')?.invalid && registroForm.get('password')?.touched) {
                         <div class="text-red-400 text-sm ml-1 mt-1 animate-fade-in">
-                            @if(registroForm.get('password')?.hasError('required')) { La contraseña es obligatoria. }
-                            @if(registroForm.get('password')?.hasError('minlength')) { Mínimo 8 caracteres. }
+                            @if(registroForm.get('password')?.hasError('required')) { {{ 'REGISTER.ERR_PASS_REQUIRED' |
+                            translate }} }
+                            @if(registroForm.get('password')?.hasError('minlength')) { {{ 'REGISTER.ERR_PASS_MIN' |
+                            translate }} }
                         </div>
                         }
                     </div>
 
                     <div class="space-y-2">
-                        <label for="password_confirm" class="text-xl text-slate-200 ml-1">Confirmar</label>
+                        <label for="password_confirm" class="text-xl text-slate-200 ml-1">{{ 'REGISTER.CONFIRM_PASS' |
+                            translate }}</label>
                         <div class="relative group">
                             <div
                                 class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500 group-focus-within:text-pink-400 group-focus-within:drop-shadow-[0_0_8px_rgba(236,72,153,0.6)] transition-all duration-300">
@@ -204,13 +220,14 @@
                         @if(registroForm.get('password_confirm')?.invalid &&
                         registroForm.get('password_confirm')?.touched) {
                         <div class="text-red-400 text-sm ml-1 mt-1 animate-fade-in">
-                            @if(registroForm.get('password_confirm')?.hasError('required')) { Confirma tu contraseña. }
+                            @if(registroForm.get('password_confirm')?.hasError('required')) { {{
+                            'REGISTER.ERR_CONFIRM_REQUIRED' | translate }} }
                         </div>
                         }
                         @if(registroForm.errors?.['passwordMismatch'] && registroForm.get('password_confirm')?.touched)
                         {
                         <div class="text-red-400 text-sm ml-1 mt-1 animate-fade-in">
-                            Las contraseñas no coinciden.
+                            {{ 'REGISTER.ERR_PASS_MISMATCH' | translate }}
                         </div>
                         }
                     </div>
@@ -230,7 +247,7 @@
                             class="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-700 ease-out -skew-x-12 origin-left -translate-x-full">
                         </div>
                         <span class="relative z-10 flex items-center justify-center gap-2">
-                            <span>Crear Cuenta</span>
+                            <span>{{ 'REGISTER.SUBMIT' | translate }}</span>
                             <svg class="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -241,17 +258,18 @@
                 </div>
 
                 <div class="text-center mt-8">
-                    <p class="text-xl text-slate-400">¿Ya eres parte de Codeo? <a routerLink="/login"
-                            class="text-purple-400 hover:text-purple-300 transition-colors underline decoration-purple-500/30 hover:decoration-purple-500">Inicia
-                            Sesión</a></p>
+                    <p class="text-xl text-slate-400">{{ 'REGISTER.HAVE_ACCOUNT' | translate }} <a routerLink="/login"
+                            class="text-purple-400 hover:text-purple-300 transition-colors underline decoration-purple-500/30 hover:decoration-purple-500">{{
+                            'REGISTER.LOGIN_LINK' | translate }}</a></p>
                 </div>
             </form>
         </div>
 
         <div class="text-center mt-8">
             <p class="text-lg text-slate-500 max-w-sm mx-auto">
-                Al registrarte, aceptas nuestros <a href="#" class="hover:text-slate-400 transition-colors">Términos de
-                    Servicio</a> y <a href="#" class="hover:text-slate-400 transition-colors">Política de Privacidad</a>
+                {{ 'REGISTER.TERMS_PREFIX' | translate }} <a href="#" class="hover:text-slate-400 transition-colors">{{
+                    'REGISTER.TERMS' | translate }}</a> {{ 'REGISTER.TERMS_AND' | translate }} <a href="#"
+                    class="hover:text-slate-400 transition-colors">{{ 'REGISTER.PRIVACY' | translate }}</a>
             </p>
         </div>
     </main>

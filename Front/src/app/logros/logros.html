@@ -3,15 +3,21 @@
 
     <!-- ═══ BACKGROUND: Normal ═══ -->
     <div *ngIf="!isEasterEggActive" class="absolute inset-0 pointer-events-none overflow-hidden h-full w-full">
-        <div class="absolute inset-0 bg-[url('/logros/fondoNormal.png')] bg-cover bg-center bg-no-repeat opacity-30"></div>
+        <div class="absolute inset-0 bg-[url('/logros/fondoNormal.png')] bg-cover bg-center bg-no-repeat opacity-30">
+        </div>
         <div class="absolute inset-0 bg-gradient-to-br from-primary-bg via-primary-bg/80 to-secondary-bg/50"></div>
-        <div class="absolute top-0 left-0 w-96 h-96 bg-accent-color/10 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2"></div>
-        <div class="absolute bottom-0 right-0 w-96 h-96 bg-accent-color/5 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2"></div>
+        <div
+            class="absolute top-0 left-0 w-96 h-96 bg-accent-color/10 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2">
+        </div>
+        <div
+            class="absolute bottom-0 right-0 w-96 h-96 bg-accent-color/5 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2">
+        </div>
     </div>
 
     <!-- ═══ BACKGROUND: Hacker Mode ═══ -->
     <div *ngIf="isEasterEggActive" class="absolute inset-0 pointer-events-none overflow-hidden z-0">
-        <div class="absolute inset-0 bg-[url('/logros/fondoHack.png')] opacity-60 bg-cover bg-center mix-blend-screen"></div>
+        <div class="absolute inset-0 bg-[url('/logros/fondoHack.png')] opacity-60 bg-cover bg-center mix-blend-screen">
+        </div>
         <div class="absolute inset-0 bg-black opacity-90"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-red-900/30 via-transparent to-black"></div>
     </div>
@@ -25,10 +31,14 @@
             <div class="absolute inset-0 text-9xl font-black text-blue-600 mix-blend-screen opacity-50">HACKED</div>
         </div>
         <div class="absolute inset-0 opacity-60 -z-10">
-            <div class="absolute top-0 text-green-500/80 text-sm font-mono animate-bounce" style="left: 10%">01 010 11</div>
-            <div class="absolute top-0 text-red-500/80 text-base font-mono animate-pulse" style="left: 30%">ERROR 404</div>
-            <div class="absolute top-0 text-green-500/80 text-sm font-mono animate-bounce" style="left: 60%">ACCESS GRANTED</div>
-            <div class="absolute top-0 text-red-500/80 text-xl font-mono animate-pulse" style="left: 80%">SYSTEM FAILURE</div>
+            <div class="absolute top-0 text-green-500/80 text-sm font-mono animate-bounce" style="left: 10%">01 010 11
+            </div>
+            <div class="absolute top-0 text-red-500/80 text-base font-mono animate-pulse" style="left: 30%">ERROR 404
+            </div>
+            <div class="absolute top-0 text-green-500/80 text-sm font-mono animate-bounce" style="left: 60%">ACCESS
+                GRANTED</div>
+            <div class="absolute top-0 text-red-500/80 text-xl font-mono animate-pulse" style="left: 80%">SYSTEM FAILURE
+            </div>
         </div>
     </div>
 
@@ -45,7 +55,7 @@
                     class="group-hover:-translate-x-1 transition-transform">
                     <path d="m15 18-6-6 6-6" />
                 </svg>
-                <span class="font-bold tracking-wide uppercase text-xs">Menu Principal</span>
+                <span class="font-bold tracking-wide uppercase text-xs">{{ 'ACHIEVEMENTS.BACK' | translate }}</span>
             </button>
 
             <div class="flex flex-col md:flex-row justify-between items-end gap-8">
@@ -54,36 +64,43 @@
                         class="text-6xl md:text-7xl font-black text-text-main tracking-tighter uppercase cursor-pointer select-none transition-all duration-300 hover:tracking-widest"
                         [ngClass]="{ 'animate-pulse text-red-500': isEasterEggActive }">
                         <span *ngIf="!isEasterEggActive">
-                            Logros <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-color to-pink-500">Legendarios</span>
+                            {{ 'ACHIEVEMENTS.TITLE' | translate }} <span
+                                class="text-transparent bg-clip-text bg-gradient-to-r from-accent-color to-pink-500">{{
+                                'ACHIEVEMENTS.LEGENDARY' | translate }}</span>
                         </span>
                         <span *ngIf="isEasterEggActive">SYSTEM <span class="text-red-600">BREACHED</span></span>
                     </h1>
                     <p class="text-xl text-text-muted mt-4 leading-relaxed border-l-4 border-accent-color pl-4"
                         [class.border-red-600]="isEasterEggActive" [class.text-red-400]="isEasterEggActive">
-                        Domina el código, desbloquea insignias y construye tu legado en el ranking global.
+                        {{ 'ACHIEVEMENTS.SUBTITLE' | translate }}
                     </p>
                 </div>
 
                 <div class="relative group cursor-help" *ngIf="stats()">
                     <div class="absolute -inset-1 bg-gradient-to-r from-accent-color to-pink-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000"
                         [class.from-red-900]="isEasterEggActive" [class.to-red-600]="isEasterEggActive"></div>
-                    <div class="relative bg-secondary-bg ring-1 ring-white/10 rounded-xl p-6 flex items-center gap-6 backdrop-blur-xl">
-                        <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-secondary-bg to-primary-bg p-1 border border-white/10">
-                            <div class="w-full h-full rounded-full bg-secondary-bg flex items-center justify-center overflow-hidden relative">
+                    <div
+                        class="relative bg-secondary-bg ring-1 ring-white/10 rounded-xl p-6 flex items-center gap-6 backdrop-blur-xl">
+                        <div
+                            class="w-20 h-20 rounded-full bg-gradient-to-tr from-secondary-bg to-primary-bg p-1 border border-white/10">
+                            <div
+                                class="w-full h-full rounded-full bg-secondary-bg flex items-center justify-center overflow-hidden relative">
                                 <div class="absolute inset-0 bg-accent-color/20 origin-center"
                                     [class.bg-red-600/20]="isEasterEggActive"></div>
-                                <span class="relative text-2xl font-black text-text-main z-10">{{ porcentaje() }}%</span>
+                                <span class="relative text-2xl font-black text-text-main z-10">{{ porcentaje()
+                                    }}%</span>
                             </div>
                         </div>
                         <div>
-                            <div class="text-xs font-bold text-text-muted uppercase tracking-widest mb-1">Progreso</div>
+                            <div class="text-xs font-bold text-text-muted uppercase tracking-widest mb-1">{{
+                                'ACHIEVEMENTS.PROGRESS' | translate }}</div>
                             <div class="text-3xl font-black text-text-main tracking-wide">
-                                {{ totalDesbloqueados() }}<span class="text-lg text-text-muted"> / {{ totalLogros() }}</span>
+                                {{ totalDesbloqueados() }}<span class="text-lg text-text-muted"> / {{ totalLogros()
+                                    }}</span>
                             </div>
                             <div class="w-full h-1.5 bg-primary-bg rounded-full mt-3 overflow-hidden">
                                 <div class="h-full bg-gradient-to-r from-accent-color to-pink-500 transition-all duration-700"
-                                    [style.width.%]="porcentaje()"
-                                    [class.from-red-600]="isEasterEggActive"
+                                    [style.width.%]="porcentaje()" [class.from-red-600]="isEasterEggActive"
                                     [class.to-red-900]="isEasterEggActive"></div>
                             </div>
                             <div class="text-[10px] text-right text-text-muted mt-1">{{ stats()?.texto }}</div>
@@ -97,10 +114,14 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
             <!-- Stat 1: Desbloqueados -->
-            <div class="bg-secondary-bg/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-secondary-bg/60 transition-colors group relative overflow-hidden">
-                <div class="absolute right-0 top-0 w-24 h-24 bg-yellow-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-yellow-500/20 transition-all"></div>
+            <div
+                class="bg-secondary-bg/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-secondary-bg/60 transition-colors group relative overflow-hidden">
+                <div
+                    class="absolute right-0 top-0 w-24 h-24 bg-yellow-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-yellow-500/20 transition-all">
+                </div>
                 <div class="w-12 h-12 text-yellow-500 group-hover:scale-110 transition-transform duration-300">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round">
                         <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
                         <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
                         <path d="M4 22h16" />
@@ -110,37 +131,50 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-text-muted text-sm font-bold uppercase tracking-wider">Desbloqueados</h3>
-                    <p class="text-4xl font-black text-text-main">{{ totalDesbloqueados() }} <span class="text-lg text-text-muted">/ {{ totalLogros() }}</span></p>
+                    <h3 class="text-text-muted text-sm font-bold uppercase tracking-wider">{{ 'ACHIEVEMENTS.UNLOCKED' |
+                        translate }}</h3>
+                    <p class="text-4xl font-black text-text-main">{{ totalDesbloqueados() }} <span
+                            class="text-lg text-text-muted">/ {{ totalLogros() }}</span></p>
                 </div>
             </div>
 
             <!-- Stat 2: Porcentaje -->
-            <div class="bg-secondary-bg/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-secondary-bg/60 transition-colors group relative overflow-hidden">
-                <div class="absolute right-0 top-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-blue-500/20 transition-all"></div>
+            <div
+                class="bg-secondary-bg/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-secondary-bg/60 transition-colors group relative overflow-hidden">
+                <div
+                    class="absolute right-0 top-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-blue-500/20 transition-all">
+                </div>
                 <div class="w-12 h-12 text-blue-400 group-hover:scale-110 transition-transform duration-300">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round">
                         <path d="M6 3h12l4 6-10 13L2 9Z" />
                         <path d="M11 3 8 9l4 13 4-13-3-6" />
                         <path d="M2 9h20" />
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-text-muted text-sm font-bold uppercase tracking-wider">Completado</h3>
+                    <h3 class="text-text-muted text-sm font-bold uppercase tracking-wider">{{ 'ACHIEVEMENTS.COMPLETED' |
+                        translate }}</h3>
                     <p class="text-4xl font-black text-text-main">{{ porcentaje() }}%</p>
                 </div>
             </div>
 
             <!-- Stat 3: Total -->
-            <div class="bg-secondary-bg/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-secondary-bg/60 transition-colors group relative overflow-hidden">
-                <div class="absolute right-0 top-0 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-purple-500/20 transition-all"></div>
+            <div
+                class="bg-secondary-bg/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl flex items-center gap-4 hover:bg-secondary-bg/60 transition-colors group relative overflow-hidden">
+                <div
+                    class="absolute right-0 top-0 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-purple-500/20 transition-all">
+                </div>
                 <div class="w-12 h-12 text-purple-400 group-hover:scale-110 transition-transform duration-300">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path
+                            d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-text-muted text-sm font-bold uppercase tracking-wider">Total Logros</h3>
+                    <h3 class="text-text-muted text-sm font-bold uppercase tracking-wider">{{ 'ACHIEVEMENTS.TOTAL' |
+                        translate }}</h3>
                     <p class="text-4xl font-black text-text-main">{{ totalLogros() }}</p>
                 </div>
             </div>
@@ -149,28 +183,29 @@
 
         <!-- 3. Filter Navigation -->
         <nav class="flex justify-center md:justify-start">
-            <div class="inline-flex p-1 bg-secondary-bg/80 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl">
+            <div
+                class="inline-flex p-1 bg-secondary-bg/80 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl">
                 <button (click)="setFiltro('todos')"
                     class="relative px-6 py-2 rounded-lg text-sm font-bold transition-all overflow-hidden"
                     [ngClass]="filtroActivo() === 'todos' ? 'text-white' : 'text-text-muted hover:text-text-main hover:bg-white/5'">
                     <span *ngIf="filtroActivo() === 'todos'"
                         class="absolute inset-0 bg-gradient-to-r from-accent-color to-indigo-600"
                         [class.from-red-700]="isEasterEggActive" [class.to-red-900]="isEasterEggActive"></span>
-                    <span class="relative z-10">Todos</span>
+                    <span class="relative z-10">{{ 'ACHIEVEMENTS.FILTER_ALL' | translate }}</span>
                 </button>
                 <button (click)="setFiltro('desbloqueados')"
                     class="relative px-6 py-2 rounded-lg text-sm font-bold transition-all overflow-hidden"
                     [ngClass]="filtroActivo() === 'desbloqueados' ? 'text-white' : 'text-text-muted hover:text-text-main hover:bg-white/5'">
                     <span *ngIf="filtroActivo() === 'desbloqueados'"
                         class="absolute inset-0 bg-gradient-to-r from-green-600 to-emerald-600"></span>
-                    <span class="relative z-10">Desbloqueados</span>
+                    <span class="relative z-10">{{ 'ACHIEVEMENTS.FILTER_UNLOCKED' | translate }}</span>
                 </button>
                 <button (click)="setFiltro('bloqueados')"
                     class="relative px-6 py-2 rounded-lg text-sm font-bold transition-all overflow-hidden"
                     [ngClass]="filtroActivo() === 'bloqueados' ? 'text-white' : 'text-text-muted hover:text-text-main hover:bg-white/5'">
                     <span *ngIf="filtroActivo() === 'bloqueados'"
                         class="absolute inset-0 bg-gradient-to-r from-secondary-bg to-primary-bg border border-white/10"></span>
-                    <span class="relative z-10">Bloqueados</span>
+                    <span class="relative z-10">{{ 'ACHIEVEMENTS.FILTER_LOCKED' | translate }}</span>
                 </button>
             </div>
         </nav>
@@ -194,26 +229,22 @@
             <div class="text-red-400 text-lg font-bold mb-4">{{ error() }}</div>
             <button (click)="cargarLogros()"
                 class="px-6 py-3 bg-accent-color hover:bg-accent-color/80 text-white font-bold rounded-xl transition-colors">
-                Reintentar
+                {{ 'ACHIEVEMENTS.RETRY' | translate }}
             </button>
         </div>
 
         <!-- 6. Achievements Grid -->
         <div *ngIf="!loading() && !error()" class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-            <app-logro *ngFor="let logro of logrosFiltrados(); trackBy: trackByLogro"
-                [nombre]="logro.nombre"
-                [descripcion]="logro.descripcion"
-                [iconoUrl]="logro.icono_url"
-                [rareza]="logro.rareza"
-                [desbloqueado]="logro.desbloqueado"
-                [fechaObtencion]="logro.fecha_obtencion"
+            <app-logro *ngFor="let logro of logrosFiltrados(); trackBy: trackByLogro" [nombre]="logro.nombre"
+                [descripcion]="logro.descripcion" [iconoUrl]="logro.icono_url" [rareza]="logro.rareza"
+                [desbloqueado]="logro.desbloqueado" [fechaObtencion]="logro.fecha_obtencion"
                 class="transition-all duration-500 hover:z-20 hover:scale-[1.02]">
             </app-logro>
         </div>
 
         <!-- 7. Empty State -->
         <div *ngIf="!loading() && !error() && logrosFiltrados().length === 0" class="text-center py-20">
-            <div class="text-text-muted text-lg">No hay logros en esta categoría.</div>
+            <div class="text-text-muted text-lg">{{ 'ACHIEVEMENTS.EMPTY' | translate }}</div>
         </div>
 
     </div>

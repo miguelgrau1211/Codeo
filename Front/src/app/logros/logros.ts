@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { LogroComponent } from './logro/logro';
 import { LogrosService, Logro, PorcentajeLogrosResponse } from '../services/logros-service';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 type FiltroLogros = 'todos' | 'desbloqueados' | 'bloqueados';
 
 @Component({
     selector: 'app-logros',
     standalone: true,
-    imports: [CommonModule, RouterModule, LogroComponent],
+    imports: [CommonModule, RouterModule, LogroComponent, TranslatePipe],
     templateUrl: './logros.html',
     styleUrls: ['./logros.css'],
     changeDetection: ChangeDetectionStrategy.OnPush,

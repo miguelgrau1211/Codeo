@@ -3,21 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Models\Logros;
+use App\Services\TranslationService;
 use Illuminate\Http\Request;
 
 class LogrosController extends Controller
 {
-    public function index(){
+    /**
+     * Returns all achievements, with nombre/descripcion translated
+     * into the language requested via the Accept-Language header.
+     */
+    public function index(Request $request)
+    {
+        $locale = TranslationService::resolveLocale($request);
+        $translator = app(TranslationService::class);
+
         $logros = Logros::all();
-        return response()->json($logros, 200);
+        $translated = $translator->translateCollection($logros, $locale, 'logro');
+
+        return response()->json($translated, 200);
     }
 
-    public function show($id){
+    public function show($id, Request $request)
+    {
+        $locale = TranslationService::resolveLocale($request);
         $logro = Logros::findOrFail($id);
-        return response()->json($logro, 200);
+        $translator = app(TranslationService::class);
+        $data = $translator->translateLogro($logro, $locale);
+
+        return response()->json($data, 200);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $validatedData = $request->validate([
             'nombre' => 'required|string',
             'descripcion' => 'required|string',
@@ -30,11 +47,12 @@ class LogrosController extends Controller
 
         return response()->json([
             'message' => 'Logro creado exitosamente',
-            'data' => $logro
+            'data' => $logro,
         ], 201);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $logro = Logros::findOrFail($id);
 
         $validatedData = $request->validate([
@@ -49,18 +67,17 @@ class LogrosController extends Controller
 
         return response()->json([
             'message' => 'Logro actualizado exitosamente',
-            'data' => $logro
+            'data' => $logro,
         ], 200);
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $logro = Logros::findOrFail($id);
         $logro->delete();
 
         return response()->json([
-            'message' => 'Logro eliminado exitosamente'
+            'message' => 'Logro eliminado exitosamente',
         ], 200);
     }
-
-    
 }

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use App\Actions\CheckAchievementsAction;
+use App\Services\TranslationService;
 
 class RoguelikeSessionController extends Controller
 {
@@ -242,13 +243,15 @@ class RoguelikeSessionController extends Controller
         $this->updateRun($session);
 
         $nuevosLogros = (new CheckAchievementsAction())->execute();
+        $locale = TranslationService::resolveLocale($request);
+        $translator = app(TranslationService::class);
 
         return response()->json([
             'lives' => $session['lives'],
             'levels_completed' => $session['levels_completed'],
             'coins_earned' => $session['coins_earned'],
             'xp_earned' => $session['xp_earned'],
-            'nuevos_logros' => $nuevosLogros,
+            'nuevos_logros' => $translator->translateLogrosCollection($nuevosLogros, $locale),
         ], 200);
     }
 

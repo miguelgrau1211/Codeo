@@ -5,11 +5,12 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { EjecutarCodigoService } from '../services/ejecutar-codigo-service';
 import { ProgresoHistoriaService } from '../services/progreso-historia-service';
 import { ThemeService } from '../services/theme-service';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 @Component({
   selector: 'app-modo-historia',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslatePipe],
   templateUrl: './modo-historia.html',
   styleUrl: './modo-historia.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -260,7 +261,7 @@ export class ModoHistoria implements OnInit {
 
     // 1. Strings (Triple & Single) & Comments -> Placeholders
     // Order matters: Triple quotes -> Single quotes -> Comments
-    
+
     // Triple-quoted strings
     escaped = escaped.replace(/("""[\s\S]*?"""|'''[\s\S]*?''')/g, (match) => createPlaceholder(match, 'token-string'));
 

@@ -23,7 +23,7 @@
                         <path d="m15 18-6-6 6-6" />
                     </svg>
                 </div>
-                <span class="font-medium">Volver al inicio</span>
+                <span class="font-medium">{{ 'SUPPORT.BACK' | translate }}</span>
             </a>
         </div>
     </nav>
@@ -33,11 +33,12 @@
         <!-- Header -->
         <div class="text-center mb-16 animate-fade-in-up">
             <h1 class="text-5xl md:text-7xl font-black text-text-main mb-6 font-jersey tracking-wide">
-                Centro de <span
-                    class="text-transparent bg-clip-text bg-gradient-to-r from-accent-color to-blue-500">Soporte</span>
+                {{ 'SUPPORT.TITLE_1' | translate }} <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-accent-color to-blue-500">{{
+                    'SUPPORT.TITLE_2' | translate }}</span>
             </h1>
             <p class="text-xl text-text-muted max-w-2xl mx-auto leading-relaxed">
-                ¿Encontraste un bug en la Matrix? ¿Tu código no compila y no sabes por qué? Estamos aquí para ayudarte.
+                {{ 'SUPPORT.SUBTITLE' | translate }}
             </p>
         </div>
 
@@ -58,46 +59,49 @@
                             </svg>
                         </div>
                         <div>
-                            <h2 class="text-2xl font-bold text-text-main">Reportar un Problema</h2>
-                            <p class="text-text-muted text-sm">Ayúdanos a mejorar Codeo</p>
+                            <h2 class="text-2xl font-bold text-text-main">{{ 'SUPPORT.FORM_TITLE' | translate }}</h2>
+                            <p class="text-text-muted text-sm">{{ 'SUPPORT.FORM_SUBTITLE' | translate }}</p>
                         </div>
                     </div>
 
                     <form [formGroup]="reportForm" (ngSubmit)="enviarReporte()" class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
-                                <label for="email" class="text-sm font-medium text-text-main ml-1">Email de
-                                    contacto</label>
-                                <input type="email" id="email" formControlName="email" placeholder="tu@email.com"
+                                <label for="email" class="text-sm font-medium text-text-main ml-1">{{
+                                    'SUPPORT.EMAIL_LABEL' | translate }}</label>
+                                <input type="email" id="email" formControlName="email"
+                                    [placeholder]="'SUPPORT.EMAIL_PH' | translate"
                                     class="w-full bg-primary-bg/50 border border-white/5 text-text-main placeholder:text-text-muted/50 rounded-xl px-4 py-3 focus:outline-none focus:border-accent-color focus:ring-1 focus:ring-accent-color/50 transition-all"
                                     [class.border-red-500]="reportForm.get('email')?.invalid && reportForm.get('email')?.touched">
                             </div>
                             <div class="space-y-2">
-                                <label for="tipo" class="text-sm font-medium text-text-main ml-1">Categoría</label>
+                                <label for="tipo" class="text-sm font-medium text-text-main ml-1">{{ 'SUPPORT.CATEGORY'
+                                    | translate }}</label>
                                 <select id="tipo" formControlName="tipo"
                                     class="w-full bg-primary-bg/50 border border-white/5 text-text-main rounded-xl px-4 py-3 focus:outline-none focus:border-accent-color focus:ring-1 focus:ring-accent-color/50 transition-all appearance-none cursor-pointer">
-                                    <option value="bug">Error / Bug</option>
-                                    <option value="sugerencia">Sugerencia</option>
-                                    <option value="feedback">Feedback</option>
-                                    <option value="otros">Otros</option>
+                                    <option value="bug">{{ 'SUPPORT.CAT_BUG' | translate }}</option>
+                                    <option value="sugerencia">{{ 'SUPPORT.CAT_SUGGESTION' | translate }}</option>
+                                    <option value="feedback">{{ 'SUPPORT.CAT_FEEDBACK' | translate }}</option>
+                                    <option value="otros">{{ 'SUPPORT.CAT_OTHER' | translate }}</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="space-y-2">
-                            <label for="subject" class="text-sm font-medium text-text-main ml-1">Asunto</label>
+                            <label for="subject" class="text-sm font-medium text-text-main ml-1">{{ 'SUPPORT.SUBJECT' |
+                                translate }}</label>
                             <input type="text" id="subject" formControlName="subject"
-                                placeholder="Ej: No puedo ver mis logros en el perfil"
+                                [placeholder]="'SUPPORT.SUBJECT_PH' | translate"
                                 class="w-full bg-primary-bg/50 border border-white/5 text-text-main placeholder:text-text-muted/50 rounded-xl px-4 py-3 focus:outline-none focus:border-accent-color focus:ring-1 focus:ring-accent-color/50 transition-all"
                                 [class.border-red-500]="reportForm.get('subject')?.invalid && reportForm.get('subject')?.touched">
                         </div>
 
                         <div class="space-y-2">
-                            <label for="description" class="text-sm font-medium text-text-main ml-1">Descripción
-                                detallada</label>
+                            <label for="description" class="text-sm font-medium text-text-main ml-1">{{
+                                'SUPPORT.DESCRIPTION' | translate }}</label>
                             <textarea id="description" formControlName="description" rows="6"
                                 class="w-full bg-primary-bg/50 border border-white/5 text-text-main placeholder:text-text-muted/50 rounded-xl px-4 py-3 focus:outline-none focus:border-accent-color focus:ring-1 focus:ring-accent-color/50 transition-all resize-none"
-                                placeholder="Describe qué sucedió, qué esperabas que pasara y pasos para reproducirlo..."
+                                [placeholder]="'SUPPORT.DESCRIPTION_PH' | translate"
                                 [class.border-red-500]="reportForm.get('description')?.invalid && reportForm.get('description')?.touched"></textarea>
                         </div>
 
@@ -113,7 +117,7 @@
                                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                 </svg>
                             </div>
-                            <p class="text-sm text-green-200/80">Reporte enviado con éxito. ¡Gracias!</p>
+                            <p class="text-sm text-green-200/80">{{ 'SUPPORT.SUCCESS' | translate }}</p>
                         </div>
                         }
 
@@ -129,8 +133,7 @@
                                     <line x1="9" y1="9" x2="15" y2="15"></line>
                                 </svg>
                             </div>
-                            <p class="text-sm text-red-200/80">Hubo un error al enviar el reporte. Inténtalo de nuevo.
-                            </p>
+                            <p class="text-sm text-red-200/80">{{ 'SUPPORT.ERROR' | translate }}</p>
                         </div>
                         }
 
@@ -145,12 +148,13 @@
                                 </svg>
                             </div>
                             <p class="text-sm text-blue-200/80 leading-relaxed">
-                                <strong>Tip Pro:</strong> Los reportes detallados y constructivos ayudan a mejorar la
-                                plataforma para todos. ¡Las mejores contribuciones son recompensadas con XP!
+                                <strong>{{ 'SUPPORT.TIP_TITLE' | translate }}</strong> {{ 'SUPPORT.TIP_DESC' | translate
+                                }}
                                 <br><br>
-                                <span class="text-red-400 font-bold italic">⚠️ Aviso de Seguridad:</span> El abuso del
-                                sistema o envío de reportes falsos (SPAM) conlleva una <span
-                                    class="text-red-400 underline italic">penalización de -100 XP</span>.
+                                <span class="text-red-400 font-bold italic">⚠️ {{ 'SUPPORT.SPAM_WARNING' | translate
+                                    }}</span> {{ 'SUPPORT.SPAM_DESC' | translate }} <span
+                                    class="text-red-400 underline italic">{{ 'SUPPORT.SPAM_PENALTY' | translate
+                                    }}</span>.
                             </p>
                         </div>
 
@@ -161,7 +165,8 @@
                                     class="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-700 ease-out -skew-x-12 origin-left -translate-x-full">
                                 </div>
                                 <span class="relative z-10 flex items-center justify-center gap-2">
-                                    {{ isSubmitting() ? 'Enviando...' : 'Enviar Reporte' }}
+                                    {{ isSubmitting() ? ('SUPPORT.SENDING' | translate) : ('SUPPORT.SUBMIT' | translate)
+                                    }}
                                     @if (!isSubmitting()) {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -183,7 +188,7 @@
                 <!-- Community Card -->
                 <div
                     class="bg-secondary-bg/40 backdrop-blur-xl border border-white/5 rounded-3xl p-8 animate-fade-in-up delay-200">
-                    <h3 class="text-xl font-bold text-text-main mb-6">Comunidad Directa</h3>
+                    <h3 class="text-xl font-bold text-text-main mb-6">{{ 'SUPPORT.COMMUNITY' | translate }}</h3>
                     <div class="space-y-3">
                         <a href="#"
                             class="flex items-center gap-4 p-4 rounded-xl bg-primary-bg/50 border border-white/5 hover:bg-[#5865F2]/20 hover:border-[#5865F2]/50 transition-all group">
@@ -197,7 +202,7 @@
                                 <div class="font-bold text-text-main group-hover:text-[#5865F2] transition-colors">
                                     Discord
                                 </div>
-                                <div class="text-xs text-text-muted">Chat en vivo</div>
+                                <div class="text-xs text-text-muted">{{ 'SUPPORT.LIVE_CHAT' | translate }}</div>
                             </div>
                         </a>
                         <a href="#"
@@ -213,7 +218,7 @@
                                 <div class="font-bold text-text-main group-hover:text-text-main/80 transition-colors">
                                     GitHub
                                 </div>
-                                <div class="text-xs text-text-muted">Reportar Bug</div>
+                                <div class="text-xs text-text-muted">{{ 'SUPPORT.REPORT_BUG' | translate }}</div>
                             </div>
                         </a>
                     </div>
@@ -221,7 +226,7 @@
 
                 <!-- FAQ Rotating Cards -->
                 <div class="space-y-4">
-                    <h3 class="text-text-main font-bold px-2 mb-4">Preguntas Frecuentes</h3>
+                    <h3 class="text-text-main font-bold px-2 mb-4">{{ 'SUPPORT.FAQ_TITLE' | translate }}</h3>
 
                     @for (faq of faqs(); track $index) {
                     <!-- Scene -->
@@ -240,7 +245,7 @@
                                 </div>
                                 <div
                                     class="text-right text-[10px] text-text-muted flex items-center justify-end gap-1 font-bold uppercase tracking-widest">
-                                    Click para ver
+                                    {{ 'SUPPORT.CLICK_TO_SEE' | translate }}
                                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round">

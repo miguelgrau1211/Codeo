@@ -6,11 +6,12 @@ import { RoguelikeService, NivelRoguelike } from '../services/roguelike-service'
 import { RoguelikeSessionService, RunStats } from '../services/roguelike-session-service';
 import { EjecutarCodigoService } from '../services/ejecutar-codigo-service';
 import { ThemeService } from '../services/theme-service';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 @Component({
   selector: 'app-modo-infinito',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslatePipe],
   templateUrl: './modo-infinito.html',
   styleUrl: './modo-infinito.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -224,8 +225,8 @@ export class ModoInfinito implements OnInit, OnDestroy {
   get urgencyLevel(): number {
     const t = this.timeRemaining();
     if (t > 120) return 0;
-    if (t > 60)  return 1;
-    if (t > 30)  return 2;
+    if (t > 60) return 1;
+    if (t > 30) return 2;
     return 3;
   }
 
@@ -243,12 +244,12 @@ export class ModoInfinito implements OnInit, OnDestroy {
 
     // Safety timeout: if checking takes too long, force error state
     const safetyTimeout = setTimeout(() => {
-        if (this.showIntro()) {
-            console.error('Level load timeout - forcing UI unlock');
-            this.titulo.set('Error de tiempo de espera');
-            this.startExit.set(true);
-            this.showIntro.set(false);
-        }
+      if (this.showIntro()) {
+        console.error('Level load timeout - forcing UI unlock');
+        this.titulo.set('Error de tiempo de espera');
+        this.startExit.set(true);
+        this.showIntro.set(false);
+      }
     }, 5000);
 
     this.roguelikeSessionService.startLevel().subscribe({
@@ -276,11 +277,11 @@ export class ModoInfinito implements OnInit, OnDestroy {
     this.roguelikeService.getNivelAleatorio(this.nivelesCompletados()).subscribe({
       next: (nivel: NivelRoguelike) => {
         if (!nivel) {
-            console.error('Nivel inválido (null/undefined)');
-            this.titulo.set('Error de datos');
-            this.startExit.set(true);
-            this.showIntro.set(false);
-            return;
+          console.error('Nivel inválido (null/undefined)');
+          this.titulo.set('Error de datos');
+          this.startExit.set(true);
+          this.showIntro.set(false);
+          return;
         }
         this.nivelId.set(nivel.id);
         this.titulo.set(nivel.titulo);
@@ -551,7 +552,7 @@ export class ModoInfinito implements OnInit, OnDestroy {
 
     // 1. Strings (Triple & Single) & Comments -> Placeholders
     // Order matters: Triple quotes -> Single quotes -> Comments
-    
+
     // Triple-quoted strings
     escaped = escaped.replace(/("""[\s\S]*?"""|'''[\s\S]*?''')/g, (match) => createPlaceholder(match, 'token-string'));
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\UsuarioLogro;
+use App\Services\TranslationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Logros;
@@ -10,53 +11,42 @@ use App\Models\Logros;
 class UsuarioLogroController extends Controller
 {
     // logros conseguidos
-    // logros conseguidos
     public function index()
     {
         $logros = UsuarioLogro::where('usuario_id', Auth::id())->with('logro')->get();
-
         return response()->json($logros, 200);
     }
 
-    // Asigna un logro 
+    // Asigna un logro
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'logro_id' => 'required|exists:logros,id',
         ]);
 
-        //crear el registro
         try {
             $nuevoLogro = UsuarioLogro::create([
                 'usuario_id' => Auth::id(),
                 'logro_id' => $validatedData['logro_id'],
-                'fecha_desbloqueo' => now()
+                'fecha_desbloqueo' => now(),
             ]);
 
             return response()->json([
                 'message' => '¡Logro desbloqueado con éxito!',
-                'data' => $nuevoLogro
+                'data' => $nuevoLogro,
             ], 201);
 
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'El usuario ya posee este logro o ha ocurrido un error.',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ], 409);
         }
     }
 
     // Elimina un logro
-    public function destroy(Request $request, $id) // $id es el ID del recurso (logro vinculación) o del logro? Asumimos que es logro_id para simplificar o el id de la relación
+    public function destroy(Request $request, $id)
     {
-        // En este caso, si destruimos por ID de logro para el usuario auth
-        // O si destroy recibe el ID de la tabla usuario_logros
-
-        // Vamos a asumir que quieres revocar un logro específico. 
-        // Si la ruta es apiResource, destroy recibe el ID principal.
-        // Pero tu implementación anterior usaba un request body.
-        // Adaptamos para usar el parámetro de ruta o request pero validando Auth.
-
         $request->validate([
             'logro_id' => 'required|exists:logros,id',
         ]);
@@ -67,26 +57,33 @@ class UsuarioLogroController extends Controller
 
         return response()->json(['message' => 'Logro revocado correctamente'], 200);
     }
+
     /**
-     * Obtiene todos los logros de un usuario con los detalles del logro.
-     * * @param int $idUsuario
-     * @return \Illuminate\Http\JsonResponse
+     * Obtiene los logros conseguidos por el usuario con nombre/descripción traducidos.
      */
-    public function getLogrosUsuario()
+    public function getLogrosUsuario(Request $request)
     {
         $idUsuario = Auth::id();
+        $locale = TranslationService::resolveLocale($request);
 
-        // obtenemos los logros del usuario
         $logrosConseguidos = UsuarioLogro::where('usuario_id', $idUsuario)
             ->with('logro')
             ->get();
 
-        // mapeamos los datos para que el objeto 'logro' esté al mismo nivel que la fecha
-        $resultado = $logrosConseguidos->map(function ($item) {
+        $translator = app(TranslationService::class);
+
+        // Extraer los modelos Logros para traducción masiva
+        $rawLogros = $logrosConseguidos->pluck('logro');
+        $translatedLogros = collect($translator->translateCollection($rawLogros, $locale, 'logro'))
+            ->keyBy('id');
+
+        $resultado = $logrosConseguidos->map(function ($item) use ($translatedLogros) {
+            $logro = $translatedLogros->get($item->logro_id);
+
             return [
                 'logro_id' => $item->logro_id,
-                'nombre' => $item->logro->nombre,
-                'descripcion' => $item->logro->descripcion,
+                'nombre' => $logro['nombre'],
+                'descripcion' => $logro['descripcion'],
                 'icono_url' => $item->logro->icono_url,
                 'fecha_desbloqueo' => $item->fecha_desbloqueo,
                 'requisito_tipo' => $item->logro->requisito_tipo,
@@ -96,75 +93,73 @@ class UsuarioLogroController extends Controller
         return response()->json([
             'usuario_id' => (int) $idUsuario,
             'total_logros' => $resultado->count(),
-            'logros' => $resultado
+            'logros' => $resultado,
         ], 200);
     }
 
     /**
-     * Obtiene la lista completa de logros del juego, indicando cuáles ha desbloqueado el usuario.
-     * * @param int $idUsuario
-     * @return \Illuminate\Http\JsonResponse
+     * Obtiene la lista completa de logros indicando cuáles ha desbloqueado el usuario.
+     * Nombre y descripción se traducen según Accept-Language.
+     * Fix: la fecha de desbloqueo se carga de una sola query (evita N+1).
      */
-    public function getLogrosDesbloqueados()
+    public function getLogrosDesbloqueados(Request $request)
     {
         $idUsuario = Auth::id();
+        $locale = TranslationService::resolveLocale($request);
 
-        // logros disponibles, todossss
         $todosLosLogros = Logros::all();
 
-        //id de los logros que el usuario ya tiene
-        $logrosUsuarioIds = UsuarioLogro::where('usuario_id', $idUsuario)
-            ->pluck('logro_id')
-            ->toArray();
+        // Cargar todos los logros del usuario en una sola query → evita N+1
+        $userLogros = UsuarioLogro::where('usuario_id', $idUsuario)
+            ->get()
+            ->keyBy('logro_id');
 
+        $translator = app(TranslationService::class);
+        // Traducción masiva de todos los logros
+        $translatedLogros = collect($translator->translateCollection($todosLosLogros, $locale, 'logro'))
+            ->keyBy('id');
 
-
-        $resultado = $todosLosLogros->map(function ($logro) use ($logrosUsuarioIds, $idUsuario) {
-            $desbloqueado = in_array($logro->id, $logrosUsuarioIds);
+        $resultado = $todosLosLogros->map(function ($logro) use ($userLogros, $translatedLogros) {
+            $desbloqueado = $userLogros->has($logro->id);
+            $translated = $translatedLogros->get($logro->id);
 
             return [
                 'id' => $logro->id,
-                'nombre' => $logro->nombre,
-                'descripcion' => $logro->descripcion,
+                'nombre' => $translated['nombre'],
+                'descripcion' => $translated['descripcion'],
                 'icono_url' => $logro->icono_url,
                 'rareza' => $logro->rareza,
                 'requisito_tipo' => $logro->requisito_tipo,
                 'requisito_cantidad' => $logro->requisito_cantidad,
-                'desbloqueado' => $desbloqueado,//clave para el CSS de Angular
-                'fecha_obtencion' => $desbloqueado ?
-                    UsuarioLogro::where('usuario_id', $idUsuario)
-                        ->where('logro_id', $logro->id)
-                        ->value('fecha_desbloqueo') : null
+                'desbloqueado' => $desbloqueado,
+                'fecha_obtencion' => $desbloqueado
+                    ? $userLogros->get($logro->id)?->fecha_desbloqueo
+                    : null,
             ];
         });
 
         return response()->json([
             'usuario_id' => (int) $idUsuario,
-            'progreso_logros' => count($logrosUsuarioIds) > 0 ? count($logrosUsuarioIds) . '/' . $todosLosLogros->count() : '0/0',
-            'lista_completa' => $resultado
+            'progreso_logros' => count($userLogros) > 0
+                ? count($userLogros) . '/' . $todosLosLogros->count()
+                : '0/0',
+            'lista_completa' => $resultado,
         ], 200);
     }
 
     /**
-     * Obtiene el porcentaje de completitud de logros de un usuario.
-     * * @param int $idUsuario
-     * @return \Illuminate\Http\JsonResponse
+     * Obtiene el porcentaje de completitud de logros del usuario.
      */
     public function getPorcentajeLogros()
     {
         $idUsuario = Auth::id();
-
-        //contar cuántos logros existen en total en el juego para luego sacar el procentaje
         $totalLogros = Logros::count();
 
         if ($totalLogros === 0) {
             return response()->json(['porcentaje' => 0, 'mensaje' => 'No hay logros configurados'], 200);
         }
 
-        // cuántos tiene el usuario
         $logrosUsuario = UsuarioLogro::where('usuario_id', $idUsuario)->count();
-
-        // porcentaje
         $porcentaje = ($logrosUsuario / $totalLogros) * 100;
 
         return response()->json([
@@ -172,10 +167,7 @@ class UsuarioLogroController extends Controller
             'logros_obtenidos' => $logrosUsuario,
             'total_disponibles' => $totalLogros,
             'porcentaje' => round($porcentaje, 2),
-            'texto' => "Has completado $logrosUsuario de $totalLogros logros"
+            'texto' => "Has completado $logrosUsuario de $totalLogros logros",
         ], 200);
     }
-
-
 }
-

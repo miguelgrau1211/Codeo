@@ -1,11 +1,12 @@
 import { Component, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 @Component({
   selector: 'app-landing-page',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslatePipe],
   templateUrl: './landing-page.html',
   styleUrl: './landing-page.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -17,7 +18,7 @@ export class LandingPageComponent {
   featureText = computed(() => {
     const feature = this.activeFeature();
     if (!feature) return null;
-    
+
     const texts: Record<string, string> = {
       'ranking': 'Compite con tus amigos por el mejor puesto en el ranking.',
       'logros': 'Desbloquea insignias y demuestra tu dominio del código.',

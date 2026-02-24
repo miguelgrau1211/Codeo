@@ -2,11 +2,12 @@ import { Component, inject, OnInit, signal, ChangeDetectionStrategy, computed } 
 import { CommonModule } from '@angular/common';
 import { ThemeService, Tema } from '../services/theme-service';
 import { UserDataService } from '../services/user-data-service';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 @Component({
   selector: 'app-tienda-temas',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './tienda-temas.component.html',
   styleUrl: './tienda-temas.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,7 +20,7 @@ export class TiendaTemasComponent implements OnInit {
   temasDisponibles = signal<Tema[]>([]);
   misTemas = signal<number[]>([]); // Array of IDs
   isLoading = signal(true);
-  
+
   // Computed
   userCoins = computed(() => this.userDataService.userDataSignal()?.coins ?? 0);
   activeThemeId = computed(() => this.themeService.currentTheme()?.id);
@@ -30,7 +31,7 @@ export class TiendaTemasComponent implements OnInit {
 
   loadData() {
     this.isLoading.set(true);
-    
+
     // Initial user data load if not loaded
     if (!this.userDataService.isLoaded()) {
       this.userDataService.getUserData().subscribe();

@@ -1,82 +1,108 @@
-<div class="min-h-screen bg-primary-bg font-sans text-text-main transition-colors duration-300 p-6 md:p-12 relative overflow-hidden">
+<div
+    class="min-h-screen bg-primary-bg font-sans text-text-main transition-colors duration-300 p-6 md:p-12 relative overflow-hidden">
 
     <!-- Background Decoration -->
-    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-accent-color/10 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
-    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent-color/10 rounded-full blur-[100px] pointer-events-none translate-y-1/2 -translate-x-1/2"></div>
+    <div
+        class="absolute top-0 right-0 w-[500px] h-[500px] bg-accent-color/10 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2">
+    </div>
+    <div
+        class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent-color/10 rounded-full blur-[100px] pointer-events-none translate-y-1/2 -translate-x-1/2">
+    </div>
 
     <!-- Header -->
     <header class="relative z-10 flex items-center justify-between mb-12 max-w-4xl mx-auto">
         <div>
-            <a routerLink="/dashboard" class="group flex items-center gap-2 text-text-muted hover:text-accent-color transition-colors mb-2">
-                <span class="transform group-hover:-translate-x-1 transition-transform">←</span> Volver al Dashboard
+            <a routerLink="/dashboard"
+                class="group flex items-center gap-2 text-text-muted hover:text-accent-color transition-colors mb-2">
+                <span class="transform group-hover:-translate-x-1 transition-transform">←</span> {{ 'SETTINGS.BACK' |
+                translate }}
             </a>
             <h1 class="text-4xl md:text-5xl font-black text-text-main font-jersey tracking-wide">
-                CONFIGURACIÓN
+                {{ 'SETTINGS.TITLE' | translate }}
             </h1>
-            <p class="text-text-muted mt-2 font-medium">Personaliza tu experiencia en Codeo.</p>
+            <p class="text-text-muted mt-2 font-medium">{{ 'SETTINGS.SUBTITLE' | translate }}</p>
         </div>
     </header>
 
     <!-- Settings Container -->
     <div class="relative z-10 max-w-4xl mx-auto space-y-8">
-        
-        <!-- 1. Appearance Section (Redirect to Shop) -->
+
+        <!-- 1. Appearance Section -->
         <section class="bg-secondary-bg/50 backdrop-blur-sm rounded-3xl p-8 border border-white/5">
             <h2 class="text-2xl font-bold text-text-main mb-6 flex items-center gap-3">
-                <span class="text-2xl">🎨</span> Personalización
+                <span class="text-2xl">🎨</span> {{ 'SETTINGS.CUSTOMIZATION' | translate }}
             </h2>
-            
-            <div class="p-6 rounded-2xl bg-primary-bg/50 border border-white/5 flex flex-col md:flex-row items-center justify-between gap-6 hover:border-accent-color/30 transition-all group">
+
+            <div
+                class="p-6 rounded-2xl bg-primary-bg/50 border border-white/5 flex flex-col md:flex-row items-center justify-between gap-6 hover:border-accent-color/30 transition-all group">
                 <div class="flex items-center gap-5">
-                    <div class="w-16 h-16 rounded-2xl bg-accent-color/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-accent-color/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
                         🎭
                     </div>
                     <div>
-                        <h3 class="font-bold text-text-main text-xl">Temas del Entorno</h3>
+                        <h3 class="font-bold text-text-main text-xl">{{ 'SETTINGS.THEMES' | translate }}</h3>
                         <p class="text-sm text-text-muted max-w-sm">
-                            Gestiona tus temas adquiridos o consigue nuevos estilos en la tienda oficial.
+                            {{ 'SETTINGS.THEMES_DESC' | translate }}
                         </p>
                     </div>
                 </div>
 
-                <a routerLink="/tienda-temas" 
-                   class="px-8 py-4 rounded-2xl bg-accent-color text-white font-black text-xs uppercase tracking-widest hover:opacity-90 hover:scale-105 transition-all shadow-lg shadow-accent-color/20">
-                    Ir a la Tienda
+                <a routerLink="/tienda-temas"
+                    class="px-8 py-4 rounded-2xl bg-accent-color text-white font-black text-xs uppercase tracking-widest hover:opacity-90 hover:scale-105 transition-all shadow-lg shadow-accent-color/20">
+                    {{ 'SETTINGS.GO_TO_SHOP' | translate }}
                 </a>
             </div>
         </section>
 
-        <!-- 2. Preferences (Sound, Language) - Mocked -->
-        <section class="bg-secondary-bg/50 backdrop-blur-sm rounded-3xl p-8 border border-white/5 opacity-80 pointer-events-none grayscale-[0.5] relative overflow-hidden">
-             <div class="absolute top-4 right-4 bg-yellow-500/20 text-yellow-500 text-xs font-bold px-3 py-1 rounded-full border border-yellow-500/30">
-                PRÓXIMAMENTE
-            </div>
+        <!-- 2. Preferences (Sound, Language) -->
+        <section class="bg-secondary-bg/50 backdrop-blur-sm rounded-3xl p-8 border border-white/5">
             <h2 class="text-2xl font-bold text-text-main mb-6 flex items-center gap-3">
-                <span class="text-2xl">⚙️</span> Preferencias
+                <span class="text-2xl">⚙️</span> {{ 'SETTINGS.PREFERENCES' | translate }}
             </h2>
-            
+
             <div class="space-y-4">
                 <!-- Sound Item -->
-                <div class="flex items-center justify-between p-4">
+                <div class="flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition-colors cursor-pointer"
+                    (click)="toggleSound()">
                     <div class="flex items-center gap-4">
-                         <div class="w-10 h-10 rounded-lg bg-primary-bg flex items-center justify-center">🔊</div>
-                         <div>
-                             <h4 class="font-bold text-text-main">Efectos de Sonido</h4>
-                             <p class="text-xs text-text-muted">Sonidos de interfaz y logros.</p>
-                         </div>
+                        <div
+                            class="w-12 h-12 rounded-xl bg-primary-bg flex items-center justify-center text-xl shadow-inner">
+                            {{ isMuted() ? '🔇' : '🔊' }}
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-text-main">{{ 'SETTINGS.SOUND_EFFECTS' | translate }}</h4>
+                            <p class="text-xs text-text-muted">{{ 'SETTINGS.SOUND_DESC' | translate }}</p>
+                        </div>
                     </div>
-                    <div class="w-12 h-6 bg-green-500/50 rounded-full relative"><div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div></div>
+
+                    <!-- Toggle Switch -->
+                    <div class="w-14 h-7 rounded-full p-1 transition-colors duration-300 relative"
+                        [ngClass]="isMuted() ? 'bg-zinc-700' : 'bg-accent-color'">
+                        <div class="w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-300 transform"
+                            [ngClass]="isMuted() ? 'translate-x-0' : 'translate-x-7'">
+                        </div>
+                    </div>
                 </div>
-                 <!-- Language Item -->
-                <div class="flex items-center justify-between p-4 border-t border-white/5">
+
+                <!-- Language Item -->
+                <div class="flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition-colors cursor-pointer"
+                    (click)="openLanguageSelector()">
                     <div class="flex items-center gap-4">
-                         <div class="w-10 h-10 rounded-lg bg-primary-bg flex items-center justify-center">🌍</div>
-                         <div>
-                             <h4 class="font-bold text-text-main">Idioma</h4>
-                             <p class="text-xs text-text-muted">Español (España)</p>
-                         </div>
+                        <div
+                            class="w-12 h-12 rounded-xl bg-primary-bg flex items-center justify-center text-2xl shadow-inner">
+                            {{ languageService.getCurrentLanguage().flag }}
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-text-main">{{ 'SETTINGS.LANGUAGE' | translate }}</h4>
+                            <p class="text-xs text-text-muted">{{ languageService.getCurrentLanguage().nativeName }} ({{
+                                languageService.getCurrentLanguage().name }})</p>
+                        </div>
                     </div>
-                     <span class="text-text-muted">Cambiar ></span>
+                    <div class="flex items-center gap-2">
+                        <span class="text-text-muted group-hover:translate-x-1 transition-transform">{{
+                            'SETTINGS.CHANGE' | translate }} →</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -84,18 +110,87 @@
         <!-- 3. Account Actions -->
         <section class="bg-red-900/10 backdrop-blur-sm rounded-3xl p-8 border border-red-500/20">
             <h2 class="text-2xl font-bold text-red-500 mb-6 flex items-center gap-3">
-                <span class="text-2xl">⚠️</span> Zona de Peligro
+                <span class="text-2xl">⚠️</span> {{ 'SETTINGS.DANGER_ZONE' | translate }}
             </h2>
-            
+
             <div class="flex flex-col md:flex-row gap-4">
-                <button class="px-6 py-3 rounded-xl bg-secondary-bg text-text-main font-bold border border-white/5 hover:bg-primary-bg transition-colors">
-                    Cerrar Sesión
+                <button (click)="onLogout()" [disabled]="isProcessing()"
+                    class="px-8 py-4 rounded-2xl bg-secondary-bg text-text-main font-black text-xs uppercase tracking-widest border border-white/10 hover:bg-zinc-800 transition-all flex items-center justify-center gap-2 disabled:opacity-50">
+                    <span *ngIf="isProcessing()">⌛</span>
+                    {{ 'SETTINGS.LOGOUT' | translate }}
                 </button>
-                 <button class="px-6 py-3 rounded-xl bg-red-600 text-white font-bold hover:bg-red-700 transition-colors shadow-lg shadow-red-600/20">
-                    Borrar Cuenta
+                <button (click)="confirmDeleteAccount()" [disabled]="isProcessing()"
+                    class="px-8 py-4 rounded-2xl bg-red-600/20 text-red-500 border border-red-500/30 font-black text-xs uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all shadow-lg shadow-red-600/5 disabled:opacity-50">
+                    {{ 'SETTINGS.DELETE_ACCOUNT' | translate }}
                 </button>
             </div>
         </section>
 
+    </div>
+
+    <!-- Language Selector Modal -->
+    <div *ngIf="showLangModal()"
+        class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/90 backdrop-blur-xl animate-in fade-in duration-300">
+        <div
+            class="bg-secondary-bg border border-white/10 rounded-[2.5rem] p-8 max-w-3xl w-full shadow-2xl relative max-h-[90vh] overflow-hidden flex flex-col">
+
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="text-3xl font-black text-white font-jersey tracking-wider uppercase">{{ 'MODALS.SELECT_LANG'
+                    | translate }}</h3>
+                <button (click)="closeLanguageSelector()"
+                    class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors">✕</button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 overflow-y-auto pr-2 custom-scrollbar">
+                @for (lang of languageService.languages; track lang.code) {
+                <button (click)="selectLanguage(lang.code)"
+                    class="flex items-center gap-4 p-4 rounded-2xl border transition-all text-left group"
+                    [ngClass]="languageService.currentLang() === lang.code 
+                                      ? 'bg-accent-color border-accent-color text-white' 
+                                      : 'bg-primary-bg/50 border-white/5 text-text-muted hover:border-white/20 hover:bg-primary-bg'">
+                    <span class="text-3xl group-hover:scale-110 transition-transform">{{ lang.flag }}</span>
+                    <div class="overflow-hidden">
+                        <p class="font-bold text-sm truncate"
+                            [class.text-white]="languageService.currentLang() === lang.code">{{ lang.nativeName }}</p>
+                        <p class="text-[10px] opacity-60 uppercase tracking-tighter">{{ lang.name }}</p>
+                    </div>
+                    <div *ngIf="languageService.currentLang() === lang.code" class="ml-auto text-white">✓</div>
+                </button>
+                }
+            </div>
+
+            <p class="mt-8 text-xs text-text-muted text-center italic">
+                * {{ 'MODALS.LANG_NOTE' | translate }}
+            </p>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div *ngIf="showDeleteModal()"
+        class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-md transition-opacity">
+        <div
+            class="bg-secondary-bg border border-red-500/30 rounded-[2.5rem] p-10 max-w-md w-full shadow-2xl shadow-red-900/20 transform animate-in fade-in zoom-in duration-300">
+            <div
+                class="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center text-5xl mx-auto mb-8 animate-bounce">
+                🛑
+            </div>
+            <h3 class="text-3xl font-black text-white text-center mb-4 font-jersey tracking-wider">{{
+                'MODALS.CONFIRM_TITLE' | translate }}</h3>
+            <p class="text-text-muted text-center mb-10 leading-relaxed">
+                {{ 'MODALS.CONFIRM_DELETE_DESC' | translate }}
+            </p>
+
+            <div class="grid grid-cols-2 gap-4">
+                <button (click)="cancelDelete()"
+                    class="py-4 rounded-2xl bg-zinc-800 text-white font-bold hover:bg-zinc-700 transition-all">
+                    {{ 'MODALS.CANCEL' | translate }}
+                </button>
+                <button (click)="executeDeleteAccount()" [disabled]="isProcessing()"
+                    class="py-4 rounded-2xl bg-red-600 text-white font-bold hover:bg-red-700 transition-all shadow-lg shadow-red-600/30 flex items-center justify-center gap-2">
+                    <span *ngIf="isProcessing()">⌛</span>
+                    {{ 'MODALS.CONFIRM_YES' | translate }}
+                </button>
+            </div>
+        </div>
     </div>
 </div>
