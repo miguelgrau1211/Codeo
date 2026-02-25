@@ -1,6 +1,8 @@
 import { Component, signal, computed, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 import { ProgresoHistoriaService } from '../../services/progreso-historia-service';
 import { UserDataService } from '../../services/user-data-service';
 import { ThemeService } from '../../services/theme-service';
@@ -34,7 +36,7 @@ interface BattlePassReward {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, TranslatePipe],
+  imports: [CommonModule, RouterLink, TranslatePipe, FormsModule],
   templateUrl: './dashboard.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -44,6 +46,7 @@ export class DashboardComponent implements OnInit {
   private readonly userDataService = inject(UserDataService);
   public readonly themeService = inject(ThemeService);
   private readonly authService = inject(AuthService);
+  private readonly http = inject(HttpClient);
 
   // Exponer el signal de admin al template
   readonly isAdmin = this.authService.isAdminSignal;
@@ -91,6 +94,20 @@ export class DashboardComponent implements OnInit {
   story_levels_completed = computed(() => this.userDataService.userDataSignal()?.story_levels_completed ?? 0);
   
   userData = computed(() => this.userDataService.userDataSignal());
+
+  // --- Premium / Battle Pass ---
+  isPremium = this.userDataService.isPremium;
+
+  // --- Payment Modal State ---
+  showPaymentModal = signal(false);
+  paymentStep = signal<'form' | 'processing' | 'success' | 'error'>('form');
+  paymentError = signal<string | null>(null);
+  
+  // Card form fields
+  cardNumber = signal('');
+  cardHolder = signal('');
+  cardExpiry = signal('');
+  cardCvv = signal('');
 
   // --- Battle Pass Logic ---
   battlePassRewards = signal<BattlePassReward[]>([
@@ -151,8 +168,82 @@ export class DashboardComponent implements OnInit {
   toggleSidebar() {
     this.isSidebarOpen.update(v => !v);
   }
+
+  // --- Payment Modal Methods ---
+  openPaymentModal() {
+    this.paymentStep.set('form');
+    this.paymentError.set(null);
+    this.cardNumber.set('');
+    this.cardHolder.set('');
+    this.cardExpiry.set('');
+    this.cardCvv.set('');
+    this.showPaymentModal.set(true);
+  }
+
+  closePaymentModal() {
+    this.showPaymentModal.set(false);
+  }
+
+  formatCardNumber(event: Event) {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, '');
+    value = value.substring(0, 16);
+    const formatted = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+    this.cardNumber.set(formatted);
+    input.value = formatted;
+  }
+
+  formatExpiry(event: Event) {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, '');
+    value = value.substring(0, 4);
+    if (value.length >= 2) {
+      value = value.substring(0, 2) + '/' + value.substring(2);
+    }
+    this.cardExpiry.set(value);
+    input.value = value;
+  }
+
+  isFormValid(): boolean {
+    return this.cardNumber().replace(/\s/g, '').length === 16
+      && this.cardHolder().trim().length >= 2
+      && this.cardExpiry().length === 5
+      && this.cardCvv().length >= 3;
+  }
+
+  submitPayment() {
+    if (!this.isFormValid()) return;
+
+    this.paymentStep.set('processing');
+
+    const token = sessionStorage.getItem('token');
+    const payload = {
+      card_number: this.cardNumber().replace(/\s/g, ''),
+      card_holder: this.cardHolder(),
+      expiry: this.cardExpiry(),
+      cvv: this.cardCvv(),
+    };
+
+    this.http.post<any>('http://localhost/api/battle-pass/purchase', payload, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      }
+    }).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.paymentStep.set('success');
+          // Refresh user data to get updated premium status
+          this.userDataService.getUserData(true).subscribe();
+        } else {
+          this.paymentError.set(res.message || 'Error al procesar el pago.');
+          this.paymentStep.set('error');
+        }
+      },
+      error: (err) => {
+        this.paymentError.set(err.error?.message || 'Error al conectar con el servidor.');
+        this.paymentStep.set('error');
+      }
+    });
+  }
 }
-
-
-
-

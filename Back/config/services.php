@@ -45,4 +45,9 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URL'),
     ],
 
+    'stripe' => [
+        'publishable_key' => env('STRIPE_PUBLISHABLE_KEY'),
+        'secret' => env('STRIPE_SECRET_KEY'),
+    ],
+
 ];

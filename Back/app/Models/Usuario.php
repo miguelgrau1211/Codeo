@@ -45,6 +45,8 @@ class Usuario extends Authenticatable
         'preferencias',
         'terminos_aceptados',
         'es_admin',
+        'es_premium',
+        'premium_since',
         'tema_actual_id',
     ];
 
@@ -75,6 +77,8 @@ class Usuario extends Authenticatable
         'streak' => 'integer',
         'max_streak' => 'integer',
         'es_admin' => 'boolean',
+        'es_premium' => 'boolean',
+        'premium_since' => 'datetime',
         'tema_actual_id' => 'integer',
         'ultimo_nivel_completado_at' => 'datetime',
     ];

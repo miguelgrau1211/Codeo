@@ -29,6 +29,11 @@ class GrantBattlePassRewardsAction
      */
     public function execute(Usuario $usuario): array
     {
+        // Solo otorgar recompensas si el usuario tiene el Pase de Batalla (Premium)
+        if (!$usuario->es_premium) {
+            return [];
+        }
+
         $grantedRewards = [];
         $currentLevel = $usuario->nivel_global;
 

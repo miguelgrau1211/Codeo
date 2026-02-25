@@ -20,6 +20,7 @@ export interface UserData {
   roguelike_levels_played: number;
   subscription_date: string;
   rank: number;
+  is_premium: boolean;
   tema_actual_id?: number | null;
   preferencias?: any;
   nuevos_logros?: any[];

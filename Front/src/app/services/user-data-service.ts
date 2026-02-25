@@ -21,6 +21,7 @@ export class UserDataService {
   readonly coins = computed(() => this.userDataSignal()?.coins ?? 0);
   readonly experience = computed(() => this.userDataSignal()?.experience ?? 0);
   readonly level = computed(() => this.userDataSignal()?.level ?? 1);
+  readonly isPremium = computed(() => this.userDataSignal()?.is_premium ?? false);
 
   /** True cuando se ha cargado al menos una vez */
   private readonly _loaded = signal(false);

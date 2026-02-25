@@ -14,6 +14,7 @@ use App\Http\Controllers\NivelesHistoriaController;
 use App\Http\Controllers\RoguelikeSessionController;
 use App\Http\Controllers\Api\TemaController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\PurchaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,6 +107,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [UserController::class, 'logout']);
     Route::post('/users/preferencias', [UserController::class, 'updatePreferencias']);
     Route::post('/users/desactivar', [UserController::class, 'desactivarPropiaCuenta']);
+
+    // Battle Pass / Premium (Stripe)
+    Route::get('/battle-pass/status', [PurchaseController::class, 'getBattlePassStatus']);
+    Route::post('/battle-pass/create-intent', [PurchaseController::class, 'createPaymentIntent']);
+    Route::post('/battle-pass/confirm', [PurchaseController::class, 'confirmPayment']);
 
     // Reportes (Usuario común manda reportes)
     Route::post('/reportes', [\App\Http\Controllers\ReporteController::class, 'store'])->middleware('throttle:3,10');

@@ -614,6 +614,7 @@ class UserController extends Controller
             'roguelike_levels_played' => $roguelike_levels_played,
             'subscription_date' => $subscription_date,
             'rank' => $rank,
+            'is_premium' => (bool) $usuario->es_premium,
             'tema_actual_id' => $usuario->tema_actual_id,
             'preferencias' => $usuario->preferencias,
             'nuevos_logros' => $translator->translateLogrosCollection($nuevosLogros, $locale),
