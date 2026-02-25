@@ -434,7 +434,17 @@
     "MOD_CORE": "❤️ Kern",
     "MOD_PHASE": "⏱️ Phase",
     "MOD_DATA": "💰 Daten",
-    "MOD_ALGO": "💡 Algorithmus"
+    "MOD_ALGO": "💡 Algorithmus",
+    "UPGRADES": {
+      "DOUBLE_COIN_NAME": "Doppelte Münze",
+      "DOUBLE_COIN_DESC": "Im Roguelike-Modus verdienst du doppelt so viele Münzen.",
+      "EXTRA_LIFE_NAME": "Extraleben",
+      "EXTRA_LIFE_DESC": "Du beginnst bei jedem Lauf mit einem Extraleben.",
+      "EXTRA_TIME_NAME": "Verlängerung",
+      "EXTRA_TIME_DESC": "Fügt dem Level-Timer 30 Sekunden hinzu."
+    },
+    "PAUSED": "LANGSAM",
+    "ERR_TIMEOUT": "Timeout-Fehler"
   },
   "HEADER": {
     "DASHBOARD": "Dashboard",

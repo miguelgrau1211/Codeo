@@ -434,7 +434,17 @@
     "MOD_CORE": "❤️ Core",
     "MOD_PHASE": "⏱️ Phase",
     "MOD_DATA": "💰 Data",
-    "MOD_ALGO": "💡 Algorithm"
+    "MOD_ALGO": "💡 Algorithm",
+    "UPGRADES": {
+      "DOUBLE_COIN_NAME": "Double Coin",
+      "DOUBLE_COIN_DESC": "You earn double the coins in Roguelike mode.",
+      "EXTRA_LIFE_NAME": "Extra Life",
+      "EXTRA_LIFE_DESC": "You start with an extra life on each run.",
+      "EXTRA_TIME_NAME": "Extra Time",
+      "EXTRA_TIME_DESC": "Adds 30 seconds to the level's timer."
+    },
+    "PAUSED": "SLOW",
+    "ERR_TIMEOUT": "Timeout error"
   },
   "HEADER": {
     "DASHBOARD": "Dashboard",

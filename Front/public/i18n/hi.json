@@ -434,7 +434,15 @@
     "MOD_CORE": "❤️ कोर",
     "MOD_PHASE": "⏱️ चरण",
     "MOD_DATA": "💰 डेटा",
-    "MOD_ALGO": "💡 एल्गो"
+    "MOD_ALGO": "💡 एल्गो",
+    "UPGRADES": {
+      "DOUBLE_COIN_NAME": "दोहरा सिक्का",
+      "DOUBLE_COIN_DESC": "आप रॉगुलाइक मोड में दोगुने सिक्के कमाते हैं।",
+      "EXTRA_LIFE_NAME": "अतिरिक्त जिंदगी",
+      "EXTRA_LIFE_DESC": "आप प्रत्येक रन पर एक अतिरिक्त जीवन के साथ शुरुआत करते हैं।",
+      "EXTRA_TIME_NAME": "अतिरिक्त समय",
+      "EXTRA_TIME_DESC": "लेवल के टाइमर में 30 सेकंड जोड़ता है।"
+    }
   },
   "HEADER": {
     "DASHBOARD": "डैशबोर्ड",

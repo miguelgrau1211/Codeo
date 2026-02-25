@@ -434,7 +434,15 @@
     "MOD_CORE": "❤️ Ядро",
     "MOD_PHASE": "⏱️ Фаза",
     "MOD_DATA": "💰 Данные",
-    "MOD_ALGO": "💡 Алгоритм"
+    "MOD_ALGO": "💡 Алгоритм",
+    "UPGRADES": {
+      "DOUBLE_COIN_NAME": "Двойная монета",
+      "DOUBLE_COIN_DESC": "Вы зарабатываете вдвое больше монет в режиме Roguelike.",
+      "EXTRA_LIFE_NAME": "Дополнительная жизнь",
+      "EXTRA_LIFE_DESC": "Вы начинаете с дополнительной жизни в каждом забеге.",
+      "EXTRA_TIME_NAME": "Дополнительное время",
+      "EXTRA_TIME_DESC": "Добавляет 30 секунд к таймеру уровня."
+    }
   },
   "HEADER": {
     "DASHBOARD": "Панель",

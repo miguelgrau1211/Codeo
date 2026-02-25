@@ -231,7 +231,17 @@
     "MOD_PHASE": "⏱️ Fase",
     "MOD_DATA": "💰 Dados",
     "MOD_ALGO": "💡 Algoritmo",
-    "STARTER_CODE": "# A variável de entrada contém os dados de entrada\n# Seu código aqui"
+    "STARTER_CODE": "# A variável de entrada contém os dados de entrada\n# Seu código aqui",
+    "UPGRADES": {
+      "DOUBLE_COIN_NAME": "Moeda Dupla",
+      "DOUBLE_COIN_DESC": "Você ganha o dobro de moedas no modo Roguelike.",
+      "EXTRA_LIFE_NAME": "Vida Extra",
+      "EXTRA_LIFE_DESC": "Você começa com uma vida extra em cada corrida.",
+      "EXTRA_TIME_NAME": "Prorrogação",
+      "EXTRA_TIME_DESC": "Adiciona 30 segundos ao cronômetro do nível."
+    },
+    "PAUSED": "LENTO",
+    "ERR_TIMEOUT": "Erro de tempo limite"
   },
   "SHOP": {
     "TITLE": "COMPRAR",

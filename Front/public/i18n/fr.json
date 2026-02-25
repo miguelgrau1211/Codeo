@@ -434,7 +434,17 @@
     "MOD_CORE": "❤️ Noyau",
     "MOD_PHASE": "⏱️ Phase",
     "MOD_DATA": "💰 Données",
-    "MOD_ALGO": "💡 Algorithme"
+    "MOD_ALGO": "💡 Algorithme",
+    "UPGRADES": {
+      "DOUBLE_COIN_NAME": "Pièce double",
+      "DOUBLE_COIN_DESC": "Vous gagnez le double des pièces en mode Roguelike.",
+      "EXTRA_LIFE_NAME": "Vie supplémentaire",
+      "EXTRA_LIFE_DESC": "Vous commencez avec une vie supplémentaire à chaque course.",
+      "EXTRA_TIME_NAME": "Temps supplémentaire",
+      "EXTRA_TIME_DESC": "Ajoute 30 secondes au chronomètre du niveau."
+    },
+    "PAUSED": "LENT",
+    "ERR_TIMEOUT": "Erreur d'expiration du délai"
   },
   "HEADER": {
     "DASHBOARD": "Tableau de bord",

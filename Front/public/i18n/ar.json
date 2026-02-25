@@ -434,7 +434,15 @@
     "MOD_CORE": "❤️ نواة",
     "MOD_PHASE": "⏱️ مرحلة",
     "MOD_DATA": "💰 بيانات",
-    "MOD_ALGO": "💡 خوارزمية"
+    "MOD_ALGO": "💡 خوارزمية",
+    "UPGRADES": {
+      "DOUBLE_COIN_NAME": "عملة مزدوجة",
+      "DOUBLE_COIN_DESC": "تكسب ضعف العملات المعدنية في وضع Roguelike.",
+      "EXTRA_LIFE_NAME": "حياة اضافية",
+      "EXTRA_LIFE_DESC": "عليك أن تبدأ بحياة إضافية في كل جولة.",
+      "EXTRA_TIME_NAME": "الوقت الاضافي",
+      "EXTRA_TIME_DESC": "يضيف 30 ثانية إلى توقيت المستوى."
+    }
   },
   "HEADER": {
     "DASHBOARD": "لوحة القيادة",

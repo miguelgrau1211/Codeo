@@ -441,7 +441,17 @@
     "MOD_CORE": "❤️ Nucli",
     "MOD_PHASE": "⏱️ Fase",
     "MOD_DATA": "💰 Dades",
-    "MOD_ALGO": "💡 Algorisme"
+    "MOD_ALGO": "💡 Algorisme",
+    "UPGRADES": {
+      "DOUBLE_COIN_NAME": "Doble Moneda",
+      "DOUBLE_COIN_DESC": "Guanyes el doble de monedes a la manera Roguelike.",
+      "EXTRA_LIFE_NAME": "Vida Extra",
+      "EXTRA_LIFE_DESC": "Comences amb una vida extra a cada run.",
+      "EXTRA_TIME_NAME": "Temps Extra",
+      "EXTRA_TIME_DESC": "Afegeix 30 segons al temporitzador del nivell."
+    },
+    "PAUSED": "PAUSAT",
+    "ERR_TIMEOUT": "Error de temps despera"
   },
   "HEADER": {
     "DASHBOARD": "Tauler",

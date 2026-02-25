@@ -154,10 +154,9 @@
                 <div class="mt-8 p-5 rounded-2xl bg-accent-color/5 border border-accent-color/20 border-l-4">
                     <h4
                         class="text-accent-color font-black text-[10px] uppercase mb-2 flex items-center gap-2 tracking-widest">
-                        <span class="text-base">💡</span> Pista de Programación
+                        <span class="text-base">💡</span> {{ 'STORY_MODE.HINT' | translate }}
                     </h4>
-                    <p class="text-xs text-text-main/80 font-medium">Recuerda optimizar tu lógica para casos grandes de
-                        entrada.</p>
+                    <p class="text-xs text-text-main/80 font-medium">{{ 'STORY_MODE.HINT_TEXT' | translate }}</p>
                 </div>
             </div>
         </aside>
@@ -315,8 +314,8 @@
                     @if (executionResult().error) {
                     <div
                         class="text-red-500 p-5 bg-red-950/40 rounded-2xl border border-red-500/30 whitespace-pre-wrap font-mono text-[11px] shadow-xl">
-                        <span class="block font-black mb-3 text-red-400 uppercase tracking-widest text-[10px]">⚡ FALLO
-                            CRÍTICO EN TIEMPO DE EJECUCIÓN:</span>
+                        <span class="block font-black mb-3 text-red-400 uppercase tracking-widest text-[10px]">⚡ {{
+                            'STORY_MODE.RUNTIME_ERR' | translate | uppercase }}:</span>
                         {{ executionResult().error }}
                     </div>
                     }
@@ -332,7 +331,7 @@
                             <div class="flex items-center gap-3 mb-4">
                                 <span class="font-black italic uppercase text-[10px] tracking-widest"
                                     [class.text-green-400]="test.passed" [class.text-red-400]="!test.passed">
-                                    VECTOR DE PRUEBA #{{ $index + 1 }}
+                                    {{ 'STORY_MODE.TEST_VECTOR' | translate }} #{{ $index + 1 }}
                                 </span>
                                 @if (!test.passed) {
                                 <span

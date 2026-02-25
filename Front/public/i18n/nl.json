@@ -434,7 +434,17 @@
     "MOD_CORE": "❤️ Kern",
     "MOD_PHASE": "⏱️ Fase",
     "MOD_DATA": "💰 Data",
-    "MOD_ALGO": "💡 Algoritme"
+    "MOD_ALGO": "💡 Algoritme",
+    "UPGRADES": {
+      "DOUBLE_COIN_NAME": "Dubbele munt",
+      "DOUBLE_COIN_DESC": "Je verdient het dubbele aantal munten in de Roguelike-modus.",
+      "EXTRA_LIFE_NAME": "Extra leven",
+      "EXTRA_LIFE_DESC": "Bij elke run begin je met een extra leven.",
+      "EXTRA_TIME_NAME": "Extra tijd",
+      "EXTRA_TIME_DESC": "Voegt 30 seconden toe aan de timer van het niveau."
+    },
+    "PAUSED": "LANGZAAM",
+    "ERR_TIMEOUT": "Time-outfout"
   },
   "HEADER": {
     "DASHBOARD": "Dashboard",

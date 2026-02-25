@@ -434,7 +434,15 @@
     "MOD_CORE": "❤️ Nucli",
     "MOD_PHASE": "⏱️ Fase",
     "MOD_DATA": "💰 Dades",
-    "MOD_ALGO": "💡 Algorisme"
+    "MOD_ALGO": "💡 Algorisme",
+    "UPGRADES": {
+      "DOUBLE_COIN_NAME": "Doble Moneda",
+      "DOUBLE_COIN_DESC": "Ganas el doble de monedas en el modo Roguelike.",
+      "EXTRA_LIFE_NAME": "Vida Extra",
+      "EXTRA_LIFE_DESC": "Empiezas con una vida extra en cada run.",
+      "EXTRA_TIME_NAME": "Tiempo Extra",
+      "EXTRA_TIME_DESC": "Añade 30 segundos al temporizador del nivel."
+    }
   },
   "HEADER": {
     "DASHBOARD": "Tauler",

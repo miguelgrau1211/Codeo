@@ -434,7 +434,15 @@
     "MOD_CORE": "❤️ Çekirdek",
     "MOD_PHASE": "⏱️ Faz",
     "MOD_DATA": "💰 Veri",
-    "MOD_ALGO": "💡 Algoritma"
+    "MOD_ALGO": "💡 Algoritma",
+    "UPGRADES": {
+      "DOUBLE_COIN_NAME": "Çift Para",
+      "DOUBLE_COIN_DESC": "Roguelike modunda iki kat jeton kazanırsınız.",
+      "EXTRA_LIFE_NAME": "Ekstra Yaşam",
+      "EXTRA_LIFE_DESC": "Her koşuda ekstra bir canla başlarsınız.",
+      "EXTRA_TIME_NAME": "Uzatma Zamanı",
+      "EXTRA_TIME_DESC": "Seviyenin zamanlayıcısına 30 saniye ekler."
+    }
   },
   "HEADER": {
     "DASHBOARD": "Panel",

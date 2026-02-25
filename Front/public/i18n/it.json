@@ -434,7 +434,17 @@
     "MOD_CORE": "❤️ Nucleo",
     "MOD_PHASE": "⏱️ Fase",
     "MOD_DATA": "💰 Dati",
-    "MOD_ALGO": "💡 Algoritmo"
+    "MOD_ALGO": "💡 Algoritmo",
+    "UPGRADES": {
+      "DOUBLE_COIN_NAME": "Doppia moneta",
+      "DOUBLE_COIN_DESC": "Guadagni il doppio delle monete in modalità Roguelike.",
+      "EXTRA_LIFE_NAME": "Vita extra",
+      "EXTRA_LIFE_DESC": "Inizi con una vita extra ad ogni corsa.",
+      "EXTRA_TIME_NAME": "Tempo supplementare",
+      "EXTRA_TIME_DESC": "Aggiunge 30 secondi al timer del livello."
+    },
+    "PAUSED": "LENTO",
+    "ERR_TIMEOUT": "Errore di timeout"
   },
   "HEADER": {
     "DASHBOARD": "Dashboard",

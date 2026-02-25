@@ -11,20 +11,20 @@ class MejorasSeeder extends Seeder
     {
         $mejoras = [
             [
-                'nombre' => 'Doble Moneda',
-                'descripcion' => 'Ganas el doble de monedas en el modo Roguelike.',
+                'nombre' => 'INFINITE.UPGRADES.DOUBLE_COIN_NAME',
+                'descripcion' => 'INFINITE.UPGRADES.DOUBLE_COIN_DESC',
                 'tipo' => 'multiplicador',
                 'precio_monedas' => 500
             ],
             [
-                'nombre' => 'Vida Extra',
-                'descripcion' => 'Empiezas con una vida extra en cada run.',
+                'nombre' => 'INFINITE.UPGRADES.EXTRA_LIFE_NAME',
+                'descripcion' => 'INFINITE.UPGRADES.EXTRA_LIFE_DESC',
                 'tipo' => 'vidas_extra',
                 'precio_monedas' => 1000
             ],
-             [
-                'nombre' => 'Tiempo Extra',
-                'descripcion' => 'Añade 30 segundos al temporizador del nivel.',
+            [
+                'nombre' => 'INFINITE.UPGRADES.EXTRA_TIME_NAME',
+                'descripcion' => 'INFINITE.UPGRADES.EXTRA_TIME_DESC',
                 'tipo' => 'tiempo_extra',
                 'precio_monedas' => 200
             ]
