@@ -1,26 +1,17 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap, map } from 'rxjs';
+import { Observable, map } from 'rxjs';
+import { RankingUser } from '../models/ranking.model';
 
-
-export interface User {
-    name: string;
-    level: number;
-    xp: number;
-    avatar: string;
-    rank: number;
-    badges: string[];
-}
 @Injectable({
   providedIn: 'root',
 })
-
 export class RankingService {
 
     private readonly http = inject(HttpClient);
     private readonly apiUrl = 'http://localhost/api/ranking';
 
-    getRanking(): Observable<User[]> {
+    getRanking(): Observable<RankingUser[]> {
         return this.http.get<{ usuarios: any[] }>(this.apiUrl).pipe(
             map((response: { usuarios: any[] }) => response.usuarios.map((u: any) => ({
                 rank: u.posicion,
@@ -32,7 +23,4 @@ export class RankingService {
             })))
         );
     }
-
-
-
 }

@@ -17,9 +17,8 @@ class GrantBattlePassRewardsAction
         12 => ['type' => 'theme', 'value' => 'Aurora Borealis'],
         20 => ['type' => 'coins', 'value' => 500],
         28 => ['type' => 'theme', 'value' => 'Gold Rush'],
-        35 => ['type' => 'theme', 'value' => 'Forest Zen'],
-        42 => ['type' => 'theme', 'value' => 'Void Master'],
-        50 => ['type' => 'coins', 'value' => 5000],
+        35 => ['type' => 'theme', 'value' => 'Void Master'],
+        42 => ['type' => 'coins', 'value' => 5000],
     ];
 
     /**

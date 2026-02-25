@@ -1,15 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-
-export interface NivelRoguelike {
-  id: number;
-  dificultad: string;
-  titulo: string;
-  descripcion: string;
-  recompensa_monedas: number;
-  test_cases?: any[];
-}
+import { NivelRoguelike } from '../models/level.model';
 
 @Injectable({
   providedIn: 'root',
@@ -37,3 +29,4 @@ export class RoguelikeService {
       .pipe(tap((nivel) => this.nivelActual.set(nivel)));
   }
 }
+

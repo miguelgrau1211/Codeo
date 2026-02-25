@@ -185,3 +185,4 @@ export interface RoguelikeLevel {
     nivel_id_original?: number;
     fecha_desactivacion?: string;
 }
+

@@ -13,3 +13,4 @@ export class TranslatePipe implements PipeTransform {
         return this.langService.translate(key);
     }
 }
+

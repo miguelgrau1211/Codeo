@@ -8,7 +8,7 @@ import { StoryLevel, RoguelikeLevel } from '../../services/admin-service';
     standalone: true,
     imports: [CommonModule, FormsModule],
     templateUrl: './level-editor-modal.component.html',
-    styleUrls: ['./level-editor-modal.component.css']
+    styleUrl: './level-editor-modal.component.css'
 })
 export class LevelEditorModalComponent implements OnChanges {
     @Input() isOpen = false;
@@ -96,3 +96,7 @@ export class LevelEditorModalComponent implements OnChanges {
         this.close.emit();
     }
 }
+
+
+
+

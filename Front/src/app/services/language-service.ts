@@ -133,3 +133,4 @@ export class LanguageService {
         return translated;
     }
 }
+
