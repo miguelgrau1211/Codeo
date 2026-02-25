@@ -57,7 +57,14 @@
       "REPORTS": "Rapporti",
       "SETTINGS": "Impostazioni"
     },
-    "LOADING": "Caricamento della tua avventura..."
+    "LOADING": "Caricamento della tua avventura...",
+    "BATTLE_PASS": "PASSAGGIO DI BATTAGLIA",
+    "BATTLE_LEVEL": "Livello",
+    "BATTLE_REWARDS": "ricompense",
+    "BATTLE_NV": "Liv.",
+    "BATTLE_UNLOCKED": "Sbloccato",
+    "ADMIN_TITLE": "Pannello di amministrazione",
+    "ADMIN_DESC": "Gestione degli utenti, dei livelli e dei contenuti."
   },
   "PROFILE": {
     "BACK": "Pannello di controllo",
@@ -88,7 +95,9 @@
       "GENERATE_RANDOM": "Genera casuale",
       "AVATAR_TIP": "* Clicca sull'immagine qui sopra per generare un nuovo avatar casuale.",
       "CANCEL": "Cancellare",
-      "SAVE": "Mantenere"
+      "SAVE": "Mantenere",
+      "SUCCESS_UPDATE": "Profilo aggiornato con successo!",
+      "ERR_UPDATE": "Errore durante l'aggiornamento del profilo."
     },
     "LOADING": "Caricamento profilo..."
   },
@@ -168,7 +177,26 @@
     "EQUIPPED": "Attrezzato",
     "EQUIP": "Equipaggiare",
     "FREE_EQUIP": "Gratuito - Equipaggia",
-    "BUY": "Acquistare"
+    "BUY": "Acquistare",
+    "NOT_ENOUGH_COINS": "Non hai abbastanza monete!",
+    "CONFIRM_BUY": "Vuoi acquistare il tema \"{{name}}\" per {{price}} monete?",
+    "SUCCESS_BUY": "Tema acquistato con successo!",
+    "ERR_BUY": "Errore durante l'acquisto del tema",
+    "ERR_ACTIVATE": "Errore durante l'attivazione del tema",
+    "LOCKED": "Bloccato",
+    "BATTLE_PASS_UNLOCK": "Sblocca tramite Battle Pass",
+    "SUCCESS_TITLE": "TEMA ACQUISITO!",
+    "SUCCESS_MSG_PREFIX": "Il tema",
+    "SUCCESS_MSG_SUFFIX": "È già tuo. Goditi il ​​tuo nuovo ambiente!",
+    "SUCCESS_BTN": "Brillante",
+    "ERROR_TITLE": "Operazione non riuscita",
+    "ERROR_BTN": "Inteso",
+    "CONFIRM_TITLE": "Conferma acquisto",
+    "CONFIRM_MSG_PREFIX": "Vuoi sbloccare il tema",
+    "CONFIRM_MSG_BY": "di",
+    "CONFIRM_COINS": "monete",
+    "CONFIRM_BTN": "Conferma acquisizione",
+    "CANCEL_BTN": "Forse più tardi"
   },
   "SUPPORT": {
     "BACK": "Torna all'inizio",
@@ -253,7 +281,10 @@
     "ERR_EMAIL_INVALID": "Inserisci un'e-mail valida.",
     "EMAIL_INVALID": "Inserisci un'e-mail valida.",
     "ERR_PASS_REQUIRED": "È richiesta la password.",
-    "PASSWORD_REQUIRED": "È richiesta la password."
+    "PASSWORD_REQUIRED": "È richiesta la password.",
+    "ERR_INVALID_CREDENTIALS": "E-mail o password errati.",
+    "ERR_UNKNOWN": "Impossibile accedere. Riprova.",
+    "GOOGLE_BTN": "Continua con Google"
   },
   "REGISTER": {
     "BACK": "Torna all'inizio",
@@ -302,7 +333,8 @@
     "ERR_CONFIRM_REQUIRED": "Conferma la tua password.",
     "CONFIRM_REQUIRED": "Conferma la tua password.",
     "ERR_PASS_MISMATCH": "Le password non corrispondono.",
-    "PASSWORD_MISMATCH": "Le password non corrispondono."
+    "PASSWORD_MISMATCH": "Le password non corrispondono.",
+    "ERR_UNKNOWN": "Si è verificato un errore imprevisto durante la registrazione."
   },
   "LANDING": {
     "BADGE": "Piattaforma di apprendimento gamificata",
@@ -337,7 +369,10 @@
     "STREAK_DAY": "giorno",
     "SELECT_FEATURE": "Seleziona una funzionalità per esplorarla",
     "FOOTER_PRIVACY": "Privacy",
-    "FOOTER_TERMS": "Termini"
+    "FOOTER_TERMS": "Termini",
+    "FEAT_RANKING_DESC": "Competi con i tuoi amici per la migliore posizione nella classifica.",
+    "FEAT_LOGROS_DESC": "Sblocca i badge e dimostra la tua padronanza del codice.",
+    "FEAT_RACHA_DESC": "Cerca di mantenere la serie di vittorie il più a lungo possibile."
   },
   "INFINITE": {
     "GAME_OVER_MSG": "La tua avventura è finita...",
@@ -399,7 +434,17 @@
     "MOD_CORE": "❤️ Nucleo",
     "MOD_PHASE": "⏱️ Fase",
     "MOD_DATA": "💰 Dati",
-    "MOD_ALGO": "💡 Algoritmo"
+    "MOD_ALGO": "💡 Algoritmo",
+    "UPGRADES": {
+      "DOUBLE_COIN_NAME": "Doppia moneta",
+      "DOUBLE_COIN_DESC": "Guadagni il doppio delle monete in modalità Roguelike.",
+      "EXTRA_LIFE_NAME": "Vita extra",
+      "EXTRA_LIFE_DESC": "Inizi con una vita extra ad ogni corsa.",
+      "EXTRA_TIME_NAME": "Tempo supplementare",
+      "EXTRA_TIME_DESC": "Aggiunge 30 secondi al timer del livello."
+    },
+    "PAUSED": "LENTO",
+    "ERR_TIMEOUT": "Errore di timeout"
   },
   "HEADER": {
     "DASHBOARD": "Dashboard",

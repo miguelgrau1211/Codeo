@@ -57,7 +57,14 @@
       "REPORTS": "التقارير",
       "SETTINGS": "إعدادات"
     },
-    "LOADING": "جارٍ تحميل مغامرتك..."
+    "LOADING": "جارٍ تحميل مغامرتك...",
+    "BATTLE_PASS": "ممر المعركة",
+    "BATTLE_LEVEL": "مستوى",
+    "BATTLE_REWARDS": "المكافآت",
+    "BATTLE_NV": "المستوى.",
+    "BATTLE_UNLOCKED": "مفتوح",
+    "ADMIN_TITLE": "لوحة الإدارة",
+    "ADMIN_DESC": "إدارة المستخدمين والمستويات والمحتوى."
   },
   "PROFILE": {
     "BACK": "لوحة القيادة",
@@ -88,7 +95,9 @@
       "GENERATE_RANDOM": "توليد عشوائي",
       "AVATAR_TIP": "* انقر على الصورة أعلاه لإنشاء صورة رمزية عشوائية جديدة.",
       "CANCEL": "يلغي",
-      "SAVE": "يحفظ"
+      "SAVE": "يحفظ",
+      "SUCCESS_UPDATE": "تم تحديث الملف الشخصي بنجاح!",
+      "ERR_UPDATE": "حدث خطأ أثناء تحديث الملف الشخصي."
     },
     "LOADING": "جارٍ تحميل الملف الشخصي..."
   },
@@ -168,7 +177,26 @@
     "EQUIPPED": "مجهزة",
     "EQUIP": "تجهيز",
     "FREE_EQUIP": "مجاني - تجهيز",
-    "BUY": "يشتري"
+    "BUY": "يشتري",
+    "NOT_ENOUGH_COINS": "ليس لديك ما يكفي من العملات المعدنية!",
+    "CONFIRM_BUY": "هل ترغب في شراء السمة \"{{name}}\" مقابل عملات معدنية {{price}}؟",
+    "SUCCESS_BUY": "تم شراء الموضوع بنجاح!",
+    "ERR_BUY": "خطأ عند شراء الموضوع",
+    "ERR_ACTIVATE": "خطأ في تفعيل الموضوع",
+    "LOCKED": "محظور",
+    "BATTLE_PASS_UNLOCK": "فتح عبر Battle Pass",
+    "SUCCESS_TITLE": "تم الحصول على الموضوع!",
+    "SUCCESS_MSG_PREFIX": "الموضوع",
+    "SUCCESS_MSG_SUFFIX": "انها بالفعل لك. استمتع بمحيطك الجديد!",
+    "SUCCESS_BTN": "باهِر",
+    "ERROR_TITLE": "عملية فاشلة",
+    "ERROR_BTN": "مفهوم",
+    "CONFIRM_TITLE": "تأكيد الشراء",
+    "CONFIRM_MSG_PREFIX": "هل تريد فتح الموضوع",
+    "CONFIRM_MSG_BY": "بواسطة",
+    "CONFIRM_COINS": "عملات معدنية",
+    "CONFIRM_BTN": "تأكيد الاستحواذ",
+    "CANCEL_BTN": "ربما في وقت لاحق"
   },
   "SUPPORT": {
     "BACK": "العودة إلى الأعلى",
@@ -253,7 +281,10 @@
     "ERR_EMAIL_INVALID": "أدخل بريدًا إلكترونيًا صالحًا.",
     "EMAIL_INVALID": "أدخل بريدًا إلكترونيًا صالحًا.",
     "ERR_PASS_REQUIRED": "كلمة المرور مطلوبة.",
-    "PASSWORD_REQUIRED": "كلمة المرور مطلوبة."
+    "PASSWORD_REQUIRED": "كلمة المرور مطلوبة.",
+    "ERR_INVALID_CREDENTIALS": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+    "ERR_UNKNOWN": "فشل تسجيل الدخول. حاول مرة أخرى.",
+    "GOOGLE_BTN": "تواصل مع جوجل"
   },
   "REGISTER": {
     "BACK": "العودة للصفحة الرئيسية",
@@ -302,7 +333,8 @@
     "ERR_CONFIRM_REQUIRED": "أكّد كلمة المرور.",
     "CONFIRM_REQUIRED": "أكّد كلمة المرور.",
     "ERR_PASS_MISMATCH": "كلمات المرور غير متطابقة.",
-    "PASSWORD_MISMATCH": "كلمات المرور غير متطابقة."
+    "PASSWORD_MISMATCH": "كلمات المرور غير متطابقة.",
+    "ERR_UNKNOWN": "حدث خطأ غير متوقع أثناء التسجيل."
   },
   "LANDING": {
     "BADGE": "منصة تعلم تفاعلية",
@@ -402,7 +434,17 @@
     "MOD_CORE": "❤️ نواة",
     "MOD_PHASE": "⏱️ مرحلة",
     "MOD_DATA": "💰 بيانات",
-    "MOD_ALGO": "💡 خوارزمية"
+    "MOD_ALGO": "💡 خوارزمية",
+    "UPGRADES": {
+      "DOUBLE_COIN_NAME": "عملة مزدوجة",
+      "DOUBLE_COIN_DESC": "تكسب ضعف العملات المعدنية في وضع Roguelike.",
+      "EXTRA_LIFE_NAME": "حياة اضافية",
+      "EXTRA_LIFE_DESC": "عليك أن تبدأ بحياة إضافية في كل جولة.",
+      "EXTRA_TIME_NAME": "الوقت الاضافي",
+      "EXTRA_TIME_DESC": "يضيف 30 ثانية إلى توقيت المستوى."
+    },
+    "PAUSED": "بطيء",
+    "ERR_TIMEOUT": "خطأ في المهلة"
   },
   "HEADER": {
     "DASHBOARD": "لوحة القيادة",

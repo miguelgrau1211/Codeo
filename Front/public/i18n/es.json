@@ -65,7 +65,14 @@
             "REPORTS": "Reportes",
             "SETTINGS": "Ajustes"
         },
-        "LOADING": "Cargando tu aventura..."
+        "LOADING": "Cargando tu aventura...",
+        "BATTLE_PASS": "PASE DE BATALLA",
+        "BATTLE_LEVEL": "Nivel",
+        "BATTLE_REWARDS": "recompensas",
+        "BATTLE_NV": "Nv.",
+        "BATTLE_UNLOCKED": "Desbloqueado",
+        "ADMIN_TITLE": "Panel de Administración",
+        "ADMIN_DESC": "Gestión de usuarios, niveles y contenido."
     },
     "PROFILE": {
         "BACK": "Dashboard",
@@ -183,7 +190,21 @@
         "CONFIRM_BUY": "¿Quieres comprar el tema \"{{nombre}}\" por {{precio}} monedas?",
         "SUCCESS_BUY": "¡Tema comprado con éxito!",
         "ERR_BUY": "Error al comprar el tema",
-        "ERR_ACTIVATE": "Error al activar el tema"
+        "ERR_ACTIVATE": "Error al activar el tema",
+        "LOCKED": "Bloqueado",
+        "BATTLE_PASS_UNLOCK": "Desbloqueo vía Pase de Batalla",
+        "SUCCESS_TITLE": "¡TEMA ADQUIRIDO!",
+        "SUCCESS_MSG_PREFIX": "El tema",
+        "SUCCESS_MSG_SUFFIX": "ya es tuyo. ¡Disfruta de tu nuevo entorno!",
+        "SUCCESS_BTN": "Genial",
+        "ERROR_TITLE": "Operación Fallida",
+        "ERROR_BTN": "Entendido",
+        "CONFIRM_TITLE": "Confirmar Compra",
+        "CONFIRM_MSG_PREFIX": "¿Deseas desbloquear el tema",
+        "CONFIRM_MSG_BY": "por",
+        "CONFIRM_COINS": "monedas",
+        "CONFIRM_BTN": "Confirmar Adquisición",
+        "CANCEL_BTN": "Quizás después"
     },
     "SUPPORT": {
         "BACK": "Volver al inicio",
@@ -270,7 +291,8 @@
         "ERR_PASS_REQUIRED": "La contraseña es obligatoria.",
         "PASSWORD_REQUIRED": "La contraseña es obligatoria.",
         "ERR_INVALID_CREDENTIALS": "Correo electrónico o contraseña incorrectos.",
-        "ERR_UNKNOWN": "Error al iniciar sesión. Inténtalo de nuevo."
+        "ERR_UNKNOWN": "Error al iniciar sesión. Inténtalo de nuevo.",
+        "GOOGLE_BTN": "Continuar con Google"
     },
     "REGISTER": {
         "BACK": "Volver al inicio",
@@ -420,6 +442,16 @@
         "MOD_CORE": "❤️ Núcleo",
         "MOD_PHASE": "⏱️ Fase",
         "MOD_DATA": "💰 Datos",
-        "MOD_ALGO": "💡 Algoritmo"
+        "MOD_ALGO": "💡 Algoritmo",
+        "PAUSED": "PAUSADO",
+        "ERR_TIMEOUT": "Error de tiempo de espera",
+        "UPGRADES": {
+            "DOUBLE_COIN_NAME": "Doble Moneda",
+            "DOUBLE_COIN_DESC": "Ganas el doble de monedas en el modo Roguelike.",
+            "EXTRA_LIFE_NAME": "Vida Extra",
+            "EXTRA_LIFE_DESC": "Empiezas con una vida extra en cada run.",
+            "EXTRA_TIME_NAME": "Tiempo Extra",
+            "EXTRA_TIME_DESC": "Añade 30 segundos al temporizador del nivel."
+        }
     }
 }

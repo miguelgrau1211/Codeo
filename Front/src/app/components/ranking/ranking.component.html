@@ -1,28 +1,39 @@
-<div class="min-h-screen bg-primary-bg font-sans text-text-main transition-colors duration-300 p-6 md:p-12 relative overflow-hidden">
-    
+<div
+    class="min-h-screen bg-primary-bg font-sans text-text-main transition-colors duration-300 p-6 md:p-12 relative overflow-hidden">
+
     <!-- Background Decor (Circles) -->
-    <div class="absolute top-0 left-0 w-96 h-96 bg-accent-color/10 rounded-full blur-[100px] pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
-    <div class="absolute bottom-0 right-0 w-96 h-96 bg-accent-color/10 rounded-full blur-[100px] pointer-events-none translate-x-1/2 translate-y-1/2"></div>
+    <div
+        class="absolute top-0 left-0 w-96 h-96 bg-accent-color/10 rounded-full blur-[100px] pointer-events-none -translate-x-1/2 -translate-y-1/2">
+    </div>
+    <div
+        class="absolute bottom-0 right-0 w-96 h-96 bg-accent-color/10 rounded-full blur-[100px] pointer-events-none translate-x-1/2 translate-y-1/2">
+    </div>
 
     <!-- Header -->
     <header class="relative z-10 flex items-center justify-between mb-16 max-w-5xl mx-auto">
         <div class="flex items-center gap-6">
-            <a routerLink="/dashboard" class="group flex items-center justify-center w-14 h-14 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all hover:-translate-x-1 active:scale-95 shadow-lg shrink-0">
-                <img src="/common/icons/atras.jpg" alt="Volver" class="w-8 h-8 object-contain group-hover:scale-110 transition-transform">
+            <a routerLink="/dashboard"
+                class="group flex items-center justify-center w-14 h-14 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all hover:-translate-x-1 active:scale-95 shadow-lg shrink-0">
+                <img src="/common/icons/atras.jpg" alt="Volver"
+                    class="w-8 h-8 object-contain group-hover:scale-110 transition-transform">
             </a>
             <div>
                 <h1 class="text-5xl md:text-6xl font-black text-text-main font-jersey tracking-wide">
-                    SALÓN DE LA <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-color to-pink-600">FAMA</span>
+                    {{ 'RANKING.TITLE' | translate }} <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-accent-color to-pink-600">{{
+                        'RANKING.TITLE_HIGHLIGHT' | translate }}</span>
                 </h1>
-                <p class="text-text-muted mt-2 font-medium">Los mejores desarrolladores de Codeo compiten aquí.</p>
+                <p class="text-text-muted mt-2 font-medium">{{ 'RANKING.SUBTITLE' | translate }}</p>
             </div>
         </div>
-        
+
         <!-- User Stats (Brief) -->
         @if (userData()) {
-        <div class="hidden md:flex items-center gap-4 bg-secondary-bg/50 p-4 rounded-2xl shadow-lg border border-white/10 backdrop-blur-sm">
+        <div
+            class="hidden md:flex items-center gap-4 bg-secondary-bg/50 p-4 rounded-2xl shadow-lg border border-white/10 backdrop-blur-sm">
             <div class="text-right">
-                <div class="text-xs font-bold text-text-muted uppercase tracking-widest">Tu Posición</div>
+                <div class="text-xs font-bold text-text-muted uppercase tracking-widest">{{ 'RANKING.YOUR_POSITION' |
+                    translate }}</div>
                 <div class="text-2xl font-black text-text-main font-jersey">#{{ userData()!.rank }}</div>
             </div>
             <div class="w-12 h-12 rounded-full border-2 border-accent-color p-0.5">
@@ -34,126 +45,143 @@
 
     <!-- Loading State -->
     @if (isLoading()) {
-        <div class="flex flex-col items-center justify-center py-20">
-            <div class="w-12 h-12 border-4 border-accent-color border-t-transparent rounded-full animate-spin"></div>
-            <p class="mt-4 text-text-muted">Cargando ranking...</p>
-        </div>
+    <div class="flex flex-col items-center justify-center py-20">
+        <div class="w-12 h-12 border-4 border-accent-color border-t-transparent rounded-full animate-spin"></div>
+        <p class="mt-4 text-text-muted">{{ 'RANKING.LOADING' | translate }}</p>
+    </div>
     } @else if (hasError()) {
-        <div class="text-center py-20">
-            <p class="text-2xl font-bold text-red-500">Error al cargar el ranking.</p>
-            <p class="text-text-muted mt-2">Inténtalo de nuevo más tarde.</p>
-        </div>
+    <div class="text-center py-20">
+        <p class="text-2xl font-bold text-red-500">{{ 'RANKING.ERROR' | translate }}</p>
+        <p class="text-text-muted mt-2">{{ 'RANKING.ERROR_RETRY' | translate }}</p>
+    </div>
     } @else {
-        
-        <!-- Empty State -->
-        @if (players().length === 0) {
-            <div class="text-center py-20">
-                <p class="text-2xl font-bold text-text-muted">No hay jugadores en el ranking todavía.</p>
-                <p class="text-text-muted mt-2">¡Sé el primero en unirte!</p>
+
+    <!-- Empty State -->
+    @if (players().length === 0) {
+    <div class="text-center py-20">
+        <p class="text-2xl font-bold text-text-muted">{{ 'RANKING.EMPTY' | translate }}</p>
+        <p class="text-text-muted mt-2">{{ 'RANKING.EMPTY_CTA' | translate }}</p>
+    </div>
+    }
+
+    <!-- Podium (Only if 3+ players) -->
+    @if (topThree().length >= 3) {
+    <div class="relative z-10 max-w-5xl mx-auto mb-16 animate-fade-in-up">
+        <div class="flex flex-col md:flex-row items-end justify-center gap-6 md:gap-12">
+
+            <!-- 2nd Place -->
+            <div class="order-2 md:order-1 flex flex-col items-center w-full md:w-1/3">
+                <div class="relative mb-4 group cursor-pointer">
+                    <div
+                        class="absolute -inset-4 bg-accent-color/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <div
+                        class="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-secondary-bg overflow-hidden relative z-10 shadow-xl">
+                        <img [src]="topThree()[1].avatar" class="w-full h-full object-cover">
+                    </div>
+                    <div
+                        class="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-secondary-bg text-text-main font-bold px-4 py-1.5 rounded-full border-2 border-white/10 shadow-lg text-sm z-20">
+                        #2
+                    </div>
+                </div>
+                <h3 class="font-bold text-xl text-text-main mb-1">{{ topThree()[1].name }}</h3>
+                <div class="text-text-muted font-mono font-bold text-sm">{{ topThree()[1].xp | number }} XP</div>
             </div>
-        }
 
-        <!-- Podium (Only if 3+ players) -->
-        @if (topThree().length >= 3) {
-        <div class="relative z-10 max-w-5xl mx-auto mb-16 animate-fade-in-up">
-            <div class="flex flex-col md:flex-row items-end justify-center gap-6 md:gap-12">
-                
-                <!-- 2nd Place -->
-                <div class="order-2 md:order-1 flex flex-col items-center w-full md:w-1/3">
-                    <div class="relative mb-4 group cursor-pointer">
-                         <div class="absolute -inset-4 bg-accent-color/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <div class="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-secondary-bg overflow-hidden relative z-10 shadow-xl">
-                            <img [src]="topThree()[1].avatar" class="w-full h-full object-cover">
-                        </div>
-                        <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-secondary-bg text-text-main font-bold px-4 py-1.5 rounded-full border-2 border-white/10 shadow-lg text-sm z-20">
-                            #2
-                        </div>
+            <!-- 1st Place (Winner) -->
+            <div class="order-1 md:order-2 flex flex-col items-center w-full md:w-1/3 -mt-12 md:-mt-24">
+                <div class="relative mb-6 group cursor-pointer">
+                    <div class="absolute -top-12 left-1/2 -translate-x-1/2 text-5xl animate-bounce">👑</div>
+                    <div
+                        class="absolute -inset-6 bg-yellow-500/30 rounded-full blur-2xl opacity-50 group-hover:opacity-80 transition-opacity animate-pulse">
                     </div>
-                    <h3 class="font-bold text-xl text-text-main mb-1">{{ topThree()[1].name }}</h3>
-                    <div class="text-text-muted font-mono font-bold text-sm">{{ topThree()[1].xp | number }} XP</div>
-                </div>
-
-                <!-- 1st Place (Winner) -->
-                <div class="order-1 md:order-2 flex flex-col items-center w-full md:w-1/3 -mt-12 md:-mt-24">
-                    <div class="relative mb-6 group cursor-pointer">
-                        <div class="absolute -top-12 left-1/2 -translate-x-1/2 text-5xl animate-bounce">👑</div>
-                        <div class="absolute -inset-6 bg-yellow-500/30 rounded-full blur-2xl opacity-50 group-hover:opacity-80 transition-opacity animate-pulse"></div>
-                        <div class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-yellow-400 overflow-hidden relative z-10 shadow-[0_0_30px_rgba(250,204,21,0.4)]">
-                            <img [src]="topThree()[0].avatar" class="w-full h-full object-cover">
-                        </div>
-                        <div class="absolute -bottom-5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white font-black px-8 py-2 rounded-full border-2 border-white/20 shadow-[0_4px_20px_rgba(234,179,8,0.5)] text-xl tracking-widest z-20">
-                            #1
-                        </div>
+                    <div
+                        class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-yellow-400 overflow-hidden relative z-10 shadow-[0_0_30px_rgba(250,204,21,0.4)]">
+                        <img [src]="topThree()[0].avatar" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="font-black text-3xl text-text-main mb-2">{{ topThree()[0].name }}</h3>
-                    <div class="text-yellow-500 font-mono font-bold text-lg bg-yellow-500/10 px-4 py-1 rounded-lg border border-yellow-500/20">
-                        {{ topThree()[0].xp | number }} XP
+                    <div
+                        class="absolute -bottom-5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white font-black px-8 py-2 rounded-full border-2 border-white/20 shadow-[0_4px_20px_rgba(234,179,8,0.5)] text-xl tracking-widest z-20">
+                        #1
                     </div>
                 </div>
-
-                <!-- 3rd Place -->
-                <div class="order-3 flex flex-col items-center w-full md:w-1/3">
-                    <div class="relative mb-4 group cursor-pointer">
-                        <div class="absolute -inset-4 bg-orange-700/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <div class="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-orange-400 overflow-hidden relative z-10 shadow-xl">
-                            <img [src]="topThree()[2].avatar" class="w-full h-full object-cover">
-                        </div>
-                        <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-orange-100 dark:bg-orange-800 text-orange-800 dark:text-white font-bold px-4 py-1.5 rounded-full border-2 border-orange-300 dark:border-orange-600 shadow-lg text-sm z-20">
-                            #3
-                        </div>
-                    </div>
-                    <h3 class="font-bold text-xl text-text-main mb-1">{{ topThree()[2].name }}</h3>
-                    <div class="text-text-muted font-mono font-bold text-sm">{{ topThree()[2].xp | number }} XP</div>
+                <h3 class="font-black text-3xl text-text-main mb-2">{{ topThree()[0].name }}</h3>
+                <div
+                    class="text-yellow-500 font-mono font-bold text-lg bg-yellow-500/10 px-4 py-1 rounded-lg border border-yellow-500/20">
+                    {{ topThree()[0].xp | number }} XP
                 </div>
-
             </div>
+
+            <!-- 3rd Place -->
+            <div class="order-3 flex flex-col items-center w-full md:w-1/3">
+                <div class="relative mb-4 group cursor-pointer">
+                    <div
+                        class="absolute -inset-4 bg-orange-700/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <div
+                        class="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-orange-400 overflow-hidden relative z-10 shadow-xl">
+                        <img [src]="topThree()[2].avatar" class="w-full h-full object-cover">
+                    </div>
+                    <div
+                        class="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-orange-100 dark:bg-orange-800 text-orange-800 dark:text-white font-bold px-4 py-1.5 rounded-full border-2 border-orange-300 dark:border-orange-600 shadow-lg text-sm z-20">
+                        #3
+                    </div>
+                </div>
+                <h3 class="font-bold text-xl text-text-main mb-1">{{ topThree()[2].name }}</h3>
+                <div class="text-text-muted font-mono font-bold text-sm">{{ topThree()[2].xp | number }} XP</div>
+            </div>
+
+        </div>
+    </div>
+    }
+
+    <!-- Ranking List -->
+    <div class="relative z-10 max-w-4xl mx-auto space-y-3">
+        @for (player of (topThree().length >= 3 ? restOfPlayers() : players()); track player.rank) {
+        <div
+            class="group flex items-center gap-4 md:gap-6 p-4 md:p-5 rounded-2xl bg-secondary-bg/60 border border-white/5 hover:border-accent-color/50 hover:bg-secondary-bg transition-all shadow-sm hover:shadow-lg hover:scale-[1.01]">
+
+            <!-- Rank -->
+            <div
+                class="w-8 text-center font-black text-xl text-text-muted font-jersey group-hover:text-accent-color transition-colors">
+                #{{ player.rank }}
+            </div>
+
+            <!-- Avatar -->
+            <div class="w-12 h-12 rounded-xl bg-secondary-bg overflow-hidden shrink-0 border border-white/5">
+                <img [src]="player.avatar" class="w-full h-full object-cover">
+            </div>
+
+            <!-- Info -->
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2">
+                    <h4 class="font-bold text-text-main truncate">{{ player.name }}</h4>
+                    @if (player.badges.length > 0) {
+                    <div class="flex gap-1">
+                        @for (badge of player.badges; track badge) {
+                        <span class="text-xs select-none" title="Badge">{{ badge }}</span>
+                        }
+                    </div>
+                    }
+                </div>
+                <div class="text-xs text-text-muted">{{ 'RANKING.LEVEL' | translate }} {{ player.level }}</div>
+            </div>
+
+            <!-- XP -->
+            <div class="text-right">
+                <div class="font-mono font-bold text-text-main">{{ player.xp | number }}</div>
+                <div class="text-[10px] uppercase tracking-wider text-text-muted">{{ 'RANKING.TOTAL_XP' | translate }}
+                </div>
+            </div>
+
+            <!-- Action (Menu/View) -->
+            <button
+                class="p-2 text-text-muted hover:text-accent-color opacity-0 group-hover:opacity-100 transition-all rounded-lg hover:bg-white/5">
+                <span class="sr-only">{{ 'RANKING.VIEW_PROFILE' | translate }}</span>
+                ➔
+            </button>
         </div>
         }
-
-        <!-- Ranking List -->
-        <div class="relative z-10 max-w-4xl mx-auto space-y-3">
-            @for (player of (topThree().length >= 3 ? restOfPlayers() : players()); track player.rank) {
-                <div class="group flex items-center gap-4 md:gap-6 p-4 md:p-5 rounded-2xl bg-secondary-bg/60 border border-white/5 hover:border-accent-color/50 hover:bg-secondary-bg transition-all shadow-sm hover:shadow-lg hover:scale-[1.01]">
-                    
-                    <!-- Rank -->
-                    <div class="w-8 text-center font-black text-xl text-text-muted font-jersey group-hover:text-accent-color transition-colors">
-                        #{{ player.rank }}
-                    </div>
-
-                    <!-- Avatar -->
-                    <div class="w-12 h-12 rounded-xl bg-secondary-bg overflow-hidden shrink-0 border border-white/5">
-                        <img [src]="player.avatar" class="w-full h-full object-cover">
-                    </div>
-
-                    <!-- Info -->
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center gap-2">
-                            <h4 class="font-bold text-text-main truncate">{{ player.name }}</h4>
-                            @if (player.badges.length > 0) {
-                                <div class="flex gap-1">
-                                    @for (badge of player.badges; track badge) {
-                                        <span class="text-xs select-none" title="Badge">{{ badge }}</span>
-                                    }
-                                </div>
-                            }
-                        </div>
-                        <div class="text-xs text-text-muted">Nivel {{ player.level }}</div>
-                    </div>
-
-                    <!-- XP -->
-                    <div class="text-right">
-                        <div class="font-mono font-bold text-text-main">{{ player.xp | number }}</div>
-                        <div class="text-[10px] uppercase tracking-wider text-text-muted">Total XP</div>
-                    </div>
-
-                    <!-- Action (Menu/View) -->
-                    <button class="p-2 text-text-muted hover:text-accent-color opacity-0 group-hover:opacity-100 transition-all rounded-lg hover:bg-white/5">
-                        <span class="sr-only">Ver Perfil</span>
-                        ➔
-                    </button>
-                </div>
-            }
-        </div>
+    </div>
     }
 
 </div>

@@ -57,7 +57,14 @@
       "REPORTS": "Rapports",
       "SETTINGS": "Paramètres"
     },
-    "LOADING": "Chargement de votre aventure..."
+    "LOADING": "Chargement de votre aventure...",
+    "BATTLE_PASS": "PASSAGE DE BATAILLE",
+    "BATTLE_LEVEL": "Niveau",
+    "BATTLE_REWARDS": "récompenses",
+    "BATTLE_NV": "Niv.",
+    "BATTLE_UNLOCKED": "Débloqué",
+    "ADMIN_TITLE": "Panneau d'administration",
+    "ADMIN_DESC": "Gestion des utilisateurs, des niveaux et du contenu."
   },
   "PROFILE": {
     "BACK": "Tableau de bord",
@@ -88,7 +95,9 @@
       "GENERATE_RANDOM": "Générer aléatoire",
       "AVATAR_TIP": "* Cliquez sur l'image ci-dessus pour générer un nouvel avatar aléatoire.",
       "CANCEL": "Annuler",
-      "SAVE": "Garder"
+      "SAVE": "Garder",
+      "SUCCESS_UPDATE": "Profil mis à jour avec succès !",
+      "ERR_UPDATE": "Erreur lors de la mise à jour du profil."
     },
     "LOADING": "Chargement du profil..."
   },
@@ -168,7 +177,26 @@
     "EQUIPPED": "Équipé",
     "EQUIP": "Équiper",
     "FREE_EQUIP": "Gratuit - Equipé",
-    "BUY": "Acheter"
+    "BUY": "Acheter",
+    "NOT_ENOUGH_COINS": "Vous n'avez pas assez de pièces !",
+    "CONFIRM_BUY": "Voulez-vous acheter le thème \"{{name}}\" pour {{price}} pièces ?",
+    "SUCCESS_BUY": "Thème acheté avec succès !",
+    "ERR_BUY": "Erreur lors de l'achat du thème",
+    "ERR_ACTIVATE": "Erreur lors de l'activation du thème",
+    "LOCKED": "Bloqué",
+    "BATTLE_PASS_UNLOCK": "Débloquer via Battle Pass",
+    "SUCCESS_TITLE": "THÈME ACQUIS !",
+    "SUCCESS_MSG_PREFIX": "Le thème",
+    "SUCCESS_MSG_SUFFIX": "C'est déjà le vôtre. Profitez de votre nouvel environnement !",
+    "SUCCESS_BTN": "Brillant",
+    "ERROR_TITLE": "Opération échouée",
+    "ERROR_BTN": "Compris",
+    "CONFIRM_TITLE": "Confirmer l'achat",
+    "CONFIRM_MSG_PREFIX": "Voulez-vous débloquer le thème",
+    "CONFIRM_MSG_BY": "par",
+    "CONFIRM_COINS": "pièces",
+    "CONFIRM_BTN": "Confirmer l'acquisition",
+    "CANCEL_BTN": "Peut-être plus tard"
   },
   "SUPPORT": {
     "BACK": "Retour en haut",
@@ -253,7 +281,10 @@
     "ERR_EMAIL_INVALID": "Entrez un email valide.",
     "EMAIL_INVALID": "Entrez un email valide.",
     "ERR_PASS_REQUIRED": "Le mot de passe est requis.",
-    "PASSWORD_REQUIRED": "Le mot de passe est requis."
+    "PASSWORD_REQUIRED": "Le mot de passe est requis.",
+    "ERR_INVALID_CREDENTIALS": "Email ou mot de passe incorrect.",
+    "ERR_UNKNOWN": "Échec de la connexion. Réessayez.",
+    "GOOGLE_BTN": "Continuer avec Google"
   },
   "REGISTER": {
     "BACK": "Retour en haut",
@@ -302,7 +333,8 @@
     "ERR_CONFIRM_REQUIRED": "Confirmez votre mot de passe.",
     "CONFIRM_REQUIRED": "Confirmez votre mot de passe.",
     "ERR_PASS_MISMATCH": "Les mots de passe ne correspondent pas.",
-    "PASSWORD_MISMATCH": "Les mots de passe ne correspondent pas."
+    "PASSWORD_MISMATCH": "Les mots de passe ne correspondent pas.",
+    "ERR_UNKNOWN": "Une erreur inattendue s'est produite lors de l'inscription."
   },
   "LANDING": {
     "BADGE": "Plateforme d'apprentissage gamifiée",
@@ -337,7 +369,10 @@
     "STREAK_DAY": "jour",
     "SELECT_FEATURE": "Sélectionnez une fonctionnalité pour l'explorer",
     "FOOTER_PRIVACY": "Confidentialité",
-    "FOOTER_TERMS": "Termes"
+    "FOOTER_TERMS": "Termes",
+    "FEAT_RANKING_DESC": "Affrontez vos amis pour la meilleure position dans le classement.",
+    "FEAT_LOGROS_DESC": "Débloquez des badges et prouvez votre maîtrise du code.",
+    "FEAT_RACHA_DESC": "Essayez de maintenir la séquence aussi longtemps que vous le pouvez."
   },
   "INFINITE": {
     "GAME_OVER_MSG": "Votre aventure est terminée...",
@@ -399,7 +434,17 @@
     "MOD_CORE": "❤️ Noyau",
     "MOD_PHASE": "⏱️ Phase",
     "MOD_DATA": "💰 Données",
-    "MOD_ALGO": "💡 Algorithme"
+    "MOD_ALGO": "💡 Algorithme",
+    "UPGRADES": {
+      "DOUBLE_COIN_NAME": "Pièce double",
+      "DOUBLE_COIN_DESC": "Vous gagnez le double des pièces en mode Roguelike.",
+      "EXTRA_LIFE_NAME": "Vie supplémentaire",
+      "EXTRA_LIFE_DESC": "Vous commencez avec une vie supplémentaire à chaque course.",
+      "EXTRA_TIME_NAME": "Temps supplémentaire",
+      "EXTRA_TIME_DESC": "Ajoute 30 secondes au chronomètre du niveau."
+    },
+    "PAUSED": "LENT",
+    "ERR_TIMEOUT": "Erreur d'expiration du délai"
   },
   "HEADER": {
     "DASHBOARD": "Tableau de bord",

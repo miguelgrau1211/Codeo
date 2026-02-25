@@ -350,11 +350,14 @@
             <div class="animate-fade-in-up">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-xl font-bold text-text-main flex items-center gap-2">
-                        <span class="w-2 h-6 bg-accent-color rounded-full"></span> PASE DE BATALLA
+                        <span class="w-2 h-6 bg-accent-color rounded-full"></span> {{ 'DASHBOARD.BATTLE_PASS' |
+                        translate }}
                     </h3>
                     <div class="flex items-center gap-4 text-sm">
-                        <span class="text-text-muted">Nivel {{ level() }} / {{ battlePassRewards()[battlePassRewards().length - 1].level }}</span>
-                        <span class="text-accent-color font-bold">{{ completedRewardsCount() }}/{{ battlePassRewards().length }} recompensas</span>
+                        <span class="text-text-muted">{{ 'DASHBOARD.BATTLE_LEVEL' | translate }} {{ level() }} / {{
+                            battlePassRewards()[battlePassRewards().length - 1].level }}</span>
+                        <span class="text-accent-color font-bold">{{ completedRewardsCount() }}/{{
+                            battlePassRewards().length }} {{ 'DASHBOARD.BATTLE_REWARDS' | translate }}</span>
                     </div>
                 </div>
 
@@ -363,13 +366,15 @@
                     <div class="w-full h-3 bg-secondary-bg rounded-full overflow-hidden border border-white/10">
                         <div class="h-full bg-gradient-to-r from-accent-color to-pink-500 transition-all duration-1000 ease-out rounded-full relative"
                             [style.width.%]="battlePassProgress()">
-                            <div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent rounded-full"></div>
+                            <div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent rounded-full">
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Rewards Timeline (Horizontal Scroll) -->
-                <div class="overflow-x-auto pb-4 -mx-2 px-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10">
+                <div
+                    class="overflow-x-auto pb-4 -mx-2 px-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10">
                     <div class="flex gap-6" style="min-width: 2200px;">
                         @for (reward of battlePassRewards(); track reward.level) {
                         <div class="flex flex-col items-center gap-3 flex-1 min-w-[120px] group">
@@ -378,7 +383,7 @@
                                 <div class="text-xs font-black uppercase tracking-widest mb-2"
                                     [class.text-accent-color]="level() >= reward.level"
                                     [class.text-text-muted]="level() < reward.level">
-                                    Nv. {{ reward.level }}
+                                    {{ 'DASHBOARD.BATTLE_NV' | translate }} {{ reward.level }}
                                 </div>
                                 <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg border-2 transition-all duration-300"
                                     [class.bg-accent-color]="level() >= reward.level"
@@ -397,8 +402,7 @@
                             </div>
 
                             <!-- Connector Line -->
-                            <div class="w-full h-0.5 rounded-full"
-                                [class.bg-accent-color]="level() >= reward.level"
+                            <div class="w-full h-0.5 rounded-full" [class.bg-accent-color]="level() >= reward.level"
                                 [class.bg-white/5]="level() < reward.level">
                             </div>
 
@@ -414,9 +418,9 @@
                                 <!-- Theme Preview Mini-Mockup -->
                                 <div class="w-full h-20 rounded-lg mb-3 overflow-hidden border border-white/5 relative">
                                     <div class="absolute inset-0 flex flex-col"
-                                        [style.background]="reward.themeVars?.['--primary-bg']">
+                                        [style.background]="reward.themeVars['--primary-bg']">
                                         <div class="h-4 flex items-center px-2 gap-1 border-b"
-                                            [style.background]="reward.themeVars?.['--secondary-bg']"
+                                            [style.background]="reward.themeVars['--secondary-bg']"
                                             [style.border-color]="'rgba(255,255,255,0.05)'">
                                             <div class="w-1.5 h-1.5 rounded-full bg-red-500/70"></div>
                                             <div class="w-1.5 h-1.5 rounded-full bg-yellow-500/70"></div>
@@ -424,11 +428,13 @@
                                         </div>
                                         <div class="flex-1 p-2 flex flex-col justify-center gap-1">
                                             <div class="w-full h-1 rounded-full opacity-40"
-                                                [style.background]="reward.themeVars?.['--accent-color']"></div>
+                                                [style.background]="reward.themeVars['--accent-color']"></div>
                                             <div class="w-3/4 h-1 rounded-full opacity-60"
-                                                [style.background]="reward.themeVars?.['--text-main'] || '#ffffff'"></div>
+                                                [style.background]="reward.themeVars['--text-main'] || '#ffffff'">
+                                            </div>
                                             <div class="w-1/2 h-1 rounded-full opacity-30"
-                                                [style.background]="reward.themeVars?.['--text-muted'] || '#888888'"></div>
+                                                [style.background]="reward.themeVars['--text-muted'] || '#888888'">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -438,16 +444,17 @@
                                 <div class="text-3xl mb-2">{{ reward.icon }}</div>
                                 }
 
-                                <div class="font-bold text-sm"
-                                    [class.text-accent-color]="level() >= reward.level"
+                                <div class="font-bold text-sm" [class.text-accent-color]="level() >= reward.level"
                                     [class.text-text-muted]="level() < reward.level">
                                     {{ reward.label }}
                                 </div>
 
                                 @if (level() >= reward.level) {
-                                <div class="text-[10px] uppercase font-bold text-green-400 mt-1 tracking-wider">✓ Desbloqueado</div>
+                                <div class="text-[10px] uppercase font-bold text-green-400 mt-1 tracking-wider">✓ {{
+                                    'DASHBOARD.BATTLE_UNLOCKED' | translate }}</div>
                                 } @else {
-                                <div class="text-[10px] uppercase font-bold text-text-muted mt-1 tracking-wider">🔒 Nivel {{ reward.level }}</div>
+                                <div class="text-[10px] uppercase font-bold text-text-muted mt-1 tracking-wider">🔒 {{
+                                    'DASHBOARD.BATTLE_NV' | translate }} {{ reward.level }}</div>
                                 }
                             </div>
                         </div>
@@ -464,8 +471,9 @@
                     <div class="flex items-center gap-4">
                         <span class="text-3xl">🛡️</span>
                         <div>
-                            <h3 class="text-lg font-bold text-red-400 group-hover:text-red-300">Panel de Administración</h3>
-                            <p class="text-text-muted text-sm">Gestión de usuarios, niveles y contenido.</p>
+                            <h3 class="text-lg font-bold text-red-400 group-hover:text-red-300">{{
+                                'DASHBOARD.ADMIN_TITLE' | translate }}</h3>
+                            <p class="text-text-muted text-sm">{{ 'DASHBOARD.ADMIN_DESC' | translate }}</p>
                         </div>
                     </div>
                 </a>

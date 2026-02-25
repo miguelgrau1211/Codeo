@@ -33,7 +33,7 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   // ==========================================
   // LEVEL DATA
   // ==========================================
-  titulo = signal<string>('Cargando...');
+  titulo = signal<string>(this.langService.translate('DASHBOARD.LOADING'));
   descripcion = signal<string>('');
   dificultad = signal<string>('fácil');
   testCases = signal<any[]>([]);
@@ -331,7 +331,7 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
     const safetyTimeout = setTimeout(() => {
       if (this.showIntro()) {
         console.error('Level load timeout - forcing UI unlock');
-        this.titulo.set('Error de tiempo de espera');
+        this.titulo.set(this.langService.translate('INFINITE.ERR_TIMEOUT'));
         this.startExit.set(true);
         this.showIntro.set(false);
       }

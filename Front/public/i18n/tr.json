@@ -57,7 +57,14 @@
       "REPORTS": "Raporlar",
       "SETTINGS": "Ayarlar"
     },
-    "LOADING": "Maceranız yükleniyor..."
+    "LOADING": "Maceranız yükleniyor...",
+    "BATTLE_PASS": "SAVAŞ BİLETİ",
+    "BATTLE_LEVEL": "Seviye",
+    "BATTLE_REWARDS": "ödüller",
+    "BATTLE_NV": "Lv.",
+    "BATTLE_UNLOCKED": "Kilitli değil",
+    "ADMIN_TITLE": "Yönetim Paneli",
+    "ADMIN_DESC": "Kullanıcıların, seviyelerin ve içeriğin yönetimi."
   },
   "PROFILE": {
     "BACK": "Kontrol Paneli",
@@ -88,7 +95,9 @@
       "GENERATE_RANDOM": "Rastgele Oluştur",
       "AVATAR_TIP": "* Yeni bir rastgele avatar oluşturmak için yukarıdaki resme tıklayın.",
       "CANCEL": "İptal etmek",
-      "SAVE": "Kale"
+      "SAVE": "Kale",
+      "SUCCESS_UPDATE": "Profil başarıyla güncellendi!",
+      "ERR_UPDATE": "Profil güncellenirken hata oluştu."
     },
     "LOADING": "Profil yükleniyor..."
   },
@@ -168,7 +177,26 @@
     "EQUIPPED": "Donanımlı",
     "EQUIP": "Donatmak",
     "FREE_EQUIP": "Ücretsiz - Donat",
-    "BUY": "Satın almak"
+    "BUY": "Satın almak",
+    "NOT_ENOUGH_COINS": "Yeterli paranız yok!",
+    "CONFIRM_BUY": "\"{{name}}\" temasını {{price}} jeton karşılığında satın almak ister misiniz?",
+    "SUCCESS_BUY": "Tema başarıyla satın alındı!",
+    "ERR_BUY": "Temayı satın alırken hata oluştu",
+    "ERR_ACTIVATE": "Tema etkinleştirilirken hata oluştu",
+    "LOCKED": "Engellendi",
+    "BATTLE_PASS_UNLOCK": "Battle Pass ile kilidi aç",
+    "SUCCESS_TITLE": "TEMA ALINDI!",
+    "SUCCESS_MSG_PREFIX": "Tema",
+    "SUCCESS_MSG_SUFFIX": "O zaten senin. Yeni çevrenizin tadını çıkarın!",
+    "SUCCESS_BTN": "Muhteşem",
+    "ERROR_TITLE": "Başarısız İşlem",
+    "ERROR_BTN": "Anlaşıldı",
+    "CONFIRM_TITLE": "Satın Alma İşlemini Onayla",
+    "CONFIRM_MSG_PREFIX": "Temanın kilidini açmak istiyor musunuz?",
+    "CONFIRM_MSG_BY": "ile",
+    "CONFIRM_COINS": "paralar",
+    "CONFIRM_BTN": "Edinmeyi Onayla",
+    "CANCEL_BTN": "Belki daha sonra"
   },
   "SUPPORT": {
     "BACK": "Başa dön",
@@ -253,7 +281,10 @@
     "ERR_EMAIL_INVALID": "Geçerli bir e-posta girin.",
     "EMAIL_INVALID": "Geçerli bir e-posta girin.",
     "ERR_PASS_REQUIRED": "Şifre gereklidir.",
-    "PASSWORD_REQUIRED": "Şifre gereklidir."
+    "PASSWORD_REQUIRED": "Şifre gereklidir.",
+    "ERR_INVALID_CREDENTIALS": "Yanlış e-posta veya şifre.",
+    "ERR_UNKNOWN": "Oturum açılamadı. Tekrar deneyin.",
+    "GOOGLE_BTN": "Google ile devam et"
   },
   "REGISTER": {
     "BACK": "Başa dön",
@@ -302,7 +333,8 @@
     "ERR_CONFIRM_REQUIRED": "Şifrenizi onaylayın.",
     "CONFIRM_REQUIRED": "Şifrenizi onaylayın.",
     "ERR_PASS_MISMATCH": "Şifreler eşleşmiyor.",
-    "PASSWORD_MISMATCH": "Şifreler eşleşmiyor."
+    "PASSWORD_MISMATCH": "Şifreler eşleşmiyor.",
+    "ERR_UNKNOWN": "Kayıt sırasında beklenmeyen bir hata oluştu."
   },
   "LANDING": {
     "BADGE": "Oyunlaştırılmış öğrenme platformu",
@@ -337,7 +369,10 @@
     "STREAK_DAY": "gün",
     "SELECT_FEATURE": "Keşfetmek için bir özellik seçin",
     "FOOTER_PRIVACY": "Mahremiyet",
-    "FOOTER_TERMS": "Şartlar"
+    "FOOTER_TERMS": "Şartlar",
+    "FEAT_RANKING_DESC": "Sıralamada en iyi pozisyon için arkadaşlarınızla yarışın.",
+    "FEAT_LOGROS_DESC": "Rozetlerin kilidini açın ve kod uzmanlığınızı kanıtlayın.",
+    "FEAT_RACHA_DESC": "Seriyi mümkün olduğu kadar uzun süre sürdürmeye çalışın."
   },
   "INFINITE": {
     "GAME_OVER_MSG": "Maceranız bitti...",
@@ -399,7 +434,17 @@
     "MOD_CORE": "❤️ Çekirdek",
     "MOD_PHASE": "⏱️ Faz",
     "MOD_DATA": "💰 Veri",
-    "MOD_ALGO": "💡 Algoritma"
+    "MOD_ALGO": "💡 Algoritma",
+    "UPGRADES": {
+      "DOUBLE_COIN_NAME": "Çift Para",
+      "DOUBLE_COIN_DESC": "Roguelike modunda iki kat jeton kazanırsınız.",
+      "EXTRA_LIFE_NAME": "Ekstra Yaşam",
+      "EXTRA_LIFE_DESC": "Her koşuda ekstra bir canla başlarsınız.",
+      "EXTRA_TIME_NAME": "Uzatma Zamanı",
+      "EXTRA_TIME_DESC": "Seviyenin zamanlayıcısına 30 saniye ekler."
+    },
+    "PAUSED": "YAVAŞ",
+    "ERR_TIMEOUT": "Zaman aşımı hatası"
   },
   "HEADER": {
     "DASHBOARD": "Panel",

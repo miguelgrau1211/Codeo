@@ -57,7 +57,14 @@
       "REPORTS": "Relatórios",
       "SETTINGS": "Configurações"
     },
-    "LOADING": "Carregando sua aventura..."
+    "LOADING": "Carregando sua aventura...",
+    "BATTLE_PASS": "PASSE DE BATALHA",
+    "BATTLE_LEVEL": "Nível",
+    "BATTLE_REWARDS": "recompensas",
+    "BATTLE_NV": "Nv.",
+    "BATTLE_UNLOCKED": "Desbloqueado",
+    "ADMIN_TITLE": "Painel de Administração",
+    "ADMIN_DESC": "Gestão de usuários, níveis e conteúdo."
   },
   "PROFILE": {
     "BACK": "Painel",
@@ -88,7 +95,9 @@
       "GENERATE_RANDOM": "Gerar Aleatório",
       "AVATAR_TIP": "* Clique na imagem acima para gerar um novo avatar aleatório.",
       "CANCEL": "Cancelar",
-      "SAVE": "Manter"
+      "SAVE": "Manter",
+      "SUCCESS_UPDATE": "Perfil atualizado com sucesso!",
+      "ERR_UPDATE": "Erro ao atualizar o perfil."
     },
     "LOADING": "Carregando perfil..."
   },
@@ -221,7 +230,18 @@
     "MOD_CORE": "❤️ Núcleo",
     "MOD_PHASE": "⏱️ Fase",
     "MOD_DATA": "💰 Dados",
-    "MOD_ALGO": "💡 Algoritmo"
+    "MOD_ALGO": "💡 Algoritmo",
+    "STARTER_CODE": "# A variável de entrada contém os dados de entrada\n# Seu código aqui",
+    "UPGRADES": {
+      "DOUBLE_COIN_NAME": "Moeda Dupla",
+      "DOUBLE_COIN_DESC": "Você ganha o dobro de moedas no modo Roguelike.",
+      "EXTRA_LIFE_NAME": "Vida Extra",
+      "EXTRA_LIFE_DESC": "Você começa com uma vida extra em cada corrida.",
+      "EXTRA_TIME_NAME": "Prorrogação",
+      "EXTRA_TIME_DESC": "Adiciona 30 segundos ao cronômetro do nível."
+    },
+    "PAUSED": "LENTO",
+    "ERR_TIMEOUT": "Erro de tempo limite"
   },
   "SHOP": {
     "TITLE": "COMPRAR",
@@ -231,7 +251,26 @@
     "EQUIPPED": "Equipado",
     "EQUIP": "Equipar",
     "FREE_EQUIP": "Grátis - Equipar",
-    "BUY": "Comprar"
+    "BUY": "Comprar",
+    "NOT_ENOUGH_COINS": "Você não tem moedas suficientes!",
+    "CONFIRM_BUY": "Quer comprar o tema \"{{name}}\" por {{price}} moedas?",
+    "SUCCESS_BUY": "Tema adquirido com sucesso!",
+    "ERR_BUY": "Erro ao comprar o tema",
+    "ERR_ACTIVATE": "Erro ao ativar o tema",
+    "LOCKED": "Bloqueado",
+    "BATTLE_PASS_UNLOCK": "Desbloquear via Battle Pass",
+    "SUCCESS_TITLE": "TEMA ADQUIRIDO!",
+    "SUCCESS_MSG_PREFIX": "O tema",
+    "SUCCESS_MSG_SUFFIX": "Já é seu. Aproveite seu novo ambiente!",
+    "SUCCESS_BTN": "Brilhante",
+    "ERROR_TITLE": "Operação falhada",
+    "ERROR_BTN": "Entendido",
+    "CONFIRM_TITLE": "Confirmar compra",
+    "CONFIRM_MSG_PREFIX": "Você quer desbloquear o tema",
+    "CONFIRM_MSG_BY": "por",
+    "CONFIRM_COINS": "moedas",
+    "CONFIRM_BTN": "Confirmar aquisição",
+    "CANCEL_BTN": "Talvez mais tarde"
   },
   "SUPPORT": {
     "BACK": "Voltar ao topo",
@@ -316,7 +355,10 @@
     "ERR_EMAIL_INVALID": "Insira um e-mail válido.",
     "EMAIL_INVALID": "Insira um e-mail válido.",
     "ERR_PASS_REQUIRED": "A senha é obrigatória.",
-    "PASSWORD_REQUIRED": "A senha é obrigatória."
+    "PASSWORD_REQUIRED": "A senha é obrigatória.",
+    "ERR_INVALID_CREDENTIALS": "E-mail ou senha incorretos.",
+    "ERR_UNKNOWN": "Falha ao fazer login. Tente novamente.",
+    "GOOGLE_BTN": "Continuar com o Google"
   },
   "REGISTER": {
     "BACK": "Voltar ao topo",
@@ -365,7 +407,8 @@
     "ERR_CONFIRM_REQUIRED": "Confirme sua senha.",
     "CONFIRM_REQUIRED": "Confirme sua senha.",
     "ERR_PASS_MISMATCH": "As senhas não coincidem.",
-    "PASSWORD_MISMATCH": "As senhas não coincidem."
+    "PASSWORD_MISMATCH": "As senhas não coincidem.",
+    "ERR_UNKNOWN": "Ocorreu um erro inesperado durante o registro."
   },
   "LANDING": {
     "BADGE": "Plataforma de aprendizagem gamificada",
@@ -400,7 +443,10 @@
     "STREAK_DAY": "dia",
     "SELECT_FEATURE": "Selecione um recurso para explorá-lo",
     "FOOTER_PRIVACY": "Privacidade",
-    "FOOTER_TERMS": "Termos"
+    "FOOTER_TERMS": "Termos",
+    "FEAT_RANKING_DESC": "Competir com seus amigos pela melhor posição no ranking.",
+    "FEAT_LOGROS_DESC": "Desbloqueie emblemas e prove seu domínio do código.",
+    "FEAT_RACHA_DESC": "Tente manter a sequência o máximo que puder."
   },
   "HEADER": {
     "DASHBOARD": "Painel",

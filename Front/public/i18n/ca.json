@@ -57,7 +57,14 @@
       "REPORTS": "Reports",
       "SETTINGS": "Ajustaments"
     },
-    "LOADING": "Carregant la teva aventura..."
+    "LOADING": "Carregant la teva aventura...",
+    "BATTLE_PASS": "PASSE DE BATALLA",
+    "BATTLE_LEVEL": "Nivell",
+    "BATTLE_REWARDS": "recompenses",
+    "BATTLE_NV": "Nv.",
+    "BATTLE_UNLOCKED": "Desbloquejat",
+    "ADMIN_TITLE": "Panell d'Administració",
+    "ADMIN_DESC": "Gestió dusuaris, nivells i contingut."
   },
   "PROFILE": {
     "BACK": "Dashboard",
@@ -88,7 +95,9 @@
       "GENERATE_RANDOM": "Generar Random",
       "AVATAR_TIP": "* Fes click a la imatge de dalt per generar un nou avatar aleatori.",
       "CANCEL": "Cancel·la",
-      "SAVE": "Desa"
+      "SAVE": "Desa",
+      "SUCCESS_UPDATE": "Perfil actualitzat amb èxit!",
+      "ERR_UPDATE": "Error en actualitzar perfil."
     },
     "LOADING": "Carregant perfil..."
   },
@@ -168,7 +177,26 @@
     "EQUIPPED": "Equipat",
     "EQUIP": "Equipar",
     "FREE_EQUIP": "Gratis - Equipar",
-    "BUY": "Comprar"
+    "BUY": "Comprar",
+    "NOT_ENOUGH_COINS": "No tens prou monedes!",
+    "CONFIRM_BUY": "Vols comprar el tema \"{{nom}}\" per {{preu}} monedes?",
+    "SUCCESS_BUY": "Tema comprat amb èxit!",
+    "ERR_BUY": "Error en comprar el tema",
+    "ERR_ACTIVATE": "Error en activar el tema",
+    "LOCKED": "Bloquejat",
+    "BATTLE_PASS_UNLOCK": "Desbloqueig via Passi de Batalla",
+    "SUCCESS_TITLE": "TEMA ADQUIRIT!",
+    "SUCCESS_MSG_PREFIX": "El tema",
+    "SUCCESS_MSG_SUFFIX": "ja és teu. Gaudeix del teu nou entorn!",
+    "SUCCESS_BTN": "Genial",
+    "ERROR_TITLE": "Operació Fallida",
+    "ERROR_BTN": "Entès",
+    "CONFIRM_TITLE": "Confirmar Compra",
+    "CONFIRM_MSG_PREFIX": "Vols desbloquejar el tema",
+    "CONFIRM_MSG_BY": "per",
+    "CONFIRM_COINS": "monedes",
+    "CONFIRM_BTN": "Confirmar Adquisició",
+    "CANCEL_BTN": "Potser després"
   },
   "SUPPORT": {
     "BACK": "Tornar a l'inici",
@@ -253,7 +281,10 @@
     "ERR_EMAIL_INVALID": "Introdueix un correu electrònic vàlid.",
     "EMAIL_INVALID": "Introdueix un correu electrònic vàlid.",
     "ERR_PASS_REQUIRED": "La contrasenya és obligatòria.",
-    "PASSWORD_REQUIRED": "La contrasenya és obligatòria."
+    "PASSWORD_REQUIRED": "La contrasenya és obligatòria.",
+    "ERR_INVALID_CREDENTIALS": "Correu electrònic o contrasenya incorrectes.",
+    "ERR_UNKNOWN": "Error en iniciar sessió. Torneu-ho a provar.",
+    "GOOGLE_BTN": "Continuar amb Google"
   },
   "REGISTER": {
     "BACK": "Tornar a l'inici",
@@ -302,7 +333,8 @@
     "ERR_CONFIRM_REQUIRED": "Confirma la teva contrasenya.",
     "CONFIRM_REQUIRED": "Confirma la teva contrasenya.",
     "ERR_PASS_MISMATCH": "Les contrasenyes no coincideixen.",
-    "PASSWORD_MISMATCH": "Les contrasenyes no coincideixen."
+    "PASSWORD_MISMATCH": "Les contrasenyes no coincideixen.",
+    "ERR_UNKNOWN": "Va passar un error inesperat en registrar-se."
   },
   "LANDING": {
     "BADGE": "Plataforma d'aprenentatge gamificada",
@@ -337,7 +369,10 @@
     "STREAK_DAY": "dia",
     "SELECT_FEATURE": "Seleccioneu una funció per explorar-la",
     "FOOTER_PRIVACY": "Privadesa",
-    "FOOTER_TERMS": "Termes"
+    "FOOTER_TERMS": "Termes",
+    "FEAT_RANKING_DESC": "Competeix amb els teus amics pel millor lloc al rànquing.",
+    "FEAT_LOGROS_DESC": "Desbloqueja insígnies i demostra el teu domini del codi.",
+    "FEAT_RACHA_DESC": "Intenta mantenir la ratxa tant com puguis."
   },
   "INFINITE": {
     "GAME_OVER_MSG": "La teva aventura ha acabat...",
@@ -406,7 +441,17 @@
     "MOD_CORE": "❤️ Nucli",
     "MOD_PHASE": "⏱️ Fase",
     "MOD_DATA": "💰 Dades",
-    "MOD_ALGO": "💡 Algorisme"
+    "MOD_ALGO": "💡 Algorisme",
+    "UPGRADES": {
+      "DOUBLE_COIN_NAME": "Doble Moneda",
+      "DOUBLE_COIN_DESC": "Guanyes el doble de monedes a la manera Roguelike.",
+      "EXTRA_LIFE_NAME": "Vida Extra",
+      "EXTRA_LIFE_DESC": "Comences amb una vida extra a cada run.",
+      "EXTRA_TIME_NAME": "Temps Extra",
+      "EXTRA_TIME_DESC": "Afegeix 30 segons al temporitzador del nivell."
+    },
+    "PAUSED": "PAUSAT",
+    "ERR_TIMEOUT": "Error de temps despera"
   },
   "HEADER": {
     "DASHBOARD": "Tauler",
