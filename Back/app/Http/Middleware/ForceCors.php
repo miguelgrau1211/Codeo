@@ -22,15 +22,7 @@ class ForceCors
             return response('', 204)->withHeaders(self::CORS_HEADERS);
         }
 
-        try {
-            $response = $next($request);
-        } catch (\Throwable $e) {
-            // Re-throw so Laravel's exception handler processes it normally,
-            // but wrap it so the CORS headers are still added.
-            $response = response()->json([
-                'message' => $e->getMessage(),
-            ], 500);
-        }
+        $response = $next($request);
 
         // Add CORS headers to every response (including 4xx/5xx)
         foreach (self::CORS_HEADERS as $key => $value) {
