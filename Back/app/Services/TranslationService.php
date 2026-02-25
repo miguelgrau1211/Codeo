@@ -38,6 +38,7 @@ class TranslationService
      */
     private const TRANSLATABLE_FIELDS_LEVEL = ['titulo', 'descripcion', 'contenido_teorico'];
     private const TRANSLATABLE_FIELDS_LOGRO = ['nombre', 'descripcion'];
+    private const TRANSLATABLE_FIELDS_TEMA = ['nombre', 'descripcion'];
 
     /**
      * Circuit-breaker flag: once Google Translate fails within a request,
@@ -62,13 +63,27 @@ class TranslationService
     }
 
     /**
+     * Translate a theme.
+     */
+    public function translateTema(array|object $tema, string $locale): array
+    {
+        return $this->translateFields($tema, $locale, self::TRANSLATABLE_FIELDS_TEMA);
+    }
+
+    /**
      * Bulk translate a collection of records.
      * Use this for Lists (Achievements, Levels) to avoid N+1 HTTP calls to Google.
      */
     public function translateCollection(iterable $records, string $locale, string $type = 'logro'): array
     {
         $lang = $this->getValidTargetLang($locale);
-        $fields = ($type === 'logro') ? self::TRANSLATABLE_FIELDS_LOGRO : self::TRANSLATABLE_FIELDS_LEVEL;
+
+        $fields = match ($type) {
+            'logro' => self::TRANSLATABLE_FIELDS_LOGRO,
+            'nivel' => self::TRANSLATABLE_FIELDS_LEVEL,
+            'tema' => self::TRANSLATABLE_FIELDS_TEMA,
+            default => self::TRANSLATABLE_FIELDS_LOGRO
+        };
 
         if ($lang === 'es' || !$this->translationAvailable) {
             return $this->normalizeItems($records);

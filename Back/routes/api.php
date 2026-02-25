@@ -28,7 +28,7 @@ use App\Http\Controllers\PurchaseController;
 */
 
 // --- Rutas Públicas ---
-Route::post('/login', [UserController::class, 'login']);
+Route::post('/login', [UserController::class, 'login'])->name('login');
 Route::post('/users', [UserController::class, 'store']); // Registro
 Route::get('/ranking', [UserController::class, 'getRanking']);
 

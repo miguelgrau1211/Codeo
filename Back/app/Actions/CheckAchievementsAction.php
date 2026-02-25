@@ -38,7 +38,7 @@ class CheckAchievementsAction
         $stats = array_merge([
             'monedas' => $usuario->monedas,
             'nivel_global' => $usuario->nivel_global,
-            'racha_dias' => $usuario->racha_dias,
+            'streak' => $usuario->streak,
             'nivel_historia' => ProgresoHistoria::where('usuario_id', $usuario->id)->where('completado', true)->count(),
             'partidas_roguelike' => RunsRoguelike::where('usuario_id', $usuario->id)->count(),
             'rondas_roguelike' => RunsRoguelike::where('usuario_id', $usuario->id)->max('niveles_superados') ?? 0,
