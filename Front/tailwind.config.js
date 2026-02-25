@@ -9,6 +9,9 @@ module.exports = {
       fontFamily: {
         jersey: ['"Jersey 10"', 'sans-serif'],
       },
+      screens: {
+        'xs': '400px',
+      },
       colors: {
         'editor-bg': '#282C34',
         'sidebar-bg': '#21252B',

@@ -137,10 +137,14 @@ class ProcessPurchaseAction
 
             // ✅ Pago confirmado -> Activar Premium
             return DB::transaction(function () use ($usuario, $paymentIntent) {
-                $usuario->lockForUpdate();
+                // Bloqueo de fila para evitar condiciones de carrera
+                $usuario = Usuario::lockForUpdate()->find($usuario->id);
+                
                 $usuario->es_premium = true;
                 $usuario->premium_since = now();
                 $usuario->save();
+
+                Log::channel('stderr')->info('🔵 [BATTLEPASS] Usuario actualizado a Premium', ['id' => $usuario->id]);
 
                 // Otorgar recompensas pendientes del pase de batalla
                 $battlePassRewards = (new GrantBattlePassRewardsAction())->execute($usuario);

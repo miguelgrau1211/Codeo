@@ -285,9 +285,19 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
   }
 
   async submitPayment() {
-    if (!this.stripe || !this.cardElement || !this.clientSecret || !this.cardHolder().trim()) return;
+    if (!this.stripe || !this.cardElement || !this.clientSecret || !this.cardHolder().trim()) {
+      console.warn('⚠️ [PAYMENT] Faltan datos para procesar el pago:', {
+        stripe: !!this.stripe,
+        cardElement: !!this.cardElement,
+        clientSecret: !!this.clientSecret,
+        holder: this.cardHolder()
+      });
+      return;
+    }
 
+    console.log('🔵 [PAYMENT] Iniciando procesamiento con Stripe...');
     this.paymentStep.set('processing');
+    this.paymentError.set(null);
 
     try {
       // Step 4: Confirm payment with Stripe.js
@@ -305,13 +315,16 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
 
       if (error) {
         console.error('🔴 [STRIPE] Error:', error.message);
-        this.paymentError.set(error.message || 'Error al procesar el pago.');
+        this.paymentError.set(error.message || 'Error al procesar el pago con la tarjeta.');
         this.paymentStep.set('error');
         return;
       }
 
+      console.log('🟢 [STRIPE] PaymentIntent status:', paymentIntent.status);
+
       if (paymentIntent.status === 'succeeded') {
         // Step 5: Notify our backend to activate premium status
+        console.log('🔵 [BACKEND] Notificando confirmación al servidor...');
         const token = sessionStorage.getItem('token');
         this.http.post<any>('http://localhost/api/battle-pass/confirm', 
           { payment_intent_id: paymentIntent.id },
@@ -323,28 +336,34 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
           }
         ).subscribe({
           next: (res) => {
+            console.log('🟢 [BACKEND] Respuesta confirmación:', res);
             if (res.success) {
               // === CONSOLE CONFIRMATION ===
               console.log('%c ✅ PAGO REALIZADO CON ÉXITO ', 'background: #00ca4e; color: #fff; font-size: 16px; font-weight: bold; border-radius: 4px; padding: 4px 8px;');
-              console.log('ID Transacción:', paymentIntent.id);
-              console.log('Estado:', 'Confirmed');
-              console.log('Premium activado para el usuario.');
-
+              
               this.paymentStep.set('success');
+              // Silently refresh data
               this.userDataService.getUserData(true).subscribe();
             } else {
-              this.paymentError.set(res.message || 'El pago fue exitoso pero hubo un error al activar el premium en tu cuenta.');
+              this.paymentError.set(res.message || 'El pago fue exitoso pero hubo un problema al activar el premium.');
               this.paymentStep.set('error');
             }
           },
           error: (err) => {
-            this.paymentError.set(err.error?.message || 'Error de conexión final con el servidor.');
+            console.error('🔴 [BACKEND] Error en confirmación:', err);
+            this.paymentError.set(err.error?.message || 'Error de conexión con el servidor al confirmar el pago.');
             this.paymentStep.set('error');
           }
         });
+      } else {
+        // Status like 'requires_action' or others should be handled but for an MVP we treat as error
+        console.warn('🟡 [STRIPE] Estado de pago inesperado:', paymentIntent.status);
+        this.paymentError.set('El pago requiere una acción adicional o no se ha completado correctamente (Status: ' + paymentIntent.status + ').');
+        this.paymentStep.set('error');
       }
     } catch (err: any) {
-      this.paymentError.set(err.message || 'Ocurrió un error inesperado durante el pago.');
+      console.error('🔴 [FATAL] Error inesperado:', err);
+      this.paymentError.set(err.message || 'Ocurrió un error inesperado durante el procesamiento del pago.');
       this.paymentStep.set('error');
     }
   }
