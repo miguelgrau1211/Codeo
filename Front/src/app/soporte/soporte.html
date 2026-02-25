@@ -239,7 +239,7 @@
                             <div
                                 class="absolute inset-0 bg-secondary-bg/40 border border-white/5 rounded-2xl p-6 flex flex-col justify-between [backface-visibility:hidden]">
                                 <div class="flex justify-between items-start">
-                                    <h4 class="text-accent-color font-bold pr-4">{{ faq.question }}</h4>
+                                    <h4 class="text-accent-color font-bold pr-4">{{ faq.question | translate }}</h4>
                                     <span
                                         class="text-[10px] bg-primary-bg px-2 py-1 rounded text-text-muted border border-white/5 uppercase font-black">FAQ</span>
                                 </div>
@@ -258,7 +258,7 @@
                             <div
                                 class="absolute inset-0 bg-accent-color/20 border border-accent-color/30 rounded-2xl p-6 flex items-center justify-center [transform:rotateY(180deg)] [backface-visibility:hidden]">
                                 <p class="text-sm text-text-main text-center leading-relaxed font-medium">
-                                    {{ faq.answer }}
+                                    {{ faq.answer | translate }}
                                 </p>
                             </div>
                         </div>

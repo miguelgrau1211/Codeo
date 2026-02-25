@@ -295,9 +295,9 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
             });
           } else if (error.status === 401 || error.status === 403) {
             // Credenciales incorrectas
-            this.errorMessage.set('Correo electrónico o contraseña incorrectos.');
+            this.errorMessage.set('LOGIN.ERR_INVALID_CREDENTIALS');
           } else {
-            this.errorMessage.set(error.error?.message || 'Error al iniciar sesión. Inténtalo de nuevo.');
+            this.errorMessage.set(error.error?.message || 'LOGIN.ERR_UNKNOWN');
           }
         }
       });

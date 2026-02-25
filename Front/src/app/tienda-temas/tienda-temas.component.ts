@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ThemeService, Tema } from '../services/theme-service';
 import { UserDataService } from '../services/user-data-service';
 import { TranslatePipe } from '../pipes/translate.pipe';
+import { LanguageService } from '../services/language-service';
 
 @Component({
   selector: 'app-tienda-temas',
@@ -15,6 +16,7 @@ import { TranslatePipe } from '../pipes/translate.pipe';
 export class TiendaTemasComponent implements OnInit {
   private themeService = inject(ThemeService);
   private userDataService = inject(UserDataService);
+  private langService = inject(LanguageService);
 
   // States
   temasDisponibles = signal<Tema[]>([]);
@@ -27,7 +29,7 @@ export class TiendaTemasComponent implements OnInit {
   isBuying = signal(false);
   buySuccess = signal(false);
   buyError = signal<string | null>(null);
-  
+
   // Computed
   userCoins = computed(() => this.userDataService.userDataSignal()?.coins ?? 0);
   activeThemeId = computed(() => this.themeService.currentTheme()?.id);
@@ -62,7 +64,7 @@ export class TiendaTemasComponent implements OnInit {
 
   comprarTema(tema: Tema) {
     if (this.userCoins() < tema.precio) {
-      this.buyError.set('No tienes suficientes monedas para este tema.');
+      this.buyError.set(this.langService.translate('SHOP.NOT_ENOUGH_COINS'));
       this.buySuccess.set(false);
       this.selectedTema.set(tema);
       this.showBuyModal.set(true);
@@ -86,7 +88,7 @@ export class TiendaTemasComponent implements OnInit {
         this.userDataService.getUserData(true).subscribe(); // Refresh coins
         this.buySuccess.set(true);
         this.isBuying.set(false);
-        
+
         // Auto-close success modal after 2 seconds
         setTimeout(() => {
           if (this.buySuccess()) {
@@ -95,7 +97,7 @@ export class TiendaTemasComponent implements OnInit {
         }, 2500);
       },
       error: (err) => {
-        this.buyError.set(err.error?.message || 'Error al procesar la compra. Inténtalo de nuevo.');
+        this.buyError.set(err.error?.message || this.langService.translate('SHOP.ERR_BUY'));
         this.isBuying.set(false);
       }
     });
@@ -117,7 +119,7 @@ export class TiendaTemasComponent implements OnInit {
         // Theme applied via service effect
       },
       error: (err) => {
-        this.buyError.set(err.error?.message || 'Error al activar el tema');
+        this.buyError.set(err.error?.message || this.langService.translate('SHOP.ERR_ACTIVATE'));
         this.showBuyModal.set(true);
       }
     });

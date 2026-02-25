@@ -6,6 +6,7 @@ import { EjecutarCodigoService } from '../services/ejecutar-codigo-service';
 import { ProgresoHistoriaService } from '../services/progreso-historia-service';
 import { UserDataService } from '../services/user-data-service';
 import { ThemeService } from '../services/theme-service';
+import { LanguageService } from '../services/language-service';
 import { TranslatePipe } from '../pipes/translate.pipe';
 
 @Component({
@@ -58,7 +59,8 @@ export class ModoHistoria implements OnInit {
     private ejecutarCodigoService: EjecutarCodigoService,
     private progresoHistoriaService: ProgresoHistoriaService,
     private userDataService: UserDataService,
-    public themeService: ThemeService
+    public themeService: ThemeService,
+    private langService: LanguageService
   ) {
     this.updateCode(this.codeContent());
 
@@ -202,7 +204,7 @@ export class ModoHistoria implements OnInit {
 
     if (!levelId || !token) return;
 
-    this.executionResult.set({ message: 'Ejecutando tests...', loading: true });
+    this.executionResult.set({ message: this.langService.translate('INFINITE.EXECUTING_TESTS'), loading: true });
 
     this.ejecutarCodigoService
       .ejecutarCodigo(this.codeContent(), 'historia', levelId, token)
@@ -241,7 +243,7 @@ export class ModoHistoria implements OnInit {
         error: () => {
           this.executionResult.set({
             correcto: false,
-            message: 'Error al conectar con el servidor.',
+            message: this.langService.translate('INFINITE.ERR_SERVER'),
             detalles: [],
           });
         },

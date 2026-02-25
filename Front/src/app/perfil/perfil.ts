@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { UserDataService, ActivityItem } from '../services/user-data-service';
 import { ThemeService } from '../services/theme-service';
+import { LanguageService } from '../services/language-service';
 import { TranslatePipe } from '../pipes/translate.pipe';
 
 
@@ -18,6 +19,7 @@ export class Perfil {
 
   private readonly userDataService = inject(UserDataService);
   public readonly themeService = inject(ThemeService);
+  private readonly langService = inject(LanguageService);
 
   isReady = computed(() => !!this.userDataService.userDataSignal());
 
@@ -111,7 +113,7 @@ export class Perfil {
     this.userDataService.updateUser(data).subscribe({
       next: () => {
         this.isSaving.set(false);
-        this.saveFeedback.set('¡Perfil actualizado con éxito!');
+        this.saveFeedback.set(this.langService.translate('PROFILE.EDIT_MODAL.SUCCESS_UPDATE'));
         setTimeout(() => {
           this.closeEditModal();
           this.saveFeedback.set(null);
@@ -119,7 +121,7 @@ export class Perfil {
       },
       error: (err) => {
         this.isSaving.set(false);
-        this.saveFeedback.set(err.error?.message || 'Error al actualizar perfil.');
+        this.saveFeedback.set(err.error?.message || this.langService.translate('PROFILE.EDIT_MODAL.ERR_UPDATE'));
       }
     });
   }

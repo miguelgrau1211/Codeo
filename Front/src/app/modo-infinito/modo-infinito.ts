@@ -7,6 +7,7 @@ import { RoguelikeSessionService, RunStats } from '../services/roguelike-session
 import { EjecutarCodigoService } from '../services/ejecutar-codigo-service';
 import { UserDataService } from '../services/user-data-service';
 import { ThemeService } from '../services/theme-service';
+import { LanguageService } from '../services/language-service';
 import { TranslatePipe } from '../pipes/translate.pipe';
 
 @Component({
@@ -97,7 +98,8 @@ export class ModoInfinito implements OnInit, OnDestroy {
     private roguelikeSessionService: RoguelikeSessionService,
     private ejecutarCodigoService: EjecutarCodigoService,
     private userDataService: UserDataService,
-    public themeService: ThemeService
+    public themeService: ThemeService,
+    private langService: LanguageService
   ) {
     this.updateCode(this.codeContent());
   }
@@ -112,6 +114,20 @@ export class ModoInfinito implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.stopTimer();
+  }
+
+  // ==========================================
+  // HELPERS
+  // ==========================================
+
+  getDifficultyKey(): string {
+    const map: Record<string, string> = {
+      'fácil': 'INFINITE.DIFF_EASY',
+      'medio': 'INFINITE.DIFF_MEDIUM',
+      'difícil': 'INFINITE.DIFF_HARD',
+      'extremo': 'INFINITE.DIFF_EXTREME',
+    };
+    return map[this.dificultad()] ?? 'INFINITE.DIFF_EASY';
   }
 
   // ==========================================
@@ -188,7 +204,7 @@ export class ModoInfinito implements OnInit, OnDestroy {
 
             this.executionResult.set({
               correcto: false,
-              message: '⏱️ ¡Se acabó el tiempo! Pierdes una vida. Tienes 1:30 extra.',
+              message: this.langService.translate('INFINITE.TIME_EXPIRED'),
               detalles: [],
             });
           }
@@ -280,7 +296,7 @@ export class ModoInfinito implements OnInit, OnDestroy {
       next: (nivel: NivelRoguelike) => {
         if (!nivel) {
           console.error('Nivel inválido (null/undefined)');
-          this.titulo.set('Error de datos');
+          this.titulo.set(this.langService.translate('INFINITE.ERR_DATA'));
           this.startExit.set(true);
           this.showIntro.set(false);
           return;
@@ -291,7 +307,7 @@ export class ModoInfinito implements OnInit, OnDestroy {
         this.dificultad.set(nivel.dificultad);
         this.testCases.set(nivel.test_cases || []);
 
-        const starterCode = `# La variable input contiene los datos de entrada\n# Tu código aquí\n`;
+        const starterCode = this.langService.translate('INFINITE.STARTER_CODE');
         this.initialCode.set(starterCode);
         this.codeContent.set(starterCode);
         this.updateCode(starterCode);
@@ -306,7 +322,7 @@ export class ModoInfinito implements OnInit, OnDestroy {
         }, 1000);
       },
       error: () => {
-        this.titulo.set('Error de conexión');
+        this.titulo.set(this.langService.translate('INFINITE.ERR_CONN'));
         this.startExit.set(true);
         this.showIntro.set(false);
       },
@@ -329,7 +345,7 @@ export class ModoInfinito implements OnInit, OnDestroy {
 
     this.pauseTimer();
     this.isExecuting.set(true);
-    this.executionResult.set({ message: 'Ejecutando tests...', loading: true });
+    this.executionResult.set({ message: this.langService.translate('INFINITE.EXECUTING_TESTS'), loading: true });
 
     this.ejecutarCodigoService
       .ejecutarCodigo(this.codeContent(), 'roguelike', nivelId, token)
@@ -347,7 +363,7 @@ export class ModoInfinito implements OnInit, OnDestroy {
             this.roguelikeSessionService.registerSuccess().subscribe({
               next: (sessionRes) => {
                 this.coins.set(sessionRes.coins_earned);
-                
+
                 // Actualizar streak global reactivamente
                 if (sessionRes.racha?.streak !== undefined) {
                   this.userDataService.setStreak(sessionRes.racha.streak);
@@ -395,7 +411,7 @@ export class ModoInfinito implements OnInit, OnDestroy {
           this.resumeTimer();
           this.executionResult.set({
             correcto: false,
-            message: 'Error al conectar con el servidor.',
+            message: this.langService.translate('INFINITE.ERR_SERVER'),
             detalles: [],
           });
         },
@@ -430,7 +446,7 @@ export class ModoInfinito implements OnInit, OnDestroy {
 
   buyBox() {
     if (this.coins() < 100) {
-      this.mejoraFeedback.set('No tienes suficientes monedas (Cuesta 100)');
+      this.mejoraFeedback.set(this.langService.translate('INFINITE.NOT_ENOUGH_COINS'));
       setTimeout(() => this.mejoraFeedback.set(null), 3000);
       return;
     }
@@ -445,7 +461,7 @@ export class ModoInfinito implements OnInit, OnDestroy {
       },
       error: () => {
         this.isLoadingMejoras.set(false);
-        this.mejoraFeedback.set('Error al cargar mejoras.');
+        this.mejoraFeedback.set(this.langService.translate('INFINITE.ERR_LOADING_UPGRADES'));
         setTimeout(() => this.mejoraFeedback.set(null), 3000);
       },
     });
@@ -473,7 +489,7 @@ export class ModoInfinito implements OnInit, OnDestroy {
         this.showMejoras.set(false);
       },
       error: (err) => {
-        const msg = err.error?.message || 'Error al comprar mejora.';
+        const msg = err.error?.message || this.langService.translate('INFINITE.ERR_BUYING_UPGRADE');
         this.mejoraFeedback.set(msg);
         setTimeout(() => this.mejoraFeedback.set(null), 3000);
         this.showMejoras.set(false);

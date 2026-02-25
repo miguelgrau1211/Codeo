@@ -37,23 +37,23 @@ export class Soporte {
 
   faqs = signal<Faq[]>([
     {
-      question: "¿Cuánto tarda en responderse un report?",
-      answer: "Nuestro equipo revisa los reportes diariamente. Generalmente recibes respuesta en 24-48 horas laborables.",
+      question: "SUPPORT.FAQS.Q1",
+      answer: "SUPPORT.FAQS.A1",
       isFlipped: false
     },
     {
-      question: "¿Cómo puedo resetear mi progreso?",
-      answer: "Ve a Ajustes > Zona de Peligro > Resetear Progreso. Ten cuidado, esta acción no se puede deshacer.",
+      question: "SUPPORT.FAQS.Q2",
+      answer: "SUPPORT.FAQS.A2",
       isFlipped: false
     },
     {
-      question: "¿Gano algo por reportar bugs?",
-      answer: "¡Sí! Si el bug es validado, recibirás créditos y XP como recompensa por ayudar a mejorar Codeo.",
+      question: "SUPPORT.FAQS.Q3",
+      answer: "SUPPORT.FAQS.A3",
       isFlipped: false
     },
     {
-      question: "¿Puedo contribuir al código?",
-      answer: "Actualmente el core es privado, pero puedes contribuir reportando issues o creando contenido para la comunidad.",
+      question: "SUPPORT.FAQS.Q4",
+      answer: "SUPPORT.FAQS.A4",
       isFlipped: false
     }
   ]);
