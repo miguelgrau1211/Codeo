@@ -10,10 +10,12 @@ use App\Actions\ComprarTemaAction;
 
 class TemaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $temas = Tema::all();
-        return TemaResource::collection($temas);
+        $locale = $request->header('Accept-Language', 'es');
+        $translated = app(\App\Services\TranslationService::class)->translateCollection($temas, $locale, 'tema');
+        return TemaResource::collection($translated);
     }
 
     public function misTemas(Request $request)
@@ -47,6 +49,13 @@ class TemaController extends Controller
 
         $usuario->update(['tema_actual_id' => $tema->id]);
 
-        return response()->json(['message' => 'Tema activado correctamente.', 'tema' => new TemaResource($tema)]);
+        $locale = $request->header('Accept-Language', 'es');
+        $translatedTema = app(\App\Services\TranslationService::class)->translateTema($tema, $locale);
+
+        $msg = ($locale === 'en') ? 'Theme activated correctly.' : 'Tema activado correctamente.';
+        // For other languages we could use __() if we had lang files in the backend for these strings.
+        // But the user specifically wants EVERYTHING translated.
+
+        return response()->json(['message' => $msg, 'tema' => $translatedTema]);
     }
 }

@@ -167,7 +167,6 @@ class UsuarioLogroController extends Controller
             'logros_obtenidos' => $logrosUsuario,
             'total_disponibles' => $totalLogros,
             'porcentaje' => round($porcentaje, 2),
-            'texto' => "Has completado $logrosUsuario de $totalLogros logros",
         ], 200);
     }
 }
