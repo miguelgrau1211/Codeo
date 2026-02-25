@@ -57,7 +57,14 @@
       "REPORTS": "Rapporti",
       "SETTINGS": "Impostazioni"
     },
-    "LOADING": "Caricamento della tua avventura..."
+    "LOADING": "Caricamento della tua avventura...",
+    "BATTLE_PASS": "PASSAGGIO DI BATTAGLIA",
+    "BATTLE_LEVEL": "Livello",
+    "BATTLE_REWARDS": "ricompense",
+    "BATTLE_NV": "Liv.",
+    "BATTLE_UNLOCKED": "Sbloccato",
+    "ADMIN_TITLE": "Pannello di amministrazione",
+    "ADMIN_DESC": "Gestione degli utenti, dei livelli e dei contenuti."
   },
   "PROFILE": {
     "BACK": "Pannello di controllo",
@@ -175,7 +182,21 @@
     "CONFIRM_BUY": "Vuoi acquistare il tema \"{{name}}\" per {{price}} monete?",
     "SUCCESS_BUY": "Tema acquistato con successo!",
     "ERR_BUY": "Errore durante l'acquisto del tema",
-    "ERR_ACTIVATE": "Errore durante l'attivazione del tema"
+    "ERR_ACTIVATE": "Errore durante l'attivazione del tema",
+    "LOCKED": "Bloccato",
+    "BATTLE_PASS_UNLOCK": "Sblocca tramite Battle Pass",
+    "SUCCESS_TITLE": "TEMA ACQUISITO!",
+    "SUCCESS_MSG_PREFIX": "Il tema",
+    "SUCCESS_MSG_SUFFIX": "È già tuo. Goditi il ​​tuo nuovo ambiente!",
+    "SUCCESS_BTN": "Brillante",
+    "ERROR_TITLE": "Operazione non riuscita",
+    "ERROR_BTN": "Inteso",
+    "CONFIRM_TITLE": "Conferma acquisto",
+    "CONFIRM_MSG_PREFIX": "Vuoi sbloccare il tema",
+    "CONFIRM_MSG_BY": "di",
+    "CONFIRM_COINS": "monete",
+    "CONFIRM_BTN": "Conferma acquisizione",
+    "CANCEL_BTN": "Forse più tardi"
   },
   "SUPPORT": {
     "BACK": "Torna all'inizio",

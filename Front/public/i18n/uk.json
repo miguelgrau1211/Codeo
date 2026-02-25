@@ -57,7 +57,14 @@
       "REPORTS": "Звіти",
       "SETTINGS": "Налаштування"
     },
-    "LOADING": "Завантаження вашої пригоди..."
+    "LOADING": "Завантаження вашої пригоди...",
+    "BATTLE_PASS": "БОЙОВИЙ ПЕРЕПУСК",
+    "BATTLE_LEVEL": "Рівень",
+    "BATTLE_REWARDS": "нагороди",
+    "BATTLE_NV": "Lv.",
+    "BATTLE_UNLOCKED": "Розблоковано",
+    "ADMIN_TITLE": "Панель адміністрування",
+    "ADMIN_DESC": "Управління користувачами, рівнями та контентом."
   },
   "PROFILE": {
     "BACK": "Приладова панель",
@@ -175,7 +182,21 @@
     "CONFIRM_BUY": "Бажаєте купити тему \"{{name}}\" за монети {{price}}?",
     "SUCCESS_BUY": "Тему успішно придбано!",
     "ERR_BUY": "Помилка при покупці теми",
-    "ERR_ACTIVATE": "Помилка активації теми"
+    "ERR_ACTIVATE": "Помилка активації теми",
+    "LOCKED": "заблоковано",
+    "BATTLE_PASS_UNLOCK": "Розблокуйте за допомогою Battle Pass",
+    "SUCCESS_TITLE": "ТЕМА ПРИДБАНА!",
+    "SUCCESS_MSG_PREFIX": "Тема",
+    "SUCCESS_MSG_SUFFIX": "Це вже твоє. Насолоджуйтесь новим оточенням!",
+    "SUCCESS_BTN": "Блискуче",
+    "ERROR_TITLE": "Невдала операція",
+    "ERROR_BTN": "Зрозумів",
+    "CONFIRM_TITLE": "Підтвердити покупку",
+    "CONFIRM_MSG_PREFIX": "Ви хочете розблокувати тему",
+    "CONFIRM_MSG_BY": "за",
+    "CONFIRM_COINS": "монети",
+    "CONFIRM_BTN": "Підтвердити придбання",
+    "CANCEL_BTN": "Можливо пізніше"
   },
   "SUPPORT": {
     "BACK": "Повернутися до початку",

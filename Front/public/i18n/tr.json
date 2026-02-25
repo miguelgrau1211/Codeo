@@ -57,7 +57,14 @@
       "REPORTS": "Raporlar",
       "SETTINGS": "Ayarlar"
     },
-    "LOADING": "Maceranız yükleniyor..."
+    "LOADING": "Maceranız yükleniyor...",
+    "BATTLE_PASS": "SAVAŞ BİLETİ",
+    "BATTLE_LEVEL": "Seviye",
+    "BATTLE_REWARDS": "ödüller",
+    "BATTLE_NV": "Lv.",
+    "BATTLE_UNLOCKED": "Kilitli değil",
+    "ADMIN_TITLE": "Yönetim Paneli",
+    "ADMIN_DESC": "Kullanıcıların, seviyelerin ve içeriğin yönetimi."
   },
   "PROFILE": {
     "BACK": "Kontrol Paneli",
@@ -175,7 +182,21 @@
     "CONFIRM_BUY": "\"{{name}}\" temasını {{price}} jeton karşılığında satın almak ister misiniz?",
     "SUCCESS_BUY": "Tema başarıyla satın alındı!",
     "ERR_BUY": "Temayı satın alırken hata oluştu",
-    "ERR_ACTIVATE": "Tema etkinleştirilirken hata oluştu"
+    "ERR_ACTIVATE": "Tema etkinleştirilirken hata oluştu",
+    "LOCKED": "Engellendi",
+    "BATTLE_PASS_UNLOCK": "Battle Pass ile kilidi aç",
+    "SUCCESS_TITLE": "TEMA ALINDI!",
+    "SUCCESS_MSG_PREFIX": "Tema",
+    "SUCCESS_MSG_SUFFIX": "O zaten senin. Yeni çevrenizin tadını çıkarın!",
+    "SUCCESS_BTN": "Muhteşem",
+    "ERROR_TITLE": "Başarısız İşlem",
+    "ERROR_BTN": "Anlaşıldı",
+    "CONFIRM_TITLE": "Satın Alma İşlemini Onayla",
+    "CONFIRM_MSG_PREFIX": "Temanın kilidini açmak istiyor musunuz?",
+    "CONFIRM_MSG_BY": "ile",
+    "CONFIRM_COINS": "paralar",
+    "CONFIRM_BTN": "Edinmeyi Onayla",
+    "CANCEL_BTN": "Belki daha sonra"
   },
   "SUPPORT": {
     "BACK": "Başa dön",

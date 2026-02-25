@@ -57,7 +57,14 @@
       "REPORTS": "Reports",
       "SETTINGS": "Ajustaments"
     },
-    "LOADING": "Carregant la teva aventura..."
+    "LOADING": "Carregant la teva aventura...",
+    "BATTLE_PASS": "PASE DE BATALLA",
+    "BATTLE_LEVEL": "Nivel",
+    "BATTLE_REWARDS": "recompensas",
+    "BATTLE_NV": "Nv.",
+    "BATTLE_UNLOCKED": "Desbloqueado",
+    "ADMIN_TITLE": "Panel de Administración",
+    "ADMIN_DESC": "Gestión de usuarios, niveles y contenido."
   },
   "PROFILE": {
     "BACK": "Dashboard",
@@ -175,7 +182,21 @@
     "CONFIRM_BUY": "¿Quieres comprar el tema \"{{nombre}}\" por {{precio}} monedas?",
     "SUCCESS_BUY": "¡Tema comprado con éxito!",
     "ERR_BUY": "Error al comprar el tema",
-    "ERR_ACTIVATE": "Error al activar el tema"
+    "ERR_ACTIVATE": "Error al activar el tema",
+    "LOCKED": "Bloqueado",
+    "BATTLE_PASS_UNLOCK": "Desbloqueo vía Pase de Batalla",
+    "SUCCESS_TITLE": "¡TEMA ADQUIRIDO!",
+    "SUCCESS_MSG_PREFIX": "El tema",
+    "SUCCESS_MSG_SUFFIX": "ya es tuyo. ¡Disfruta de tu nuevo entorno!",
+    "SUCCESS_BTN": "Genial",
+    "ERROR_TITLE": "Operación Fallida",
+    "ERROR_BTN": "Entendido",
+    "CONFIRM_TITLE": "Confirmar Compra",
+    "CONFIRM_MSG_PREFIX": "¿Deseas desbloquear el tema",
+    "CONFIRM_MSG_BY": "por",
+    "CONFIRM_COINS": "monedas",
+    "CONFIRM_BTN": "Confirmar Adquisición",
+    "CANCEL_BTN": "Quizás después"
   },
   "SUPPORT": {
     "BACK": "Tornar a l'inici",

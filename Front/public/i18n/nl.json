@@ -57,7 +57,14 @@
       "REPORTS": "Rapporten",
       "SETTINGS": "Instellingen"
     },
-    "LOADING": "Je avontuur laden..."
+    "LOADING": "Je avontuur laden...",
+    "BATTLE_PASS": "GEVECHTSPAS",
+    "BATTLE_LEVEL": "Niveau",
+    "BATTLE_REWARDS": "beloningen",
+    "BATTLE_NV": "Lv.",
+    "BATTLE_UNLOCKED": "Ontgrendeld",
+    "ADMIN_TITLE": "Beheerpaneel",
+    "ADMIN_DESC": "Beheer van gebruikers, niveaus en inhoud."
   },
   "PROFILE": {
     "BACK": "Dashboard",
@@ -175,7 +182,21 @@
     "CONFIRM_BUY": "Wilt u het thema \"{{nombre}}\" kopen voor {{precio}} munten?",
     "SUCCESS_BUY": "Thema succesvol gekocht!",
     "ERR_BUY": "Fout bij aankoop van thema",
-    "ERR_ACTIVATE": "Fout bij het activeren van het thema"
+    "ERR_ACTIVATE": "Fout bij het activeren van het thema",
+    "LOCKED": "Geblokkeerd",
+    "BATTLE_PASS_UNLOCK": "Ontgrendel via Battle Pass",
+    "SUCCESS_TITLE": "THEMA VERWORVEN!",
+    "SUCCESS_MSG_PREFIX": "Het thema",
+    "SUCCESS_MSG_SUFFIX": "Het is al van jou. Geniet van je nieuwe omgeving!",
+    "SUCCESS_BTN": "Briljant",
+    "ERROR_TITLE": "Mislukte operatie",
+    "ERROR_BTN": "Begrepen",
+    "CONFIRM_TITLE": "Bevestig aankoop",
+    "CONFIRM_MSG_PREFIX": "Wil je het thema ontgrendelen",
+    "CONFIRM_MSG_BY": "door",
+    "CONFIRM_COINS": "munten",
+    "CONFIRM_BTN": "Bevestig acquisitie",
+    "CANCEL_BTN": "Misschien later"
   },
   "SUPPORT": {
     "BACK": "Terug naar boven",

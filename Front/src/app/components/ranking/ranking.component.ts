@@ -1,3 +1,4 @@
+import { TranslatePipe } from '../../pipes/translate.pipe';
 import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -8,7 +9,7 @@ import { RankingUser } from '../../models/ranking.model';
 @Component({
   selector: 'app-ranking',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslatePipe],
   templateUrl: './ranking.component.html',
   styleUrl: './ranking.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush

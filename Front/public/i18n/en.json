@@ -57,7 +57,14 @@
       "REPORTS": "Reports",
       "SETTINGS": "Settings"
     },
-    "LOADING": "Loading your adventure..."
+    "LOADING": "Loading your adventure...",
+    "BATTLE_PASS": "BATTLE PASS",
+    "BATTLE_LEVEL": "Level",
+    "BATTLE_REWARDS": "rewards",
+    "BATTLE_NV": "Lv.",
+    "BATTLE_UNLOCKED": "Unlocked",
+    "ADMIN_TITLE": "Administration Panel",
+    "ADMIN_DESC": "Management of users, levels and content."
   },
   "PROFILE": {
     "BACK": "Dashboard",
@@ -175,7 +182,21 @@
     "CONFIRM_BUY": "Do you want to buy the theme \"{{nombre}}\" for {{precio}} coins?",
     "SUCCESS_BUY": "Theme purchased successfully!",
     "ERR_BUY": "Error purchasing theme",
-    "ERR_ACTIVATE": "Error activating theme"
+    "ERR_ACTIVATE": "Error activating theme",
+    "LOCKED": "Blocked",
+    "BATTLE_PASS_UNLOCK": "Unlock via Battle Pass",
+    "SUCCESS_TITLE": "THEME ACQUIRED!",
+    "SUCCESS_MSG_PREFIX": "The theme",
+    "SUCCESS_MSG_SUFFIX": "It's already yours. Enjoy your new surroundings!",
+    "SUCCESS_BTN": "Brilliant",
+    "ERROR_TITLE": "Failed Operation",
+    "ERROR_BTN": "Understood",
+    "CONFIRM_TITLE": "Confirm Purchase",
+    "CONFIRM_MSG_PREFIX": "Do you want to unlock the theme",
+    "CONFIRM_MSG_BY": "by",
+    "CONFIRM_COINS": "coins",
+    "CONFIRM_BTN": "Confirm Acquisition",
+    "CANCEL_BTN": "Maybe later"
   },
   "SUPPORT": {
     "BACK": "Back to top",

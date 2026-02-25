@@ -57,7 +57,14 @@
       "REPORTS": "التقارير",
       "SETTINGS": "إعدادات"
     },
-    "LOADING": "جارٍ تحميل مغامرتك..."
+    "LOADING": "جارٍ تحميل مغامرتك...",
+    "BATTLE_PASS": "ممر المعركة",
+    "BATTLE_LEVEL": "مستوى",
+    "BATTLE_REWARDS": "المكافآت",
+    "BATTLE_NV": "المستوى.",
+    "BATTLE_UNLOCKED": "مفتوح",
+    "ADMIN_TITLE": "لوحة الإدارة",
+    "ADMIN_DESC": "إدارة المستخدمين والمستويات والمحتوى."
   },
   "PROFILE": {
     "BACK": "لوحة القيادة",
@@ -175,7 +182,21 @@
     "CONFIRM_BUY": "هل ترغب في شراء السمة \"{{name}}\" مقابل عملات معدنية {{price}}؟",
     "SUCCESS_BUY": "تم شراء الموضوع بنجاح!",
     "ERR_BUY": "خطأ عند شراء الموضوع",
-    "ERR_ACTIVATE": "خطأ في تفعيل الموضوع"
+    "ERR_ACTIVATE": "خطأ في تفعيل الموضوع",
+    "LOCKED": "محظور",
+    "BATTLE_PASS_UNLOCK": "فتح عبر Battle Pass",
+    "SUCCESS_TITLE": "تم الحصول على الموضوع!",
+    "SUCCESS_MSG_PREFIX": "الموضوع",
+    "SUCCESS_MSG_SUFFIX": "انها بالفعل لك. استمتع بمحيطك الجديد!",
+    "SUCCESS_BTN": "باهِر",
+    "ERROR_TITLE": "عملية فاشلة",
+    "ERROR_BTN": "مفهوم",
+    "CONFIRM_TITLE": "تأكيد الشراء",
+    "CONFIRM_MSG_PREFIX": "هل تريد فتح الموضوع",
+    "CONFIRM_MSG_BY": "بواسطة",
+    "CONFIRM_COINS": "عملات معدنية",
+    "CONFIRM_BTN": "تأكيد الاستحواذ",
+    "CANCEL_BTN": "ربما في وقت لاحق"
   },
   "SUPPORT": {
     "BACK": "العودة إلى الأعلى",

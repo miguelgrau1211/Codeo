@@ -57,7 +57,14 @@
       "REPORTS": "रिपोर्टों",
       "SETTINGS": "सेटिंग्स"
     },
-    "LOADING": "आपका साहसिक कार्य लोड हो रहा है..."
+    "LOADING": "आपका साहसिक कार्य लोड हो रहा है...",
+    "BATTLE_PASS": "युद्ध पास",
+    "BATTLE_LEVEL": "स्तर",
+    "BATTLE_REWARDS": "पुरस्कार",
+    "BATTLE_NV": "लव.",
+    "BATTLE_UNLOCKED": "अनलॉक किया",
+    "ADMIN_TITLE": "प्रशासन पैनल",
+    "ADMIN_DESC": "उपयोगकर्ताओं, स्तरों और सामग्री का प्रबंधन।"
   },
   "PROFILE": {
     "BACK": "Dashboard",
@@ -175,7 +182,21 @@
     "CONFIRM_BUY": "क्या आप {{कीमत}} सिक्कों के लिए थीम \"{{नाम}}\" खरीदना चाहते हैं?",
     "SUCCESS_BUY": "थीम सफलतापूर्वक खरीदी गई!",
     "ERR_BUY": "थीम खरीदते समय त्रुटि",
-    "ERR_ACTIVATE": "थीम सक्रिय करने में त्रुटि"
+    "ERR_ACTIVATE": "थीम सक्रिय करने में त्रुटि",
+    "LOCKED": "अवरोधित",
+    "BATTLE_PASS_UNLOCK": "बैटल पास के माध्यम से अनलॉक करें",
+    "SUCCESS_TITLE": "विषय प्राप्त हुआ!",
+    "SUCCESS_MSG_PREFIX": "विषय",
+    "SUCCESS_MSG_SUFFIX": "यह पहले से ही तुम्हारा है. अपने नए परिवेश का आनंद लें!",
+    "SUCCESS_BTN": "शानदार",
+    "ERROR_TITLE": "असफल ऑपरेशन",
+    "ERROR_BTN": "समझा",
+    "CONFIRM_TITLE": "खरीद की पुष्टि करें",
+    "CONFIRM_MSG_PREFIX": "क्या आप थीम को अनलॉक करना चाहते हैं",
+    "CONFIRM_MSG_BY": "द्वारा",
+    "CONFIRM_COINS": "सिक्के",
+    "CONFIRM_BTN": "अधिग्रहण की पुष्टि करें",
+    "CANCEL_BTN": "शायद बाद में"
   },
   "SUPPORT": {
     "BACK": "Volver al inicio",

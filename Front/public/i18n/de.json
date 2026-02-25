@@ -57,7 +57,14 @@
       "REPORTS": "Berichte",
       "SETTINGS": "Einstellungen"
     },
-    "LOADING": "Dein Abenteuer wird geladen..."
+    "LOADING": "Dein Abenteuer wird geladen...",
+    "BATTLE_PASS": "KAMPFPASS",
+    "BATTLE_LEVEL": "Ebene",
+    "BATTLE_REWARDS": "Belohnungen",
+    "BATTLE_NV": "Lv.",
+    "BATTLE_UNLOCKED": "Entsperrt",
+    "ADMIN_TITLE": "Administrationsbereich",
+    "ADMIN_DESC": "Verwaltung von Benutzern, Ebenen und Inhalten."
   },
   "PROFILE": {
     "BACK": "Armaturenbrett",
@@ -175,7 +182,21 @@
     "CONFIRM_BUY": "Möchten Sie das Thema „{{name}}“ für {{price}} Münzen kaufen?",
     "SUCCESS_BUY": "Theme erfolgreich gekauft!",
     "ERR_BUY": "Fehler beim Kauf des Themes",
-    "ERR_ACTIVATE": "Fehler beim Aktivieren des Themes"
+    "ERR_ACTIVATE": "Fehler beim Aktivieren des Themes",
+    "LOCKED": "Blockiert",
+    "BATTLE_PASS_UNLOCK": "Über den Battle Pass freischalten",
+    "SUCCESS_TITLE": "THEMA ERWORBEN!",
+    "SUCCESS_MSG_PREFIX": "Das Thema",
+    "SUCCESS_MSG_SUFFIX": "Es gehört bereits dir. Genießen Sie Ihre neue Umgebung!",
+    "SUCCESS_BTN": "Genial",
+    "ERROR_TITLE": "Fehlgeschlagener Vorgang",
+    "ERROR_BTN": "Verstanden",
+    "CONFIRM_TITLE": "Bestätigen Sie den Kauf",
+    "CONFIRM_MSG_PREFIX": "Möchten Sie das Thema freischalten?",
+    "CONFIRM_MSG_BY": "von",
+    "CONFIRM_COINS": "Münzen",
+    "CONFIRM_BTN": "Bestätigen Sie den Erwerb",
+    "CANCEL_BTN": "Vielleicht später"
   },
   "SUPPORT": {
     "BACK": "Zurück nach oben",
