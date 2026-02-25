@@ -442,7 +442,9 @@
       "EXTRA_LIFE_DESC": "Her koşuda ekstra bir canla başlarsınız.",
       "EXTRA_TIME_NAME": "Uzatma Zamanı",
       "EXTRA_TIME_DESC": "Seviyenin zamanlayıcısına 30 saniye ekler."
-    }
+    },
+    "PAUSED": "YAVAŞ",
+    "ERR_TIMEOUT": "Zaman aşımı hatası"
   },
   "HEADER": {
     "DASHBOARD": "Panel",

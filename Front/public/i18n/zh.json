@@ -442,7 +442,9 @@
       "EXTRA_LIFE_DESC": "Empiezas con una vida extra en cada run.",
       "EXTRA_TIME_NAME": "Tiempo Extra",
       "EXTRA_TIME_DESC": "Añade 30 segundos al temporizador del nivel."
-    }
+    },
+    "PAUSED": "PAUSADO",
+    "ERR_TIMEOUT": "Error de tiempo de espera"
   },
   "HEADER": {
     "DASHBOARD": "仪表板",
