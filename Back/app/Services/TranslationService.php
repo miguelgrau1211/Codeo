@@ -127,10 +127,11 @@ class TranslationService
                 break; // Stop translating collection if API fails
             }
 
-            $translatedParts = explode(trim(self::BULK_DELIMITER), $translatedBulk);
+            $translatedParts = preg_split('/\s?\[\[\[\|\]\]\]\s?/', $translatedBulk);
 
             // Map back and cache
             foreach ($chunk as $i => $meta) {
+                // If the split failed or returned fewer parts, fallback to original text safely
                 $val = trim($translatedParts[$i] ?? $meta['text']);
                 $items[$meta['item_index']][$meta['field']] = $val;
 

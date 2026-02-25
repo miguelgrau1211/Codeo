@@ -12,23 +12,38 @@ use Illuminate\Http\Request;
 
 class NivelesHistoriaController
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Solo mostraremos lo necesario
-        $niveles = NivelesHistoria::select('id', 'orden', 'titulo', 'recompensa_exp', 'recompensa_monedas')->orderBy('orden')->get();
-        return response()->json($niveles, 200);
+        $locale = TranslationService::resolveLocale($request);
+        $translator = app(TranslationService::class);
+
+        $niveles = NivelesHistoria::select('id', 'orden', 'titulo', 'recompensa_exp', 'recompensa_monedas')
+            ->orderBy('orden')
+            ->get();
+
+        $translated = $translator->translateCollection($niveles, $locale, 'nivel');
+
+        return response()->json($translated, 200);
     }
 
-    public function indexAdmin()
+    public function indexAdmin(Request $request)
     {
-        // Paginación para admin
-        $niveles = NivelesHistoria::select('id', 'orden', 'titulo', 'recompensa_exp', 'recompensa_monedas')->orderBy('orden')->paginate(10);
+        // Paginación para admin - No traducimos porque admin edita el original (ES)
+        $niveles = NivelesHistoria::select('id', 'orden', 'titulo', 'recompensa_exp', 'recompensa_monedas')
+            ->orderBy('orden')
+            ->paginate(10);
         return response()->json($niveles, 200);
     }
 
     public function show($id, Request $request)
     {
         $nivel = NivelesHistoria::findOrFail($id);
+
+        // Si es una ruta de administración, devolvemos el contenido original sin traducir
+        if ($request->is('api/admin/*')) {
+            return response()->json($nivel, 200);
+        }
+
         $locale = TranslationService::resolveLocale($request);
         $translator = app(TranslationService::class);
         $data = $translator->translateNivel($nivel, $locale);

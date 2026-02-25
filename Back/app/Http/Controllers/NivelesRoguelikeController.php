@@ -36,6 +36,12 @@ class NivelesRoguelikeController extends Controller
     public function show($id, Request $request)
     {
         $nivel = NivelRoguelike::findOrFail($id);
+
+        // Si es admin, no traducimos porque queremos editar el original (ES)
+        if ($request->is('api/admin/*')) {
+            return response()->json($nivel, 200);
+        }
+
         $locale = TranslationService::resolveLocale($request);
         $translator = app(TranslationService::class);
         $data = $translator->translateNivel($nivel, $locale);
