@@ -74,7 +74,7 @@ export class LogrosComponent implements OnInit {
             },
             error: (err) => {
                 console.error('Error cargando logros:', err);
-                this.error.set('No se pudieron cargar los logros. Inténtalo de nuevo.');
+                this.error.set('ACHIEVEMENTS.ERROR_LOADING');
                 this.loading.set(false);
             },
         });

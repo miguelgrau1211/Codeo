@@ -102,7 +102,9 @@
                                     [style.width.%]="porcentaje()" [class.from-red-600]="isEasterEggActive"
                                     [class.to-red-900]="isEasterEggActive"></div>
                             </div>
-                            <div class="text-[10px] text-right text-text-muted mt-1">{{ stats()?.texto }}</div>
+                            <div class="text-[10px] text-right text-text-muted mt-1">{{ 'ACHIEVEMENTS.PROGRESS_DETAIL' |
+                                translate:{ obtained: stats()?.logros_obtenidos, total: stats()?.total_disponibles } }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -225,7 +227,7 @@
 
         <!-- 5. Error State -->
         <div *ngIf="error()" class="text-center py-20">
-            <div class="text-red-400 text-lg font-bold mb-4">{{ error() }}</div>
+            <div class="text-red-400 text-lg font-bold mb-4">{{ error()! | translate }}</div>
             <button (click)="cargarLogros()"
                 class="px-6 py-3 bg-accent-color hover:bg-accent-color/80 text-white font-bold rounded-xl transition-colors">
                 {{ 'ACHIEVEMENTS.RETRY' | translate }}

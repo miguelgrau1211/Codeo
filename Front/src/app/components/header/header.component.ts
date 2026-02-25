@@ -17,6 +17,7 @@ export class HeaderComponent {
   // States
   isLoggedIn = signal(false);
   isDashboard = signal(false);
+  isVisible = signal(true);
 
   // Computed signal directly from service
   isAdmin = this.authService.isAdminSignal;
@@ -32,6 +33,7 @@ export class HeaderComponent {
         if (event instanceof NavigationEnd) {
           this.checkAuthStatus();
           this.isDashboard.set(this.router.url.includes('/dashboard'));
+          this.updateVisibility();
         }
       });
     }
@@ -55,6 +57,13 @@ export class HeaderComponent {
       this.isLoggedIn.set(false);
       this.isAdmin.set(false);
     }
+  }
+
+  updateVisibility() {
+    const hiddenRoutes = ['', '/', '/login', '/registro', '/soporte'];
+    // We check if current URL (without query params) is in hiddenRoutes
+    const currentPath = this.router.url.split('?')[0];
+    this.isVisible.set(!hiddenRoutes.includes(currentPath));
   }
 
   logout() {

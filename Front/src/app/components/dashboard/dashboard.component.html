@@ -89,6 +89,48 @@
                     </div>
                 </div>
             </a>
+
+            <a routerLink="/soporte"
+                class="flex items-center py-3 rounded-xl hover:bg-white/5 text-text-muted hover:text-accent-color transition-all duration-500 ease-in-out group overflow-hidden"
+                [class.px-4]="isSidebarOpen()" [class.px-0]="!isSidebarOpen()" [class.justify-center]="!isSidebarOpen()"
+                [class.gap-4]="isSidebarOpen()" [class.gap-0]="!isSidebarOpen()">
+                <img src="/common/icons/reportes.png" class="w-6 h-6 object-contain transition-all shrink-0">
+                <div class="grid transition-[grid-template-columns] duration-500 ease-in-out"
+                    [class.grid-cols-[1fr]]="isSidebarOpen()" [class.grid-cols-[0fr]]="!isSidebarOpen()">
+                    <div class="overflow-hidden">
+                        <span class="font-medium whitespace-nowrap block pl-1">{{ 'SIDEBAR.SUPPORT' | translate
+                            }}</span>
+                    </div>
+                </div>
+            </a>
+
+            <a routerLink="/perfil"
+                class="flex items-center py-3 rounded-xl hover:bg-white/5 text-text-muted hover:text-accent-color transition-all duration-500 ease-in-out group overflow-hidden"
+                [class.px-4]="isSidebarOpen()" [class.px-0]="!isSidebarOpen()" [class.justify-center]="!isSidebarOpen()"
+                [class.gap-4]="isSidebarOpen()" [class.gap-0]="!isSidebarOpen()">
+                <img src="/common/icons/perfil.png" class="w-6 h-6 object-contain transition-all shrink-0">
+                <div class="grid transition-[grid-template-columns] duration-500 ease-in-out"
+                    [class.grid-cols-[1fr]]="isSidebarOpen()" [class.grid-cols-[0fr]]="!isSidebarOpen()">
+                    <div class="overflow-hidden">
+                        <span class="font-medium whitespace-nowrap block pl-1">{{ 'SIDEBAR.PROFILE' | translate
+                            }}</span>
+                    </div>
+                </div>
+            </a>
+
+            <a routerLink="/ajustes"
+                class="flex items-center py-3 rounded-xl hover:bg-white/5 text-text-muted hover:text-accent-color transition-all duration-500 ease-in-out group overflow-hidden"
+                [class.px-4]="isSidebarOpen()" [class.px-0]="!isSidebarOpen()" [class.justify-center]="!isSidebarOpen()"
+                [class.gap-4]="isSidebarOpen()" [class.gap-0]="!isSidebarOpen()">
+                <img src="/common/icons/ajustes.png" class="w-6 h-6 object-contain transition-all shrink-0">
+                <div class="grid transition-[grid-template-columns] duration-500 ease-in-out"
+                    [class.grid-cols-[1fr]]="isSidebarOpen()" [class.grid-cols-[0fr]]="!isSidebarOpen()">
+                    <div class="overflow-hidden">
+                        <span class="font-medium whitespace-nowrap block pl-1">{{ 'SIDEBAR.SETTINGS' | translate
+                            }}</span>
+                    </div>
+                </div>
+            </a>
         </nav>
 
         <!-- Toggle Button (Mobile/Desktop) -->
@@ -344,7 +386,7 @@
                         class="bg-secondary-bg/30 backdrop-blur-md p-6 rounded-2xl flex flex-col items-center justify-center gap-4 hover:bg-white/5 transition-all hover:-translate-y-1 border border-white/10 group shadow-lg text-center">
                         <img src="/common/icons/reportes.png"
                             class="w-16 h-16 object-contain group-hover:scale-110 transition-transform">
-                        <span class="font-bold text-text-muted group-hover:text-text-main">{{ 'DASHBOARD.NAV.REPORTS' |
+                        <span class="font-bold text-text-muted group-hover:text-text-main">{{ 'DASHBOARD.NAV.SUPPORT' |
                             translate }}</span>
                     </a>
 
@@ -364,65 +406,79 @@
                 <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
                     <div class="flex flex-col gap-1">
                         <div class="flex items-center gap-3">
-                            <span class="w-1.5 h-8 bg-accent-color rounded-full shadow-[0_0_15px_rgba(var(--accent-color-rgb),0.5)]"></span>
+                            <span
+                                class="w-1.5 h-8 bg-accent-color rounded-full shadow-[0_0_15px_rgba(var(--accent-color-rgb),0.5)]"></span>
                             <h3 class="text-2xl font-black text-text-main font-jersey tracking-wider italic uppercase">
                                 {{ 'DASHBOARD.BATTLE_PASS' | translate }}
                             </h3>
                             @if (isPremium()) {
-                                <span class="px-3 py-1 rounded-full bg-accent-color/20 text-accent-color text-[10px] font-black uppercase tracking-[0.2em] border border-accent-color/30 animate-pulse-light shadow-lg shadow-accent-color/5">
-                                    {{ 'DASHBOARD.PREMIUM_BADGE' | translate }}
-                                </span>
+                            <span
+                                class="px-3 py-1 rounded-full bg-accent-color/20 text-accent-color text-[10px] font-black uppercase tracking-[0.2em] border border-accent-color/30 animate-pulse-light shadow-lg shadow-accent-color/5">
+                                {{ 'DASHBOARD.PREMIUM_BADGE' | translate }}
+                            </span>
                             }
                         </div>
                         <p class="text-text-muted text-xs font-medium ml-4 uppercase tracking-widest opacity-60">
-                            {{ 'DASHBOARD.SEASON' | translate }} 01: ORIGINS
+                            {{ 'DASHBOARD.SEASON' | translate }} 01: {{ 'DASHBOARD.SEASON_NAME' | translate }}
                         </p>
                     </div>
 
                     <div class="flex items-center gap-3">
-                        <div class="flex items-center gap-4 bg-white/5 backdrop-blur-md rounded-2xl px-6 py-3 border border-white/10 shadow-xl">
+                        <div
+                            class="flex items-center gap-4 bg-white/5 backdrop-blur-md rounded-2xl px-6 py-3 border border-white/10 shadow-xl">
                             <div class="flex flex-col items-center border-r border-white/10 pr-4">
-                                <span class="text-[9px] font-black text-text-muted uppercase tracking-tighter mb-0.5">{{ 'DASHBOARD.BATTLE_LEVEL' | translate }}</span>
-                                <span class="text-xl font-black text-text-main font-mono leading-none">{{ level() }} <span class="text-text-muted/40 text-xs font-normal">/ {{ battlePassRewards()[battlePassRewards().length - 1].level }}</span></span>
+                                <span class="text-[9px] font-black text-text-muted uppercase tracking-tighter mb-0.5">{{
+                                    'DASHBOARD.BATTLE_LEVEL' | translate }}</span>
+                                <span class="text-xl font-black text-text-main font-mono leading-none">{{ level() }}
+                                    <span class="text-text-muted/40 text-xs font-normal">/ {{
+                                        battlePassRewards()[battlePassRewards().length - 1].level }}</span></span>
                             </div>
                             <div class="flex flex-col items-center">
-                                <span class="text-[9px] font-black text-text-muted uppercase tracking-tighter mb-0.5">{{ 'DASHBOARD.BATTLE_REWARDS' | translate }}</span>
-                                <span class="text-xl font-black text-accent-color font-mono leading-none">{{ completedRewardsCount() }}<span class="text-accent-color/40 text-xs font-normal">/{{ battlePassRewards().length }}</span></span>
+                                <span class="text-[9px] font-black text-text-muted uppercase tracking-tighter mb-0.5">{{
+                                    'DASHBOARD.BATTLE_REWARDS' | translate }}</span>
+                                <span class="text-xl font-black text-accent-color font-mono leading-none">{{
+                                    completedRewardsCount() }}<span class="text-accent-color/40 text-xs font-normal">/{{
+                                        battlePassRewards().length }}</span></span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 @if (isPremium()) {
-                    <!-- Progress Bar -->
-                    <div class="relative mb-10 pt-2 animate-fade-in-up" [style.animation-delay]="'100ms'">
-                        <div class="flex items-center justify-between mb-2.5 px-1">
-                            <div class="flex items-center gap-2">
-                                <span class="text-[10px] font-black text-text-muted uppercase tracking-[0.2em]">{{ 'DASHBOARD.PROGRESS' | translate }}</span>
-                                <span class="w-1 h-1 rounded-full bg-accent-color animate-pulse"></span>
-                            </div>
-                            <span class="text-[11px] font-black text-accent-color font-mono tracking-widest">{{ battlePassProgress() | number:'1.0-0' }}%</span>
+                <!-- Progress Bar -->
+                <div class="relative mb-10 pt-2 animate-fade-in-up" [style.animation-delay]="'100ms'">
+                    <div class="flex items-center justify-between mb-2.5 px-1">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-black text-text-muted uppercase tracking-[0.2em]">{{
+                                'DASHBOARD.PROGRESS' | translate }}</span>
+                            <span class="w-1 h-1 rounded-full bg-accent-color animate-pulse"></span>
                         </div>
-                        <div class="w-full h-5 bg-black/40 rounded-full overflow-hidden border border-white/5 p-1 backdrop-blur-md shadow-2xl relative">
-                            <!-- Background glow -->
-                            <div class="absolute inset-0 bg-accent-color/5 blur-xl"></div>
-                            
-                            <div class="h-full bg-gradient-to-r from-accent-color via-pink-500 to-accent-color bg-[length:200%_auto] animate-gradient-slow transition-all duration-1000 ease-out rounded-full relative z-10"
-                                [style.width.%]="battlePassProgress()">
-                                <!-- Inner reflection -->
-                                <div class="absolute inset-x-0 top-0 h-[40%] bg-white/20 rounded-full opacity-60"></div>
-                                
-                                <!-- Head glow -->
-                                <div class="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-full bg-white blur-md opacity-30"></div>
+                        <span class="text-[11px] font-black text-accent-color font-mono tracking-widest">{{
+                            battlePassProgress() | number:'1.0-0' }}%</span>
+                    </div>
+                    <div
+                        class="w-full h-5 bg-black/40 rounded-full overflow-hidden border border-white/5 p-1 backdrop-blur-md shadow-2xl relative">
+                        <!-- Background glow -->
+                        <div class="absolute inset-0 bg-accent-color/5 blur-xl"></div>
+
+                        <div class="h-full bg-gradient-to-r from-accent-color via-pink-500 to-accent-color bg-[length:200%_auto] animate-gradient-slow transition-all duration-1000 ease-out rounded-full relative z-10"
+                            [style.width.%]="battlePassProgress()">
+                            <!-- Inner reflection -->
+                            <div class="absolute inset-x-0 top-0 h-[40%] bg-white/20 rounded-full opacity-60"></div>
+
+                            <!-- Head glow -->
+                            <div
+                                class="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-full bg-white blur-md opacity-30">
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Rewards Timeline (Horizontal Scroll) -->
-                    <div
-                        class="overflow-x-auto pb-4 -mx-2 px-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10">
-                        <div class="flex gap-6" style="min-width: 2200px;">
-                            @for (reward of battlePassRewards(); track reward.level) {
+                <!-- Rewards Timeline (Horizontal Scroll) -->
+                <div
+                    class="overflow-x-auto pb-4 -mx-2 px-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10">
+                    <div class="flex gap-6" style="min-width: 2200px;">
+                        @for (reward of battlePassRewards(); track reward.level) {
                         <div class="flex flex-col items-center gap-3 flex-1 min-w-[120px] group">
                             <!-- Level Marker -->
                             <div class="flex flex-col items-center">
@@ -589,9 +645,12 @@
                         @if (paymentStep() === 'loading') {
                         <!-- Loading State -->
                         <div class="flex flex-col items-center text-center py-12">
-                            <div class="w-20 h-20 border-4 border-white/10 border-t-accent-color rounded-full animate-spin mb-8"></div>
-                            <h2 class="text-2xl font-black text-text-main font-jersey tracking-wide uppercase mb-2">Inicializando Pago Seguro</h2>
-                            <p class="text-text-muted text-sm">Conectando con la pasarela de pagos...</p>
+                            <div
+                                class="w-20 h-20 border-4 border-white/10 border-t-accent-color rounded-full animate-spin mb-8">
+                            </div>
+                            <h2 class="text-2xl font-black text-text-main font-jersey tracking-wide uppercase mb-2">{{
+                                'DASHBOARD.PAYMENT_INIT_TITLE' | translate }}</h2>
+                            <p class="text-text-muted text-sm">{{ 'DASHBOARD.PAYMENT_INIT_DESC' | translate }}</p>
                         </div>
 
                         } @else if (paymentStep() === 'form') {
@@ -620,18 +679,19 @@
                         <div class="space-y-4">
                             <!-- Card Holder -->
                             <div>
-                                <label class="text-xs font-bold text-text-muted uppercase tracking-widest mb-2 block">{{ 'DASHBOARD.CARD_HOLDER' | translate }}</label>
-                                <input type="text"
-                                    [ngModel]="cardHolder()"
-                                    (ngModelChange)="cardHolder.set($event)"
-                                    placeholder="NOMBRE TITULAR"
+                                <label class="text-xs font-bold text-text-muted uppercase tracking-widest mb-2 block">{{
+                                    'DASHBOARD.CARD_HOLDER' | translate }}</label>
+                                <input type="text" [ngModel]="cardHolder()" (ngModelChange)="cardHolder.set($event)"
+                                    [placeholder]="'DASHBOARD.CARD_HOLDER_PH' | translate"
                                     class="w-full px-4 py-3.5 rounded-xl bg-primary-bg border border-white/10 text-text-main uppercase tracking-wider focus:border-accent-color focus:outline-none focus:ring-1 focus:ring-accent-color/50 transition-all placeholder:text-white/20">
                             </div>
 
                             <!-- Stripe Card Element -->
                             <div>
-                                <label class="text-xs font-bold text-text-muted uppercase tracking-widest mb-2 block">Datos de la Tarjeta</label>
-                                <div class="w-full px-4 py-4 rounded-xl bg-primary-bg border border-white/10 focus-within:border-accent-color transition-all">
+                                <label class="text-xs font-bold text-text-muted uppercase tracking-widest mb-2 block">{{
+                                    'DASHBOARD.CARD_DATA' | translate }}</label>
+                                <div
+                                    class="w-full px-4 py-4 rounded-xl bg-primary-bg border border-white/10 focus-within:border-accent-color transition-all">
                                     <div id="stripe-card-element">
                                         <!-- Stripe mounts here -->
                                     </div>
@@ -641,7 +701,8 @@
                         </div>
 
                         @if (paymentError()) {
-                        <div class="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-xs text-center animate-shake">
+                        <div
+                            class="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-xs text-center animate-shake">
                             {{ paymentError() }}
                         </div>
                         }
@@ -654,7 +715,8 @@
 
                         <!-- Buttons -->
                         <div class="mt-6 space-y-3">
-                            <button (click)="submitPayment()" [disabled]="!stripeCardReady() || !cardHolder().trim() || paymentStep() === 'processing'"
+                            <button (click)="submitPayment()"
+                                [disabled]="!stripeCardReady() || !cardHolder().trim() || paymentStep() === 'processing'"
                                 class="w-full py-4 rounded-2xl bg-gradient-to-r from-accent-color to-pink-500 text-white font-black text-xs uppercase tracking-widest hover:opacity-90 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-lg shadow-accent-color/20">
                                 {{ 'DASHBOARD.PAYMENT_CONFIRM' | translate }}
                             </button>

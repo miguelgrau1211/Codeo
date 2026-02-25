@@ -8,6 +8,7 @@ export interface ActivityItem {
 
 export interface UserData {
   nickname: string;
+  email: string;
   avatar: string;
   level: number;
   experience: number;

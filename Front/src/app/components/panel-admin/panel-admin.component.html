@@ -73,7 +73,7 @@
                 [class.text-red-500]="activeTab() === 'reportes'" [class.border-white/10]="activeTab() !== 'reportes'"
                 [class.text-text-muted]="activeTab() !== 'reportes'"
                 [class.hover:bg-white/5]="activeTab() !== 'reportes'">
-                <span>🚩</span> {{ 'ADMIN.TAB_REPORTS' | translate }}
+                <span>🚩</span> {{ 'ADMIN.TAB_SUPPORT' | translate }}
             </button>
         </aside>
 
@@ -529,8 +529,8 @@
                 [class.opacity-50]="isReportesLoading()">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-2xl font-bold text-text-main">{{ 'ADMIN.REPORTS.TITLE' | translate }}</h2>
-                        <div class="text-sm text-text-muted">{{ 'ADMIN.REPORTS.TOTAL' | translate:{total:
+                        <h2 class="text-2xl font-bold text-text-main">{{ 'ADMIN.SUPPORT.TITLE' | translate }}</h2>
+                        <div class="text-sm text-text-muted">{{ 'ADMIN.SUPPORT.TOTAL' | translate:{total:
                             reportes().length} }}</div>
                     </div>
                 </div>

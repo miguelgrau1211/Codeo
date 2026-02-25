@@ -1,8 +1,10 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ReporteService } from '../../services/reporte.service';
+import { AuthService } from '../../services/auth-service';
+import { UserDataService } from '../../services/user-data-service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
 interface Faq {
@@ -21,18 +23,29 @@ interface Faq {
 export class SoporteComponent {
   private fb = inject(FormBuilder);
   private reporteService = inject(ReporteService);
+  private userDataService = inject(UserDataService);
+  protected authService = inject(AuthService);
 
   reportForm: FormGroup;
   isSubmitting = signal(false);
   submitStatus = signal<'success' | 'error' | null>(null);
 
   constructor() {
+    const user = this.userDataService.userDataSignal();
     this.reportForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: [user?.email || '', [Validators.required, Validators.email]],
       subject: ['', [Validators.required, Validators.minLength(5)]],
       description: ['', [Validators.required, Validators.minLength(20)]],
-      tipo: ['bug', Validators.required] // Por ahora bug por defecto
+      tipo: ['bug', Validators.required]
     });
+
+    // If data loads later, update the form reactively
+    effect(() => {
+      const currentUser = this.userDataService.userDataSignal();
+      if (currentUser && !this.reportForm.get('email')?.value) {
+        this.reportForm.patchValue({ email: currentUser.email });
+      }
+    }, { allowSignalWrites: true });
   }
 
   faqs = signal<Faq[]>([

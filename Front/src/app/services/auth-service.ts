@@ -10,11 +10,25 @@ export class AuthService {
 
   // State
   isAdminSignal = signal<boolean>(false);
+  isAuthenticated = signal<boolean>(false);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.checkAuth();
+  }
+
+  private checkAuth() {
+    this.isAuthenticated.set(!!sessionStorage.getItem('token'));
+  }
 
   login(credentials: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, credentials);
+    return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
+      tap((res: any) => {
+        this.isAuthenticated.set(true);
+        if (res.es_admin !== undefined) {
+          this.isAdminSignal.set(!!res.es_admin);
+        }
+      })
+    );
   }
 
   register(userData: any): Observable<any> {
@@ -75,6 +89,7 @@ export class AuthService {
   private clearSession() {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('nickname');
+    this.isAuthenticated.set(false);
     this.isAdminSignal.set(false);
   }
 }

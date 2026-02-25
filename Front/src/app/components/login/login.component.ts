@@ -28,7 +28,7 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
   private route = inject(ActivatedRoute);
 
   isLoading = signal(false); // Signal for loading state
-  loadingMessage = signal('Autenticando...');
+  loadingMessage = signal('LOGIN.AUTHENTICATING');
 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -41,14 +41,14 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
     const error = this.route.snapshot.queryParamMap.get('error');
 
     if (error) {
-      this.errorMessage.set('La autenticación con Google ha fallado o fue cancelada.');
+      this.errorMessage.set('LOGIN.ERR_GOOGLE_FAIL');
       return;
     }
 
     if (urlToken) {
       console.log('Token detectado en URL, validando...');
       this.isLoading.set(true);
-      this.loadingMessage.set('Validando cuenta de Google...');
+      this.loadingMessage.set('LOGIN.WAIT_GOOGLE');
       sessionStorage.setItem('token', urlToken);
 
       // Validar usuario y obtener nickname
@@ -67,7 +67,7 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
           console.error('Error validando token de Google:', err);
           this.isLoading.set(false);
           sessionStorage.removeItem('token');
-          this.errorMessage.set('La sesión de Google no es válida o ha expirado.');
+          this.errorMessage.set('LOGIN.ERR_GOOGLE_INVALID');
         }
       });
       return;
@@ -76,21 +76,21 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
     // 2. Normal session check
     const token = sessionStorage.getItem('token');
     if (token) {
-        this.authService.validateUser(token).subscribe({
-            next: () => this.router.navigate(['/dashboard']),
-            error: () => {
-              console.log('Token guardado no válido, limpiando...');
-              sessionStorage.removeItem('token');
-            }
-        });
+      this.authService.validateUser(token).subscribe({
+        next: () => this.router.navigate(['/dashboard']),
+        error: () => {
+          console.log('Token guardado no válido, limpiando...');
+          sessionStorage.removeItem('token');
+        }
+      });
     }
   }
 
   loginWithGoogle() {
-      this.isLoading.set(true);
-      this.loadingMessage.set('Redirigiendo a Google...');
-      // Redirigir al endpoint del backend que inicia el flujo de Google
-      window.location.href = 'http://localhost/api/auth/google';
+    this.isLoading.set(true);
+    this.loadingMessage.set('LOGIN.REDIRECT_GOOGLE');
+    // Redirigir al endpoint del backend que inicia el flujo de Google
+    window.location.href = 'http://localhost/api/auth/google';
   }
 
 
@@ -229,6 +229,7 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
   errorMessage = signal<string>('');
 
   onSubmit() {
+    if (this.isLoading()) return; // Prevent double submission
     this.errorMessage.set('');
 
     if (this.loginForm.invalid) {
@@ -237,48 +238,29 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
     }
 
     if (this.loginForm.valid) {
-      console.log('Login data:', this.loginForm.value);
-      this.isLoading.set(true); // Start loading animation
-      this.loadingMessage.set('Iniciando sesión...');
+      this.isLoading.set(true);
+      this.loadingMessage.set('LOGIN.LOGGING_IN');
 
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
-          console.log('Login successful:', response);
           sessionStorage.setItem('token', response.access_token);
           sessionStorage.setItem('nickname', response.nickname);
 
-          // Pre-fetch data for next screens while animation plays
           const token = response.access_token;
+          // Reduced delay for the "wow" factor without being frustratingly slow
+          const minAnimationTime = new Promise(resolve => setTimeout(resolve, 600));
 
-          // Minimum animation time
-          const minAnimationTime = new Promise(resolve => setTimeout(resolve, 1500));
-
-          // Use setTimeout to ensure sessionStorage is fully written before API calls
-          setTimeout(() => {
-            const requests = [
-              this.authService.esAdmin(token),
-              this.progresoService.getProgresoHistoria()
-            ];
-
-            // Wait for both Data AND Animation
-            import('rxjs').then(({ forkJoin }) => {
-              forkJoin(requests).subscribe({
-                next: () => {
-                  // Only navigate when data IS READY
-                  minAnimationTime.then(() => {
-                    this.router.navigate(['/dashboard']);
-                  });
-                },
-                error: (err) => {
-                  console.warn('Error pre-fetching data but continuing:', err);
-                  // Navigate anyway even if some pre-fetch failed
-                  minAnimationTime.then(() => {
-                    this.router.navigate(['/dashboard']);
-                  });
-                }
-              });
+          // Pre-fetch only progress (admin status is already in response)
+          import('rxjs').then(({ from }) => {
+            this.progresoService.getProgresoHistoria().subscribe({
+              next: () => {
+                minAnimationTime.then(() => this.router.navigate(['/dashboard']));
+              },
+              error: () => {
+                minAnimationTime.then(() => this.router.navigate(['/dashboard']));
+              }
             });
-          }, 0);
+          });
         },
         error: (error) => {
           console.error('Login failed:', error);
