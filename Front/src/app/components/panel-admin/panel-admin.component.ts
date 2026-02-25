@@ -10,10 +10,14 @@ import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { LevelEditorModalComponent } from '../level-editor-modal/level-editor-modal.component';
 
 
+import { TranslatePipe } from '../../pipes/translate.pipe';
+
+import { LanguageService } from '../../services/language-service';
+
 @Component({
   selector: 'app-panel-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, AdminStatCardComponent, LevelEditorModalComponent],
+  imports: [CommonModule, FormsModule, RouterLink, AdminStatCardComponent, LevelEditorModalComponent, TranslatePipe],
   templateUrl: './panel-admin.component.html',
   styleUrl: './panel-admin.component.css',
 })
@@ -21,6 +25,7 @@ export class PanelAdminComponent implements OnInit, OnDestroy {
   private adminService = inject(AdminService);
   private reporteService = inject(ReporteService);
   public themeService = inject(ThemeService);
+  private langService = inject(LanguageService);
 
   // Loading states per section
   isStoryLoading = signal(false);
@@ -170,22 +175,22 @@ export class PanelAdminComponent implements OnInit, OnDestroy {
   updateReportStatus(id: number, status: string) {
     this.reporteService.actualizarEstado(id, { estado: status }).subscribe({
       next: () => {
-        alert('Estado del reporte actualizado');
+        alert(this.langService.translate('ADMIN.MESSAGES.REPORT_UPDATED'));
         this.loadReportes();
       },
-      error: (err) => alert('Error al actualizar: ' + (err.error?.message || err.message))
+      error: (err) => alert('Error: ' + (err.error?.message || err.message))
     });
   }
 
   deleteReport(id: number) {
-    if (!confirm('¿Seguro que quieres eliminar este reporte permanentemente?')) return;
+    if (!confirm(this.langService.translate('ADMIN.MESSAGES.CONFIRM_DELETE_REPORT'))) return;
 
     this.reporteService.eliminarReporte(id).subscribe({
       next: () => {
-        alert('Reporte eliminado');
+        alert(this.langService.translate('ADMIN.MESSAGES.REPORT_DELETED'));
         this.loadReportes();
       },
-      error: (err) => alert('Error al eliminar: ' + (err.error?.message || err.message))
+      error: (err) => alert('Error: ' + (err.error?.message || err.message))
     });
   }
 
@@ -341,7 +346,7 @@ export class PanelAdminComponent implements OnInit, OnDestroy {
   }
 
   toggleStoryStatus(id: number) {
-    if (!confirm('¿Cambiar estado del nivel?')) return;
+    if (!confirm(this.langService.translate('ADMIN.MESSAGES.CONFIRM_TOGGLE_LEVEL'))) return;
 
     this.adminService.toggleStoryLevelStatus(id).subscribe({
       next: (res) => {
@@ -350,12 +355,12 @@ export class PanelAdminComponent implements OnInit, OnDestroy {
         this.adminService.storyState.update(s => ({ ...s, loaded: false }));
         this.loadStoryLevels(this.storyPage());
       },
-      error: (err) => alert(err.error?.message || 'Error toggling story level')
+      error: (err) => alert('Error')
     });
   }
 
   toggleRoguelikeStatus(id: number) {
-    if (!confirm('¿Cambiar estado del nivel?')) return;
+    if (!confirm(this.langService.translate('ADMIN.MESSAGES.CONFIRM_TOGGLE_LEVEL'))) return;
 
     this.adminService.toggleRoguelikeLevelStatus(id).subscribe({
       next: (res) => {
@@ -364,7 +369,7 @@ export class PanelAdminComponent implements OnInit, OnDestroy {
         this.adminService.roguelikeState.update(s => ({ ...s, loaded: false }));
         this.loadRoguelikeLevels(this.roguelikePage());
       },
-      error: (err) => alert(err.error?.message || 'Error toggling roguelike level')
+      error: (err) => alert('Error')
     });
   }
 
@@ -409,25 +414,25 @@ export class PanelAdminComponent implements OnInit, OnDestroy {
         // Update
         this.adminService.updateStoryLevel(this.editorData.id, data).subscribe({
           next: () => {
-            alert('Nivel actualizado');
+            alert(this.langService.translate('ADMIN.MESSAGES.STORY_UPDATED'));
             this.closeEditor();
             // Invalidate cache
             this.adminService.storyState.update(s => ({ ...s, loaded: false }));
             this.loadStoryLevels(this.storyPage());
           },
-          error: err => alert('Error al actualizar: ' + (err.error?.message || err.message))
+          error: err => alert('Error: ' + (err.error?.message || err.message))
         });
       } else {
         // Create
         this.adminService.createStoryLevel(data).subscribe({
           next: () => {
-            alert('Nivel creado');
+            alert(this.langService.translate('ADMIN.MESSAGES.STORY_CREATED'));
             this.closeEditor();
             // Invalidate cache
             this.adminService.storyState.update(s => ({ ...s, loaded: false }));
             this.loadStoryLevels(this.storyPage());
           },
-          error: err => alert('Error al crear: ' + (err.error?.message || err.message))
+          error: err => alert('Error: ' + (err.error?.message || err.message))
         });
       }
     } else {
@@ -436,25 +441,25 @@ export class PanelAdminComponent implements OnInit, OnDestroy {
         // Update
         this.adminService.updateRoguelikeLevel(this.editorData.id, data).subscribe({
           next: () => {
-            alert('Desafío actualizado');
+            alert(this.langService.translate('ADMIN.MESSAGES.ROGUE_UPDATED'));
             this.closeEditor();
             // Invalidate cache
             this.adminService.roguelikeState.update(s => ({ ...s, loaded: false }));
             this.loadRoguelikeLevels(this.roguelikePage());
           },
-          error: err => alert('Error al actualizar: ' + (err.error?.message || err.message))
+          error: err => alert('Error: ' + (err.error?.message || err.message))
         });
       } else {
         // Create
         this.adminService.createRoguelikeLevel(data).subscribe({
           next: () => {
-            alert('Desafío creado');
+            alert(this.langService.translate('ADMIN.MESSAGES.ROGUE_CREATED'));
             this.closeEditor();
             // Invalidate cache
             this.adminService.roguelikeState.update(s => ({ ...s, loaded: false }));
             this.loadRoguelikeLevels(this.roguelikePage());
           },
-          error: err => alert('Error al crear: ' + (err.error?.message || err.message))
+          error: err => alert('Error: ' + (err.error?.message || err.message))
         });
       }
     }

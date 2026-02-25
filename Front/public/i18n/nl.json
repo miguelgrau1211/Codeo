@@ -453,5 +453,97 @@
     "LOGOUT": "Uitloggen",
     "LOGIN": "Inloggen",
     "REGISTER": "Registreren"
+  },
+  "ADMIN": {
+    "TITLE": "ADMINISTRATIEPANEEL",
+    "GOD_MODE": "God-modus",
+    "TAB_USERS": "Gebruikers",
+    "TAB_STORY": "Verhaalniveaus",
+    "TAB_ROGUELIKE": "Roguelike-niveaus",
+    "TAB_LOGS": "Systeemlogboeken",
+    "TAB_REPORTS": "Rapporten",
+    "STAT_ACTIVE_24H": "24 uur actief",
+    "STAT_TOTAL_RUNS": "Totaal aantal runs",
+    "STAT_WIN_RATE": "Winstpercentage",
+    "USERS": {
+      "TITLE": "Gebruikersbeheer",
+      "TOTAL": "Totaal: {{total}} gebruikers",
+      "SEARCH_PH": "Zoek op naam of e-mailadres...",
+      "TABLE_ID": "Identiteitskaart",
+      "TABLE_USER": "Gebruiker",
+      "TABLE_EMAIL": "E-mail",
+      "TABLE_ROLE": "Rol",
+      "TABLE_STATUS": "Staat",
+      "TABLE_ACTION": "Actie",
+      "ROLE_ADMIN": "Beheerder",
+      "ROLE_USER": "Gebruiker",
+      "STATUS_ACTIVE": "Bezit",
+      "STATUS_BANNED": "Verboden",
+      "EMPTY": "Geen gebruikers gevonden",
+      "PAGINATION_PAGE": "Pagina {{current}} van {{total}}",
+      "PAGINATION_PREV": "⬅ Vorige",
+      "PAGINATION_NEXT": "Volgende ➡"
+    },
+    "STORY": {
+      "TITLE_ACTIVE": "Verhaalmodusniveaus (actief)",
+      "NEW_LEVEL": "+ Nieuw niveau",
+      "REWARD_XP": "XP",
+      "REWARD_COINS": "💰",
+      "EMPTY_ACTIVE": "Er zijn geen actieve niveaus",
+      "TITLE_DISABLED": "Verhaalniveaus uitgeschakeld",
+      "DISABLED_AT": "De uitgeschakeld",
+      "REACTIVATE": "Opnieuw activeren",
+      "EMPTY_DISABLED": "Er zijn geen niveaus uitgeschakeld"
+    },
+    "ROGUELIKE": {
+      "TITLE_ACTIVE": "Roguelike-uitdagingen (actief)",
+      "NEW_CHALLENGE": "+ Nieuwe uitdaging",
+      "TABLE_DIFF": "Moeilijkheidsgraad",
+      "TABLE_NAME": "Naam van de uitdaging",
+      "TABLE_REWARD": "Beloning",
+      "TABLE_ACTIONS": "Acties",
+      "EMPTY_ACTIVE": "Er zijn geen actieve uitdagingen",
+      "TITLE_DISABLED": "Roguelike-uitdagingen uitgeschakeld",
+      "EMPTY_DISABLED": "Er zijn geen uitdagingen uitgeschakeld"
+    },
+    "LOGS": {
+      "TITLE": "Beveiligingslogboeken",
+      "TABLE_DATE": "Datum",
+      "TABLE_USER": "Gebruiker",
+      "TABLE_ACTION": "Actie",
+      "TABLE_DETAILS": "Details",
+      "EMPTY": "Geen recente gegevens"
+    },
+    "REPORTS": {
+      "TITLE": "Rapportcentrum",
+      "TOTAL": "Totaal: {{total}} ontvangen rapporten",
+      "TABLE_CONTACT": "Gebruiker / Contactpersoon",
+      "TABLE_REPORT": "Rapport",
+      "TABLE_STATUS": "Prioriteit/Status",
+      "TABLE_DATE": "Doorgestuurd",
+      "TABLE_ACTIONS": "Acties",
+      "STATUS_PENDING": "Oorbel",
+      "STATUS_REVIEW": "Onder beoordeling",
+      "STATUS_SOLVED": "Opgelost",
+      "STATUS_REJECTED": "Geweigerd",
+      "STATUS_SPAM": "⚠️ SPAM",
+      "EMPTY": "Er zijn geen lopende rapporten. Goed gedaan! 🚀"
+    },
+    "DIFFICULTY": {
+      "EASY": "Eenvoudig",
+      "MEDIUM": "Half",
+      "HARD": "Moeilijk",
+      "EXTREME": "Extreem"
+    },
+    "MESSAGES": {
+      "REPORT_UPDATED": "Bijgewerkte rapportstatus",
+      "CONFIRM_DELETE_REPORT": "Weet u zeker dat u dit rapport definitief wilt verwijderen?",
+      "REPORT_DELETED": "Rapport verwijderd",
+      "CONFIRM_TOGGLE_LEVEL": "Niveaustatus wijzigen?",
+      "STORY_UPDATED": "Bijgewerkt niveau",
+      "STORY_CREATED": "Niveau gemaakt",
+      "ROGUE_UPDATED": "Bijgewerkte uitdaging",
+      "ROGUE_CREATED": "Uitdaging gecreëerd"
+    }
   }
 }

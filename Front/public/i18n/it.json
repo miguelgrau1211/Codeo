@@ -453,5 +453,97 @@
     "LOGOUT": "Esci",
     "LOGIN": "Accedi",
     "REGISTER": "Registrati"
+  },
+  "ADMIN": {
+    "TITLE": "PANNELLO AMMINISTRATIVO",
+    "GOD_MODE": "Modalità Dio",
+    "TAB_USERS": "Utenti",
+    "TAB_STORY": "Livelli della storia",
+    "TAB_ROGUELIKE": "Livelli roguelike",
+    "TAB_LOGS": "Registri di sistema",
+    "TAB_REPORTS": "Rapporti",
+    "STAT_ACTIVE_24H": "Attivo 24 ore su 24",
+    "STAT_TOTAL_RUNS": "Corse totali",
+    "STAT_WIN_RATE": "Tasso di vincita",
+    "USERS": {
+      "TITLE": "Gestione utenti",
+      "TOTAL": "Totale: {{total}} utenti",
+      "SEARCH_PH": "Cerca per nome o email...",
+      "TABLE_ID": "ID",
+      "TABLE_USER": "Utente",
+      "TABLE_EMAIL": "E-mail",
+      "TABLE_ROLE": "Ruolo",
+      "TABLE_STATUS": "Stato",
+      "TABLE_ACTION": "Azione",
+      "ROLE_ADMIN": "Ammin",
+      "ROLE_USER": "Utente",
+      "STATUS_ACTIVE": "Risorsa",
+      "STATUS_BANNED": "Vietato",
+      "EMPTY": "Nessun utente trovato",
+      "PAGINATION_PAGE": "Pagina {{current}} di {{total}}",
+      "PAGINATION_PREV": "⬅ Precedente",
+      "PAGINATION_NEXT": "Avanti ➡"
+    },
+    "STORY": {
+      "TITLE_ACTIVE": "Livelli della modalità Storia (attivo)",
+      "NEW_LEVEL": "+ Nuovo livello",
+      "REWARD_XP": "XP",
+      "REWARD_COINS": "💰",
+      "EMPTY_ACTIVE": "Non ci sono livelli attivi",
+      "TITLE_DISABLED": "Livelli della storia disabilitati",
+      "DISABLED_AT": "Disabilitato il",
+      "REACTIVATE": "Riattivare",
+      "EMPTY_DISABLED": "Non ci sono livelli disabilitati"
+    },
+    "ROGUELIKE": {
+      "TITLE_ACTIVE": "Sfide Roguelike (attive)",
+      "NEW_CHALLENGE": "+ Nuova sfida",
+      "TABLE_DIFF": "Difficoltà",
+      "TABLE_NAME": "Nome della sfida",
+      "TABLE_REWARD": "Ricompensa",
+      "TABLE_ACTIONS": "Azioni",
+      "EMPTY_ACTIVE": "Non ci sono sfide attive",
+      "TITLE_DISABLED": "Sfide Roguelike disabilitate",
+      "EMPTY_DISABLED": "Non ci sono sfide disabilitate"
+    },
+    "LOGS": {
+      "TITLE": "Registri di sicurezza",
+      "TABLE_DATE": "Data",
+      "TABLE_USER": "Utente",
+      "TABLE_ACTION": "Azione",
+      "TABLE_DETAILS": "Dettagli",
+      "EMPTY": "Nessun record recente"
+    },
+    "REPORTS": {
+      "TITLE": "Centro rapporti",
+      "TOTAL": "Totale: {{total}} rapporti ricevuti",
+      "TABLE_CONTACT": "Utente/Contatto",
+      "TABLE_REPORT": "Rapporto",
+      "TABLE_STATUS": "Priorità/Stato",
+      "TABLE_DATE": "Inviato",
+      "TABLE_ACTIONS": "Azioni",
+      "STATUS_PENDING": "Orecchino",
+      "STATUS_REVIEW": "In fase di revisione",
+      "STATUS_SOLVED": "Risolto",
+      "STATUS_REJECTED": "Rifiutato",
+      "STATUS_SPAM": "⚠️ SPAM",
+      "EMPTY": "Non ci sono rapporti in sospeso. Buon lavoro! 🚀"
+    },
+    "DIFFICULTY": {
+      "EASY": "Facile",
+      "MEDIUM": "Metà",
+      "HARD": "Difficile",
+      "EXTREME": "Estremo"
+    },
+    "MESSAGES": {
+      "REPORT_UPDATED": "Stato del rapporto aggiornato",
+      "CONFIRM_DELETE_REPORT": "Sei sicuro di voler eliminare questo rapporto in modo permanente?",
+      "REPORT_DELETED": "Rapporto eliminato",
+      "CONFIRM_TOGGLE_LEVEL": "Cambiare lo stato del livello?",
+      "STORY_UPDATED": "Livello aggiornato",
+      "STORY_CREATED": "Livello creato",
+      "ROGUE_UPDATED": "Sfida aggiornata",
+      "ROGUE_CREATED": "Sfida creata"
+    }
   }
 }

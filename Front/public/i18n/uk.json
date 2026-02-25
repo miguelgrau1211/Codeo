@@ -460,5 +460,97 @@
     "LOGOUT": "Вийти",
     "LOGIN": "Увійти",
     "REGISTER": "Реєстрація"
+  },
+  "ADMIN": {
+    "TITLE": "АДМІНІСТРАЦІЙНА ПАНЕЛЬ",
+    "GOD_MODE": "Режим Бога",
+    "TAB_USERS": "Користувачі",
+    "TAB_STORY": "Рівні історії",
+    "TAB_ROGUELIKE": "Roguelike рівні",
+    "TAB_LOGS": "Системні журнали",
+    "TAB_REPORTS": "Звіти",
+    "STAT_ACTIVE_24H": "Активний 24 години",
+    "STAT_TOTAL_RUNS": "Загальна кількість пробігів",
+    "STAT_WIN_RATE": "Коефіцієнт виграшу",
+    "USERS": {
+      "TITLE": "Керування користувачами",
+      "TOTAL": "Усього: {{total}} користувачів",
+      "SEARCH_PH": "Пошук за іменем або електронною поштою...",
+      "TABLE_ID": "ID",
+      "TABLE_USER": "Користувач",
+      "TABLE_EMAIL": "Електронна пошта",
+      "TABLE_ROLE": "роль",
+      "TABLE_STATUS": "Держава",
+      "TABLE_ACTION": "Дія",
+      "ROLE_ADMIN": "адмін",
+      "ROLE_USER": "Користувач",
+      "STATUS_ACTIVE": "Актив",
+      "STATUS_BANNED": "заборонено",
+      "EMPTY": "Користувачів не знайдено",
+      "PAGINATION_PAGE": "Сторінка {{current}} із {{total}}",
+      "PAGINATION_PREV": "⬅ Попередній",
+      "PAGINATION_NEXT": "Далі ➡"
+    },
+    "STORY": {
+      "TITLE_ACTIVE": "Рівні сюжетного режиму (активний)",
+      "NEW_LEVEL": "+ Новий рівень",
+      "REWARD_XP": "XP",
+      "REWARD_COINS": "💰",
+      "EMPTY_ACTIVE": "Активних рівнів немає",
+      "TITLE_DISABLED": "Рівні історії вимкнено",
+      "DISABLED_AT": "Вимкнено",
+      "REACTIVATE": "Повторно активувати",
+      "EMPTY_DISABLED": "Немає вимкнених рівнів"
+    },
+    "ROGUELIKE": {
+      "TITLE_ACTIVE": "Roguelike Challenges (активний)",
+      "NEW_CHALLENGE": "+ Новий виклик",
+      "TABLE_DIFF": "Складність",
+      "TABLE_NAME": "Назва завдання",
+      "TABLE_REWARD": "Нагорода",
+      "TABLE_ACTIONS": "Дії",
+      "EMPTY_ACTIVE": "Активних викликів немає",
+      "TITLE_DISABLED": "Roguelike Challenges вимкнено",
+      "EMPTY_DISABLED": "Виклики не вимкнені"
+    },
+    "LOGS": {
+      "TITLE": "Журнали безпеки",
+      "TABLE_DATE": "Дата",
+      "TABLE_USER": "Користувач",
+      "TABLE_ACTION": "Дія",
+      "TABLE_DETAILS": "Подробиці",
+      "EMPTY": "Немає останніх записів"
+    },
+    "REPORTS": {
+      "TITLE": "Центр звітів",
+      "TOTAL": "Усього: отримано {{total}} звітів",
+      "TABLE_CONTACT": "Користувач / Контакт",
+      "TABLE_REPORT": "звіт",
+      "TABLE_STATUS": "Пріоритет/Статус",
+      "TABLE_DATE": "Надіслано далі",
+      "TABLE_ACTIONS": "Дії",
+      "STATUS_PENDING": "Сережка",
+      "STATUS_REVIEW": "На розгляді",
+      "STATUS_SOLVED": "Вирішено",
+      "STATUS_REJECTED": "Відмовлено",
+      "STATUS_SPAM": "⚠️ СПАМ",
+      "EMPTY": "Немає незавершених звітів. хороша робота! 🚀"
+    },
+    "DIFFICULTY": {
+      "EASY": "легко",
+      "MEDIUM": "половина",
+      "HARD": "важко",
+      "EXTREME": "Екстрім"
+    },
+    "MESSAGES": {
+      "REPORT_UPDATED": "Оновлений статус звіту",
+      "CONFIRM_DELETE_REPORT": "Ви впевнені, що бажаєте остаточно видалити цей звіт?",
+      "REPORT_DELETED": "Звіт видалено",
+      "CONFIRM_TOGGLE_LEVEL": "Змінити статус рівня?",
+      "STORY_UPDATED": "Оновлений рівень",
+      "STORY_CREATED": "Створений рівень",
+      "ROGUE_UPDATED": "Оновлений виклик",
+      "ROGUE_CREATED": "Завдання створено"
+    }
   }
 }

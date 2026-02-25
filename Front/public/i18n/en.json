@@ -473,5 +473,97 @@
     "LOGOUT": "Log Out",
     "LOGIN": "Log In",
     "REGISTER": "Register"
+  },
+  "ADMIN": {
+    "TITLE": "ADMIN PANEL",
+    "GOD_MODE": "God Mode",
+    "TAB_USERS": "Users",
+    "TAB_STORY": "Story Levels",
+    "TAB_ROGUELIKE": "Roguelike levels",
+    "TAB_LOGS": "System Logs",
+    "TAB_REPORTS": "Reports",
+    "STAT_ACTIVE_24H": "Active 24 hours",
+    "STAT_TOTAL_RUNS": "Total Runs",
+    "STAT_WIN_RATE": "Win Rate",
+    "USERS": {
+      "TITLE": "User Management",
+      "TOTAL": "Total: {{total}} users",
+      "SEARCH_PH": "Search by name or email...",
+      "TABLE_ID": "ID",
+      "TABLE_USER": "User",
+      "TABLE_EMAIL": "E-mail",
+      "TABLE_ROLE": "Role",
+      "TABLE_STATUS": "State",
+      "TABLE_ACTION": "Action",
+      "ROLE_ADMIN": "Admin",
+      "ROLE_USER": "User",
+      "STATUS_ACTIVE": "Asset",
+      "STATUS_BANNED": "Banned",
+      "EMPTY": "No users found",
+      "PAGINATION_PAGE": "Page {{current}} of {{total}}",
+      "PAGINATION_PREV": "⬅ Previous",
+      "PAGINATION_NEXT": "Next ➡"
+    },
+    "STORY": {
+      "TITLE_ACTIVE": "Story Mode Levels (Active)",
+      "NEW_LEVEL": "+ New Level",
+      "REWARD_XP": "XP",
+      "REWARD_COINS": "💰",
+      "EMPTY_ACTIVE": "There are no active levels",
+      "TITLE_DISABLED": "Story Levels Disabled",
+      "DISABLED_AT": "Disabled the",
+      "REACTIVATE": "Reactivate",
+      "EMPTY_DISABLED": "There are no levels disabled"
+    },
+    "ROGUELIKE": {
+      "TITLE_ACTIVE": "Roguelike Challenges (Active)",
+      "NEW_CHALLENGE": "+ New Challenge",
+      "TABLE_DIFF": "Difficulty",
+      "TABLE_NAME": "Challenge Name",
+      "TABLE_REWARD": "Reward",
+      "TABLE_ACTIONS": "Actions",
+      "EMPTY_ACTIVE": "There are no active challenges",
+      "TITLE_DISABLED": "Roguelike Challenges Disabled",
+      "EMPTY_DISABLED": "There are no challenges disabled"
+    },
+    "LOGS": {
+      "TITLE": "Security Logs",
+      "TABLE_DATE": "Date",
+      "TABLE_USER": "User",
+      "TABLE_ACTION": "Action",
+      "TABLE_DETAILS": "Details",
+      "EMPTY": "No recent records"
+    },
+    "REPORTS": {
+      "TITLE": "Report Center",
+      "TOTAL": "Total: {{total}} reports received",
+      "TABLE_CONTACT": "User / Contact",
+      "TABLE_REPORT": "Report",
+      "TABLE_STATUS": "Priority/Status",
+      "TABLE_DATE": "Sent on",
+      "TABLE_ACTIONS": "Actions",
+      "STATUS_PENDING": "Earring",
+      "STATUS_REVIEW": "Under Review",
+      "STATUS_SOLVED": "Solved",
+      "STATUS_REJECTED": "Refused",
+      "STATUS_SPAM": "⚠️ SPAM",
+      "EMPTY": "There are no pending reports. Good job! 🚀"
+    },
+    "DIFFICULTY": {
+      "EASY": "Easy",
+      "MEDIUM": "Half",
+      "HARD": "Difficult",
+      "EXTREME": "Extreme"
+    },
+    "MESSAGES": {
+      "REPORT_UPDATED": "Updated report status",
+      "CONFIRM_DELETE_REPORT": "Are you sure you want to delete this report permanently?",
+      "REPORT_DELETED": "Report deleted",
+      "CONFIRM_TOGGLE_LEVEL": "Change level status?",
+      "STORY_UPDATED": "Updated level",
+      "STORY_CREATED": "Created level",
+      "ROGUE_UPDATED": "Updated Challenge",
+      "ROGUE_CREATED": "Challenge created"
+    }
   }
 }

@@ -8,18 +8,23 @@
     <!-- Header -->
     <header class="relative z-10 flex items-center justify-between mb-8 max-w-7xl mx-auto">
         <div class="flex items-center gap-6">
-            <a routerLink="/dashboard" 
+            <a routerLink="/dashboard"
                 class="group flex items-center justify-center w-14 h-14 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all hover:-translate-x-1 active:scale-95 shadow-lg shrink-0">
-                <img src="/common/icons/atras.jpg" alt="Volver" class="w-8 h-8 object-contain group-hover:scale-110 transition-transform">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                    class="group-hover:-translate-x-1 transition-transform">
+                    <path d="m15 18-6-6 6-6" />
+                </svg>
             </a>
             <div>
                 <h1 class="text-4xl font-black text-text-main font-jersey tracking-wide flex items-center gap-3">
-                    <span class="text-accent-color">🛡️</span> PANEL DE ADMIN
+                    <span class="text-accent-color">🛡️</span> {{ 'ADMIN.TITLE' | translate }}
                 </h1>
             </div>
         </div>
-        <div class="px-4 py-2 bg-accent-color/10 text-accent-color rounded-lg text-sm font-bold border border-accent-color/20">
-            Modo Dios
+        <div
+            class="px-4 py-2 bg-accent-color/10 text-accent-color rounded-lg text-sm font-bold border border-accent-color/20">
+            {{ 'ADMIN.GOD_MODE' | translate }}
         </div>
     </header>
 
@@ -30,20 +35,18 @@
         <aside class="w-full md:w-64 space-y-2">
             <button (click)="setTab('users')"
                 class="w-full text-left px-5 py-4 rounded-xl font-bold transition-all flex items-center gap-3 border"
-                [class.bg-secondary-bg]="activeTab() === 'users'"
-                [class.border-accent-color]="activeTab() === 'users'" [class.text-accent-color]="activeTab() === 'users'"
-                [class.border-white/10]="activeTab() !== 'users'" [class.text-text-muted]="activeTab() !== 'users'"
-                [class.hover:bg-white/5]="activeTab() !== 'users'">
-                <span>👥</span> Usuarios
+                [class.bg-secondary-bg]="activeTab() === 'users'" [class.border-accent-color]="activeTab() === 'users'"
+                [class.text-accent-color]="activeTab() === 'users'" [class.border-white/10]="activeTab() !== 'users'"
+                [class.text-text-muted]="activeTab() !== 'users'" [class.hover:bg-white/5]="activeTab() !== 'users'">
+                <span>👥</span> {{ 'ADMIN.TAB_USERS' | translate }}
             </button>
 
             <button (click)="setTab('story')"
                 class="w-full text-left px-5 py-4 rounded-xl font-bold transition-all flex items-center gap-3 border"
-                [class.bg-secondary-bg]="activeTab() === 'story'"
-                [class.border-purple-500]="activeTab() === 'story'" [class.text-purple-500]="activeTab() === 'story'"
-                [class.border-white/10]="activeTab() !== 'story'" [class.text-text-muted]="activeTab() !== 'story'"
-                [class.hover:bg-white/5]="activeTab() !== 'story'">
-                <span>📖</span> Niveles Historia
+                [class.bg-secondary-bg]="activeTab() === 'story'" [class.border-purple-500]="activeTab() === 'story'"
+                [class.text-purple-500]="activeTab() === 'story'" [class.border-white/10]="activeTab() !== 'story'"
+                [class.text-text-muted]="activeTab() !== 'story'" [class.hover:bg-white/5]="activeTab() !== 'story'">
+                <span>📖</span> {{ 'ADMIN.TAB_STORY' | translate }}
             </button>
 
             <button (click)="setTab('roguelike')"
@@ -54,25 +57,23 @@
                 [class.border-white/10]="activeTab() !== 'roguelike'"
                 [class.text-text-muted]="activeTab() !== 'roguelike'"
                 [class.hover:bg-white/5]="activeTab() !== 'roguelike'">
-                <span>💀</span> Niveles Roguelike
+                <span>💀</span> {{ 'ADMIN.TAB_ROGUELIKE' | translate }}
             </button>
 
             <button (click)="setTab('logs')"
                 class="w-full text-left px-5 py-4 rounded-xl font-bold transition-all flex items-center gap-3 border"
-                [class.bg-secondary-bg]="activeTab() === 'logs'"
-                [class.border-blue-500]="activeTab() === 'logs'" [class.text-blue-500]="activeTab() === 'logs'"
-                [class.border-white/10]="activeTab() !== 'logs'" [class.text-text-muted]="activeTab() !== 'logs'"
-                [class.hover:bg-white/5]="activeTab() !== 'logs'">
-                <span>📋</span> Logs del Sistema
+                [class.bg-secondary-bg]="activeTab() === 'logs'" [class.border-blue-500]="activeTab() === 'logs'"
+                [class.text-blue-500]="activeTab() === 'logs'" [class.border-white/10]="activeTab() !== 'logs'"
+                [class.text-text-muted]="activeTab() !== 'logs'" [class.hover:bg-white/5]="activeTab() !== 'logs'">
+                <span>📋</span> {{ 'ADMIN.TAB_LOGS' | translate }}
             </button>
             <button (click)="setTab('reportes')"
                 class="w-full text-left px-5 py-4 rounded-xl font-bold transition-all flex items-center gap-3 border"
-                [class.bg-secondary-bg]="activeTab() === 'reportes'"
-                [class.border-red-500]="activeTab() === 'reportes'" [class.text-red-500]="activeTab() === 'reportes'"
-                [class.border-white/10]="activeTab() !== 'reportes'"
+                [class.bg-secondary-bg]="activeTab() === 'reportes'" [class.border-red-500]="activeTab() === 'reportes'"
+                [class.text-red-500]="activeTab() === 'reportes'" [class.border-white/10]="activeTab() !== 'reportes'"
                 [class.text-text-muted]="activeTab() !== 'reportes'"
                 [class.hover:bg-white/5]="activeTab() !== 'reportes'">
-                <span>🚩</span> Reportes
+                <span>🚩</span> {{ 'ADMIN.TAB_REPORTS' | translate }}
             </button>
         </aside>
 
@@ -81,12 +82,12 @@
 
             <!-- STATS PREVIEW -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <app-admin-stat-card title="Activos 24h" [value]="stats().active_users_24h" icon="bi-activity"
-                    trendColor="text-green-500"></app-admin-stat-card>
-                <app-admin-stat-card title="Total Runs" [value]="stats().total_runs" icon="bi-controller"
-                    trendColor="text-green-500"></app-admin-stat-card>
-                <app-admin-stat-card title="Win Rate" [value]="stats().success_rate + '%'" icon="bi-trophy"
-                    trendColor="text-red-500"></app-admin-stat-card>
+                <app-admin-stat-card [title]="'ADMIN.STAT_ACTIVE_24H' | translate" [value]="stats().active_users_24h"
+                    icon="bi-activity" trendColor="text-green-500"></app-admin-stat-card>
+                <app-admin-stat-card [title]="'ADMIN.STAT_TOTAL_RUNS' | translate" [value]="stats().total_runs"
+                    icon="bi-controller" trendColor="text-green-500"></app-admin-stat-card>
+                <app-admin-stat-card [title]="'ADMIN.STAT_WIN_RATE' | translate" [value]="stats().success_rate + '%'"
+                    icon="bi-trophy" trendColor="text-red-500"></app-admin-stat-card>
             </div>
 
 
@@ -96,14 +97,16 @@
                 [class.opacity-50]="isLoading()">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-2xl font-bold text-text-main">Gestión de Usuarios</h2>
-                        <div class="text-sm text-text-muted">Total: {{ totalUsers() }} usuarios</div>
+                        <h2 class="text-2xl font-bold text-text-main">{{ 'ADMIN.USERS.TITLE' | translate }}</h2>
+                        <div class="text-sm text-text-muted">{{ 'ADMIN.USERS.TOTAL' | translate:{total: totalUsers()} }}
+                        </div>
                     </div>
 
                     <!-- Search Bar -->
                     <div class="relative w-full md:w-80">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">🔍</span>
-                        <input type="text" (input)="onSearchChange($event)" placeholder="Buscar por nombre o email..."
+                        <input type="text" (input)="onSearchChange($event)"
+                            [placeholder]="'ADMIN.USERS.SEARCH_PH' | translate"
                             class="w-full bg-primary-bg/50 border border-white/10 rounded-xl py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-accent-color transition-colors text-text-main">
                     </div>
                 </div>
@@ -115,7 +118,7 @@
                                 <th class="px-6 py-3 rounded-l-lg cursor-pointer hover:bg-white/5 transition-colors group"
                                     (click)="toggleSort('id')">
                                     <div class="flex items-center gap-2">
-                                        ID
+                                        {{ 'ADMIN.USERS.TABLE_ID' | translate }}
                                         <span class="text-[10px] transition-transform"
                                             [class.rotate-180]="sortOrder() === 'asc'"
                                             [class.opacity-0]="sortBy() !== 'id'">
@@ -123,12 +126,12 @@
                                         </span>
                                     </div>
                                 </th>
-                                <th class="px-6 py-3">Usuario</th>
-                                <th class="px-6 py-3">Email</th>
+                                <th class="px-6 py-3">{{ 'ADMIN.USERS.TABLE_USER' | translate }}</th>
+                                <th class="px-6 py-3">{{ 'ADMIN.USERS.TABLE_EMAIL' | translate }}</th>
                                 <th class="px-6 py-3 cursor-pointer hover:bg-white/5 transition-colors group"
                                     (click)="toggleSort('es_admin')">
                                     <div class="flex items-center gap-2">
-                                        Rol
+                                        {{ 'ADMIN.USERS.TABLE_ROLE' | translate }}
                                         <span class="text-[10px] transition-transform"
                                             [class.rotate-180]="sortOrder() === 'asc'"
                                             [class.opacity-0]="sortBy() !== 'es_admin'">
@@ -139,7 +142,7 @@
                                 <th class="px-6 py-3 cursor-pointer hover:bg-white/5 transition-colors group"
                                     (click)="toggleSort('active')">
                                     <div class="flex items-center gap-2">
-                                        Estado
+                                        {{ 'ADMIN.USERS.TABLE_STATUS' | translate }}
                                         <span class="text-[10px] transition-transform"
                                             [class.rotate-180]="sortOrder() === 'asc'"
                                             [class.opacity-0]="sortBy() !== 'active'">
@@ -147,13 +150,12 @@
                                         </span>
                                     </div>
                                 </th>
-                                <th class="px-6 py-3 rounded-r-lg">Acción</th>
+                                <th class="px-6 py-3 rounded-r-lg">{{ 'ADMIN.USERS.TABLE_ACTION' | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @for (u of users(); track u.id) {
-                            <tr
-                                class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
                                 <td class="px-6 py-4 font-mono text-text-muted">#{{ u.id }}</td>
                                 <td class="px-6 py-4 font-bold text-text-main">{{ u.nickname }}</td>
                                 <td class="px-6 py-4 text-text-muted">{{ u.email }}</td>
@@ -161,7 +163,8 @@
                                     <span class="px-2 py-1 rounded-md text-xs font-bold"
                                         [class.bg-red-500-10]="u.es_admin" [class.text-red-500]="u.es_admin"
                                         [class.bg-blue-500-10]="!u.es_admin" [class.text-blue-500]="!u.es_admin">
-                                        {{ u.es_admin ? 'Admin' : 'Usuario' }}
+                                        {{ (u.es_admin ? 'ADMIN.USERS.ROLE_ADMIN' : 'ADMIN.USERS.ROLE_USER') | translate
+                                        }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4">
@@ -169,7 +172,8 @@
                                         class="px-2 py-1 rounded text-xs font-bold transition-colors"
                                         [class.text-green-500]="u.active" [class.bg-green-500-10]="u.active"
                                         [class.text-slate-400]="!u.active" [class.bg-slate-500-10]="!u.active">
-                                        {{ u.active ? 'Activo' : 'Baneado' }}
+                                        {{ (u.active ? 'ADMIN.USERS.STATUS_ACTIVE' : 'ADMIN.USERS.STATUS_BANNED') |
+                                        translate }}
                                     </button>
                                 </td>
                                 <td class="px-6 py-4 text-center">
@@ -191,16 +195,16 @@
                 <!-- Pagination Controls -->
                 <div class="mt-8 flex items-center justify-between border-t border-white/5 pt-6">
                     <div class="text-sm text-text-muted">
-                        Página {{ currentPage() }} de {{ totalPages() }}
+                        {{ 'ADMIN.USERS.PAGINATION_PAGE' | translate:{current: currentPage(), total: totalPages()} }}
                     </div>
                     <div class="flex gap-2">
                         <button (click)="prevPage()" [disabled]="currentPage() === 1 || isLoading()"
                             class="px-4 py-2 rounded-lg font-bold transition-all border border-white/10 hover:bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed text-text-muted">
-                            ⬅ Anterior
+                            {{ 'ADMIN.USERS.PAGINATION_PREV' | translate }}
                         </button>
                         <button (click)="nextPage()" [disabled]="currentPage() === totalPages() || isLoading()"
                             class="px-4 py-2 rounded-lg font-bold transition-all border border-white/10 hover:bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed text-text-muted">
-                            Siguiente ➡
+                            {{ 'ADMIN.USERS.PAGINATION_NEXT' | translate }}
                         </button>
                     </div>
                 </div>
@@ -209,13 +213,12 @@
 
             <!-- STORY LEVELS TAB -->
             @if (activeTab() === 'story') {
-            <div
-                class="bg-secondary-bg rounded-3xl p-6 border border-white/5 shadow-xl">
+            <div class="bg-secondary-bg rounded-3xl p-6 border border-white/5 shadow-xl">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-text-main">Niveles Modo Historia (Activos)</h2>
+                    <h2 class="text-2xl font-bold text-text-main">{{ 'ADMIN.STORY.TITLE_ACTIVE' | translate }}</h2>
                     <button (click)="openEditor('story')"
                         class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-lg shadow-purple-600/20">
-                        + Nuevo Nivel
+                        {{ 'ADMIN.STORY.NEW_LEVEL' | translate }}
                     </button>
                 </div>
 
@@ -223,8 +226,7 @@
                     @if (isStoryLoading()) {
                     <!-- Skeleton Loader -->
                     @for (i of [1,2,3]; track i) {
-                    <div
-                        class="animate-pulse flex items-center p-4 bg-white/5 rounded-xl border border-white/5">
+                    <div class="animate-pulse flex items-center p-4 bg-white/5 rounded-xl border border-white/5">
                         <div class="w-12 h-12 bg-white/10 rounded-lg mr-4"></div>
                         <div class="flex-1 space-y-2">
                             <div class="h-4 bg-white/10 rounded w-1/3"></div>
@@ -244,9 +246,11 @@
                             <div>
                                 <h3 class="font-bold text-text-main">{{ level.titulo }}</h3>
                                 <div class="flex gap-2 text-xs mt-1">
-                                    <span class="text-text-muted">XP: {{ level.recompensa_exp }}</span>
+                                    <span class="text-text-muted">{{ 'ADMIN.STORY.REWARD_XP' | translate }}: {{
+                                        level.recompensa_exp }}</span>
                                     <span class="text-text-muted">•</span>
-                                    <span class="text-text-muted">💰 {{ level.recompensa_monedas }}</span>
+                                    <span class="text-text-muted">{{ 'ADMIN.STORY.REWARD_COINS' | translate }} {{
+                                        level.recompensa_monedas }}</span>
                                 </div>
                             </div>
                         </div>
@@ -259,22 +263,23 @@
                     </div>
                     }
                     @if (storyLevels().length === 0) {
-                    <div class="text-center py-8 text-text-muted">No hay niveles activos</div>
+                    <div class="text-center py-8 text-text-muted">{{ 'ADMIN.STORY.EMPTY_ACTIVE' | translate }}</div>
                     }
 
                     <!-- Story Pagination -->
                     <div
                         class="mt-4 flex justify-between items-center text-sm text-text-muted pt-4 border-t border-white/5">
-                        <div>Página {{ storyPage() }} de {{ storyTotalPages() }}</div>
+                        <div>{{ 'ADMIN.USERS.PAGINATION_PAGE' | translate:{current: storyPage(), total:
+                            storyTotalPages()} }}</div>
                         <div class="flex gap-2">
                             <button (click)="prevStoryPage()" [disabled]="storyPage() === 1 || isStoryLoading()"
                                 class="px-3 py-1 bg-secondary-bg border border-white/10 rounded-lg disabled:opacity-50 hover:bg-white/5 transition-colors">
-                                ◀ Anterior
+                                {{ 'ADMIN.USERS.PAGINATION_PREV' | translate }}
                             </button>
                             <button (click)="nextStoryPage()"
                                 [disabled]="storyPage() === storyTotalPages() || isStoryLoading()"
                                 class="px-3 py-1 bg-secondary-bg border border-white/10 rounded-lg disabled:opacity-50 hover:bg-white/5 transition-colors">
-                                Siguiente ▶
+                                {{ 'ADMIN.USERS.PAGINATION_NEXT' | translate }}
                             </button>
                         </div>
                     </div>
@@ -286,7 +291,8 @@
             <div
                 class="mt-8 bg-red-50 dark:bg-red-900/10 rounded-3xl p-6 border border-red-200 dark:border-red-500/20 shadow-xl">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-red-800 dark:text-red-400">Niveles Historia Desactivados</h2>
+                    <h2 class="text-2xl font-bold text-red-800 dark:text-red-400">{{ 'ADMIN.STORY.TITLE_DISABLED' |
+                        translate }}</h2>
                 </div>
 
                 <div class="grid gap-4">
@@ -301,7 +307,8 @@
                             <div>
                                 <h3 class="font-bold text-text-main">{{ level.titulo }}</h3>
                                 <div class="text-xs text-red-500 mt-1">
-                                    Desactivado: {{ level.fecha_desactivacion | date:'mediumDate' }}
+                                    {{ 'ADMIN.STORY.DISABLED_AT' | translate }}: {{ level.fecha_desactivacion |
+                                    date:'mediumDate' }}
                                 </div>
                             </div>
                         </div>
@@ -314,7 +321,7 @@
                     </div>
                     }
                     @if (storyLevelsDisabled().length === 0) {
-                    <div class="text-center py-8 text-text-muted">No hay niveles desactivados</div>
+                    <div class="text-center py-8 text-text-muted">{{ 'ADMIN.STORY.EMPTY_DISABLED' | translate }}</div>
                     }
                 </div>
             </div>
@@ -322,13 +329,12 @@
 
             <!-- ROGUELIKE LEVELS TAB -->
             @if (activeTab() === 'roguelike') {
-            <div
-                class="bg-secondary-bg rounded-3xl p-6 border border-white/5 shadow-xl">
+            <div class="bg-secondary-bg rounded-3xl p-6 border border-white/5 shadow-xl">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-text-main">Desafíos Roguelike (Activos)</h2>
+                    <h2 class="text-2xl font-bold text-text-main">{{ 'ADMIN.ROGUELIKE.TITLE_ACTIVE' | translate }}</h2>
                     <button (click)="openEditor('roguelike')"
                         class="bg-orange-600 hover:bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-lg shadow-orange-600/20">
-                        + Nuevo Desafío
+                        {{ 'ADMIN.ROGUELIKE.NEW_CHALLENGE' | translate }}
                     </button>
                 </div>
 
@@ -336,16 +342,17 @@
                     <table class="w-full text-sm text-left">
                         <thead class="text-xs text-text-muted uppercase bg-primary-bg/30">
                             <tr>
-                                <th class="px-6 py-3 rounded-l-lg">Dificultad</th>
-                                <th class="px-6 py-3">Nombre del Desafío</th>
-                                <th class="px-6 py-3">Recompensa</th>
-                                <th class="px-6 py-3 rounded-r-lg">Acciones</th>
+                                <th class="px-6 py-3 rounded-l-lg">{{ 'ADMIN.ROGUELIKE.TABLE_DIFF' | translate }}</th>
+                                <th class="px-6 py-3">{{ 'ADMIN.ROGUELIKE.TABLE_NAME' | translate }}</th>
+                                <th class="px-6 py-3">{{ 'ADMIN.ROGUELIKE.TABLE_REWARD' | translate }}</th>
+                                <th class="px-6 py-3 rounded-r-lg">{{ 'ADMIN.ROGUELIKE.TABLE_ACTIONS' | translate }}
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             @if (isRoguelikeLoading()) {
                             @for (i of [1,2,3]; track i) {
-                             <tr class="animate-pulse border-b border-white/5">
+                            <tr class="animate-pulse border-b border-white/5">
                                 <td class="px-6 py-4">
                                     <div class="h-4 bg-white/5 rounded w-16"></div>
                                 </td>
@@ -361,9 +368,8 @@
                             </tr>
                             }
                             } @else {
-                             @for (level of roguelikeLevels(); track level.id) {
-                            <tr
-                                class="border-b border-white/5 hover:bg-white/5 transition-colors group">
+                            @for (level of roguelikeLevels(); track level.id) {
+                            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors group">
                                 <td class="px-6 py-4">
                                     <span class="px-2 py-1 rounded-md text-xs font-bold uppercase"
                                         [class.bg-green-500-10]="level.dificultad === 'fácil'"
@@ -374,11 +380,15 @@
                                         [class.text-red-500]="level.dificultad === 'difícil'"
                                         [class.bg-purple-500-10]="level.dificultad === 'extremo'"
                                         [class.text-purple-500]="level.dificultad === 'extremo'">
-                                        {{ level.dificultad }}
+                                        {{ (level.dificultad === 'fácil' ? 'ADMIN.DIFFICULTY.EASY' :
+                                        level.dificultad === 'medio' ? 'ADMIN.DIFFICULTY.MEDIUM' :
+                                        level.dificultad === 'difícil' ? 'ADMIN.DIFFICULTY.HARD' :
+                                        'ADMIN.DIFFICULTY.EXTREME') | translate }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 font-bold text-text-main">{{ level.titulo }}</td>
-                                <td class="px-6 py-4 text-mono text-text-muted">💰 {{ level.recompensa_monedas }}</td>
+                                <td class="px-6 py-4 text-mono text-text-muted">{{ 'ADMIN.ROGUELIKE.TABLE_REWARD' |
+                                    translate }} {{ level.recompensa_monedas }}</td>
                                 <td class="px-6 py-4">
                                     <div class="flex gap-2">
                                         <button (click)="openEditor('roguelike', level)"
@@ -406,17 +416,18 @@
             <div
                 class="mt-8 bg-red-50 dark:bg-red-900/10 rounded-3xl p-6 border border-red-200 dark:border-red-500/20 shadow-xl">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-red-800 dark:text-red-400">Desafíos Roguelike Desactivados</h2>
+                    <h2 class="text-2xl font-bold text-red-800 dark:text-red-400">{{ 'ADMIN.ROGUELIKE.TITLE_DISABLED' |
+                        translate }}</h2>
                 </div>
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
                         <thead class="text-xs text-slate-500 uppercase">
                             <tr>
-                                <th class="px-6 py-3">Dificultad</th>
-                                <th class="px-6 py-3">Nombre</th>
-                                <th class="px-6 py-3">Fecha Desactivación</th>
-                                <th class="px-6 py-3">Acción</th>
+                                <th class="px-6 py-3">{{ 'ADMIN.ROGUELIKE.TABLE_DIFF' | translate }}</th>
+                                <th class="px-6 py-3">{{ 'ADMIN.ROGUELIKE.TABLE_NAME' | translate }}</th>
+                                <th class="px-6 py-3">{{ 'ADMIN.STORY.DISABLED_AT' | translate }}</th>
+                                <th class="px-6 py-3">{{ 'ADMIN.USERS.TABLE_ACTION' | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -428,7 +439,7 @@
                                 <td class="px-6 py-4">
                                     <button (click)="toggleRoguelikeStatus(level.id)"
                                         class="px-3 py-1 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600 transition-colors">
-                                        Reactivar 🔄
+                                        {{ 'ADMIN.STORY.REACTIVATE' | translate }} 🔄
                                     </button>
                                 </td>
                             </tr>
@@ -447,26 +458,24 @@
 
             <!-- LOGS TAB -->
             @if (activeTab() === 'logs') {
-            <div
-                class="bg-secondary-bg rounded-3xl p-6 border border-white/5 shadow-xl">
+            <div class="bg-secondary-bg rounded-3xl p-6 border border-white/5 shadow-xl">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-text-main">Logs de Seguridad</h2>
+                    <h2 class="text-2xl font-bold text-text-main">{{ 'ADMIN.LOGS.TITLE' | translate }}</h2>
                 </div>
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
                         <thead class="text-xs text-text-muted uppercase bg-primary-bg/30">
                             <tr>
-                                <th class="px-6 py-3 rounded-l-lg">Fecha</th>
-                                <th class="px-6 py-3">Usuario</th>
-                                <th class="px-6 py-3">Acción</th>
-                                <th class="px-6 py-3 rounded-r-lg">Detalles</th>
+                                <th class="px-6 py-3 rounded-l-lg">{{ 'ADMIN.LOGS.TABLE_DATE' | translate }}</th>
+                                <th class="px-6 py-3">{{ 'ADMIN.LOGS.TABLE_USER' | translate }}</th>
+                                <th class="px-6 py-3">{{ 'ADMIN.LOGS.TABLE_ACTION' | translate }}</th>
+                                <th class="px-6 py-3 rounded-r-lg">{{ 'ADMIN.LOGS.TABLE_DETAILS' | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @for (log of logs(); track log.id) {
-                            <tr
-                                class="border-b border-white/5 hover:bg-white/5">
+                            <tr class="border-b border-white/5 hover:bg-white/5">
                                 <td class="px-6 py-4 font-mono text-xs text-text-muted">
                                     {{ log.created_at | date:'short' }}
                                 </td>
@@ -480,8 +489,7 @@
                                     }
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span
-                                        class="px-2 py-1 rounded-md text-xs font-bold bg-white/5 text-text-muted">
+                                    <span class="px-2 py-1 rounded-md text-xs font-bold bg-white/5 text-text-muted">
                                         {{ log.action }}
                                     </span>
                                 </td>
@@ -521,8 +529,9 @@
                 [class.opacity-50]="isReportesLoading()">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-2xl font-bold text-text-main">Centro de Reportes</h2>
-                        <div class="text-sm text-text-muted">Total: {{ reportes().length }} reportes recibidos</div>
+                        <h2 class="text-2xl font-bold text-text-main">{{ 'ADMIN.REPORTS.TITLE' | translate }}</h2>
+                        <div class="text-sm text-text-muted">{{ 'ADMIN.REPORTS.TOTAL' | translate:{total:
+                            reportes().length} }}</div>
                     </div>
                 </div>
 
@@ -530,17 +539,17 @@
                     <table class="w-full text-sm text-left">
                         <thead class="text-xs text-text-muted uppercase bg-primary-bg/50">
                             <tr>
-                                <th class="px-6 py-3 rounded-l-lg">Usuario / Contacto</th>
-                                <th class="px-6 py-3">Reporte</th>
-                                <th class="px-6 py-3">Prioridad / Estado</th>
-                                <th class="px-6 py-3">Enviado el</th>
-                                <th class="px-6 py-3 rounded-r-lg text-center">Acciones</th>
+                                <th class="px-6 py-3 rounded-l-lg">{{ 'ADMIN.REPORTS.TABLE_CONTACT' | translate }}</th>
+                                <th class="px-6 py-3">{{ 'ADMIN.REPORTS.TABLE_REPORT' | translate }}</th>
+                                <th class="px-6 py-3">{{ 'ADMIN.REPORTS.TABLE_STATUS' | translate }}</th>
+                                <th class="px-6 py-3">{{ 'ADMIN.REPORTS.TABLE_DATE' | translate }}</th>
+                                <th class="px-6 py-3 rounded-r-lg text-center">{{ 'ADMIN.REPORTS.TABLE_ACTIONS' |
+                                    translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
-                             @for (rep of reportes(); track rep.id) {
-                            <tr
-                                class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                            @for (rep of reportes(); track rep.id) {
+                            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
                                 <td class="px-6 py-4">
                                     <div class="font-bold text-text-main">
                                         {{ rep.usuario?.nickname || 'Invitado' }}
@@ -556,8 +565,7 @@
                                         <span class="font-bold text-text-main">{{ rep.titulo
                                             }}</span>
                                     </div>
-                                    <p class="text-xs text-text-muted max-w-xs line-clamp-2"
-                                        [title]="rep.descripcion">
+                                    <p class="text-xs text-text-muted max-w-xs line-clamp-2" [title]="rep.descripcion">
                                         {{ rep.descripcion }}
                                     </p>
                                 </td>
@@ -575,16 +583,17 @@
                                         </span>
                                         <select (change)="updateReportStatus(rep.id, $any($event.target).value)"
                                             class="bg-primary-bg border-none rounded text-xs py-1 px-2 focus:ring-1 focus:ring-accent-color transition-all outline-none text-text-main">
-                                            <option value="pendiente" [selected]="rep.estado === 'pendiente'">Pendiente
+                                            <option value="pendiente" [selected]="rep.estado === 'pendiente'">{{
+                                                'ADMIN.REPORTS.STATUS_PENDING' | translate }}
                                             </option>
-                                            <option value="en revision" [selected]="rep.estado === 'en revision'">En
-                                                Revisión</option>
+                                            <option value="en revision" [selected]="rep.estado === 'en revision'">{{
+                                                'ADMIN.REPORTS.STATUS_REVIEW' | translate }}</option>
                                             <option value="solucionado" [selected]="rep.estado === 'solucionado'">
-                                                Solucionado</option>
+                                                {{ 'ADMIN.REPORTS.STATUS_SOLVED' | translate }}</option>
                                             <option value="rechazado" [selected]="rep.estado === 'rechazado'">
-                                                Rechazado</option>
+                                                {{ 'ADMIN.REPORTS.STATUS_REJECTED' | translate }}</option>
                                             <option value="spam" [selected]="rep.estado === 'spam'">
-                                                ⚠️ SPAM</option>
+                                                {{ 'ADMIN.REPORTS.STATUS_SPAM' | translate }}</option>
                                         </select>
                                     </div>
                                 </td>
@@ -594,7 +603,7 @@
                                 <td class="px-6 py-4 text-center">
                                     <button (click)="deleteReport(rep.id)"
                                         class="p-2 hover:bg-red-500/10 rounded-lg text-red-500 transition-colors"
-                                        title="Eliminar reporte permanentemente">
+                                        [title]="'ADMIN.MESSAGES.CONFIRM_DELETE_REPORT' | translate">
                                         🗑️
                                     </button>
                                 </td>
@@ -602,8 +611,8 @@
                             }
                             @if (reportes().length === 0 && !isReportesLoading()) {
                             <tr>
-                                <td colspan="5" class="px-6 py-10 text-center text-text-muted italic">No hay reportes
-                                    pendientes. ¡Buen trabajo! 🚀</td>
+                                <td colspan="5" class="px-6 py-10 text-center text-text-muted italic">{{
+                                    'ADMIN.REPORTS.EMPTY' | translate }}</td>
                             </tr>
                             }
                         </tbody>

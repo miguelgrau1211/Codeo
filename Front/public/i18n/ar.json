@@ -453,5 +453,97 @@
     "LOGOUT": "تسجيل الخروج",
     "LOGIN": "تسجيل الدخول",
     "REGISTER": "التسجيل"
+  },
+  "ADMIN": {
+    "TITLE": "لوحة الإدارة",
+    "GOD_MODE": "وضع الله",
+    "TAB_USERS": "المستخدمين",
+    "TAB_STORY": "مستويات القصة",
+    "TAB_ROGUELIKE": "مستويات روجلايك",
+    "TAB_LOGS": "سجلات النظام",
+    "TAB_REPORTS": "التقارير",
+    "STAT_ACTIVE_24H": "نشط 24 ساعة",
+    "STAT_TOTAL_RUNS": "إجمالي عدد مرات التشغيل",
+    "STAT_WIN_RATE": "معدل الفوز",
+    "USERS": {
+      "TITLE": "إدارة المستخدم",
+      "TOTAL": "الإجمالي: {{total}} من المستخدمين",
+      "SEARCH_PH": "البحث بالاسم أو البريد الإلكتروني...",
+      "TABLE_ID": "بطاقة تعريف",
+      "TABLE_USER": "مستخدم",
+      "TABLE_EMAIL": "بريد إلكتروني",
+      "TABLE_ROLE": "دور",
+      "TABLE_STATUS": "ولاية",
+      "TABLE_ACTION": "فعل",
+      "ROLE_ADMIN": "مسؤل",
+      "ROLE_USER": "مستخدم",
+      "STATUS_ACTIVE": "أصل",
+      "STATUS_BANNED": "محظور",
+      "EMPTY": "لم يتم العثور على مستخدمين",
+      "PAGINATION_PAGE": "الصفحة {{الحالية}} من {{total}}",
+      "PAGINATION_PREV": "⬅ السابق",
+      "PAGINATION_NEXT": "التالي ➡"
+    },
+    "STORY": {
+      "TITLE_ACTIVE": "مستويات وضع القصة (نشط)",
+      "NEW_LEVEL": "+ مستوى جديد",
+      "REWARD_XP": "XP",
+      "REWARD_COINS": "💰",
+      "EMPTY_ACTIVE": "لا توجد مستويات نشطة",
+      "TITLE_DISABLED": "مستويات القصة معطلة",
+      "DISABLED_AT": "معطل",
+      "REACTIVATE": "إعادة التنشيط",
+      "EMPTY_DISABLED": "لا توجد مستويات تعطيل"
+    },
+    "ROGUELIKE": {
+      "TITLE_ACTIVE": "تحديات روجلايك (نشطة)",
+      "NEW_CHALLENGE": "+ التحدي الجديد",
+      "TABLE_DIFF": "صعوبة",
+      "TABLE_NAME": "اسم التحدي",
+      "TABLE_REWARD": "جائزة",
+      "TABLE_ACTIONS": "الإجراءات",
+      "EMPTY_ACTIVE": "لا توجد تحديات نشطة",
+      "TITLE_DISABLED": "تم تعطيل تحديات Roguelike",
+      "EMPTY_DISABLED": "لا توجد تحديات معطلة"
+    },
+    "LOGS": {
+      "TITLE": "سجلات الأمان",
+      "TABLE_DATE": "تاريخ",
+      "TABLE_USER": "مستخدم",
+      "TABLE_ACTION": "فعل",
+      "TABLE_DETAILS": "تفاصيل",
+      "EMPTY": "لا توجد سجلات حديثة"
+    },
+    "REPORTS": {
+      "TITLE": "مركز التقارير",
+      "TOTAL": "الإجمالي: {{total}} التقارير المستلمة",
+      "TABLE_CONTACT": "المستخدم / جهة الاتصال",
+      "TABLE_REPORT": "تقرير",
+      "TABLE_STATUS": "الأولوية/الحالة",
+      "TABLE_DATE": "تم الإرسال",
+      "TABLE_ACTIONS": "الإجراءات",
+      "STATUS_PENDING": "حلق",
+      "STATUS_REVIEW": "قيد المراجعة",
+      "STATUS_SOLVED": "تم الحل",
+      "STATUS_REJECTED": "رفض",
+      "STATUS_SPAM": "⚠️ البريد العشوائي",
+      "EMPTY": "لا توجد تقارير معلقة. أحسنت! 🚀"
+    },
+    "DIFFICULTY": {
+      "EASY": "سهل",
+      "MEDIUM": "نصف",
+      "HARD": "صعب",
+      "EXTREME": "أقصى"
+    },
+    "MESSAGES": {
+      "REPORT_UPDATED": "تم تحديث حالة التقرير",
+      "CONFIRM_DELETE_REPORT": "هل أنت متأكد أنك تريد حذف هذا التقرير نهائيًا؟",
+      "REPORT_DELETED": "تم حذف التقرير",
+      "CONFIRM_TOGGLE_LEVEL": "تغيير حالة المستوى؟",
+      "STORY_UPDATED": "مستوى محدث",
+      "STORY_CREATED": "المستوى الذي تم إنشاؤه",
+      "ROGUE_UPDATED": "التحدي المحدث",
+      "ROGUE_CREATED": "تم إنشاء التحدي"
+    }
   }
 }

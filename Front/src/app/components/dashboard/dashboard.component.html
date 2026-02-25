@@ -6,9 +6,18 @@
         [class.w-64]="isSidebarOpen()" [class.w-20]="!isSidebarOpen()">
 
         <!-- Logo -->
-        <div class="flex items-center px-6 h-20 border-b border-white/5">
-            <span class="text-accent-color text-5xl font-jersey mr-3 uppercase tracking-tighter">&gt;_</span>
-            <span class="text-2xl font-black text-text-main font-jersey tracking-wide">Codeo</span>
+        <div class="flex items-center h-20 border-b border-white/5 transition-all duration-500"
+            [class.px-6]="isSidebarOpen()" [class.px-0]="!isSidebarOpen()" [class.justify-center]="!isSidebarOpen()">
+            <span class="text-accent-color text-5xl font-jersey uppercase tracking-tighter transition-all duration-500"
+                [class.mr-3]="isSidebarOpen()" [class.mr-0]="!isSidebarOpen()">&gt;_</span>
+
+            <div class="grid transition-[grid-template-columns] duration-500 ease-in-out"
+                [class.grid-cols-[1fr]]="isSidebarOpen()" [class.grid-cols-[0fr]]="!isSidebarOpen()">
+                <div class="overflow-hidden">
+                    <span
+                        class="text-2xl font-black text-text-main font-jersey tracking-wide whitespace-nowrap">Codeo</span>
+                </div>
+            </div>
         </div>
 
         <!-- Navigation -->
@@ -86,8 +95,12 @@
         <div class="px-4 py-4 border-t border-white/5">
             <button (click)="toggleSidebar()"
                 class="w-full flex items-center justify-center p-2 rounded-lg hover:bg-white/5 text-text-muted transition-colors">
-                <span class="transform transition-transform duration-500 ease-in-out"
-                    [class.rotate-180]="!isSidebarOpen()"><img src="/common/icons/atras.jpg" alt="" class="w-6"></span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                    class="transform transition-transform duration-500 ease-in-out"
+                    [class.rotate-180]="!isSidebarOpen()">
+                    <path d="m15 18-6-6 6-6" />
+                </svg>
             </button>
         </div>
 
@@ -355,7 +368,8 @@
                     </h3>
                     <div class="flex items-center gap-4 text-sm">
                         @if (isPremium()) {
-                        <span class="px-3 py-1 rounded-full bg-accent-color/20 text-accent-color text-xs font-black uppercase tracking-widest border border-accent-color/30 animate-pulse">
+                        <span
+                            class="px-3 py-1 rounded-full bg-accent-color/20 text-accent-color text-xs font-black uppercase tracking-widest border border-accent-color/30 animate-pulse">
                             {{ 'DASHBOARD.PREMIUM_BADGE' | translate }}
                         </span>
                         }
@@ -469,15 +483,21 @@
                 </div>
                 } @else {
                 <!-- Premium Gate: Show CTA to buy Battle Pass -->
-                <div class="relative rounded-3xl border border-white/10 bg-secondary-bg/40 backdrop-blur-xl overflow-hidden">
+                <div
+                    class="relative rounded-3xl border border-white/10 bg-secondary-bg/40 backdrop-blur-xl overflow-hidden">
                     <!-- Decorative gradient -->
-                    <div class="absolute inset-0 bg-gradient-to-r from-accent-color/5 via-transparent to-pink-500/5 pointer-events-none"></div>
-                    <div class="absolute top-0 right-0 w-64 h-64 bg-accent-color/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-accent-color/5 via-transparent to-pink-500/5 pointer-events-none">
+                    </div>
+                    <div
+                        class="absolute top-0 right-0 w-64 h-64 bg-accent-color/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none">
+                    </div>
 
                     <div class="relative z-10 p-10 flex flex-col md:flex-row items-center gap-8">
                         <!-- Left: Info -->
                         <div class="flex-1 text-center md:text-left">
-                            <div class="inline-block px-4 py-1.5 rounded-full bg-accent-color/10 text-accent-color text-[10px] font-black uppercase tracking-[0.2em] mb-4 border border-accent-color/20">
+                            <div
+                                class="inline-block px-4 py-1.5 rounded-full bg-accent-color/10 text-accent-color text-[10px] font-black uppercase tracking-[0.2em] mb-4 border border-accent-color/20">
                                 {{ 'DASHBOARD.PREMIUM_TAG' | translate }}
                             </div>
                             <h3 class="text-3xl md:text-4xl font-black text-text-main font-jersey tracking-wide mb-3">
@@ -490,7 +510,8 @@
                             <!-- Reward preview (blurred/locked) -->
                             <div class="flex gap-3 flex-wrap justify-center md:justify-start mb-6">
                                 @for (reward of battlePassRewards(); track reward.level) {
-                                <div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-text-muted text-xs font-bold">
+                                <div
+                                    class="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-text-muted text-xs font-bold">
                                     <span>{{ reward.icon }}</span>
                                     <span class="opacity-70">{{ reward.label }}</span>
                                 </div>
@@ -500,16 +521,20 @@
                             <button (click)="openPaymentModal()" id="buy-battle-pass-btn"
                                 class="px-8 py-4 rounded-2xl bg-gradient-to-r from-accent-color to-pink-500 text-white font-black text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all duration-300 shadow-xl shadow-accent-color/20 relative overflow-hidden group">
                                 <span class="relative z-10">{{ 'DASHBOARD.PREMIUM_BUY' | translate }} — 9,99€</span>
-                                <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700">
+                                </div>
                             </button>
                         </div>
 
                         <!-- Right: Locked rewards grid visual -->
                         <div class="hidden md:grid grid-cols-3 gap-3 opacity-60">
                             @for (reward of battlePassRewards(); track reward.level) {
-                            <div class="w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex flex-col items-center justify-center gap-1 backdrop-blur-md">
+                            <div
+                                class="w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex flex-col items-center justify-center gap-1 backdrop-blur-md">
                                 <span class="text-2xl grayscale">{{ reward.icon }}</span>
-                                <span class="text-[8px] text-text-muted font-bold uppercase">🔒 Nv. {{ reward.level }}</span>
+                                <span class="text-[8px] text-text-muted font-bold uppercase">🔒 Nv. {{ reward.level
+                                    }}</span>
                             </div>
                             }
                         </div>
@@ -520,28 +545,36 @@
 
             <!-- Payment Modal -->
             @if (showPaymentModal()) {
-            <div class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-primary-bg/80 backdrop-blur-md animate-fade-in" (click)="closePaymentModal()">
+            <div class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-primary-bg/80 backdrop-blur-md animate-fade-in"
+                (click)="closePaymentModal()">
                 <div class="relative w-full max-w-lg bg-secondary-bg border border-white/10 rounded-[3rem] p-10 shadow-2xl overflow-hidden animate-zoom-in"
                     (click)="$event.stopPropagation()">
 
                     <!-- Decoration -->
-                    <div class="absolute top-0 right-0 w-40 h-40 bg-accent-color/10 rounded-full blur-[60px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-                    <div class="absolute bottom-0 left-0 w-32 h-32 bg-pink-500/10 rounded-full blur-[60px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
+                    <div
+                        class="absolute top-0 right-0 w-40 h-40 bg-accent-color/10 rounded-full blur-[60px] -translate-y-1/2 translate-x-1/2 pointer-events-none">
+                    </div>
+                    <div
+                        class="absolute bottom-0 left-0 w-32 h-32 bg-pink-500/10 rounded-full blur-[60px] translate-y-1/2 -translate-x-1/2 pointer-events-none">
+                    </div>
 
                     <div class="relative z-10">
 
                         @if (paymentStep() === 'form') {
                         <!-- Payment Form -->
                         <div class="text-center mb-8">
-                            <div class="w-20 h-20 bg-accent-color/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-accent-color/30">
+                            <div
+                                class="w-20 h-20 bg-accent-color/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-accent-color/30">
                                 <span class="text-4xl">💳</span>
                             </div>
-                            <h2 class="text-2xl font-black text-text-main font-jersey tracking-wide uppercase">{{ 'DASHBOARD.PAYMENT_TITLE' | translate }}</h2>
+                            <h2 class="text-2xl font-black text-text-main font-jersey tracking-wide uppercase">{{
+                                'DASHBOARD.PAYMENT_TITLE' | translate }}</h2>
                             <p class="text-text-muted text-sm mt-2">{{ 'DASHBOARD.PAYMENT_SUBTITLE' | translate }}</p>
                         </div>
 
                         <!-- Price Banner -->
-                        <div class="flex items-center justify-between bg-accent-color/10 rounded-2xl p-4 mb-6 border border-accent-color/20">
+                        <div
+                            class="flex items-center justify-between bg-accent-color/10 rounded-2xl p-4 mb-6 border border-accent-color/20">
                             <div class="flex items-center gap-3">
                                 <span class="text-2xl">⚔️</span>
                                 <span class="font-bold text-text-main">{{ 'DASHBOARD.BATTLE_PASS' | translate }}</span>
@@ -553,50 +586,45 @@
                         <div class="space-y-4">
                             <!-- Card Number -->
                             <div>
-                                <label class="text-xs font-bold text-text-muted uppercase tracking-widest mb-2 block">{{ 'DASHBOARD.CARD_NUMBER' | translate }}</label>
-                                <input type="text"
-                                    [value]="cardNumber()"
-                                    (input)="formatCardNumber($event)"
-                                    placeholder="4242 4242 4242 4242"
-                                    maxlength="19"
+                                <label class="text-xs font-bold text-text-muted uppercase tracking-widest mb-2 block">{{
+                                    'DASHBOARD.CARD_NUMBER' | translate }}</label>
+                                <input type="text" [value]="cardNumber()" (input)="formatCardNumber($event)"
+                                    placeholder="4242 4242 4242 4242" maxlength="19"
                                     class="w-full px-4 py-3.5 rounded-xl bg-primary-bg border border-white/10 text-text-main font-mono text-lg tracking-widest focus:border-accent-color focus:outline-none focus:ring-1 focus:ring-accent-color/50 transition-all placeholder:text-white/20">
                             </div>
 
                             <!-- Card Holder -->
                             <div>
-                                <label class="text-xs font-bold text-text-muted uppercase tracking-widest mb-2 block">{{ 'DASHBOARD.CARD_HOLDER' | translate }}</label>
-                                <input type="text"
-                                    [value]="cardHolder()"
-                                    (input)="cardHolder.set($any($event.target).value)"
-                                    placeholder="NOMBRE TITULAR"
+                                <label class="text-xs font-bold text-text-muted uppercase tracking-widest mb-2 block">{{
+                                    'DASHBOARD.CARD_HOLDER' | translate }}</label>
+                                <input type="text" [value]="cardHolder()"
+                                    (input)="cardHolder.set($any($event.target).value)" placeholder="NOMBRE TITULAR"
                                     class="w-full px-4 py-3.5 rounded-xl bg-primary-bg border border-white/10 text-text-main uppercase tracking-wider focus:border-accent-color focus:outline-none focus:ring-1 focus:ring-accent-color/50 transition-all placeholder:text-white/20">
                             </div>
 
                             <!-- Expiry + CVV Row -->
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label class="text-xs font-bold text-text-muted uppercase tracking-widest mb-2 block">{{ 'DASHBOARD.CARD_EXPIRY' | translate }}</label>
-                                    <input type="text"
-                                        [value]="cardExpiry()"
-                                        (input)="formatExpiry($event)"
-                                        placeholder="MM/AA"
-                                        maxlength="5"
+                                    <label
+                                        class="text-xs font-bold text-text-muted uppercase tracking-widest mb-2 block">{{
+                                        'DASHBOARD.CARD_EXPIRY' | translate }}</label>
+                                    <input type="text" [value]="cardExpiry()" (input)="formatExpiry($event)"
+                                        placeholder="MM/AA" maxlength="5"
                                         class="w-full px-4 py-3.5 rounded-xl bg-primary-bg border border-white/10 text-text-main font-mono tracking-widest focus:border-accent-color focus:outline-none focus:ring-1 focus:ring-accent-color/50 transition-all placeholder:text-white/20">
                                 </div>
                                 <div>
-                                    <label class="text-xs font-bold text-text-muted uppercase tracking-widest mb-2 block">CVV</label>
-                                    <input type="password"
-                                        [value]="cardCvv()"
-                                        (input)="cardCvv.set($any($event.target).value)"
-                                        placeholder="•••"
-                                        maxlength="4"
+                                    <label
+                                        class="text-xs font-bold text-text-muted uppercase tracking-widest mb-2 block">CVV</label>
+                                    <input type="password" [value]="cardCvv()"
+                                        (input)="cardCvv.set($any($event.target).value)" placeholder="•••" maxlength="4"
                                         class="w-full px-4 py-3.5 rounded-xl bg-primary-bg border border-white/10 text-text-main font-mono tracking-widest focus:border-accent-color focus:outline-none focus:ring-1 focus:ring-accent-color/50 transition-all placeholder:text-white/20">
                                 </div>
                             </div>
                         </div>
 
                         <!-- Security Note -->
-                        <div class="flex items-center gap-2 mt-4 text-text-muted text-[10px] font-bold uppercase tracking-widest">
+                        <div
+                            class="flex items-center gap-2 mt-4 text-text-muted text-[10px] font-bold uppercase tracking-widest">
                             <span>🔒</span> {{ 'DASHBOARD.PAYMENT_SECURE' | translate }}
                         </div>
 
@@ -615,19 +643,25 @@
                         } @else if (paymentStep() === 'processing') {
                         <!-- Processing State -->
                         <div class="flex flex-col items-center text-center py-12">
-                            <div class="w-20 h-20 border-4 border-white/10 border-t-accent-color rounded-full animate-spin mb-8"></div>
-                            <h2 class="text-2xl font-black text-text-main font-jersey tracking-wide uppercase mb-2">{{ 'DASHBOARD.PAYMENT_PROCESSING' | translate }}</h2>
+                            <div
+                                class="w-20 h-20 border-4 border-white/10 border-t-accent-color rounded-full animate-spin mb-8">
+                            </div>
+                            <h2 class="text-2xl font-black text-text-main font-jersey tracking-wide uppercase mb-2">{{
+                                'DASHBOARD.PAYMENT_PROCESSING' | translate }}</h2>
                             <p class="text-text-muted text-sm">{{ 'DASHBOARD.PAYMENT_WAIT' | translate }}</p>
                         </div>
 
                         } @else if (paymentStep() === 'success') {
                         <!-- Success State -->
                         <div class="flex flex-col items-center text-center py-8">
-                            <div class="w-24 h-24 bg-green-500/20 rounded-full flex items-center justify-center mb-6 border border-green-500/30">
+                            <div
+                                class="w-24 h-24 bg-green-500/20 rounded-full flex items-center justify-center mb-6 border border-green-500/30">
                                 <span class="text-5xl">✅</span>
                             </div>
-                            <h2 class="text-3xl font-black text-text-main font-jersey tracking-wide uppercase mb-4">{{ 'DASHBOARD.PAYMENT_SUCCESS' | translate }}</h2>
-                            <p class="text-text-muted font-medium mb-8">{{ 'DASHBOARD.PAYMENT_SUCCESS_DESC' | translate }}</p>
+                            <h2 class="text-3xl font-black text-text-main font-jersey tracking-wide uppercase mb-4">{{
+                                'DASHBOARD.PAYMENT_SUCCESS' | translate }}</h2>
+                            <p class="text-text-muted font-medium mb-8">{{ 'DASHBOARD.PAYMENT_SUCCESS_DESC' | translate
+                                }}</p>
                             <button (click)="closePaymentModal()"
                                 class="w-full py-4 rounded-2xl bg-white text-primary-bg font-black text-xs uppercase tracking-widest hover:bg-slate-200 transition-all shadow-xl shadow-white/10">
                                 {{ 'DASHBOARD.PAYMENT_GO' | translate }}
@@ -637,10 +671,12 @@
                         } @else if (paymentStep() === 'error') {
                         <!-- Error State -->
                         <div class="flex flex-col items-center text-center py-8">
-                            <div class="w-24 h-24 bg-red-500/20 rounded-full flex items-center justify-center mb-6 border border-red-500/30">
+                            <div
+                                class="w-24 h-24 bg-red-500/20 rounded-full flex items-center justify-center mb-6 border border-red-500/30">
                                 <span class="text-5xl">❌</span>
                             </div>
-                            <h2 class="text-3xl font-black text-text-main font-jersey tracking-wide uppercase mb-4">{{ 'DASHBOARD.PAYMENT_ERROR' | translate }}</h2>
+                            <h2 class="text-3xl font-black text-text-main font-jersey tracking-wide uppercase mb-4">{{
+                                'DASHBOARD.PAYMENT_ERROR' | translate }}</h2>
                             <p class="text-text-muted font-medium mb-8">{{ paymentError() }}</p>
                             <div class="w-full space-y-3">
                                 <button (click)="paymentStep.set('form')"
@@ -684,8 +720,7 @@
 } @else {
 <div class="fixed inset-0 z-[100] bg-primary-bg flex flex-col items-center justify-center animate-fade-in font-sans">
     <!-- Background elements for depth -->
-    <div
-        class="absolute inset-0 opacity-30"
+    <div class="absolute inset-0 opacity-30"
         [style.background]="'radial-gradient(circle at center, var(--accent-color) 0%, var(--primary-bg) 70%)'">
     </div>
 

@@ -453,5 +453,97 @@
     "LOGOUT": "लॉग आउट",
     "LOGIN": "लॉग इन",
     "REGISTER": "पंजीकरण"
+  },
+  "ADMIN": {
+    "TITLE": "व्यवस्थापक पैनल",
+    "GOD_MODE": "गॉडमोड",
+    "TAB_USERS": "उपयोगकर्ताओं",
+    "TAB_STORY": "कहानी का स्तर",
+    "TAB_ROGUELIKE": "रॉगुलाइक स्तर",
+    "TAB_LOGS": "सिस्टम लॉग",
+    "TAB_REPORTS": "रिपोर्टों",
+    "STAT_ACTIVE_24H": "24 घंटे सक्रिय",
+    "STAT_TOTAL_RUNS": "कुल रन",
+    "STAT_WIN_RATE": "जीत दर",
+    "USERS": {
+      "TITLE": "प्रयोक्ता प्रबंधन",
+      "TOTAL": "कुल: {{कुल}} उपयोगकर्ता",
+      "SEARCH_PH": "नाम या ईमेल से खोजें...",
+      "TABLE_ID": "पहचान",
+      "TABLE_USER": "उपयोगकर्ता",
+      "TABLE_EMAIL": "ई-मेल",
+      "TABLE_ROLE": "भूमिका",
+      "TABLE_STATUS": "राज्य",
+      "TABLE_ACTION": "कार्रवाई",
+      "ROLE_ADMIN": "व्यवस्थापक",
+      "ROLE_USER": "उपयोगकर्ता",
+      "STATUS_ACTIVE": "संपत्ति",
+      "STATUS_BANNED": "प्रतिबंधित",
+      "EMPTY": "कोई उपयोगकर्ता नहीं मिला",
+      "PAGINATION_PAGE": "{{कुल}} में से पृष्ठ {{वर्तमान}}",
+      "PAGINATION_PREV": "⬅ पिछला",
+      "PAGINATION_NEXT": "अगला ➡"
+    },
+    "STORY": {
+      "TITLE_ACTIVE": "कहानी मोड स्तर (सक्रिय)",
+      "NEW_LEVEL": "+ नया स्तर",
+      "REWARD_XP": "एक्सपी",
+      "REWARD_COINS": "💰",
+      "EMPTY_ACTIVE": "कोई सक्रिय स्तर नहीं हैं",
+      "TITLE_DISABLED": "कहानी स्तर अक्षम",
+      "DISABLED_AT": "को अक्षम कर दिया",
+      "REACTIVATE": "पुन: सक्रिय",
+      "EMPTY_DISABLED": "कोई भी स्तर अक्षम नहीं है"
+    },
+    "ROGUELIKE": {
+      "TITLE_ACTIVE": "रॉगुलाइक चुनौतियाँ (सक्रिय)",
+      "NEW_CHALLENGE": "+ नई चुनौती",
+      "TABLE_DIFF": "कठिनाई",
+      "TABLE_NAME": "चुनौती का नाम",
+      "TABLE_REWARD": "इनाम",
+      "TABLE_ACTIONS": "कार्रवाई",
+      "EMPTY_ACTIVE": "कोई सक्रिय चुनौतियाँ नहीं हैं",
+      "TITLE_DISABLED": "रॉगुलाइक चुनौतियाँ अक्षम",
+      "EMPTY_DISABLED": "कोई भी चुनौती अक्षम नहीं है"
+    },
+    "LOGS": {
+      "TITLE": "सुरक्षा लॉग",
+      "TABLE_DATE": "तारीख",
+      "TABLE_USER": "उपयोगकर्ता",
+      "TABLE_ACTION": "कार्रवाई",
+      "TABLE_DETAILS": "विवरण",
+      "EMPTY": "कोई हालिया रिकॉर्ड नहीं"
+    },
+    "REPORTS": {
+      "TITLE": "रिपोर्ट केंद्र",
+      "TOTAL": "कुल: {{कुल}} रिपोर्टें प्राप्त हुईं",
+      "TABLE_CONTACT": "उपयोगकर्ता/संपर्क",
+      "TABLE_REPORT": "प्रतिवेदन",
+      "TABLE_STATUS": "प्राथमिकता/स्थिति",
+      "TABLE_DATE": "पर भेजा गया",
+      "TABLE_ACTIONS": "कार्रवाई",
+      "STATUS_PENDING": "कान की बाली",
+      "STATUS_REVIEW": "समीक्षा के अंतर्गत",
+      "STATUS_SOLVED": "सुलझ गया",
+      "STATUS_REJECTED": "अस्वीकार करना",
+      "STATUS_SPAM": "⚠️ स्पैम",
+      "EMPTY": "कोई रिपोर्ट लंबित नहीं है. अच्छा काम! 🚀"
+    },
+    "DIFFICULTY": {
+      "EASY": "आसान",
+      "MEDIUM": "आधा",
+      "HARD": "कठिन",
+      "EXTREME": "चरम"
+    },
+    "MESSAGES": {
+      "REPORT_UPDATED": "अद्यतन रिपोर्ट स्थिति",
+      "CONFIRM_DELETE_REPORT": "क्या आप वाकई इस रिपोर्ट को स्थायी रूप से हटाना चाहते हैं?",
+      "REPORT_DELETED": "रिपोर्ट हटा दी गई",
+      "CONFIRM_TOGGLE_LEVEL": "स्तर की स्थिति बदलें?",
+      "STORY_UPDATED": "अद्यतन स्तर",
+      "STORY_CREATED": "स्तर बनाया गया",
+      "ROGUE_UPDATED": "अद्यतन चुनौती",
+      "ROGUE_CREATED": "चुनौती बनाई गई"
+    }
   }
 }
