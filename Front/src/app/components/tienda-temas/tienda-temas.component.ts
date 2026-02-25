@@ -2,13 +2,14 @@ import { Component, inject, OnInit, signal, ChangeDetectionStrategy, computed } 
 import { CommonModule } from '@angular/common';
 import { ThemeService, Tema } from '../../services/theme-service';
 import { UserDataService } from '../../services/user-data-service';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { LanguageService } from '../../services/language-service';
 
 @Component({
   selector: 'app-tienda-temas',
   standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [CommonModule, TranslatePipe, RouterLink],
   templateUrl: './tienda-temas.component.html',
   styleUrl: './tienda-temas.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
