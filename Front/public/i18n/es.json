@@ -270,7 +270,8 @@
         "ERR_PASS_REQUIRED": "La contraseña es obligatoria.",
         "PASSWORD_REQUIRED": "La contraseña es obligatoria.",
         "ERR_INVALID_CREDENTIALS": "Correo electrónico o contraseña incorrectos.",
-        "ERR_UNKNOWN": "Error al iniciar sesión. Inténtalo de nuevo."
+        "ERR_UNKNOWN": "Error al iniciar sesión. Inténtalo de nuevo.",
+        "GOOGLE_BTN": "Continuar con Google"
     },
     "REGISTER": {
         "BACK": "Volver al inicio",

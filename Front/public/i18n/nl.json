@@ -262,7 +262,8 @@
     "ERR_PASS_REQUIRED": "Het wachtwoord is vereist.",
     "PASSWORD_REQUIRED": "Het wachtwoord is vereist.",
     "ERR_INVALID_CREDENTIALS": "Onjuist e-mailadres of wachtwoord.",
-    "ERR_UNKNOWN": "Fout bij het inloggen. Probeer het opnieuw."
+    "ERR_UNKNOWN": "Fout bij het inloggen. Probeer het opnieuw.",
+    "GOOGLE_BTN": "Ga verder met Google"
   },
   "REGISTER": {
     "BACK": "Terug naar boven",

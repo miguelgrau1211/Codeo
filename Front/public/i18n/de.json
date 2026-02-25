@@ -88,7 +88,9 @@
       "GENERATE_RANDOM": "Zufällig generieren",
       "AVATAR_TIP": "* Klicken Sie auf das Bild oben, um einen neuen zufälligen Avatar zu generieren.",
       "CANCEL": "Stornieren",
-      "SAVE": "Halten"
+      "SAVE": "Halten",
+      "SUCCESS_UPDATE": "Profil erfolgreich aktualisiert!",
+      "ERR_UPDATE": "Fehler beim Aktualisieren des Profils."
     },
     "LOADING": "Profil wird geladen..."
   },
@@ -168,7 +170,12 @@
     "EQUIPPED": "Ausgestattet",
     "EQUIP": "Ausrüsten",
     "FREE_EQUIP": "Kostenlos – Ausrüsten",
-    "BUY": "Kaufen"
+    "BUY": "Kaufen",
+    "NOT_ENOUGH_COINS": "Du hast nicht genug Münzen!",
+    "CONFIRM_BUY": "Möchten Sie das Thema „{{name}}“ für {{price}} Münzen kaufen?",
+    "SUCCESS_BUY": "Theme erfolgreich gekauft!",
+    "ERR_BUY": "Fehler beim Kauf des Themes",
+    "ERR_ACTIVATE": "Fehler beim Aktivieren des Themes"
   },
   "SUPPORT": {
     "BACK": "Zurück nach oben",
@@ -253,7 +260,10 @@
     "ERR_EMAIL_INVALID": "Geben Sie eine gültige E-Mail-Adresse ein.",
     "EMAIL_INVALID": "Geben Sie eine gültige E-Mail-Adresse ein.",
     "ERR_PASS_REQUIRED": "Das Passwort ist erforderlich.",
-    "PASSWORD_REQUIRED": "Das Passwort ist erforderlich."
+    "PASSWORD_REQUIRED": "Das Passwort ist erforderlich.",
+    "ERR_INVALID_CREDENTIALS": "Falsche E-Mail-Adresse oder falsches Passwort.",
+    "ERR_UNKNOWN": "Anmeldung fehlgeschlagen. Versuchen Sie es erneut.",
+    "GOOGLE_BTN": "Weiter mit Google"
   },
   "REGISTER": {
     "BACK": "Zurück nach oben",
@@ -302,7 +312,8 @@
     "ERR_CONFIRM_REQUIRED": "Bestätigen Sie Ihr Passwort.",
     "CONFIRM_REQUIRED": "Bestätigen Sie Ihr Passwort.",
     "ERR_PASS_MISMATCH": "Passwörter stimmen nicht überein.",
-    "PASSWORD_MISMATCH": "Passwörter stimmen nicht überein."
+    "PASSWORD_MISMATCH": "Passwörter stimmen nicht überein.",
+    "ERR_UNKNOWN": "Bei der Registrierung ist ein unerwarteter Fehler aufgetreten."
   },
   "LANDING": {
     "BADGE": "Gamifizierte Lernplattform",
@@ -337,7 +348,10 @@
     "STREAK_DAY": "Tag",
     "SELECT_FEATURE": "Wählen Sie eine Funktion aus, um sie zu erkunden",
     "FOOTER_PRIVACY": "Privatsphäre",
-    "FOOTER_TERMS": "Bedingungen"
+    "FOOTER_TERMS": "Bedingungen",
+    "FEAT_RANKING_DESC": "Messen Sie sich mit Ihren Freunden um die beste Position im Ranking.",
+    "FEAT_LOGROS_DESC": "Schalten Sie Abzeichen frei und beweisen Sie, dass Sie Code beherrschen.",
+    "FEAT_RACHA_DESC": "Versuchen Sie, den Streak so lange wie möglich aufrechtzuerhalten."
   },
   "INFINITE": {
     "GAME_OVER_MSG": "Dein Abenteuer ist vorbei...",

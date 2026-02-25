@@ -88,7 +88,9 @@
       "GENERATE_RANDOM": "Generar Random",
       "AVATAR_TIP": "* Haz click en la imagen de arriba para generar un nuevo avatar aleatorio.",
       "CANCEL": "Cancelar",
-      "SAVE": "Guardar"
+      "SAVE": "Guardar",
+      "SUCCESS_UPDATE": "¡Perfil actualizado con éxito!",
+      "ERR_UPDATE": "Error al actualizar perfil."
     },
     "LOADING": "Cargando perfil..."
   },
@@ -168,7 +170,12 @@
     "EQUIPPED": "Equipado",
     "EQUIP": "Equipar",
     "FREE_EQUIP": "Gratis - Equipar",
-    "BUY": "Comprar"
+    "BUY": "Comprar",
+    "NOT_ENOUGH_COINS": "¡No tienes suficientes monedas!",
+    "CONFIRM_BUY": "¿Quieres comprar el tema \"{{nombre}}\" por {{precio}} monedas?",
+    "SUCCESS_BUY": "¡Tema comprado con éxito!",
+    "ERR_BUY": "Error al comprar el tema",
+    "ERR_ACTIVATE": "Error al activar el tema"
   },
   "SUPPORT": {
     "BACK": "Volver al inicio",
@@ -253,7 +260,10 @@
     "ERR_EMAIL_INVALID": "Introduce un email válido.",
     "EMAIL_INVALID": "Introduce un email válido.",
     "ERR_PASS_REQUIRED": "La contraseña es obligatoria.",
-    "PASSWORD_REQUIRED": "La contraseña es obligatoria."
+    "PASSWORD_REQUIRED": "La contraseña es obligatoria.",
+    "ERR_INVALID_CREDENTIALS": "Correo electrónico o contraseña incorrectos.",
+    "ERR_UNKNOWN": "Error al iniciar sesión. Inténtalo de nuevo.",
+    "GOOGLE_BTN": "Continuar con Google"
   },
   "REGISTER": {
     "BACK": "Volver al inicio",
@@ -302,7 +312,8 @@
     "ERR_CONFIRM_REQUIRED": "Confirma tu contraseña.",
     "CONFIRM_REQUIRED": "Confirma tu contraseña.",
     "ERR_PASS_MISMATCH": "Las contraseñas no coinciden.",
-    "PASSWORD_MISMATCH": "Las contraseñas no coinciden."
+    "PASSWORD_MISMATCH": "Las contraseñas no coinciden.",
+    "ERR_UNKNOWN": "Ocurrió un error inesperado al registrarse."
   },
   "LANDING": {
     "BADGE": "Plataforma de aprendizaje gamificada",
@@ -337,7 +348,10 @@
     "STREAK_DAY": "día",
     "SELECT_FEATURE": "Selecciona una función para explorarla",
     "FOOTER_PRIVACY": "Privacidad",
-    "FOOTER_TERMS": "Términos"
+    "FOOTER_TERMS": "Términos",
+    "FEAT_RANKING_DESC": "Compite con tus amigos por el mejor puesto en el ranking.",
+    "FEAT_LOGROS_DESC": "Desbloquea insignias y demuestra tu dominio del código.",
+    "FEAT_RACHA_DESC": "Intenta mantener la racha todo lo que puedas."
   },
   "INFINITE": {
     "GAME_OVER_MSG": "Tu aventura ha terminado...",

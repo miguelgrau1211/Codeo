@@ -1,3 +1,4 @@
+import { TranslatePipe } from '../../pipes/translate.pipe';
 import { Component, signal, computed, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -10,7 +11,7 @@ type FiltroLogros = 'todos' | 'desbloqueados' | 'bloqueados';
 @Component({
     selector: 'app-logros',
     standalone: true,
-    imports: [CommonModule, RouterModule, LogroComponent],
+    imports: [CommonModule, RouterModule, LogroComponent, TranslatePipe],
     templateUrl: './logros.component.html',
     styleUrl: './logros.component.css',
     changeDetection: ChangeDetectionStrategy.OnPush,

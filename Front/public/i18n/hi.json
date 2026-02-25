@@ -88,7 +88,9 @@
       "GENERATE_RANDOM": "Generar Random",
       "AVATAR_TIP": "* Haz click en la imagen de arriba para generar un nuevo avatar aleatorio.",
       "CANCEL": "Cancelar",
-      "SAVE": "Guardar"
+      "SAVE": "Guardar",
+      "SUCCESS_UPDATE": "प्रोफ़ाइल सफलतापूर्वक अपडेट की गई!",
+      "ERR_UPDATE": "प्रोफ़ाइल अपडेट करने में त्रुटि."
     },
     "LOADING": "Cargando perfil..."
   },
@@ -168,7 +170,12 @@
     "EQUIPPED": "Equipado",
     "EQUIP": "Equipar",
     "FREE_EQUIP": "Gratis - Equipar",
-    "BUY": "Comprar"
+    "BUY": "Comprar",
+    "NOT_ENOUGH_COINS": "आपके पास पर्याप्त सिक्के नहीं हैं!",
+    "CONFIRM_BUY": "क्या आप {{कीमत}} सिक्कों के लिए थीम \"{{नाम}}\" खरीदना चाहते हैं?",
+    "SUCCESS_BUY": "थीम सफलतापूर्वक खरीदी गई!",
+    "ERR_BUY": "थीम खरीदते समय त्रुटि",
+    "ERR_ACTIVATE": "थीम सक्रिय करने में त्रुटि"
   },
   "SUPPORT": {
     "BACK": "Volver al inicio",
@@ -253,7 +260,10 @@
     "ERR_EMAIL_INVALID": "Introduce un email válido.",
     "EMAIL_INVALID": "Introduce un email válido.",
     "ERR_PASS_REQUIRED": "La contraseña es obligatoria.",
-    "PASSWORD_REQUIRED": "La contraseña es obligatoria."
+    "PASSWORD_REQUIRED": "La contraseña es obligatoria.",
+    "ERR_INVALID_CREDENTIALS": "गलत ईमेल या पासवर्ड।",
+    "ERR_UNKNOWN": "लॉग इन करने में विफल. पुनः प्रयास करें.",
+    "GOOGLE_BTN": "Google के साथ जारी रखें"
   },
   "REGISTER": {
     "BACK": "Volver al inicio",
@@ -302,7 +312,8 @@
     "ERR_CONFIRM_REQUIRED": "Confirma tu contraseña.",
     "CONFIRM_REQUIRED": "Confirma tu contraseña.",
     "ERR_PASS_MISMATCH": "Las contraseñas no coinciden.",
-    "PASSWORD_MISMATCH": "Las contraseñas no coinciden."
+    "PASSWORD_MISMATCH": "Las contraseñas no coinciden.",
+    "ERR_UNKNOWN": "पंजीकरण करते समय एक अप्रत्याशित त्रुटि उत्पन्न हुई."
   },
   "LANDING": {
     "BADGE": "Plataforma de aprendizaje gamificada",
@@ -337,7 +348,10 @@
     "STREAK_DAY": "día",
     "SELECT_FEATURE": "Selecciona una función para explorarla",
     "FOOTER_PRIVACY": "Privacidad",
-    "FOOTER_TERMS": "Términos"
+    "FOOTER_TERMS": "Términos",
+    "FEAT_RANKING_DESC": "रैंकिंग में सर्वोत्तम स्थान के लिए अपने दोस्तों के साथ प्रतिस्पर्धा करें।",
+    "FEAT_LOGROS_DESC": "बैज अनलॉक करें और अपनी कोड महारत साबित करें।",
+    "FEAT_RACHA_DESC": "जब तक संभव हो इस क्रम को जारी रखने का प्रयास करें।"
   },
   "INFINITE": {
     "GAME_OVER_MSG": "Tu aventura ha terminado...",

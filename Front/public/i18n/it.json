@@ -88,7 +88,9 @@
       "GENERATE_RANDOM": "Genera casuale",
       "AVATAR_TIP": "* Clicca sull'immagine qui sopra per generare un nuovo avatar casuale.",
       "CANCEL": "Cancellare",
-      "SAVE": "Mantenere"
+      "SAVE": "Mantenere",
+      "SUCCESS_UPDATE": "Profilo aggiornato con successo!",
+      "ERR_UPDATE": "Errore durante l'aggiornamento del profilo."
     },
     "LOADING": "Caricamento profilo..."
   },
@@ -168,7 +170,12 @@
     "EQUIPPED": "Attrezzato",
     "EQUIP": "Equipaggiare",
     "FREE_EQUIP": "Gratuito - Equipaggia",
-    "BUY": "Acquistare"
+    "BUY": "Acquistare",
+    "NOT_ENOUGH_COINS": "Non hai abbastanza monete!",
+    "CONFIRM_BUY": "Vuoi acquistare il tema \"{{name}}\" per {{price}} monete?",
+    "SUCCESS_BUY": "Tema acquistato con successo!",
+    "ERR_BUY": "Errore durante l'acquisto del tema",
+    "ERR_ACTIVATE": "Errore durante l'attivazione del tema"
   },
   "SUPPORT": {
     "BACK": "Torna all'inizio",
@@ -253,7 +260,10 @@
     "ERR_EMAIL_INVALID": "Inserisci un'e-mail valida.",
     "EMAIL_INVALID": "Inserisci un'e-mail valida.",
     "ERR_PASS_REQUIRED": "È richiesta la password.",
-    "PASSWORD_REQUIRED": "È richiesta la password."
+    "PASSWORD_REQUIRED": "È richiesta la password.",
+    "ERR_INVALID_CREDENTIALS": "E-mail o password errati.",
+    "ERR_UNKNOWN": "Impossibile accedere. Riprova.",
+    "GOOGLE_BTN": "Continua con Google"
   },
   "REGISTER": {
     "BACK": "Torna all'inizio",
@@ -302,7 +312,8 @@
     "ERR_CONFIRM_REQUIRED": "Conferma la tua password.",
     "CONFIRM_REQUIRED": "Conferma la tua password.",
     "ERR_PASS_MISMATCH": "Le password non corrispondono.",
-    "PASSWORD_MISMATCH": "Le password non corrispondono."
+    "PASSWORD_MISMATCH": "Le password non corrispondono.",
+    "ERR_UNKNOWN": "Si è verificato un errore imprevisto durante la registrazione."
   },
   "LANDING": {
     "BADGE": "Piattaforma di apprendimento gamificata",
@@ -337,7 +348,10 @@
     "STREAK_DAY": "giorno",
     "SELECT_FEATURE": "Seleziona una funzionalità per esplorarla",
     "FOOTER_PRIVACY": "Privacy",
-    "FOOTER_TERMS": "Termini"
+    "FOOTER_TERMS": "Termini",
+    "FEAT_RANKING_DESC": "Competi con i tuoi amici per la migliore posizione nella classifica.",
+    "FEAT_LOGROS_DESC": "Sblocca i badge e dimostra la tua padronanza del codice.",
+    "FEAT_RACHA_DESC": "Cerca di mantenere la serie di vittorie il più a lungo possibile."
   },
   "INFINITE": {
     "GAME_OVER_MSG": "La tua avventura è finita...",
