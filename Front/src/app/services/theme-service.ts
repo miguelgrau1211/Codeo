@@ -10,6 +10,7 @@ export interface Tema {
   nombre: string;
   descripcion: string;
   precio: number;
+  es_exclusivo?: boolean;
   css_variables: Record<string, string>;
   preview_img: string;
 }

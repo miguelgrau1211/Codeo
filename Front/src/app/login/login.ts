@@ -1,10 +1,10 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, ChangeDetectorRef, inject, signal } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, ChangeDetectorRef, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth-service';
 import { ProgresoHistoriaService } from '../services/progreso-historia-service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TranslatePipe } from '../pipes/translate.pipe';
 
 @Component({
@@ -19,14 +19,16 @@ import { TranslatePipe } from '../pipes/translate.pipe';
     }
   `]
 })
-export class LoginComponent implements AfterViewInit, OnDestroy {
+export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
   private authService = inject(AuthService);
   private progresoService = inject(ProgresoHistoriaService);
   private fb = inject(FormBuilder);
   private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   isLoading = signal(false); // Signal for loading state
+  loadingMessage = signal('Autenticando...');
 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -34,10 +36,61 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
   });
 
   ngOnInit() {
-    const token = sessionStorage.getItem('token');
-    if (token && this.authService.validateUser(token)) {
-      this.router.navigate(['/dashboard']);
+    // 1. Check for token in URL (from Google Auth redirect)
+    const urlToken = this.route.snapshot.queryParamMap.get('token');
+    const error = this.route.snapshot.queryParamMap.get('error');
+
+    if (error) {
+      this.errorMessage.set('La autenticación con Google ha fallado o fue cancelada.');
+      return;
     }
+
+    if (urlToken) {
+      console.log('Token detectado en URL, validando...');
+      this.isLoading.set(true);
+      this.loadingMessage.set('Validando cuenta de Google...');
+      sessionStorage.setItem('token', urlToken);
+
+      // Validar usuario y obtener nickname
+      this.authService.validateUser(urlToken).subscribe({
+        next: (data) => {
+          console.log('Validación exitosa:', data);
+          if (data.nickname) {
+            sessionStorage.setItem('nickname', data.nickname);
+          }
+          // Pequeño delay para que se vea la animación
+          setTimeout(() => {
+            this.router.navigate(['/dashboard']);
+          }, 800);
+        },
+        error: (err) => {
+          console.error('Error validando token de Google:', err);
+          this.isLoading.set(false);
+          sessionStorage.removeItem('token');
+          this.errorMessage.set('La sesión de Google no es válida o ha expirado.');
+        }
+      });
+      return;
+    }
+
+    // 2. Normal session check
+    const token = sessionStorage.getItem('token');
+    if (token) {
+        this.authService.validateUser(token).subscribe({
+            next: () => this.router.navigate(['/dashboard']),
+            error: () => {
+              console.log('Token guardado no válido, limpiando...');
+              sessionStorage.removeItem('token');
+            }
+        });
+    }
+  }
+
+  loginWithGoogle() {
+      this.isLoading.set(true);
+      this.loadingMessage.set('Redirigiendo a Google...');
+      // Redirigir al endpoint del backend que inicia el flujo de Google
+      window.location.href = 'http://localhost/api/auth/google';
   }
 
 
@@ -186,6 +239,7 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
     if (this.loginForm.valid) {
       console.log('Login data:', this.loginForm.value);
       this.isLoading.set(true); // Start loading animation
+      this.loadingMessage.set('Iniciando sesión...');
 
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {

@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-slate-50 dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-300 p-6 md:p-8">
+<div class="min-h-screen bg-primary-bg font-sans text-text-main p-6 md:p-8 transition-colors duration-300">
 
     <!-- Background Decoration -->
     <div
@@ -7,17 +7,18 @@
 
     <!-- Header -->
     <header class="relative z-10 flex items-center justify-between mb-8 max-w-7xl mx-auto">
-        <div>
-            <a routerLink="/dashboard"
-                class="group flex items-center gap-2 text-slate-500 hover:text-red-500 transition-colors mb-2 cursor-pointer">
-                <span class="transform group-hover:-translate-x-1 transition-transform">←</span> Volver al Dashboard
+        <div class="flex items-center gap-6">
+            <a routerLink="/dashboard" 
+                class="group flex items-center justify-center w-14 h-14 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all hover:-translate-x-1 active:scale-95 shadow-lg shrink-0">
+                <img src="/common/icons/atras.jpg" alt="Volver" class="w-8 h-8 object-contain group-hover:scale-110 transition-transform">
             </a>
-            <h1
-                class="text-4xl font-black text-slate-900 dark:text-white font-jersey tracking-wide flex items-center gap-3">
-                <span class="text-red-500">🛡️</span> PANEL DE ADMIN
-            </h1>
+            <div>
+                <h1 class="text-4xl font-black text-text-main font-jersey tracking-wide flex items-center gap-3">
+                    <span class="text-accent-color">🛡️</span> PANEL DE ADMIN
+                </h1>
+            </div>
         </div>
-        <div class="px-4 py-2 bg-red-500/10 text-red-500 rounded-lg text-sm font-bold border border-red-500/20">
+        <div class="px-4 py-2 bg-accent-color/10 text-accent-color rounded-lg text-sm font-bold border border-accent-color/20">
             Modo Dios
         </div>
     </header>
@@ -29,53 +30,48 @@
         <aside class="w-full md:w-64 space-y-2">
             <button (click)="setTab('users')"
                 class="w-full text-left px-5 py-4 rounded-xl font-bold transition-all flex items-center gap-3 border"
-                [class.bg-white]="activeTab() === 'users'" [class.dark:bg-slate-800]="activeTab() === 'users'"
-                [class.border-red-500]="activeTab() === 'users'" [class.text-red-500]="activeTab() === 'users'"
-                [class.border-transparent]="activeTab() !== 'users'" [class.text-slate-500]="activeTab() !== 'users'"
-                [class.hover:bg-slate-100]="activeTab() !== 'users'"
-                [class.dark:hover:bg-slate-900]="activeTab() !== 'users'">
+                [class.bg-secondary-bg]="activeTab() === 'users'"
+                [class.border-accent-color]="activeTab() === 'users'" [class.text-accent-color]="activeTab() === 'users'"
+                [class.border-white/10]="activeTab() !== 'users'" [class.text-text-muted]="activeTab() !== 'users'"
+                [class.hover:bg-white/5]="activeTab() !== 'users'">
                 <span>👥</span> Usuarios
             </button>
 
             <button (click)="setTab('story')"
                 class="w-full text-left px-5 py-4 rounded-xl font-bold transition-all flex items-center gap-3 border"
-                [class.bg-white]="activeTab() === 'story'" [class.dark:bg-slate-800]="activeTab() === 'story'"
+                [class.bg-secondary-bg]="activeTab() === 'story'"
                 [class.border-purple-500]="activeTab() === 'story'" [class.text-purple-500]="activeTab() === 'story'"
-                [class.border-transparent]="activeTab() !== 'story'" [class.text-slate-500]="activeTab() !== 'story'"
-                [class.hover:bg-slate-100]="activeTab() !== 'story'"
-                [class.dark:hover:bg-slate-900]="activeTab() !== 'story'">
+                [class.border-white/10]="activeTab() !== 'story'" [class.text-text-muted]="activeTab() !== 'story'"
+                [class.hover:bg-white/5]="activeTab() !== 'story'">
                 <span>📖</span> Niveles Historia
             </button>
 
             <button (click)="setTab('roguelike')"
                 class="w-full text-left px-5 py-4 rounded-xl font-bold transition-all flex items-center gap-3 border"
-                [class.bg-white]="activeTab() === 'roguelike'" [class.dark:bg-slate-800]="activeTab() === 'roguelike'"
+                [class.bg-secondary-bg]="activeTab() === 'roguelike'"
                 [class.border-orange-500]="activeTab() === 'roguelike'"
                 [class.text-orange-500]="activeTab() === 'roguelike'"
-                [class.border-transparent]="activeTab() !== 'roguelike'"
-                [class.text-slate-500]="activeTab() !== 'roguelike'"
-                [class.hover:bg-slate-100]="activeTab() !== 'roguelike'"
-                [class.dark:hover:bg-slate-900]="activeTab() !== 'roguelike'">
+                [class.border-white/10]="activeTab() !== 'roguelike'"
+                [class.text-text-muted]="activeTab() !== 'roguelike'"
+                [class.hover:bg-white/5]="activeTab() !== 'roguelike'">
                 <span>💀</span> Niveles Roguelike
             </button>
 
             <button (click)="setTab('logs')"
                 class="w-full text-left px-5 py-4 rounded-xl font-bold transition-all flex items-center gap-3 border"
-                [class.bg-white]="activeTab() === 'logs'" [class.dark:bg-slate-800]="activeTab() === 'logs'"
+                [class.bg-secondary-bg]="activeTab() === 'logs'"
                 [class.border-blue-500]="activeTab() === 'logs'" [class.text-blue-500]="activeTab() === 'logs'"
-                [class.border-transparent]="activeTab() !== 'logs'" [class.text-slate-500]="activeTab() !== 'logs'"
-                [class.hover:bg-slate-100]="activeTab() !== 'logs'"
-                [class.dark:hover:bg-slate-900]="activeTab() !== 'logs'">
+                [class.border-white/10]="activeTab() !== 'logs'" [class.text-text-muted]="activeTab() !== 'logs'"
+                [class.hover:bg-white/5]="activeTab() !== 'logs'">
                 <span>📋</span> Logs del Sistema
             </button>
             <button (click)="setTab('reportes')"
                 class="w-full text-left px-5 py-4 rounded-xl font-bold transition-all flex items-center gap-3 border"
-                [class.bg-white]="activeTab() === 'reportes'" [class.dark:bg-slate-800]="activeTab() === 'reportes'"
+                [class.bg-secondary-bg]="activeTab() === 'reportes'"
                 [class.border-red-500]="activeTab() === 'reportes'" [class.text-red-500]="activeTab() === 'reportes'"
-                [class.border-transparent]="activeTab() !== 'reportes'"
-                [class.text-slate-500]="activeTab() !== 'reportes'"
-                [class.hover:bg-slate-100]="activeTab() !== 'reportes'"
-                [class.dark:hover:bg-slate-900]="activeTab() !== 'reportes'">
+                [class.border-white/10]="activeTab() !== 'reportes'"
+                [class.text-text-muted]="activeTab() !== 'reportes'"
+                [class.hover:bg-white/5]="activeTab() !== 'reportes'">
                 <span>🚩</span> Reportes
             </button>
         </aside>
@@ -96,27 +92,27 @@
 
             <!-- USERS TAB -->
             @if (activeTab() === 'users') {
-            <div class="bg-white dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200 dark:border-white/5 shadow-xl transition-all"
+            <div class="bg-secondary-bg rounded-3xl p-6 border border-white/5 shadow-xl transition-all"
                 [class.opacity-50]="isLoading()">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Gestión de Usuarios</h2>
-                        <div class="text-sm text-slate-400">Total: {{ totalUsers() }} usuarios</div>
+                        <h2 class="text-2xl font-bold text-text-main">Gestión de Usuarios</h2>
+                        <div class="text-sm text-text-muted">Total: {{ totalUsers() }} usuarios</div>
                     </div>
 
                     <!-- Search Bar -->
                     <div class="relative w-full md:w-80">
-                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">🔍</span>
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">🔍</span>
                         <input type="text" (input)="onSearchChange($event)" placeholder="Buscar por nombre o email..."
-                            class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/10 rounded-xl py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-red-500 transition-colors">
+                            class="w-full bg-primary-bg/50 border border-white/10 rounded-xl py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-accent-color transition-colors text-text-main">
                     </div>
                 </div>
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
-                        <thead class="text-xs text-slate-500 uppercase bg-slate-50 dark:bg-slate-800/50">
+                        <thead class="text-xs text-text-muted uppercase bg-primary-bg/50">
                             <tr>
-                                <th class="px-6 py-3 rounded-l-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group"
+                                <th class="px-6 py-3 rounded-l-lg cursor-pointer hover:bg-white/5 transition-colors group"
                                     (click)="toggleSort('id')">
                                     <div class="flex items-center gap-2">
                                         ID
@@ -129,7 +125,7 @@
                                 </th>
                                 <th class="px-6 py-3">Usuario</th>
                                 <th class="px-6 py-3">Email</th>
-                                <th class="px-6 py-3 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group"
+                                <th class="px-6 py-3 cursor-pointer hover:bg-white/5 transition-colors group"
                                     (click)="toggleSort('es_admin')">
                                     <div class="flex items-center gap-2">
                                         Rol
@@ -140,7 +136,7 @@
                                         </span>
                                     </div>
                                 </th>
-                                <th class="px-6 py-3 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group"
+                                <th class="px-6 py-3 cursor-pointer hover:bg-white/5 transition-colors group"
                                     (click)="toggleSort('active')">
                                     <div class="flex items-center gap-2">
                                         Estado
@@ -157,10 +153,10 @@
                         <tbody>
                             @for (u of users(); track u.id) {
                             <tr
-                                class="border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5">
-                                <td class="px-6 py-4 font-mono text-slate-400">#{{ u.id }}</td>
-                                <td class="px-6 py-4 font-bold text-slate-800 dark:text-white">{{ u.nickname }}</td>
-                                <td class="px-6 py-4 text-slate-500">{{ u.email }}</td>
+                                class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                                <td class="px-6 py-4 font-mono text-text-muted">#{{ u.id }}</td>
+                                <td class="px-6 py-4 font-bold text-text-main">{{ u.nickname }}</td>
+                                <td class="px-6 py-4 text-text-muted">{{ u.email }}</td>
                                 <td class="px-6 py-4">
                                     <span class="px-2 py-1 rounded-md text-xs font-bold"
                                         [class.bg-red-500-10]="u.es_admin" [class.text-red-500]="u.es_admin"
@@ -178,13 +174,13 @@
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     <!-- Ya no hay botón de borrar permanentemente -->
-                                    <span class="text-slate-400 text-xs">-</span>
+                                    <span class="text-text-muted text-xs">-</span>
                                 </td>
                             </tr>
                             }
                             @if (users().length === 0 && !isLoading()) {
                             <tr>
-                                <td colspan="6" class="px-6 py-10 text-center text-slate-500 italic">No se encontraron
+                                <td colspan="6" class="px-6 py-10 text-center text-text-muted italic">No se encontraron
                                     usuarios</td>
                             </tr>
                             }
@@ -193,17 +189,17 @@
                 </div>
 
                 <!-- Pagination Controls -->
-                <div class="mt-8 flex items-center justify-between border-t border-slate-100 dark:border-white/5 pt-6">
-                    <div class="text-sm text-slate-500">
+                <div class="mt-8 flex items-center justify-between border-t border-white/5 pt-6">
+                    <div class="text-sm text-text-muted">
                         Página {{ currentPage() }} de {{ totalPages() }}
                     </div>
                     <div class="flex gap-2">
                         <button (click)="prevPage()" [disabled]="currentPage() === 1 || isLoading()"
-                            class="px-4 py-2 rounded-lg font-bold transition-all border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed text-slate-600 dark:text-slate-400">
+                            class="px-4 py-2 rounded-lg font-bold transition-all border border-white/10 hover:bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed text-text-muted">
                             ⬅ Anterior
                         </button>
                         <button (click)="nextPage()" [disabled]="currentPage() === totalPages() || isLoading()"
-                            class="px-4 py-2 rounded-lg font-bold transition-all border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed text-slate-600 dark:text-slate-400">
+                            class="px-4 py-2 rounded-lg font-bold transition-all border border-white/10 hover:bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed text-text-muted">
                             Siguiente ➡
                         </button>
                     </div>
@@ -214,9 +210,9 @@
             <!-- STORY LEVELS TAB -->
             @if (activeTab() === 'story') {
             <div
-                class="bg-white dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200 dark:border-white/5 shadow-xl">
+                class="bg-secondary-bg rounded-3xl p-6 border border-white/5 shadow-xl">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Niveles Modo Historia (Activos)</h2>
+                    <h2 class="text-2xl font-bold text-text-main">Niveles Modo Historia (Activos)</h2>
                     <button (click)="openEditor('story')"
                         class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-lg shadow-purple-600/20">
                         + Nuevo Nivel
@@ -228,56 +224,56 @@
                     <!-- Skeleton Loader -->
                     @for (i of [1,2,3]; track i) {
                     <div
-                        class="animate-pulse flex items-center p-4 bg-white dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-white/5">
-                        <div class="w-12 h-12 bg-slate-200 dark:bg-slate-700 rounded-lg mr-4"></div>
+                        class="animate-pulse flex items-center p-4 bg-white/5 rounded-xl border border-white/5">
+                        <div class="w-12 h-12 bg-white/10 rounded-lg mr-4"></div>
                         <div class="flex-1 space-y-2">
-                            <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/3"></div>
-                            <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-1/4"></div>
+                            <div class="h-4 bg-white/10 rounded w-1/3"></div>
+                            <div class="h-3 bg-white/10 rounded w-1/4"></div>
                         </div>
                     </div>
                     }
                     } @else {
                     @for (level of storyLevels(); track level.id) {
                     <div
-                        class="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-white/5 hover:border-purple-500/50 transition-colors group">
+                        class="flex items-center justify-between p-4 bg-primary-bg/30 rounded-xl border border-white/5 hover:border-purple-500/50 transition-colors group">
                         <div class="flex items-center gap-4">
                             <div
                                 class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center text-purple-500 font-bold text-xl font-jersey">
                                 {{ level.orden }}
                             </div>
                             <div>
-                                <h3 class="font-bold text-slate-800 dark:text-white">{{ level.titulo }}</h3>
+                                <h3 class="font-bold text-text-main">{{ level.titulo }}</h3>
                                 <div class="flex gap-2 text-xs mt-1">
-                                    <span class="text-slate-500">XP: {{ level.recompensa_exp }}</span>
-                                    <span class="text-slate-500">•</span>
-                                    <span class="text-slate-500">💰 {{ level.recompensa_monedas }}</span>
+                                    <span class="text-text-muted">XP: {{ level.recompensa_exp }}</span>
+                                    <span class="text-text-muted">•</span>
+                                    <span class="text-text-muted">💰 {{ level.recompensa_monedas }}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                             <button (click)="openEditor('story', level)"
-                                class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded text-slate-500">✏️</button>
+                                class="p-2 hover:bg-white/10 rounded text-text-muted">✏️</button>
                             <button (click)="toggleStoryStatus(level.id)"
                                 class="p-2 hover:bg-red-500/10 rounded text-red-500" title="Desactivar">🚫</button>
                         </div>
                     </div>
                     }
                     @if (storyLevels().length === 0) {
-                    <div class="text-center py-8 text-slate-500">No hay niveles activos</div>
+                    <div class="text-center py-8 text-text-muted">No hay niveles activos</div>
                     }
 
                     <!-- Story Pagination -->
                     <div
-                        class="mt-4 flex justify-between items-center text-sm text-slate-500 pt-4 border-t border-slate-100 dark:border-white/5">
+                        class="mt-4 flex justify-between items-center text-sm text-text-muted pt-4 border-t border-white/5">
                         <div>Página {{ storyPage() }} de {{ storyTotalPages() }}</div>
                         <div class="flex gap-2">
                             <button (click)="prevStoryPage()" [disabled]="storyPage() === 1 || isStoryLoading()"
-                                class="px-3 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg disabled:opacity-50 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                class="px-3 py-1 bg-secondary-bg border border-white/10 rounded-lg disabled:opacity-50 hover:bg-white/5 transition-colors">
                                 ◀ Anterior
                             </button>
                             <button (click)="nextStoryPage()"
                                 [disabled]="storyPage() === storyTotalPages() || isStoryLoading()"
-                                class="px-3 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg disabled:opacity-50 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                class="px-3 py-1 bg-secondary-bg border border-white/10 rounded-lg disabled:opacity-50 hover:bg-white/5 transition-colors">
                                 Siguiente ▶
                             </button>
                         </div>
@@ -299,11 +295,11 @@
                         class="flex items-center justify-between p-4 bg-white dark:bg-slate-900/50 rounded-xl border border-red-100 dark:border-red-500/10 hover:border-red-500/30 transition-colors">
                         <div class="flex items-center gap-4 opacity-75">
                             <div
-                                class="w-12 h-12 bg-slate-200 dark:bg-slate-800 rounded-lg flex items-center justify-center text-slate-500 font-bold text-xl font-jersey">
+                                class="w-12 h-12 bg-white/5 rounded-lg flex items-center justify-center text-text-muted font-bold text-xl font-jersey">
                                 {{ level.orden }}
                             </div>
                             <div>
-                                <h3 class="font-bold text-slate-700 dark:text-slate-300">{{ level.titulo }}</h3>
+                                <h3 class="font-bold text-text-main">{{ level.titulo }}</h3>
                                 <div class="text-xs text-red-500 mt-1">
                                     Desactivado: {{ level.fecha_desactivacion | date:'mediumDate' }}
                                 </div>
@@ -318,7 +314,7 @@
                     </div>
                     }
                     @if (storyLevelsDisabled().length === 0) {
-                    <div class="text-center py-8 text-slate-500">No hay niveles desactivados</div>
+                    <div class="text-center py-8 text-text-muted">No hay niveles desactivados</div>
                     }
                 </div>
             </div>
@@ -327,9 +323,9 @@
             <!-- ROGUELIKE LEVELS TAB -->
             @if (activeTab() === 'roguelike') {
             <div
-                class="bg-white dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200 dark:border-white/5 shadow-xl">
+                class="bg-secondary-bg rounded-3xl p-6 border border-white/5 shadow-xl">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Desafíos Roguelike (Activos)</h2>
+                    <h2 class="text-2xl font-bold text-text-main">Desafíos Roguelike (Activos)</h2>
                     <button (click)="openEditor('roguelike')"
                         class="bg-orange-600 hover:bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-lg shadow-orange-600/20">
                         + Nuevo Desafío
@@ -338,7 +334,7 @@
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
-                        <thead class="text-xs text-slate-500 uppercase bg-slate-50 dark:bg-slate-800/50">
+                        <thead class="text-xs text-text-muted uppercase bg-primary-bg/30">
                             <tr>
                                 <th class="px-6 py-3 rounded-l-lg">Dificultad</th>
                                 <th class="px-6 py-3">Nombre del Desafío</th>
@@ -349,25 +345,25 @@
                         <tbody>
                             @if (isRoguelikeLoading()) {
                             @for (i of [1,2,3]; track i) {
-                            <tr class="animate-pulse border-b border-slate-100 dark:border-white/5">
+                             <tr class="animate-pulse border-b border-white/5">
                                 <td class="px-6 py-4">
-                                    <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-16"></div>
+                                    <div class="h-4 bg-white/5 rounded w-16"></div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-32"></div>
+                                    <div class="h-4 bg-white/5 rounded w-32"></div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-12"></div>
+                                    <div class="h-4 bg-white/5 rounded w-12"></div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-8"></div>
+                                    <div class="h-4 bg-white/5 rounded w-8"></div>
                                 </td>
                             </tr>
                             }
                             } @else {
-                            @for (level of roguelikeLevels(); track level.id) {
+                             @for (level of roguelikeLevels(); track level.id) {
                             <tr
-                                class="border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 group">
+                                class="border-b border-white/5 hover:bg-white/5 transition-colors group">
                                 <td class="px-6 py-4">
                                     <span class="px-2 py-1 rounded-md text-xs font-bold uppercase"
                                         [class.bg-green-500-10]="level.dificultad === 'fácil'"
@@ -381,14 +377,14 @@
                                         {{ level.dificultad }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 font-bold text-slate-800 dark:text-white">{{ level.titulo }}</td>
-                                <td class="px-6 py-4 text-mono text-slate-500">💰 {{ level.recompensa_monedas }}</td>
+                                <td class="px-6 py-4 font-bold text-text-main">{{ level.titulo }}</td>
+                                <td class="px-6 py-4 text-mono text-text-muted">💰 {{ level.recompensa_monedas }}</td>
                                 <td class="px-6 py-4">
                                     <div class="flex gap-2">
                                         <button (click)="openEditor('roguelike', level)"
-                                            class="text-slate-400 hover:text-white transition-colors">✏️</button>
+                                            class="text-text-muted hover:text-white transition-colors">✏️</button>
                                         <button (click)="toggleRoguelikeStatus(level.id)"
-                                            class="text-slate-400 hover:text-red-500 transition-colors"
+                                            class="text-text-muted hover:text-red-500 transition-colors"
                                             title="Desactivar">🚫</button>
                                     </div>
                                 </td>
@@ -396,7 +392,7 @@
                             }
                             @if (roguelikeLevels().length === 0) {
                             <tr>
-                                <td colspan="4" class="px-6 py-8 text-center text-slate-500">No hay desafíos activos
+                                <td colspan="4" class="px-6 py-8 text-center text-text-muted">No hay desafíos activos
                                 </td>
                             </tr>
                             }
@@ -439,7 +435,7 @@
                             }
                             @if (roguelikeLevelsDisabled().length === 0) {
                             <tr>
-                                <td colspan="4" class="px-6 py-8 text-center text-slate-500">No hay desafíos
+                                <td colspan="4" class="px-6 py-8 text-center text-text-muted">No hay desafíos
                                     desactivados</td>
                             </tr>
                             }
@@ -452,31 +448,31 @@
             <!-- LOGS TAB -->
             @if (activeTab() === 'logs') {
             <div
-                class="bg-white dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200 dark:border-white/5 shadow-xl">
+                class="bg-secondary-bg rounded-3xl p-6 border border-white/5 shadow-xl">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Logs de Seguridad</h2>
+                    <h2 class="text-2xl font-bold text-text-main">Logs de Seguridad</h2>
                 </div>
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
-                        <thead class="text-xs text-slate-500 uppercase bg-slate-50 dark:bg-slate-800/50">
+                        <thead class="text-xs text-text-muted uppercase bg-primary-bg/30">
                             <tr>
                                 <th class="px-6 py-3 rounded-l-lg">Fecha</th>
-                                <th class="px-6 py-3 border-transparent">Usuario</th>
-                                <th class="px-6 py-3 border-transparent">Acción</th>
+                                <th class="px-6 py-3">Usuario</th>
+                                <th class="px-6 py-3">Acción</th>
                                 <th class="px-6 py-3 rounded-r-lg">Detalles</th>
                             </tr>
                         </thead>
                         <tbody>
                             @for (log of logs(); track log.id) {
                             <tr
-                                class="border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5">
-                                <td class="px-6 py-4 font-mono text-xs text-slate-500">
+                                class="border-b border-white/5 hover:bg-white/5">
+                                <td class="px-6 py-4 font-mono text-xs text-text-muted">
                                     {{ log.created_at | date:'short' }}
                                 </td>
-                                <td class="px-6 py-4 font-bold text-slate-800 dark:text-white">
+                                <td class="px-6 py-4 font-bold text-text-main">
                                     @if(log.user) {
-                                    {{ log.user.nickname }} <span class="text-xs font-normal text-slate-500">({{
+                                    {{ log.user.nickname }} <span class="text-xs font-normal text-text-muted">({{
                                         log.user.email
                                         }})</span>
                                     } @else {
@@ -485,18 +481,18 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <span
-                                        class="px-2 py-1 rounded-md text-xs font-bold bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300">
+                                        class="px-2 py-1 rounded-md text-xs font-bold bg-white/5 text-text-muted">
                                         {{ log.action }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 text-xs font-mono text-slate-400">
+                                <td class="px-6 py-4 text-xs font-mono text-text-muted">
                                     {{ log.details }}
                                 </td>
                             </tr>
                             }
                             @if (logs().length === 0) {
                             <tr>
-                                <td colspan="4" class="px-6 py-10 text-center text-slate-500 italic">No hay registros
+                                <td colspan="4" class="px-6 py-10 text-center text-text-muted italic">No hay registros
                                     recientes
                                 </td>
                             </tr>
@@ -521,18 +517,18 @@
 
             <!-- REPORTES TAB -->
             @if (activeTab() === 'reportes') {
-            <div class="bg-white dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200 dark:border-white/5 shadow-xl transition-all"
+            <div class="bg-secondary-bg rounded-3xl p-6 border border-white/5 shadow-xl transition-all"
                 [class.opacity-50]="isReportesLoading()">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Centro de Reportes</h2>
-                        <div class="text-sm text-slate-400">Total: {{ reportes().length }} reportes recibidos</div>
+                        <h2 class="text-2xl font-bold text-text-main">Centro de Reportes</h2>
+                        <div class="text-sm text-text-muted">Total: {{ reportes().length }} reportes recibidos</div>
                     </div>
                 </div>
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
-                        <thead class="text-xs text-slate-500 uppercase bg-slate-50 dark:bg-slate-800/50">
+                        <thead class="text-xs text-text-muted uppercase bg-primary-bg/50">
                             <tr>
                                 <th class="px-6 py-3 rounded-l-lg">Usuario / Contacto</th>
                                 <th class="px-6 py-3">Reporte</th>
@@ -542,25 +538,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @for (rep of reportes(); track rep.id) {
+                             @for (rep of reportes(); track rep.id) {
                             <tr
-                                class="border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5">
+                                class="border-b border-white/5 hover:bg-white/5 transition-colors">
                                 <td class="px-6 py-4">
-                                    <div class="font-bold text-slate-800 dark:text-white">
+                                    <div class="font-bold text-text-main">
                                         {{ rep.usuario?.nickname || 'Invitado' }}
                                     </div>
-                                    <div class="text-xs text-slate-500">{{ rep.email_contacto }}</div>
+                                    <div class="text-xs text-text-muted">{{ rep.email_contacto }}</div>
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-2 mb-1">
                                         <span
-                                            class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-[10px] font-black uppercase text-slate-500 border border-slate-200 dark:border-white/5">
+                                            class="px-1.5 py-0.5 rounded bg-primary-bg/50 text-[10px] font-black uppercase text-text-muted border border-white/5">
                                             {{ rep.tipo }}
                                         </span>
-                                        <span class="font-bold text-slate-700 dark:text-slate-200">{{ rep.titulo
+                                        <span class="font-bold text-text-main">{{ rep.titulo
                                             }}</span>
                                     </div>
-                                    <p class="text-xs text-slate-500 dark:text-slate-400 max-w-xs line-clamp-2"
+                                    <p class="text-xs text-text-muted max-w-xs line-clamp-2"
                                         [title]="rep.descripcion">
                                         {{ rep.descripcion }}
                                     </p>
@@ -578,7 +574,7 @@
                                             {{ rep.prioridad }}
                                         </span>
                                         <select (change)="updateReportStatus(rep.id, $any($event.target).value)"
-                                            class="bg-slate-50 dark:bg-slate-800 border-none rounded text-xs py-1 px-2 focus:ring-1 focus:ring-red-500 transition-all outline-none">
+                                            class="bg-primary-bg border-none rounded text-xs py-1 px-2 focus:ring-1 focus:ring-accent-color transition-all outline-none text-text-main">
                                             <option value="pendiente" [selected]="rep.estado === 'pendiente'">Pendiente
                                             </option>
                                             <option value="en revision" [selected]="rep.estado === 'en revision'">En
@@ -592,7 +588,7 @@
                                         </select>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 text-xs text-slate-500">
+                                <td class="px-6 py-4 text-xs text-text-muted">
                                     {{ rep.created_at | date:'medium' }}
                                 </td>
                                 <td class="px-6 py-4 text-center">
@@ -606,7 +602,7 @@
                             }
                             @if (reportes().length === 0 && !isReportesLoading()) {
                             <tr>
-                                <td colspan="5" class="px-6 py-10 text-center text-slate-500 italic">No hay reportes
+                                <td colspan="5" class="px-6 py-10 text-center text-text-muted italic">No hay reportes
                                     pendientes. ¡Buen trabajo! 🚀</td>
                             </tr>
                             }

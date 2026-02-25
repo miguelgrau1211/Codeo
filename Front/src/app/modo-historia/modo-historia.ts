@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { EjecutarCodigoService } from '../services/ejecutar-codigo-service';
 import { ProgresoHistoriaService } from '../services/progreso-historia-service';
+import { UserDataService } from '../services/user-data-service';
 import { ThemeService } from '../services/theme-service';
 import { LanguageService } from '../services/language-service';
 import { TranslatePipe } from '../pipes/translate.pipe';
@@ -57,6 +58,7 @@ export class ModoHistoria implements OnInit {
     private sanitizer: DomSanitizer,
     private ejecutarCodigoService: EjecutarCodigoService,
     private progresoHistoriaService: ProgresoHistoriaService,
+    private userDataService: UserDataService,
     public themeService: ThemeService,
     private langService: LanguageService
   ) {
@@ -223,6 +225,15 @@ export class ModoHistoria implements OnInit {
 
                 if (res.recompensas?.xp) {
                   this.recompensas.set(res.recompensas);
+                  this.userDataService.updateEconomy(undefined, res.recompensas.xp);
+                }
+
+                if (res.racha?.streak !== undefined) {
+                  this.userDataService.setStreak(res.racha.streak);
+                }
+
+                if (res.level_up) {
+                  this.userDataService.handleLevelUpResult(res.level_up);
                 }
               },
               error: (err) => console.error('Error guardando progreso:', err),

@@ -30,6 +30,19 @@ export interface RoguelikeSession {
   message?: string;
   time_expired?: boolean;
   nuevos_logros?: Achievement[];
+  racha?: {
+    streak: number;
+    max_streak: number;
+    updated: boolean;
+    reset: boolean;
+  };
+  level_up?: {
+    leveled_up: boolean;
+    old_level: number;
+    current_level: number;
+    exp_total: number;
+    next_level_exp: number;
+  };
 }
 
 @Injectable({
@@ -53,6 +66,14 @@ export class RoguelikeSessionService {
     return this.http.post<RoguelikeSession>(
       `${this.apiUrl}/start-session`, {},
       { headers: this.getHeaders() }
+    ).pipe(
+      tap(res => {
+        if (res.nuevos_logros && res.nuevos_logros.length > 0) {
+          res.nuevos_logros.forEach(logro => {
+            this.notificationService.showAchievement(logro);
+          });
+        }
+      })
     );
   }
 
@@ -67,6 +88,14 @@ export class RoguelikeSessionService {
     return this.http.get<RoguelikeSession>(
       `${this.apiUrl}/check-time`,
       { headers: this.getHeaders() }
+    ).pipe(
+      tap(res => {
+        if (res.nuevos_logros && res.nuevos_logros.length > 0) {
+          res.nuevos_logros.forEach(logro => {
+            this.notificationService.showAchievement(logro);
+          });
+        }
+      })
     );
   }
 
@@ -74,6 +103,14 @@ export class RoguelikeSessionService {
     return this.http.post<RoguelikeSession>(
       `${this.apiUrl}/failure`, {},
       { headers: this.getHeaders() }
+    ).pipe(
+      tap(res => {
+        if (res.nuevos_logros && res.nuevos_logros.length > 0) {
+          res.nuevos_logros.forEach(logro => {
+            this.notificationService.showAchievement(logro);
+          });
+        }
+      })
     );
   }
 

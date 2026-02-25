@@ -23,6 +23,13 @@ export class TiendaTemasComponent implements OnInit {
   misTemas = signal<number[]>([]); // Array of IDs
   isLoading = signal(true);
 
+  // Modal States
+  showBuyModal = signal(false);
+  selectedTema = signal<Tema | null>(null);
+  isBuying = signal(false);
+  buySuccess = signal(false);
+  buyError = signal<string | null>(null);
+
   // Computed
   userCoins = computed(() => this.userDataService.userDataSignal()?.coins ?? 0);
   activeThemeId = computed(() => this.themeService.currentTheme()?.id);
@@ -47,30 +54,63 @@ export class TiendaTemasComponent implements OnInit {
 
     // Load owned themes
     this.themeService.getMisTemas().subscribe(temas => {
-      this.misTemas.set(temas.map(t => t.id));
+      this.misTemas.set(temas.map(t => Number(t.id)));
     });
   }
 
-  isOwned(temaId: number): boolean {
-    return this.misTemas().includes(temaId);
+  isOwned(temaId: any): boolean {
+    return this.misTemas().includes(Number(temaId));
   }
 
   comprarTema(tema: Tema) {
     if (this.userCoins() < tema.precio) {
-      alert(this.langService.translate('SHOP.NOT_ENOUGH_COINS'));
+      this.buyError.set(this.langService.translate('SHOP.NOT_ENOUGH_COINS'));
+      this.buySuccess.set(false);
+      this.selectedTema.set(tema);
+      this.showBuyModal.set(true);
       return;
     }
 
-    if (confirm(this.langService.translate('SHOP.CONFIRM_BUY', { nombre: tema.nombre, precio: tema.precio }))) {
-      this.themeService.comprarTema(tema.id).subscribe({
-        next: () => {
-          this.misTemas.update(prev => [...prev, tema.id]);
-          this.userDataService.getUserData(true).subscribe(); // Refresh coins
-          alert(this.langService.translate('SHOP.SUCCESS_BUY'));
-        },
-        error: (err) => alert(err.error?.message || this.langService.translate('SHOP.ERR_BUY'))
-      });
-    }
+    this.selectedTema.set(tema);
+    this.buyError.set(null);
+    this.buySuccess.set(false);
+    this.showBuyModal.set(true);
+  }
+
+  confirmPurchase() {
+    const tema = this.selectedTema();
+    if (!tema) return;
+
+    this.isBuying.set(true);
+    this.themeService.comprarTema(tema.id).subscribe({
+      next: () => {
+        this.misTemas.update(prev => [...prev, tema.id]);
+        this.userDataService.getUserData(true).subscribe(); // Refresh coins
+        this.buySuccess.set(true);
+        this.isBuying.set(false);
+
+        // Auto-close success modal after 2 seconds
+        setTimeout(() => {
+          if (this.buySuccess()) {
+            this.closeModal();
+          }
+        }, 2500);
+      },
+      error: (err) => {
+        this.buyError.set(err.error?.message || this.langService.translate('SHOP.ERR_BUY'));
+        this.isBuying.set(false);
+      }
+    });
+  }
+
+  closeModal() {
+    this.showBuyModal.set(false);
+    setTimeout(() => {
+      this.selectedTema.set(null);
+      this.buySuccess.set(false);
+      this.buyError.set(null);
+      this.isBuying.set(false);
+    }, 300);
   }
 
   activarTema(tema: Tema) {
@@ -78,7 +118,10 @@ export class TiendaTemasComponent implements OnInit {
       next: () => {
         // Theme applied via service effect
       },
-      error: (err) => alert(err.error?.message || this.langService.translate('SHOP.ERR_ACTIVATE'))
+      error: (err) => {
+        this.buyError.set(err.error?.message || this.langService.translate('SHOP.ERR_ACTIVATE'));
+        this.showBuyModal.set(true);
+      }
     });
   }
 }

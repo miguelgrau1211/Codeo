@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AdminService, User, DashboardStats, AdminLog, StoryLevel, RoguelikeLevel } from '../services/admin-service';
 import { ReporteService } from '../services/reporte.service';
+import { ThemeService } from '../services/theme-service';
 import { AdminStatCard } from './components/admin-stat-card/admin-stat-card';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { LevelEditorModalComponent } from '../components/level-editor-modal/level-editor-modal.component';
@@ -18,6 +19,7 @@ import { LevelEditorModalComponent } from '../components/level-editor-modal/leve
 export class PanelAdmin implements OnInit, OnDestroy {
   private adminService = inject(AdminService);
   private reporteService = inject(ReporteService);
+  public themeService = inject(ThemeService);
 
   // Loading states per section
   isStoryLoading = signal(false);

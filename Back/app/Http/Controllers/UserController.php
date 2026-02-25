@@ -450,13 +450,17 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function validateUser($response)
+    public function validateUser()
     {
-
         $user = Auth::user();
 
+        if (!$user) {
+            return response()->json(['error' => 'No autenticado'], 401);
+        }
+
         return response()->json([
-            'user' => $user->id,
+            'id' => $user->id,
+            'nickname' => $user->nickname,
         ], 200);
     }
 
@@ -563,6 +567,12 @@ class UserController extends Controller
         if (!$usuario) {
             return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
+
+        // Verificar y reiniciar racha si es necesario
+        (new \App\Actions\UpdateUserStreakAction())->checkAndResetIfNecessary($usuario);
+        
+        // Sincronizar recompensas del pase de batalla (por si subió de nivel y no se otorgaron)
+        (new \App\Actions\GrantBattlePassRewardsAction())->execute($usuario);
         $n_achievements = UsuarioLogro::where('usuario_id', $id)->count() ?? 0;
         $story_levels_completed = ProgresoHistoria::where('usuario_id', $id)->where('completado', true)->count();
         $roguelike_levels_played = RunsRoguelike::where('usuario_id', $id)->sum('niveles_superados');

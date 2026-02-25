@@ -35,8 +35,13 @@ class Usuario extends Authenticatable
         'monedas',
         'nivel_global',
         'exp_total',
-        'racha_dias',
+        'streak',
+        'max_streak',
         'ultima_conexion',
+        'ultimo_nivel_completado_at',
+        'google_id',
+        'google_token',
+        'google_refresh_token',
         'preferencias',
         'terminos_aceptados',
         'es_admin',
@@ -67,9 +72,11 @@ class Usuario extends Authenticatable
         'monedas' => 'integer',
         'nivel_global' => 'integer',
         'exp_total' => 'integer',
-        'racha_dias' => 'integer',
+        'streak' => 'integer',
+        'max_streak' => 'integer',
         'es_admin' => 'boolean',
         'tema_actual_id' => 'integer',
+        'ultimo_nivel_completado_at' => 'datetime',
     ];
 
     public function temas()

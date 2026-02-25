@@ -5,6 +5,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { RoguelikeService, NivelRoguelike } from '../services/roguelike-service';
 import { RoguelikeSessionService, RunStats } from '../services/roguelike-session-service';
 import { EjecutarCodigoService } from '../services/ejecutar-codigo-service';
+import { UserDataService } from '../services/user-data-service';
 import { ThemeService } from '../services/theme-service';
 import { LanguageService } from '../services/language-service';
 import { TranslatePipe } from '../pipes/translate.pipe';
@@ -96,6 +97,7 @@ export class ModoInfinito implements OnInit, OnDestroy {
     private roguelikeService: RoguelikeService,
     private roguelikeSessionService: RoguelikeSessionService,
     private ejecutarCodigoService: EjecutarCodigoService,
+    private userDataService: UserDataService,
     public themeService: ThemeService,
     private langService: LanguageService
   ) {
@@ -361,6 +363,15 @@ export class ModoInfinito implements OnInit, OnDestroy {
             this.roguelikeSessionService.registerSuccess().subscribe({
               next: (sessionRes) => {
                 this.coins.set(sessionRes.coins_earned);
+
+                // Actualizar streak global reactivamente
+                if (sessionRes.racha?.streak !== undefined) {
+                  this.userDataService.setStreak(sessionRes.racha.streak);
+                }
+
+                if (sessionRes.level_up) {
+                  this.userDataService.handleLevelUpResult(sessionRes.level_up);
+                }
               },
             });
 

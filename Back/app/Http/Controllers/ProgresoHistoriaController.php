@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Actions\CheckAchievementsAction;
+use App\Actions\ProcessLevelUpAction;
+use App\Actions\UpdateUserStreakAction;
 
 class ProgresoHistoriaController extends Controller
 {
@@ -96,11 +98,21 @@ class ProgresoHistoriaController extends Controller
         }
 
         $nuevosLogros = [];
+        $rachaData = [];
+        $levelUpData = [];
+
         if ($validatedData['completado']) {
             $rawLogros = (new CheckAchievementsAction())->execute();
             $locale = TranslationService::resolveLocale($request);
             $translator = app(TranslationService::class);
             $nuevosLogros = $translator->translateLogrosCollection($rawLogros, $locale);
+
+            /** @var \App\Models\Usuario $user */
+            $user = Auth::user();
+            $rachaData = (new UpdateUserStreakAction())->execute($user);
+            
+            // Procesar subida de nivel después de que la transacción de XP haya terminado
+            $levelUpData = (new ProcessLevelUpAction())->execute($user);
         }
 
         return response()->json([
@@ -108,6 +120,8 @@ class ProgresoHistoriaController extends Controller
             'data' => $progreso,
             'recompensas' => $recompensas,
             'nuevos_logros' => $nuevosLogros,
+            'racha' => $rachaData,
+            'level_up' => $levelUpData
         ], 200);
     }
 
