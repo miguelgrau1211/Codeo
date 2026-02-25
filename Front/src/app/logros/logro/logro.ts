@@ -1,10 +1,11 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
     selector: 'app-logro',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, TranslatePipe],
     templateUrl: './logro.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     styles: []
@@ -17,14 +18,14 @@ export class LogroComponent {
     @Input() desbloqueado = false;
     @Input() fechaObtencion: string | null = null;
 
-    /** Mapa de colores por rareza */
+    /** Rarity label as i18n key */
     get rarezaLabel(): string {
         const map: Record<string, string> = {
-            especial: 'Especial',
-            raro: 'Raro',
-            epico: 'Épico',
-            legendario: 'Legendario',
-            celestial: 'Celestial',
+            especial: 'ACHIEVEMENTS.RARITY_SPECIAL',
+            raro: 'ACHIEVEMENTS.RARITY_RARE',
+            epico: 'ACHIEVEMENTS.RARITY_EPIC',
+            legendario: 'ACHIEVEMENTS.RARITY_LEGENDARY',
+            celestial: 'ACHIEVEMENTS.RARITY_CELESTIAL',
         };
         return map[this.rareza] ?? this.rareza;
     }

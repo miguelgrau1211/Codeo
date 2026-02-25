@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ThemeService, Tema } from '../services/theme-service';
 import { UserDataService } from '../services/user-data-service';
 import { TranslatePipe } from '../pipes/translate.pipe';
+import { LanguageService } from '../services/language-service';
 
 @Component({
   selector: 'app-tienda-temas',
@@ -15,6 +16,7 @@ import { TranslatePipe } from '../pipes/translate.pipe';
 export class TiendaTemasComponent implements OnInit {
   private themeService = inject(ThemeService);
   private userDataService = inject(UserDataService);
+  private langService = inject(LanguageService);
 
   // States
   temasDisponibles = signal<Tema[]>([]);
@@ -55,18 +57,18 @@ export class TiendaTemasComponent implements OnInit {
 
   comprarTema(tema: Tema) {
     if (this.userCoins() < tema.precio) {
-      alert('¡No tienes suficientes monedas!');
+      alert(this.langService.translate('SHOP.NOT_ENOUGH_COINS'));
       return;
     }
 
-    if (confirm(`¿Quieres comprar el tema "${tema.nombre}" por ${tema.precio} monedas?`)) {
+    if (confirm(this.langService.translate('SHOP.CONFIRM_BUY', { nombre: tema.nombre, precio: tema.precio }))) {
       this.themeService.comprarTema(tema.id).subscribe({
         next: () => {
           this.misTemas.update(prev => [...prev, tema.id]);
           this.userDataService.getUserData(true).subscribe(); // Refresh coins
-          alert('¡Tema comprado con éxito!');
+          alert(this.langService.translate('SHOP.SUCCESS_BUY'));
         },
-        error: (err) => alert(err.error?.message || 'Error al comprar el tema')
+        error: (err) => alert(err.error?.message || this.langService.translate('SHOP.ERR_BUY'))
       });
     }
   }
@@ -76,7 +78,7 @@ export class TiendaTemasComponent implements OnInit {
       next: () => {
         // Theme applied via service effect
       },
-      error: (err) => alert(err.error?.message || 'Error al activar el tema')
+      error: (err) => alert(err.error?.message || this.langService.translate('SHOP.ERR_ACTIVATE'))
     });
   }
 }

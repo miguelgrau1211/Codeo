@@ -20,9 +20,9 @@ export class LandingPageComponent {
     if (!feature) return null;
 
     const texts: Record<string, string> = {
-      'ranking': 'Compite con tus amigos por el mejor puesto en el ranking.',
-      'logros': 'Desbloquea insignias y demuestra tu dominio del código.',
-      'racha': 'Intenta mantener la racha todo lo que puedas.'
+      'ranking': 'LANDING.FEAT_RANKING_DESC',
+      'logros': 'LANDING.FEAT_LOGROS_DESC',
+      'racha': 'LANDING.FEAT_RACHA_DESC'
     };
     return texts[feature];
   });

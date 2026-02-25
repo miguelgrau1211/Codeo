@@ -212,7 +212,7 @@ export class Registro implements AfterViewInit, OnDestroy {
           });
         } else {
           // Error general no relacionado con campos específicos
-          this.errorMessage.set(error.error?.message || 'Ocurrió un error inesperado al registrarse.');
+          this.errorMessage.set(error.error?.message || 'REGISTER.ERR_UNKNOWN');
         }
       }
     });

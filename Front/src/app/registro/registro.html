@@ -236,7 +236,7 @@
                 @if (errorMessage()) {
                 <div
                     class="bg-red-500/10 border border-red-500/50 rounded-xl p-4 text-center mt-4 mb-4 animate-fade-in">
-                    <p class="text-red-200 text-sm font-medium">{{ errorMessage() }}</p>
+                    <p class="text-red-200 text-sm font-medium">{{ errorMessage() | translate }}</p>
                 </div>
                 }
 

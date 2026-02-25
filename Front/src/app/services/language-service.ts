@@ -110,7 +110,7 @@ export class LanguageService {
     /**
      * Helper to get a translation by key (e.g., 'SETTINGS.TITLE')
      */
-    translate(path: string): string {
+    translate(path: string, params?: Record<string, any>): string {
         const keys = path.split('.');
         let result = this.translations();
 
@@ -122,6 +122,14 @@ export class LanguageService {
             }
         }
 
-        return typeof result === 'string' ? result : path;
+        let translated = typeof result === 'string' ? result : path;
+
+        if (params) {
+            Object.keys(params).forEach(key => {
+                translated = translated.split(`{{${key}}}`).join(params[key]);
+            });
+        }
+
+        return translated;
     }
 }
