@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, signal, computed, inject, ChangeDetectionStrategy, OnInit, AfterViewChecked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -8,6 +8,9 @@ import { UserDataService } from '../../services/user-data-service';
 import { ThemeService } from '../../services/theme-service';
 import { AuthService } from '../../services/auth-service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+
+// Stripe.js global types
+declare const Stripe: any;
 
 interface Activity {
   id: number;
@@ -41,7 +44,7 @@ interface BattlePassReward {
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewChecked {
   private readonly progresoHistoriaService = inject(ProgresoHistoriaService);
   private readonly userDataService = inject(UserDataService);
   public readonly themeService = inject(ThemeService);
@@ -100,14 +103,16 @@ export class DashboardComponent implements OnInit {
 
   // --- Payment Modal State ---
   showPaymentModal = signal(false);
-  paymentStep = signal<'form' | 'processing' | 'success' | 'error'>('form');
+  paymentStep = signal<'loading' | 'form' | 'processing' | 'success' | 'error'>('loading');
   paymentError = signal<string | null>(null);
-  
-  // Card form fields
-  cardNumber = signal('');
+  stripeCardReady = signal(false);
   cardHolder = signal('');
-  cardExpiry = signal('');
-  cardCvv = signal('');
+
+  // Stripe internals (not signals - mutable references)
+  private stripe: any = null;
+  private cardElement: any = null;
+  private clientSecret: string | null = null;
+  private stripeElementMounted = false;
 
   // --- Battle Pass Logic ---
   battlePassRewards = signal<BattlePassReward[]>([
@@ -148,17 +153,27 @@ export class DashboardComponent implements OnInit {
     return Math.min(100, (curLevel / lastRewardLevel) * 100);
   });
 
-  // Init logic — el servicio cachea internamente, no hay llamadas duplicadas
+  // Init logic
   ngOnInit() {
     if (!this.serviceProgreso()) {
       this.progresoHistoriaService.getProgresoHistoria().subscribe();
     }
     this.userDataService.getUserData().subscribe();
 
-    // Verificar si el usuario es admin usando el token del sessionStorage
     const token = sessionStorage.getItem('token');
     if (token) {
       this.authService.esAdmin(token).subscribe();
+    }
+  }
+
+  // Mount Stripe Element when the modal container appears in the DOM
+  ngAfterViewChecked() {
+    if (this.showPaymentModal() && this.paymentStep() === 'form' && !this.stripeElementMounted) {
+      const container = document.getElementById('stripe-card-element');
+      if (container && this.cardElement) {
+        this.cardElement.mount('#stripe-card-element');
+        this.stripeElementMounted = true;
+      }
     }
   }
 
@@ -169,81 +184,168 @@ export class DashboardComponent implements OnInit {
     this.isSidebarOpen.update(v => !v);
   }
 
-  // --- Payment Modal Methods ---
+  // --- Stripe Payment Methods ---
+
   openPaymentModal() {
-    this.paymentStep.set('form');
+    this.paymentStep.set('loading');
     this.paymentError.set(null);
-    this.cardNumber.set('');
+    this.stripeCardReady.set(false);
+    this.stripeElementMounted = false;
     this.cardHolder.set('');
-    this.cardExpiry.set('');
-    this.cardCvv.set('');
     this.showPaymentModal.set(true);
-  }
-
-  closePaymentModal() {
-    this.showPaymentModal.set(false);
-  }
-
-  formatCardNumber(event: Event) {
-    const input = event.target as HTMLInputElement;
-    let value = input.value.replace(/\D/g, '');
-    value = value.substring(0, 16);
-    const formatted = value.replace(/(\d{4})(?=\d)/g, '$1 ');
-    this.cardNumber.set(formatted);
-    input.value = formatted;
-  }
-
-  formatExpiry(event: Event) {
-    const input = event.target as HTMLInputElement;
-    let value = input.value.replace(/\D/g, '');
-    value = value.substring(0, 4);
-    if (value.length >= 2) {
-      value = value.substring(0, 2) + '/' + value.substring(2);
-    }
-    this.cardExpiry.set(value);
-    input.value = value;
-  }
-
-  isFormValid(): boolean {
-    return this.cardNumber().replace(/\s/g, '').length === 16
-      && this.cardHolder().trim().length >= 2
-      && this.cardExpiry().length === 5
-      && this.cardCvv().length >= 3;
-  }
-
-  submitPayment() {
-    if (!this.isFormValid()) return;
-
-    this.paymentStep.set('processing');
 
     const token = sessionStorage.getItem('token');
-    const payload = {
-      card_number: this.cardNumber().replace(/\s/g, ''),
-      card_holder: this.cardHolder(),
-      expiry: this.cardExpiry(),
-      cvv: this.cardCvv(),
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
     };
 
-    this.http.post<any>('http://localhost/api/battle-pass/purchase', payload, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json'
-      }
-    }).subscribe({
-      next: (res) => {
-        if (res.success) {
-          this.paymentStep.set('success');
-          // Refresh user data to get updated premium status
-          this.userDataService.getUserData(true).subscribe();
-        } else {
-          this.paymentError.set(res.message || 'Error al procesar el pago.');
+    // Step 1: Get Stripe status and publishable key
+    this.http.get<any>('http://localhost/api/battle-pass/status', { headers }).subscribe({
+      next: (statusRes) => {
+        const publishableKey = statusRes.stripe_publishable_key;
+
+        if (!publishableKey || publishableKey.includes('REEMPLAZA')) {
+          this.paymentError.set('Error: Stripe API Key de test no configurada en el servidor (.env).');
           this.paymentStep.set('error');
+          return;
         }
+
+        // Step 2: Create PaymentIntent on Backend
+        this.http.post<any>('http://localhost/api/battle-pass/create-intent', {}, { headers }).subscribe({
+          next: (intentRes) => {
+            if (!intentRes.success) {
+              this.paymentError.set(intentRes.message || 'Error al iniciar el pago.');
+              this.paymentStep.set('error');
+              return;
+            }
+
+            this.clientSecret = intentRes.client_secret;
+
+            // Step 3: Initialize Stripe.js and Elements
+            this.stripe = Stripe(publishableKey);
+            const elements = this.stripe.elements();
+
+            // Create a styled Card Element
+            this.cardElement = elements.create('card', {
+              style: {
+                base: {
+                  color: '#ffffff',
+                  fontFamily: '"Outfit", "Segoe UI", sans-serif',
+                  fontSmoothing: 'antialiased',
+                  fontSize: '16px',
+                  '::placeholder': {
+                    color: 'rgba(255, 255, 255, 0.4)',
+                  },
+                },
+                invalid: {
+                  color: '#ff6b6b',
+                  iconColor: '#ff6b6b',
+                },
+              },
+              hidePostalCode: true,
+            });
+
+            // Listen for card readiness/errors
+            this.cardElement.on('change', (event: any) => {
+              if (event.error) {
+                this.paymentError.set(event.error.message);
+              } else {
+                this.paymentError.set(null);
+              }
+              this.stripeCardReady.set(event.complete);
+            });
+
+            // Show the form
+            this.paymentStep.set('form');
+          },
+          error: (err) => {
+            this.paymentError.set(err.error?.message || 'Error al conectar con la pasarela de pagos.');
+            this.paymentStep.set('error');
+          }
+        });
       },
       error: (err) => {
-        this.paymentError.set(err.error?.message || 'Error al conectar con el servidor.');
+        this.paymentError.set('Error al verificar el estado del Pase de Batalla.');
         this.paymentStep.set('error');
       }
     });
+  }
+
+  closePaymentModal() {
+    if (this.cardElement) {
+      this.cardElement.unmount();
+      this.cardElement.destroy();
+      this.cardElement = null;
+    }
+    this.stripe = null;
+    this.clientSecret = null;
+    this.stripeElementMounted = false;
+    this.showPaymentModal.set(false);
+  }
+
+  async submitPayment() {
+    if (!this.stripe || !this.cardElement || !this.clientSecret || !this.cardHolder().trim()) return;
+
+    this.paymentStep.set('processing');
+
+    try {
+      // Step 4: Confirm payment with Stripe.js
+      const { error, paymentIntent } = await this.stripe.confirmCardPayment(
+        this.clientSecret,
+        {
+          payment_method: {
+            card: this.cardElement,
+            billing_details: {
+              name: this.cardHolder(),
+            },
+          }
+        }
+      );
+
+      if (error) {
+        console.error('🔴 [STRIPE] Error:', error.message);
+        this.paymentError.set(error.message || 'Error al procesar el pago.');
+        this.paymentStep.set('error');
+        return;
+      }
+
+      if (paymentIntent.status === 'succeeded') {
+        // Step 5: Notify our backend to activate premium status
+        const token = sessionStorage.getItem('token');
+        this.http.post<any>('http://localhost/api/battle-pass/confirm', 
+          { payment_intent_id: paymentIntent.id },
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/json'
+            }
+          }
+        ).subscribe({
+          next: (res) => {
+            if (res.success) {
+              // === CONSOLE CONFIRMATION ===
+              console.log('%c ✅ PAGO REALIZADO CON ÉXITO ', 'background: #00ca4e; color: #fff; font-size: 16px; font-weight: bold; border-radius: 4px; padding: 4px 8px;');
+              console.log('ID Transacción:', paymentIntent.id);
+              console.log('Estado:', 'Confirmed');
+              console.log('Premium activado para el usuario.');
+
+              this.paymentStep.set('success');
+              this.userDataService.getUserData(true).subscribe();
+            } else {
+              this.paymentError.set(res.message || 'El pago fue exitoso pero hubo un error al activar el premium en tu cuenta.');
+              this.paymentStep.set('error');
+            }
+          },
+          error: (err) => {
+            this.paymentError.set(err.error?.message || 'Error de conexión final con el servidor.');
+            this.paymentStep.set('error');
+          }
+        });
+      }
+    } catch (err: any) {
+      this.paymentError.set(err.message || 'Ocurrió un error inesperado durante el pago.');
+      this.paymentStep.set('error');
+    }
   }
 }
