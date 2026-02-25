@@ -1,4 +1,4 @@
-import { Component, signal, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectionStrategy, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -10,6 +10,7 @@ import { ThemeService } from '../../services/theme-service';
 import { LanguageService } from '../../services/language-service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { NivelRoguelike } from '../../models/level.model';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-modo-infinito',
@@ -64,6 +65,8 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   // VISUAL STATE
   // ==========================================
   isExecuting = signal(false);
+  isShowingTimeOut = signal(false);
+  isFadingOutTimeOut = signal(false);
 
   // ==========================================
   // GAME OVER
@@ -93,6 +96,11 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   // ==========================================
   executionResult = signal<any>(null);
 
+  // ==========================================
+  // DEBUG (Admin only)
+  // ==========================================
+  isAdmin = computed(() => this.authService.isAdminSignal());
+
   constructor(
     private sanitizer: DomSanitizer,
     private roguelikeService: RoguelikeService,
@@ -100,7 +108,8 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
     private ejecutarCodigoService: EjecutarCodigoService,
     private userDataService: UserDataService,
     public themeService: ThemeService,
-    private langService: LanguageService
+    private langService: LanguageService,
+    private authService: AuthService
   ) {
     this.updateCode(this.codeContent());
   }
@@ -111,6 +120,15 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.startNewSession();
+    
+    // Validar admin para el botón de debug
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      this.authService.esAdmin(token).subscribe({
+        next: (res) => console.log('Admin check result:', res),
+        error: (err) => console.error('Admin check failed:', err)
+      });
+    }
   }
 
   ngOnDestroy() {
@@ -191,29 +209,61 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   }
 
   onTimeExpired() {
+    // 1. Respuesta instantánea (Optimistic UI + Visual Impact)
+    this.stopTimer();
+    this.timeRemaining.set(0); 
+    this.isShowingTimeOut.set(true);
+    this.isFadingOutTimeOut.set(false);
+    
+    // Restamos vida localmente para feedback inmediato
+    const currentLives = this.lives();
+    if (currentLives > 0) {
+      this.lives.set(currentLives - 1);
+    }
+
+    // Limpiar resultado previo para evitar saltos visuales
+    this.executionResult.set({
+      correcto: false,
+      loading: true,
+      message: '¡TIEMPO AGOTADO! Sincronizando...',
+      detalles: []
+    });
+
+    console.log('Timer expired, syncing with server...');
+    
     this.roguelikeSessionService.checkTime().subscribe({
       next: (res) => {
-        if (res.time_expired) {
-          this.lives.set(res.lives);
+        // 2. Sincronización real con el servidor
+        this.lives.set(res.lives);
+        this.timeRemaining.set(res.time_remaining || 60);
 
-          if (res.game_over) {
-            this.triggerGameOver(res.stats!);
-          } else {
-            // Reiniciar timer a 90 segundos (respuesta del servidor)
-            this.timeRemaining.set(res.time_remaining ?? 90);
+        if (res.game_over) {
+          this.isShowingTimeOut.set(false);
+          this.triggerGameOver(res.stats!);
+        } else {
+          // Primero iniciamos el desvanecimiento gradual (fundido a negro desapareciendo)
+          this.isFadingOutTimeOut.set(true);
+          
+          // Esperamos a que la animación de CSS termine antes de limpiar el estado
+          setTimeout(() => {
+            this.isShowingTimeOut.set(false);
+            this.isFadingOutTimeOut.set(false);
             this.startTimer();
-
+            
+            // Solo ahora mostramos el mensaje final para evitar glitches visuales
             this.executionResult.set({
               correcto: false,
-              message: this.langService.translate('INFINITE.TIME_EXPIRED'),
+              message: res.message || this.langService.translate('INFINITE.TIME_EXPIRED') || '¡TIEMPO AGOTADO! Se ha restado una vida y te hemos dado +1 min extra.',
               detalles: [],
             });
-          }
+          }, 800);
         }
       },
-      error: () => {
-        // Fallback: lose a life locally, reset to 90s
-        this.lives.update(l => Math.max(0, l - 1));
+      error: (err) => {
+        console.error('Error checking time with server:', err);
+        this.isShowingTimeOut.set(false);
+        this.isFadingOutTimeOut.set(false);
+        // Fallback en caso de error de conexión
         if (this.lives() <= 0) {
           this.triggerGameOver({
             niveles_superados: this.nivelesCompletados(),
@@ -222,8 +272,13 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
             vidas_restantes: 0,
           });
         } else {
-          this.timeRemaining.set(90);
+          this.timeRemaining.set(60);
           this.startTimer();
+          this.executionResult.set({
+            correcto: false,
+            message: 'Error de conexión, pero te damos otra oportunidad con 60s.',
+            detalles: [],
+          });
         }
       },
     });
@@ -235,6 +290,17 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
     const min = Math.floor(total / 60);
     const sec = total % 60;
     return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+  }
+
+  debugSetTime() {
+    if (!this.isAdmin()) return;
+    this.roguelikeSessionService.debugSetTime().subscribe({
+      next: (res) => {
+        this.timeRemaining.set(res.time_remaining);
+        console.log('Admin Debug: Time set to 10s');
+      },
+      error: (err) => console.error('Admin Debug Error:', err)
+    });
   }
 
   /**

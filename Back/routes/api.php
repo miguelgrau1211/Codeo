@@ -149,5 +149,8 @@ Route::middleware('auth:sanctum')->group(function () {
         // Dashboard Stats y Logs
         Route::get('/admin/stats', [AdminDashboardController::class, 'getStats']);
         Route::get('/admin/logs', [AdminDashboardController::class, 'getLogs']);
+
+        // Debug Roguelike (Only Admin)
+        Route::post('/roguelike/debug-set-time', [RoguelikeSessionController::class, 'debugSetTime']);
     });
 });

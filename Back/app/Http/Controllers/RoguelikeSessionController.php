@@ -100,8 +100,8 @@ class RoguelikeSessionController extends Controller
             ], 200);
         }
 
-        // Reiniciar temporizador para el nuevo nivel
-        $session['level_started_at'] = now()->toISOString();
+        // Reiniciar temporizador para el nuevo nivel (SIEMPRE UTC)
+        $session['level_started_at'] = now('UTC')->toDateTimeString();
         $session['time_remaining'] = self::TIME_PER_LEVEL;
 
         $this->saveSession($userId, $session);
@@ -123,32 +123,54 @@ class RoguelikeSessionController extends Controller
         $userId = Auth::id();
         $session = $this->getSession($userId);
 
-        if (!$session || !$session['level_started_at']) {
+        if (!$session || !isset($session['level_started_at'])) {
             return response()->json(['message' => 'No hay nivel activo'], 404);
         }
 
-        $elapsed = now()->diffInSeconds($session['level_started_at']);
+        // Usar UTC siempre para evitar desajustes de zona horaria
+        $now = now('UTC');
+        $startedAt = \Illuminate\Support\Carbon::parse($session['level_started_at'], 'UTC');
+        $elapsed = $startedAt->diffInSeconds($now, false); // Diferencia firmada (now - startedAt)
+
         $allocatedTime = $session['time_remaining'] ?? self::TIME_PER_LEVEL;
-        $timeRemaining = max(0, $allocatedTime - $elapsed);
+        $timeRemaining = $allocatedTime - $elapsed;
+
+        Log::debug('Roguelike checkTime Debug', [
+            'userId' => $userId,
+            'startedAt' => $startedAt->toDateTimeString(),
+            'now' => $now->toDateTimeString(),
+            'allocatedTime' => $allocatedTime,
+            'elapsed' => $elapsed,
+            'timeRemaining' => $timeRemaining
+        ]);
 
         if ($timeRemaining <= 0) {
-            // Evitar doble resta: solo restar si aún tiene tiempo en cache
+            // Evitar doble resta si ya se procesó
             if ($session['time_remaining'] > 0) {
-                $session['lives'] = max(0, $session['lives'] - 1);
+                if ($session['lives'] <= 0) {
+                    $session['lives'] = 0;
+                    $gameOver = true;
+                } else {
+                    $session['lives']--;
+                    $gameOver = false;
+                }
 
-                // Reiniciar temporizador a 90 segundos (1.5 min)
-                $session['time_remaining'] = 90;
-                $session['level_started_at'] = now()->toISOString();
+                if (!$gameOver) {
+                    $session['time_remaining'] = 60;
+                    $session['level_started_at'] = now('UTC')->toDateTimeString();
+                } else {
+                    $session['time_remaining'] = 0;
+                    $session['level_started_at'] = null;
+                }
+                
                 $this->saveSession($userId, $session);
+            } else {
+                $gameOver = $session['lives'] <= 0 && $session['time_remaining'] == 0;
             }
 
-            $gameOver = $session['lives'] <= 0;
             $nuevosLogros = [];
 
             if ($gameOver) {
-                $session['time_remaining'] = 0;
-                $session['level_started_at'] = null;
-                $this->saveSession($userId, $session);
                 $this->saveRun($session);
                 $nuevosLogros = (new CheckAchievementsAction())->execute();
             }
@@ -161,15 +183,43 @@ class RoguelikeSessionController extends Controller
                 'stats' => $gameOver ? $this->getSessionStats($session) : null,
                 'nuevos_logros' => $nuevosLogros,
                 'message' => $gameOver
-                    ? '¡Game Over! Se acabaron tus vidas.'
-                    : '¡Se acabó el tiempo! Pierdes una vida. Tienes 1:30 extra.',
+                    ? '¡Game Over! Te has quedado sin vidas y sin tiempo.'
+                    : '¡Se acabó el tiempo! Pierdes una vida. Te damos 1 minuto extra.',
             ], 200);
         }
 
         return response()->json([
             'time_expired' => false,
-            'time_remaining' => $timeRemaining,
+            'time_remaining' => max(0, $timeRemaining),
             'lives' => $session['lives'],
+        ], 200);
+    }
+
+    /**
+     * Fuerza el tiempo restante de la sesión a 10 segundos (Debug Admin).
+     */
+    public function debugSetTime(Request $request)
+    {
+        $userId = Auth::id();
+        $session = $this->getSession($userId);
+
+        if (!$session || !isset($session['level_started_at'])) {
+            return response()->json(['message' => 'No hay sesión activa'], 404);
+        }
+
+        // Ajustar started_at para que queden exactamente 10 segundos
+        // started_at = now - (time_remaining - 10)
+        $session['time_remaining'] = 10;
+        $session['level_started_at'] = now('UTC')->toDateTimeString();
+
+        $this->saveSession($userId, $session);
+
+        Log::info('Admin debug: forced roguelike time to 10s', ['user_id' => $userId]);
+
+        return response()->json([
+            'message' => 'Tiempo ajustado a 10 segundos',
+            'lives' => $session['lives'],
+            'time_remaining' => 10,
         ], 200);
     }
 
@@ -186,20 +236,15 @@ class RoguelikeSessionController extends Controller
             return $this->noSessionResponse();
         }
 
-        // Evitar abusos: si ya no tiene vidas, no resta más
         if ($session['lives'] <= 0) {
-            return response()->json([
-                'lives' => 0,
-                'game_over' => true,
-                'stats' => $this->getSessionStats($session),
-                'message' => '¡Game Over!',
-            ], 200);
+            $session['lives'] = 0;
+            $gameOver = true;
+        } else {
+            $session['lives']--;
+            $gameOver = false;
         }
 
-        $session['lives'] = max(0, $session['lives'] - 1);
         $this->saveSession($userId, $session);
-
-        $gameOver = $session['lives'] <= 0;
         $nuevosLogros = [];
 
         if ($gameOver) {
@@ -219,7 +264,7 @@ class RoguelikeSessionController extends Controller
             'stats' => $gameOver ? $this->getSessionStats($session) : null,
             'nuevos_logros' => $nuevosLogros,
             'message' => $gameOver
-                ? '¡Game Over!'
+                ? '¡Game Over! Has fallado sin vidas restantes.'
                 : '¡Código incorrecto! Pierdes una vida.',
         ], 200);
     }
@@ -414,11 +459,15 @@ class RoguelikeSessionController extends Controller
             return response()->json(['active' => false], 200);
         }
 
-        // Calcular tiempo restante en tiempo real
+        // Calcular tiempo restante en tiempo real usando UTC
         $timeRemaining = self::TIME_PER_LEVEL;
-        if ($session['level_started_at']) {
-            $elapsed = now()->diffInSeconds($session['level_started_at']);
-            $timeRemaining = max(0, self::TIME_PER_LEVEL - $elapsed);
+        if (isset($session['level_started_at']) && $session['level_started_at']) {
+            $now = now('UTC');
+            $startedAt = \Illuminate\Support\Carbon::parse($session['level_started_at'], 'UTC');
+            $elapsed = $startedAt->diffInSeconds($now, false);
+            
+            $allocatedTime = $session['time_remaining'] ?? self::TIME_PER_LEVEL;
+            $timeRemaining = max(0, $allocatedTime - $elapsed);
         }
 
         return response()->json([

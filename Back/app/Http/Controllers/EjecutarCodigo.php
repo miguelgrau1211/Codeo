@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\RoguelikeSessionController;
 
 class EjecutarCodigo extends Controller
 {
@@ -27,6 +28,35 @@ class EjecutarCodigo extends Controller
         $codigoUsuario = $request->codigo;
         $tipo = $request->tipo;
         $nivelId = $request->nivel_id;
+
+        // Validar sesión si es Roguelike (Anti-Cheat)
+        if ($tipo === 'roguelike') {
+            $userId = Auth::id();
+            $cacheKey = RoguelikeSessionController::getCacheKey($userId);
+            $session = \Illuminate\Support\Facades\Cache::get($cacheKey);
+
+            if (!$session || !$session['level_started_at']) {
+                return response()->json([
+                    'correcto' => false,
+                    'message' => 'No hay una sesión de Roguelike activa o el nivel no ha comenzado.',
+                    'game_over' => true
+                ], 200);
+            }
+
+            $now = now('UTC');
+            $startedAt = \Illuminate\Support\Carbon::parse($session['level_started_at'], 'UTC');
+            $elapsed = $startedAt->diffInSeconds($now, false);
+            
+            $allocatedTime = $session['time_remaining'] ?? 300; 
+
+            if ($elapsed > $allocatedTime) {
+                return response()->json([
+                    'correcto' => false,
+                    'message' => '¡Tiempo agotado! No puedes enviar el código fuera de tiempo.',
+                    'time_expired' => true
+                ], 200);
+            }
+        }
 
         // 1. Obtener los test cases del nivel según el tipo
         $nivel = $tipo === 'historia'

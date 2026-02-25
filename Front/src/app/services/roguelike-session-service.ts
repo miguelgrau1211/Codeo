@@ -150,5 +150,12 @@ export class RoguelikeSessionService {
       { headers: this.getHeaders() }
     );
   }
+
+  debugSetTime(): Observable<RoguelikeSession> {
+    return this.http.post<RoguelikeSession>(
+      `${this.apiUrl}/debug-set-time`, {},
+      { headers: this.getHeaders() }
+    );
+  }
 }
 
