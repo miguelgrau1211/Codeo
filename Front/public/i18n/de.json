@@ -453,5 +453,97 @@
     "LOGOUT": "Abmelden",
     "LOGIN": "Anmelden",
     "REGISTER": "Registrieren"
+  },
+  "ADMIN": {
+    "TITLE": "ADMIN-PANEL",
+    "GOD_MODE": "Gott-Modus",
+    "TAB_USERS": "Benutzer",
+    "TAB_STORY": "Story-Ebenen",
+    "TAB_ROGUELIKE": "Roguelike-Levels",
+    "TAB_LOGS": "Systemprotokolle",
+    "TAB_REPORTS": "Berichte",
+    "STAT_ACTIVE_24H": "Aktiv 24 Stunden",
+    "STAT_TOTAL_RUNS": "Gesamtanzahl der Läufe",
+    "STAT_WIN_RATE": "Gewinnrate",
+    "USERS": {
+      "TITLE": "Benutzerverwaltung",
+      "TOTAL": "Gesamt: {{total}} Benutzer",
+      "SEARCH_PH": "Suche nach Name oder E-Mail...",
+      "TABLE_ID": "AUSWEIS",
+      "TABLE_USER": "Benutzer",
+      "TABLE_EMAIL": "E-Mail",
+      "TABLE_ROLE": "Rolle",
+      "TABLE_STATUS": "Zustand",
+      "TABLE_ACTION": "Aktion",
+      "ROLE_ADMIN": "Admin",
+      "ROLE_USER": "Benutzer",
+      "STATUS_ACTIVE": "Vermögenswert",
+      "STATUS_BANNED": "Verboten",
+      "EMPTY": "Keine Benutzer gefunden",
+      "PAGINATION_PAGE": "Seite {{current}} von {{total}}",
+      "PAGINATION_PREV": "⬅ Zurück",
+      "PAGINATION_NEXT": "Weiter ➡"
+    },
+    "STORY": {
+      "TITLE_ACTIVE": "Story-Modus-Level (aktiv)",
+      "NEW_LEVEL": "+ Neues Level",
+      "REWARD_XP": "XP",
+      "REWARD_COINS": "💰",
+      "EMPTY_ACTIVE": "Es gibt keine aktiven Ebenen",
+      "TITLE_DISABLED": "Story-Ebenen deaktiviert",
+      "DISABLED_AT": "Deaktiviert",
+      "REACTIVATE": "Reaktivieren",
+      "EMPTY_DISABLED": "Es sind keine Ebenen deaktiviert"
+    },
+    "ROGUELIKE": {
+      "TITLE_ACTIVE": "Roguelike-Herausforderungen (aktiv)",
+      "NEW_CHALLENGE": "+ Neue Herausforderung",
+      "TABLE_DIFF": "Schwierigkeit",
+      "TABLE_NAME": "Name der Herausforderung",
+      "TABLE_REWARD": "Belohnen",
+      "TABLE_ACTIONS": "Aktionen",
+      "EMPTY_ACTIVE": "Es gibt keine aktiven Herausforderungen",
+      "TITLE_DISABLED": "Roguelike-Herausforderungen deaktiviert",
+      "EMPTY_DISABLED": "Es sind keine Herausforderungen deaktiviert"
+    },
+    "LOGS": {
+      "TITLE": "Sicherheitsprotokolle",
+      "TABLE_DATE": "Datum",
+      "TABLE_USER": "Benutzer",
+      "TABLE_ACTION": "Aktion",
+      "TABLE_DETAILS": "Details",
+      "EMPTY": "Keine aktuellen Aufzeichnungen"
+    },
+    "REPORTS": {
+      "TITLE": "Berichtszentrum",
+      "TOTAL": "Gesamt: {{total}} Berichte erhalten",
+      "TABLE_CONTACT": "Benutzer / Kontakt",
+      "TABLE_REPORT": "Bericht",
+      "TABLE_STATUS": "Priorität/Status",
+      "TABLE_DATE": "Weitergeschickt",
+      "TABLE_ACTIONS": "Aktionen",
+      "STATUS_PENDING": "Ohrring",
+      "STATUS_REVIEW": "Wird überprüft",
+      "STATUS_SOLVED": "Gelöst",
+      "STATUS_REJECTED": "Abgelehnt",
+      "STATUS_SPAM": "⚠️ SPAM",
+      "EMPTY": "Es liegen keine ausstehenden Berichte vor. Gute Arbeit! 🚀"
+    },
+    "DIFFICULTY": {
+      "EASY": "Einfach",
+      "MEDIUM": "Hälfte",
+      "HARD": "Schwierig",
+      "EXTREME": "Extrem"
+    },
+    "MESSAGES": {
+      "REPORT_UPDATED": "Aktualisierter Berichtsstatus",
+      "CONFIRM_DELETE_REPORT": "Sind Sie sicher, dass Sie diesen Bericht dauerhaft löschen möchten?",
+      "REPORT_DELETED": "Bericht gelöscht",
+      "CONFIRM_TOGGLE_LEVEL": "Levelstatus ändern?",
+      "STORY_UPDATED": "Aktualisiertes Niveau",
+      "STORY_CREATED": "Ebene erstellt",
+      "ROGUE_UPDATED": "Aktualisierte Herausforderung",
+      "ROGUE_CREATED": "Herausforderung erstellt"
+    }
   }
 }

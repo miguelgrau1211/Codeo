@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StoryLevel, RoguelikeLevel } from '../../services/admin-service';
 
+import { TranslatePipe } from '../../pipes/translate.pipe';
+
 @Component({
     selector: 'app-level-editor-modal',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, TranslatePipe],
     templateUrl: './level-editor-modal.component.html',
     styleUrl: './level-editor-modal.component.css'
 })

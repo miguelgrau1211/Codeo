@@ -455,5 +455,97 @@
     "LOGOUT": "Sair",
     "LOGIN": "Entrar",
     "REGISTER": "Registrar"
+  },
+  "ADMIN": {
+    "TITLE": "PAINEL DE ADMINISTRAÇÃO",
+    "GOD_MODE": "Modo Deus",
+    "TAB_USERS": "Usuários",
+    "TAB_STORY": "Níveis de história",
+    "TAB_ROGUELIKE": "Níveis Roguelike",
+    "TAB_LOGS": "Registros do sistema",
+    "TAB_REPORTS": "Relatórios",
+    "STAT_ACTIVE_24H": "Ativo 24 horas",
+    "STAT_TOTAL_RUNS": "Total de corridas",
+    "STAT_WIN_RATE": "Taxa de vitórias",
+    "USERS": {
+      "TITLE": "Gerenciamento de usuários",
+      "TOTAL": "Total: {{total}} usuários",
+      "SEARCH_PH": "Pesquise por nome ou e-mail...",
+      "TABLE_ID": "EU IA",
+      "TABLE_USER": "Usuário",
+      "TABLE_EMAIL": "E-mail",
+      "TABLE_ROLE": "Papel",
+      "TABLE_STATUS": "Estado",
+      "TABLE_ACTION": "Ação",
+      "ROLE_ADMIN": "Administrador",
+      "ROLE_USER": "Usuário",
+      "STATUS_ACTIVE": "Ativo",
+      "STATUS_BANNED": "Banido",
+      "EMPTY": "Nenhum usuário encontrado",
+      "PAGINATION_PAGE": "Página {{atual}} de {{total}}",
+      "PAGINATION_PREV": "⬅ Anterior",
+      "PAGINATION_NEXT": "Próximo ➡"
+    },
+    "STORY": {
+      "TITLE_ACTIVE": "Níveis do modo história (ativo)",
+      "NEW_LEVEL": "+ Novo nível",
+      "REWARD_XP": "XP",
+      "REWARD_COINS": "💰",
+      "EMPTY_ACTIVE": "Não há níveis ativos",
+      "TITLE_DISABLED": "Níveis de história desativados",
+      "DISABLED_AT": "Desativou o",
+      "REACTIVATE": "Reativar",
+      "EMPTY_DISABLED": "No hay niveles desactivados"
+    },
+    "ROGUELIKE": {
+      "TITLE_ACTIVE": "Desafios Roguelike (ativos)",
+      "NEW_CHALLENGE": "+ Novo Desafio",
+      "TABLE_DIFF": "Dificuldade",
+      "TABLE_NAME": "Nome do desafio",
+      "TABLE_REWARD": "Recompensa",
+      "TABLE_ACTIONS": "Ações",
+      "EMPTY_ACTIVE": "Não há desafios ativos",
+      "TITLE_DISABLED": "Desafios Roguelike desativados",
+      "EMPTY_DISABLED": "Não há desafios desativados"
+    },
+    "LOGS": {
+      "TITLE": "Registros de segurança",
+      "TABLE_DATE": "Data",
+      "TABLE_USER": "Usuário",
+      "TABLE_ACTION": "Ação",
+      "TABLE_DETAILS": "Detalhes",
+      "EMPTY": "Nenhum registro recente"
+    },
+    "REPORTS": {
+      "TITLE": "Central de relatórios",
+      "TOTAL": "Total: {{total}} relatórios recebidos",
+      "TABLE_CONTACT": "Usuário/Contato",
+      "TABLE_REPORT": "Relatório",
+      "TABLE_STATUS": "Prioridade/Status",
+      "TABLE_DATE": "Enviado",
+      "TABLE_ACTIONS": "Ações",
+      "STATUS_PENDING": "Brinco",
+      "STATUS_REVIEW": "Em revisão",
+      "STATUS_SOLVED": "Resolvido",
+      "STATUS_REJECTED": "Recusado",
+      "STATUS_SPAM": "⚠️ SPAM",
+      "EMPTY": "Não há relatórios pendentes. Bom trabalho! 🚀"
+    },
+    "DIFFICULTY": {
+      "EASY": "Fácil",
+      "MEDIUM": "Metade",
+      "HARD": "Difícil",
+      "EXTREME": "Extremo"
+    },
+    "MESSAGES": {
+      "REPORT_UPDATED": "Status do relatório atualizado",
+      "CONFIRM_DELETE_REPORT": "Tem certeza de que deseja excluir este relatório permanentemente?",
+      "REPORT_DELETED": "Relatório excluído",
+      "CONFIRM_TOGGLE_LEVEL": "Alterar o status do nível?",
+      "STORY_UPDATED": "Nível atualizado",
+      "STORY_CREATED": "Nível criado",
+      "ROGUE_UPDATED": "Desafio atualizado",
+      "ROGUE_CREATED": "Desafio criado"
+    }
   }
 }

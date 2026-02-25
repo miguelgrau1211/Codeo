@@ -453,5 +453,97 @@
     "LOGOUT": "Tancar sessió",
     "LOGIN": "Iniciar sessió",
     "REGISTER": "Registrar-se"
+  },
+  "ADMIN": {
+    "TITLE": "PANEL DE ADMIN",
+    "GOD_MODE": "Modo Dios",
+    "TAB_USERS": "Usuarios",
+    "TAB_STORY": "Niveles Historia",
+    "TAB_ROGUELIKE": "Niveles Roguelike",
+    "TAB_LOGS": "Logs del Sistema",
+    "TAB_REPORTS": "Reportes",
+    "STAT_ACTIVE_24H": "Activos 24h",
+    "STAT_TOTAL_RUNS": "Total Runs",
+    "STAT_WIN_RATE": "Win Rate",
+    "USERS": {
+      "TITLE": "Gestión de Usuarios",
+      "TOTAL": "Total: {{total}} usuarios",
+      "SEARCH_PH": "Buscar por nombre o email...",
+      "TABLE_ID": "ID",
+      "TABLE_USER": "Usuario",
+      "TABLE_EMAIL": "Email",
+      "TABLE_ROLE": "Rol",
+      "TABLE_STATUS": "Estado",
+      "TABLE_ACTION": "Acción",
+      "ROLE_ADMIN": "Admin",
+      "ROLE_USER": "Usuario",
+      "STATUS_ACTIVE": "Activo",
+      "STATUS_BANNED": "Baneado",
+      "EMPTY": "No se encontraron usuarios",
+      "PAGINATION_PAGE": "Página {{current}} de {{total}}",
+      "PAGINATION_PREV": "⬅ Anterior",
+      "PAGINATION_NEXT": "Siguiente ➡"
+    },
+    "STORY": {
+      "TITLE_ACTIVE": "Niveles Modo Historia (Activos)",
+      "NEW_LEVEL": "+ Nuevo Nivel",
+      "REWARD_XP": "XP",
+      "REWARD_COINS": "💰",
+      "EMPTY_ACTIVE": "No hay niveles activos",
+      "TITLE_DISABLED": "Niveles Historia Desactivados",
+      "DISABLED_AT": "Desactivado el",
+      "REACTIVATE": "Reactivar",
+      "EMPTY_DISABLED": "No hay niveles desactivados"
+    },
+    "ROGUELIKE": {
+      "TITLE_ACTIVE": "Desafíos Roguelike (Activos)",
+      "NEW_CHALLENGE": "+ Nuevo Desafío",
+      "TABLE_DIFF": "Dificultad",
+      "TABLE_NAME": "Nombre del Desafío",
+      "TABLE_REWARD": "Recompensa",
+      "TABLE_ACTIONS": "Acciones",
+      "EMPTY_ACTIVE": "No hay desafíos activos",
+      "TITLE_DISABLED": "Desafíos Roguelike Desactivados",
+      "EMPTY_DISABLED": "No hay desafíos desactivados"
+    },
+    "LOGS": {
+      "TITLE": "Logs de Seguridad",
+      "TABLE_DATE": "Fecha",
+      "TABLE_USER": "Usuario",
+      "TABLE_ACTION": "Acción",
+      "TABLE_DETAILS": "Detalles",
+      "EMPTY": "No hay registros recientes"
+    },
+    "REPORTS": {
+      "TITLE": "Centro de Reportes",
+      "TOTAL": "Total: {{total}} reportes recibidos",
+      "TABLE_CONTACT": "Usuario / Contacto",
+      "TABLE_REPORT": "Reporte",
+      "TABLE_STATUS": "Prioridad / Estado",
+      "TABLE_DATE": "Enviado el",
+      "TABLE_ACTIONS": "Acciones",
+      "STATUS_PENDING": "Pendiente",
+      "STATUS_REVIEW": "En Revisión",
+      "STATUS_SOLVED": "Solucionado",
+      "STATUS_REJECTED": "Rechazado",
+      "STATUS_SPAM": "⚠️ SPAM",
+      "EMPTY": "No hay reportes pendientes. ¡Buen trabajo! 🚀"
+    },
+    "DIFFICULTY": {
+      "EASY": "Fácil",
+      "MEDIUM": "Medio",
+      "HARD": "Difícil",
+      "EXTREME": "Extremo"
+    },
+    "MESSAGES": {
+      "REPORT_UPDATED": "Estado del reporte actualizado",
+      "CONFIRM_DELETE_REPORT": "¿Seguro que quieres eliminar este reporte permanentemente?",
+      "REPORT_DELETED": "Reporte eliminado",
+      "CONFIRM_TOGGLE_LEVEL": "¿Cambiar estado del nivel?",
+      "STORY_UPDATED": "Nivel actualizado",
+      "STORY_CREATED": "Nivel creado",
+      "ROGUE_UPDATED": "Desafío actualizado",
+      "ROGUE_CREATED": "Desafío creado"
+    }
   }
 }

@@ -460,5 +460,97 @@
     "LOGOUT": "Tancar sessió",
     "LOGIN": "Iniciar sessió",
     "REGISTER": "Registrar-se"
+  },
+  "ADMIN": {
+    "TITLE": "PANELL D'ADMIN",
+    "GOD_MODE": "Mode Déu",
+    "TAB_USERS": "Usuaris",
+    "TAB_STORY": "Nivells Història",
+    "TAB_ROGUELIKE": "Nivells Roguelike",
+    "TAB_LOGS": "Logs del sistema",
+    "TAB_REPORTS": "Reports",
+    "STAT_ACTIVE_24H": "Actius 24h",
+    "STAT_TOTAL_RUNS": "Total Runs",
+    "STAT_WIN_RATE": "Win Rate",
+    "USERS": {
+      "TITLE": "Gestió d'usuaris",
+      "TOTAL": "Total: {{total}} usuaris",
+      "SEARCH_PH": "Buscar per nom o email...",
+      "TABLE_ID": "ID",
+      "TABLE_USER": "Usuari",
+      "TABLE_EMAIL": "Email",
+      "TABLE_ROLE": "Rol",
+      "TABLE_STATUS": "Estat",
+      "TABLE_ACTION": "Acció",
+      "ROLE_ADMIN": "Admin",
+      "ROLE_USER": "Usuari",
+      "STATUS_ACTIVE": "Actiu",
+      "STATUS_BANNED": "Banejat",
+      "EMPTY": "No s'han trobat usuaris",
+      "PAGINATION_PAGE": "Pàgina {{current}} de {{total}}",
+      "PAGINATION_PREV": "⬅ Anterior",
+      "PAGINATION_NEXT": "Següent ➡"
+    },
+    "STORY": {
+      "TITLE_ACTIVE": "Nivells Mode Història (Actius)",
+      "NEW_LEVEL": "+ Nou Nivell",
+      "REWARD_XP": "XP",
+      "REWARD_COINS": "💰",
+      "EMPTY_ACTIVE": "No hi ha nivells actius",
+      "TITLE_DISABLED": "Nivells Història Desactivats",
+      "DISABLED_AT": "Desactivat el",
+      "REACTIVATE": "Reactivar",
+      "EMPTY_DISABLED": "No hi ha nivells desactivats"
+    },
+    "ROGUELIKE": {
+      "TITLE_ACTIVE": "Desafiaments Roguelike (Actius)",
+      "NEW_CHALLENGE": "+ Nou Desafiament",
+      "TABLE_DIFF": "Dificultat",
+      "TABLE_NAME": "Nom del Desafiament",
+      "TABLE_REWARD": "Recompensa",
+      "TABLE_ACTIONS": "Accions",
+      "EMPTY_ACTIVE": "No hi ha desafiaments actius",
+      "TITLE_DISABLED": "Desafiaments Roguelike Desactivats",
+      "EMPTY_DISABLED": "No hi ha desafiaments desactivats"
+    },
+    "LOGS": {
+      "TITLE": "Logs de Seguretat",
+      "TABLE_DATE": "Data",
+      "TABLE_USER": "Usuari",
+      "TABLE_ACTION": "Acció",
+      "TABLE_DETAILS": "Detalls",
+      "EMPTY": "No hi ha registres recents"
+    },
+    "REPORTS": {
+      "TITLE": "Centre de Reports",
+      "TOTAL": "Total: {{total}} reportis rebuts",
+      "TABLE_CONTACT": "Usuari / Contacte",
+      "TABLE_REPORT": "Report",
+      "TABLE_STATUS": "Prioritat / Estat",
+      "TABLE_DATE": "Enviat el",
+      "TABLE_ACTIONS": "Accions",
+      "STATUS_PENDING": "Pendent",
+      "STATUS_REVIEW": "A Revisió",
+      "STATUS_SOLVED": "Solucionat",
+      "STATUS_REJECTED": "Rebutjat",
+      "STATUS_SPAM": "⚠️ SPAM",
+      "EMPTY": "No hi ha reports pendents. Bona feina! 🚀"
+    },
+    "DIFFICULTY": {
+      "EASY": "Fàcil",
+      "MEDIUM": "Mitjà",
+      "HARD": "Difícil",
+      "EXTREME": "Extrem"
+    },
+    "MESSAGES": {
+      "REPORT_UPDATED": "Estat del reporti actualitzat",
+      "CONFIRM_DELETE_REPORT": "Esteu segur que voleu suprimir aquest informe permanentment?",
+      "REPORT_DELETED": "Report eliminat",
+      "CONFIRM_TOGGLE_LEVEL": "Canviar estat del nivell?",
+      "STORY_UPDATED": "Nivell actualitzat",
+      "STORY_CREATED": "Nivell creat",
+      "ROGUE_UPDATED": "Desafiament actualitzat",
+      "ROGUE_CREATED": "Desafiament creat"
+    }
   }
 }

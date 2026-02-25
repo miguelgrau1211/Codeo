@@ -453,5 +453,97 @@
     "LOGOUT": "Выйти",
     "LOGIN": "Войти",
     "REGISTER": "Регистрация"
+  },
+  "ADMIN": {
+    "TITLE": "АДМИН-ПАНЕЛЬ",
+    "GOD_MODE": "Режим Бога",
+    "TAB_USERS": "Пользователи",
+    "TAB_STORY": "Уровни истории",
+    "TAB_ROGUELIKE": "Уровни в стиле рогалик",
+    "TAB_LOGS": "Системные журналы",
+    "TAB_REPORTS": "Отчеты",
+    "STAT_ACTIVE_24H": "Активен 24 часа",
+    "STAT_TOTAL_RUNS": "Всего пробегов",
+    "STAT_WIN_RATE": "Процент побед",
+    "USERS": {
+      "TITLE": "Управление пользователями",
+      "TOTAL": "Всего: {{total}} пользователей",
+      "SEARCH_PH": "Поиск по имени или электронной почте...",
+      "TABLE_ID": "ИДЕНТИФИКАТОР",
+      "TABLE_USER": "Пользователь",
+      "TABLE_EMAIL": "Электронная почта",
+      "TABLE_ROLE": "Роль",
+      "TABLE_STATUS": "Состояние",
+      "TABLE_ACTION": "Действие",
+      "ROLE_ADMIN": "Админ",
+      "ROLE_USER": "Пользователь",
+      "STATUS_ACTIVE": "Объект",
+      "STATUS_BANNED": "Запрещено",
+      "EMPTY": "Пользователи не найдены",
+      "PAGINATION_PAGE": "Страница {{current}} из {{total}}",
+      "PAGINATION_PREV": "⬅ Предыдущий",
+      "PAGINATION_NEXT": "Дальше ➡"
+    },
+    "STORY": {
+      "TITLE_ACTIVE": "Уровни сюжетного режима (активный)",
+      "NEW_LEVEL": "+ Новый уровень",
+      "REWARD_XP": "XP",
+      "REWARD_COINS": "💰",
+      "EMPTY_ACTIVE": "Нет активных уровней",
+      "TITLE_DISABLED": "Уровни истории отключены",
+      "DISABLED_AT": "Отключено",
+      "REACTIVATE": "Повторно активировать",
+      "EMPTY_DISABLED": "Нет отключенных уровней"
+    },
+    "ROGUELIKE": {
+      "TITLE_ACTIVE": "Испытания в стиле рогалик (активные)",
+      "NEW_CHALLENGE": "+ Новый вызов",
+      "TABLE_DIFF": "Сложность",
+      "TABLE_NAME": "Название соревнования",
+      "TABLE_REWARD": "Награда",
+      "TABLE_ACTIONS": "Действия",
+      "EMPTY_ACTIVE": "Активных задач нет",
+      "TITLE_DISABLED": "Испытания в стиле рогалик отключены",
+      "EMPTY_DISABLED": "Нет отключенных задач"
+    },
+    "LOGS": {
+      "TITLE": "Журналы безопасности",
+      "TABLE_DATE": "Дата",
+      "TABLE_USER": "Пользователь",
+      "TABLE_ACTION": "Действие",
+      "TABLE_DETAILS": "Подробности",
+      "EMPTY": "Нет недавних записей"
+    },
+    "REPORTS": {
+      "TITLE": "Центр отчетов",
+      "TOTAL": "Всего: получено {{total}} отчетов",
+      "TABLE_CONTACT": "Пользователь / Контакт",
+      "TABLE_REPORT": "Отчет",
+      "TABLE_STATUS": "Приоритет/статус",
+      "TABLE_DATE": "Отправлено",
+      "TABLE_ACTIONS": "Действия",
+      "STATUS_PENDING": "Серьга",
+      "STATUS_REVIEW": "На рассмотрении",
+      "STATUS_SOLVED": "Решено",
+      "STATUS_REJECTED": "Отказался",
+      "STATUS_SPAM": "⚠️ СПАМ",
+      "EMPTY": "Ожидаемых отчетов нет. Хорошая работа! 🚀"
+    },
+    "DIFFICULTY": {
+      "EASY": "Легкий",
+      "MEDIUM": "Половина",
+      "HARD": "Трудный",
+      "EXTREME": "Экстрим"
+    },
+    "MESSAGES": {
+      "REPORT_UPDATED": "Обновлен статус отчета",
+      "CONFIRM_DELETE_REPORT": "Вы уверены, что хотите удалить этот отчет навсегда?",
+      "REPORT_DELETED": "Отчет удален.",
+      "CONFIRM_TOGGLE_LEVEL": "Изменить статус уровня?",
+      "STORY_UPDATED": "Обновленный уровень",
+      "STORY_CREATED": "Созданный уровень",
+      "ROGUE_UPDATED": "Обновленный вызов",
+      "ROGUE_CREATED": "Вызов создан"
+    }
   }
 }

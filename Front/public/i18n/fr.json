@@ -453,5 +453,97 @@
     "LOGOUT": "Déconnexion",
     "LOGIN": "Connexion",
     "REGISTER": "S'inscrire"
+  },
+  "ADMIN": {
+    "TITLE": "PANNEAU D'ADMINISTRATION",
+    "GOD_MODE": "Mode Dieu",
+    "TAB_USERS": "Utilisateurs",
+    "TAB_STORY": "Niveaux d'histoire",
+    "TAB_ROGUELIKE": "Niveaux rogue-like",
+    "TAB_LOGS": "Journaux système",
+    "TAB_REPORTS": "Rapports",
+    "STAT_ACTIVE_24H": "Actif 24 heures",
+    "STAT_TOTAL_RUNS": "Nombre total de courses",
+    "STAT_WIN_RATE": "Taux de victoire",
+    "USERS": {
+      "TITLE": "Gestion des utilisateurs",
+      "TOTAL": "Total : {{total}} utilisateurs",
+      "SEARCH_PH": "Rechercher par nom ou par email...",
+      "TABLE_ID": "IDENTIFIANT",
+      "TABLE_USER": "Utilisateur",
+      "TABLE_EMAIL": "E-mail",
+      "TABLE_ROLE": "Rôle",
+      "TABLE_STATUS": "État",
+      "TABLE_ACTION": "Action",
+      "ROLE_ADMIN": "Administrateur",
+      "ROLE_USER": "Utilisateur",
+      "STATUS_ACTIVE": "Actif",
+      "STATUS_BANNED": "Interdit",
+      "EMPTY": "Aucun utilisateur trouvé",
+      "PAGINATION_PAGE": "Page {{actuelle}} sur {{total}}",
+      "PAGINATION_PREV": "⬅ Précédent",
+      "PAGINATION_NEXT": "Suivant ➡"
+    },
+    "STORY": {
+      "TITLE_ACTIVE": "Niveaux du mode histoire (actifs)",
+      "NEW_LEVEL": "+ Nouveau niveau",
+      "REWARD_XP": "XP",
+      "REWARD_COINS": "💰",
+      "EMPTY_ACTIVE": "Il n'y a pas de niveaux actifs",
+      "TITLE_DISABLED": "Niveaux d'histoire désactivés",
+      "DISABLED_AT": "Désactivé le",
+      "REACTIVATE": "Réactiver",
+      "EMPTY_DISABLED": "Il n'y a aucun niveau désactivé"
+    },
+    "ROGUELIKE": {
+      "TITLE_ACTIVE": "Défis Roguelike (actifs)",
+      "NEW_CHALLENGE": "+ Nouveau défi",
+      "TABLE_DIFF": "Difficulté",
+      "TABLE_NAME": "Nom du défi",
+      "TABLE_REWARD": "Récompense",
+      "TABLE_ACTIONS": "Actes",
+      "EMPTY_ACTIVE": "Il n'y a pas de défis actifs",
+      "TITLE_DISABLED": "Défis Roguelike désactivés",
+      "EMPTY_DISABLED": "Il n'y a aucun défi désactivé"
+    },
+    "LOGS": {
+      "TITLE": "Journaux de sécurité",
+      "TABLE_DATE": "Date",
+      "TABLE_USER": "Utilisateur",
+      "TABLE_ACTION": "Action",
+      "TABLE_DETAILS": "Détails",
+      "EMPTY": "Aucun enregistrement récent"
+    },
+    "REPORTS": {
+      "TITLE": "Centre de rapports",
+      "TOTAL": "Total : {{total}} rapports reçus",
+      "TABLE_CONTACT": "Utilisateur / Contact",
+      "TABLE_REPORT": "Rapport",
+      "TABLE_STATUS": "Priorité/Statut",
+      "TABLE_DATE": "Envoyé le",
+      "TABLE_ACTIONS": "Actes",
+      "STATUS_PENDING": "Boucle",
+      "STATUS_REVIEW": "En cours de révision",
+      "STATUS_SOLVED": "Résolu",
+      "STATUS_REJECTED": "Refusé",
+      "STATUS_SPAM": "⚠️ SPAM",
+      "EMPTY": "Il n'y a aucun rapport en attente. Bon travail! 🚀"
+    },
+    "DIFFICULTY": {
+      "EASY": "Facile",
+      "MEDIUM": "Moitié",
+      "HARD": "Difficile",
+      "EXTREME": "Extrême"
+    },
+    "MESSAGES": {
+      "REPORT_UPDATED": "État du rapport mis à jour",
+      "CONFIRM_DELETE_REPORT": "Êtes-vous sûr de vouloir supprimer définitivement ce rapport ?",
+      "REPORT_DELETED": "Rapport supprimé",
+      "CONFIRM_TOGGLE_LEVEL": "Changer le statut du niveau ?",
+      "STORY_UPDATED": "Niveau mis à jour",
+      "STORY_CREATED": "Niveau créé",
+      "ROGUE_UPDATED": "Défi mis à jour",
+      "ROGUE_CREATED": "Défi créé"
+    }
   }
 }

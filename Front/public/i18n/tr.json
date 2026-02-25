@@ -453,5 +453,97 @@
     "LOGOUT": "Çıkış Yap",
     "LOGIN": "Giriş Yap",
     "REGISTER": "Kayıt Ol"
+  },
+  "ADMIN": {
+    "TITLE": "YÖNETİCİ PANEL",
+    "GOD_MODE": "Tanrı Modu",
+    "TAB_USERS": "Kullanıcılar",
+    "TAB_STORY": "Hikaye Seviyeleri",
+    "TAB_ROGUELIKE": "Rogue benzeri seviyeler",
+    "TAB_LOGS": "Sistem Günlükleri",
+    "TAB_REPORTS": "Raporlar",
+    "STAT_ACTIVE_24H": "24 saat aktif",
+    "STAT_TOTAL_RUNS": "Toplam Çalıştırma",
+    "STAT_WIN_RATE": "Kazanma Oranı",
+    "USERS": {
+      "TITLE": "Kullanıcı Yönetimi",
+      "TOTAL": "Toplam: {{total}} kullanıcı",
+      "SEARCH_PH": "Ada veya e-postaya göre arayın...",
+      "TABLE_ID": "İD",
+      "TABLE_USER": "Kullanıcı",
+      "TABLE_EMAIL": "E-posta",
+      "TABLE_ROLE": "Rol",
+      "TABLE_STATUS": "Durum",
+      "TABLE_ACTION": "Aksiyon",
+      "ROLE_ADMIN": "Yönetici",
+      "ROLE_USER": "Kullanıcı",
+      "STATUS_ACTIVE": "Varlık",
+      "STATUS_BANNED": "Yasaklandı",
+      "EMPTY": "Kullanıcı bulunamadı",
+      "PAGINATION_PAGE": "Sayfa {{güncel}} / {{toplam}}",
+      "PAGINATION_PREV": "⬅ Önceki",
+      "PAGINATION_NEXT": "Sonraki ➡"
+    },
+    "STORY": {
+      "TITLE_ACTIVE": "Hikaye Modu Seviyeleri (Aktif)",
+      "NEW_LEVEL": "+ Yeni Seviye",
+      "REWARD_XP": "XP",
+      "REWARD_COINS": "💰",
+      "EMPTY_ACTIVE": "Aktif seviye yok",
+      "TITLE_DISABLED": "Hikaye Seviyeleri Devre Dışı",
+      "DISABLED_AT": "Devre dışı bırakıldı",
+      "REACTIVATE": "Yeniden etkinleştir",
+      "EMPTY_DISABLED": "Devre dışı bırakılmış seviye yok"
+    },
+    "ROGUELIKE": {
+      "TITLE_ACTIVE": "Roguelike Mücadeleleri (Aktif)",
+      "NEW_CHALLENGE": "+ Yeni Mücadele",
+      "TABLE_DIFF": "Zorluk",
+      "TABLE_NAME": "Mücadelenin Adı",
+      "TABLE_REWARD": "Ödül",
+      "TABLE_ACTIONS": "Eylemler",
+      "EMPTY_ACTIVE": "Aktif zorluk yok",
+      "TITLE_DISABLED": "Roguelike Mücadeleleri Devre Dışı Bırakıldı",
+      "EMPTY_DISABLED": "Engellilerin hiçbir sorunu yok"
+    },
+    "LOGS": {
+      "TITLE": "Güvenlik Günlükleri",
+      "TABLE_DATE": "Tarih",
+      "TABLE_USER": "Kullanıcı",
+      "TABLE_ACTION": "Aksiyon",
+      "TABLE_DETAILS": "Detaylar",
+      "EMPTY": "Yeni kayıt yok"
+    },
+    "REPORTS": {
+      "TITLE": "Rapor Merkezi",
+      "TOTAL": "Toplam: {{total}} rapor alındı",
+      "TABLE_CONTACT": "Kullanıcı / İletişim",
+      "TABLE_REPORT": "Rapor",
+      "TABLE_STATUS": "Öncelik/Durum",
+      "TABLE_DATE": "Gönderildi",
+      "TABLE_ACTIONS": "Eylemler",
+      "STATUS_PENDING": "Küpe",
+      "STATUS_REVIEW": "İnceleniyor",
+      "STATUS_SOLVED": "Çözüldü",
+      "STATUS_REJECTED": "Reddedildi",
+      "STATUS_SPAM": "⚠️ SPAM",
+      "EMPTY": "Bekleyen rapor yok. Aferin! 🚀"
+    },
+    "DIFFICULTY": {
+      "EASY": "Kolay",
+      "MEDIUM": "Yarım",
+      "HARD": "Zor",
+      "EXTREME": "Aşırı"
+    },
+    "MESSAGES": {
+      "REPORT_UPDATED": "Güncellenmiş rapor durumu",
+      "CONFIRM_DELETE_REPORT": "Bu raporu kalıcı olarak silmek istediğinizden emin misiniz?",
+      "REPORT_DELETED": "Rapor silindi",
+      "CONFIRM_TOGGLE_LEVEL": "Seviye durumu değiştirilsin mi?",
+      "STORY_UPDATED": "Güncellenmiş seviye",
+      "STORY_CREATED": "Oluşturulan seviye",
+      "ROGUE_UPDATED": "Güncellenmiş Mücadele",
+      "ROGUE_CREATED": "Meydan okuma oluşturuldu"
+    }
   }
 }
