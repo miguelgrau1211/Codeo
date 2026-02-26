@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ReporteService } from '../../services/reporte.service';
-import { AuthService } from '../../services/auth-service';
-import { UserDataService } from '../../services/user-data-service';
+import { AuthService } from '../../services/auth.service';
+import { UserDataService } from '../../services/user-data.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
 interface Faq {
@@ -13,6 +13,16 @@ interface Faq {
   isFlipped: boolean;
 }
 
+/**
+ * Componente de soporte y ayuda.
+ *
+ * Incluye dos secciones principales:
+ * - FAQ: Preguntas frecuentes con tarjetas interactivas (flip cards).
+ * - Formulario de contacto: Permite enviar reportes de bugs,
+ *   sugerencias o problemas con selección de tipo y prioridad.
+ *
+ * Se autocompleta el email del usuario autenticado desde UserDataService.
+ */
 @Component({
   selector: 'app-soporte',
   standalone: true,

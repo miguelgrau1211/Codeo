@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 
+/**
+ * Componente de mejoras.
+ * Placeholder para futuras funcionalidades de mejoras del jugador.
+ */
 @Component({
   selector: 'app-mejoras',
   imports: [],

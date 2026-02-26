@@ -2,6 +2,13 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
 
+/**
+ * Componente presentacional de un logro individual.
+ *
+ * Tarjeta "Dumb" que renderiza un logro con efectos visuales
+ * basados en su rareza (gradientes, bordes luminosos, hover effects).
+ * Rarezas soportadas: especial, raro, épico, legendario, celestial.
+ */
 @Component({
     selector: 'app-logro',
     standalone: true,

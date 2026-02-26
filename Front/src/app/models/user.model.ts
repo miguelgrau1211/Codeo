@@ -1,3 +1,4 @@
+/** Modelo de un elemento de actividad reciente del usuario. */
 export interface ActivityItem {
   titulo: string;
   subtitulo: string;
@@ -6,6 +7,10 @@ export interface ActivityItem {
   fecha: string;
 }
 
+/**
+ * Modelo central de datos del usuario autenticado.
+ * Corresponde a la respuesta del endpoint GET /api/users/data.
+ */
 export interface UserData {
   nickname: string;
   email: string;
@@ -22,8 +27,10 @@ export interface UserData {
   subscription_date: string;
   rank: number;
   is_premium: boolean;
+  /** ID del tema visual activo (null si usa el por defecto). */
   tema_actual_id?: number | null;
+  /** Preferencias del usuario (idioma, configuraciones, etc.). */
   preferencias?: any;
+  /** Logros desbloqueados pendientes de notificar. */
   nuevos_logros?: any[];
 }
-

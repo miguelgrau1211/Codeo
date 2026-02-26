@@ -2,11 +2,19 @@ import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { AudioService } from '../../services/audio-service';
-import { AuthService } from '../../services/auth-service';
-import { LanguageService, Language } from '../../services/language-service';
+import { AudioService } from '../../services/audio.service';
+import { AuthService } from '../../services/auth.service';
+import { LanguageService, Language } from '../../services/language.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
+/**
+ * Componente de configuración y ajustes.
+ *
+ * Permite al usuario gestionar:
+ * - Audio: Activar/desactivar efectos de sonido.
+ * - Idioma: Cambiar entre los idiomas soportados.
+ * - Cuenta: Cerrar sesión o desactivar la cuenta permanentemente.
+ */
 @Component({
   selector: 'app-configuracion',
   standalone: true,
@@ -20,10 +28,10 @@ export class ConfiguracionComponent {
   public languageService = inject(LanguageService);
   private router = inject(Router);
 
-  // Settings Signals
+  // Señales de configuración
   isMuted = this.audioService.isMuted;
 
-  // UI State
+  // Estado de la interfaz
   showDeleteModal = signal(false);
   showLangModal = signal(false);
   isProcessing = signal(false);
@@ -51,16 +59,15 @@ export class ConfiguracionComponent {
     this.isProcessing.set(true);
     this.authService.logout().subscribe({
       next: () => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/login']);
       },
       error: (err) => {
         console.error('Error logging out:', err);
         sessionStorage.clear();
-        this.router.navigate(['/']);
+        this.router.navigate(['/login']);
       }
     });
   }
-
   confirmDeleteAccount() {
     this.showDeleteModal.set(true);
   }

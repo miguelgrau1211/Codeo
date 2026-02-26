@@ -15,7 +15,7 @@ class TemaController extends Controller
         $temas = Tema::all();
         $locale = $request->header('Accept-Language', 'es');
         $translated = app(\App\Services\TranslationService::class)->translateCollection($temas, $locale, 'tema');
-        return TemaResource::collection($translated);
+        return response()->json(['data' => $translated]);
     }
 
     public function misTemas(Request $request)

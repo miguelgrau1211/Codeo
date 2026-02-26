@@ -76,16 +76,6 @@
     background: #6b7280; /* Slate-500 approx */
   }
 
-  /* Syntax Highlighting Colors */
-  .token-keyword { color: #c678dd; } /* Purple */
-  .token-function { color: #61afef; } /* Blue */
-  .token-string { color: #98c379; } /* Green */
-  .token-number { color: #d19a66; } /* Orange */
-  .token-comment { color: #5c6370; font-style: italic; } /* Grey */
-  .token-variable { color: #e06c75; } /* Red */
-  .token-type { color: #e5c07b; } /* Yellow */
-  .token-operator { color: #56b6c2; } /* Cyan */
-
   @keyframes space-drift {
     0% {
       background-position: 0% 50%;
@@ -121,40 +111,6 @@
 
   .animate-spin-zoom {
     animation: spin-zoom 10s linear infinite;
-  }
-
-  /* Gamified Syntax Highlighting Animations */
-  /* Animations removed to prevent flickering on innerHTML updates. 
-     Future Todo: Implement particle system for typing rewards. */
-
-  .token-keyword {
-    display: inline-block;
-    filter: drop-shadow(0 0 2px rgba(168,85,247,0.3));
-  }
-
-  .token-variable {
-    display: inline-block;
-    color: #f87171; /* red-400 */
-  }
-
-  .token-function {
-    display: inline-block;
-    color: #60a5fa; /* blue-400 */
-  }
-
-  .token-string {
-    display: inline-block;
-    transition: all 0.2s;
-  }
-  .token-string:hover {
-    transform: scale(1.05);
-    text-shadow: 0 0 8px rgba(74, 222, 128, 0.5); /* green-400 glow */
-  }
-
-  .token-number {
-    display: inline-block;
-    font-weight: bold;
-    color: #fbbf24; /* amber-400 */
   }
 
   @keyframes loading {
@@ -200,3 +156,41 @@
     animation: gradient-slow 8s ease infinite;
   }
 }
+
+/* ═══════════════════════════════════════════════════ */
+/* Syntax Highlighting — fuera de @layer para ganar   */
+/* prioridad sobre las utilidades de Tailwind.        */
+/* ═══════════════════════════════════════════════════ */
+.token-keyword {
+  color: #c678dd !important;
+  display: inline-block;
+  filter: drop-shadow(0 0 2px rgba(168,85,247,0.3));
+}
+.token-function {
+  color: #61afef !important;
+  display: inline-block;
+}
+.token-string {
+  color: #98c379 !important;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.token-string:hover {
+  transform: scale(1.05);
+  text-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
+}
+.token-number {
+  color: #fbbf24 !important;
+  display: inline-block;
+  font-weight: bold;
+}
+.token-comment {
+  color: #5c6370 !important;
+  font-style: italic;
+}
+.token-variable {
+  color: #f87171 !important;
+  display: inline-block;
+}
+.token-type { color: #e5c07b !important; }
+.token-operator { color: #56b6c2 !important; }

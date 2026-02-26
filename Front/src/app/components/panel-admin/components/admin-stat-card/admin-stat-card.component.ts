@@ -1,5 +1,11 @@
 import { Component, input } from '@angular/core';
 
+/**
+ * Componente presentacional de tarjeta de estadística del admin.
+ *
+ * Muestra un KPI individual con icono, valor y tendencia opcional.
+ * Usa input signals para máxima compatibilidad con OnPush.
+ */
 @Component({
   selector: 'app-admin-stat-card',
   standalone: true,

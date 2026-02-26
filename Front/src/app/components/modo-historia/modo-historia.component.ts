@@ -2,13 +2,26 @@ import { Component, signal, ViewEncapsulation, OnInit, effect, ChangeDetectionSt
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { EjecutarCodigoService } from '../../services/ejecutar-codigo-service';
-import { ProgresoHistoriaService } from '../../services/progreso-historia-service';
-import { UserDataService } from '../../services/user-data-service';
-import { ThemeService } from '../../services/theme-service';
-import { LanguageService } from '../../services/language-service';
+import { EjecutarCodigoService } from '../../services/ejecutar-codigo.service';
+import { ProgresoHistoriaService } from '../../services/progreso-historia.service';
+import { UserDataService } from '../../services/user-data.service';
+import { ThemeService } from '../../services/theme.service';
+import { LanguageService } from '../../services/language.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
+/**
+ * Componente del modo historia.
+ *
+ * Editor de código con navegación secuencial de niveles educativos:
+ * - Carga el siguiente nivel no completado automáticamente.
+ * - Editor de código con resaltado de sintaxis (Python) y números de línea.
+ * - Panel de instrucciones con contenido teórico HTML.
+ * - Ejecución de código contra test cases del backend.
+ * - Navegación al siguiente nivel tras completar con éxito.
+ * - Reseteo del código al estado inicial del nivel.
+ *
+ * Los datos de progreso se sincronizan con ProgresoHistoriaService.
+ */
 @Component({
   selector: 'app-modo-historia',
   standalone: true,
@@ -21,14 +34,14 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 export class ModoHistoriaComponent implements OnInit {
 
   // ==========================================
-  // UI STATE
+  // ESTADO DE LA INTERFAZ
   // ==========================================
   showIntro = signal(true);
   startExit = signal(false);
   isInstructionsOpen = signal(true);
 
   // ==========================================
-  // LEVEL DATA
+  // DATOS DEL NIVEL
   // ==========================================
   codeContent = signal('');
   currentLevel = signal<number | undefined>(undefined);
@@ -42,7 +55,7 @@ export class ModoHistoriaComponent implements OnInit {
   lineNumbers = signal<number[]>([1]);
 
   // ==========================================
-  // RESET & NAVIGATION
+  // REINICIO Y NAVEGACIÓN
   // ==========================================
   showResetConfirm = signal(false);
   initialCode = signal('');
@@ -50,7 +63,7 @@ export class ModoHistoriaComponent implements OnInit {
   recompensas = signal<any>(null);
 
   // ==========================================
-  // EXECUTION
+  // EJECUCIÓN
   // ==========================================
   executionResult = signal<any>(null);
 
@@ -64,23 +77,23 @@ export class ModoHistoriaComponent implements OnInit {
   ) {
     this.updateCode(this.codeContent());
 
-    // Reactive Data Loading: react to progress signal changes
+    // Carga de datos reactiva: reacciona a cambios en el signal de progreso
     effect(() => {
       const data = this.progresoHistoriaService.progresoSignal();
 
       if (!data?.progreso_detallado) return;
 
-      // Find the first incomplete level
+      // Buscar el primer nivel no completado
       let nextLevel = data.progreso_detallado.find((l: any) => !l.completado);
 
-      // If all completed, show the last level (review mode)
+      // Si todos están completados, mostrar el último nivel (modo repaso)
       if (!nextLevel && data.progreso_detallado.length > 0) {
         nextLevel = data.progreso_detallado[data.progreso_detallado.length - 1];
       }
 
       if (!nextLevel) return;
 
-      // Reset UI state for new level
+      // Reiniciar estado de la interfaz para el nuevo nivel
       this.showNextLevelButton.set(false);
       this.recompensas.set(null);
 
@@ -99,7 +112,7 @@ export class ModoHistoriaComponent implements OnInit {
       this.testCases.set(nextLevel.test_cases || []);
       this.initialCode.set(nextLevel.codigo_inicial || '');
 
-      // Hide loading screen
+      // Ocultar pantalla de carga
       setTimeout(() => {
         this.startExit.set(true);
         setTimeout(() => this.showIntro.set(false), 500);
@@ -108,7 +121,7 @@ export class ModoHistoriaComponent implements OnInit {
   }
 
   // ==========================================
-  // LIFECYCLE
+  // CICLO DE VIDA
   // ==========================================
 
   ngOnInit() {
@@ -123,7 +136,7 @@ export class ModoHistoriaComponent implements OnInit {
   }
 
   // ==========================================
-  // RESET
+  // REINICIO
   // ==========================================
 
   requestReset() {
@@ -145,7 +158,7 @@ export class ModoHistoriaComponent implements OnInit {
   }
 
   // ==========================================
-  // NAVIGATION
+  // NAVEGACIÓN
   // ==========================================
 
   goToNextLevel() {
@@ -153,7 +166,7 @@ export class ModoHistoriaComponent implements OnInit {
     this.startExit.set(false);
 
     this.progresoHistoriaService.getProgresoHistoria().subscribe({
-      error: (e) => console.error('Error loading next level:', e),
+      error: (e) => console.error('Error cargando el siguiente nivel:', e),
     });
   }
 
@@ -162,7 +175,7 @@ export class ModoHistoriaComponent implements OnInit {
   }
 
   // ==========================================
-  // EDITOR
+  // EDITOR DE CÓDIGO
   // ==========================================
 
   onCodeInput(event: Event) {
@@ -195,9 +208,19 @@ export class ModoHistoriaComponent implements OnInit {
   }
 
   // ==========================================
-  // CODE EXECUTION
+  // EJECUCIÓN DE CÓDIGO
   // ==========================================
 
+  /**
+   * Envía el código escrito por el usuario al servidor para su validación en el modo historia.
+   * Modifica el estado `executionResult` para mostrar la pantalla de carga e interactúa
+   * con el backend evaluando el código frente a los casos de prueba del nivel.
+   *
+   * Si las pruebas pasan (response.correcto === true):
+   * 1. Llama al servicio de progreso para actualizar la base de datos marcando el nivel como completado.
+   * 2. Otorga recompensas (experiencia/monedas), racha, o mensajes de subida de nivel mediante `UserDataService`.
+   * 3. Despliega el botón para avanzar al siguiente nivel.
+   */
   ejecutarCodigo() {
     const levelId = this.currentLevel();
     const token = sessionStorage.getItem('token');
@@ -251,9 +274,16 @@ export class ModoHistoriaComponent implements OnInit {
   }
 
   // ==========================================
-  // SYNTAX HIGHLIGHTING (private)
+  // RESALTADO DE SINTAXIS (Interno)
   // ==========================================
 
+  /**
+   * Genera el HTML enriquecido para aplicar resaltado de sintaxis a partir
+   * de código en texto plano utilizando un sistema rudimentario de regex.
+   * Se asignan clases CSS específicas (token-*) para la paleta de colores final.
+   *
+   * @param code El código fuente en texto plano escrito en el editor.
+   */
   private updateCode(code: string) {
     const lines = code.split('\n').length;
     this.lineNumbers.set(Array.from({ length: lines }, (_, i) => i + 1));
@@ -272,27 +302,27 @@ export class ModoHistoriaComponent implements OnInit {
       return key;
     };
 
-    // 1. Strings (Triple & Single) & Comments -> Placeholders
-    // Order matters: Triple quotes -> Single quotes -> Comments
+    // 1. Strings y comentarios -> Placeholders
+    // Orden importante: Triple comillas -> Simples -> Comentarios
 
-    // Triple-quoted strings
+    // Cadenas de texto con comillas triples
     escaped = escaped.replace(/("""[\s\S]*?"""|'''[\s\S]*?''')/g, (match) => createPlaceholder(match, 'token-string'));
 
-    // Single-line strings
-    escaped = escaped.replace(/(['"])(?:(?=(\\?))\\2.)*?\1/g, (match) => createPlaceholder(match, 'token-string'));
+    // Cadenas de texto de una línea
+    escaped = escaped.replace(/"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'/g, (match) => createPlaceholder(match, 'token-string'));
 
-    // Comments
+    // Comentarios (#...)
     escaped = escaped.replace(/#.*/g, (match) => createPlaceholder(match, 'token-comment'));
 
-    // --- NOW IT IS SAFE TO HIGHLIGHT KEYWORDS & LOGIC ---
+    // --- A PARTIR DE AQUI ES SEGURO RESALTAR LOGICA ---
 
-    // 4. Decorators
+    // 4. Decoradores
     escaped = escaped.replace(/@[a-zA-Z_][a-zA-Z0-9_.]*/g, '<span class="token-variable">$&</span>');
 
-    // 5. self / cls
+    // 5. Instancias de clase locales
     escaped = escaped.replace(/\b(self|cls)\b/g, '<span class="token-variable">$1</span>');
 
-    // 6. Keywords
+    // 6. Palabras reservadas (Keywords)
     const keywords = [
       'def', 'return', 'if', 'elif', 'else', 'for', 'while', 'in', 'not', 'and', 'or',
       'is', 'None', 'True', 'False', 'import', 'from', 'as', 'class', 'pass',
@@ -302,7 +332,7 @@ export class ModoHistoriaComponent implements OnInit {
     const keywordRegex = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
     escaped = escaped.replace(keywordRegex, '<span class="token-keyword">$1</span>');
 
-    // 7. Built-in functions
+    // 7. Funciones Built-in
     const builtins = [
       'print', 'len', 'range', 'int', 'str', 'float', 'list', 'dict', 'set',
       'tuple', 'type', 'isinstance', 'input', 'open', 'map', 'filter',
@@ -312,13 +342,13 @@ export class ModoHistoriaComponent implements OnInit {
     const builtinRegex = new RegExp(`\\b(${builtins.join('|')})(?=\\()`, 'g');
     escaped = escaped.replace(builtinRegex, '<span class="token-function">$1</span>');
 
-    // 8. Other function calls
+    // 8. Llamadas a función generales
     escaped = escaped.replace(/([a-zA-Z_][a-zA-Z0-9_]*)(?=\()/g, '<span class="token-function">$1</span>');
 
-    // 9. Numbers
+    // 9. Números
     escaped = escaped.replace(/\b\d+\.?\d*\b/g, '<span class="token-number">$&</span>');
 
-    // --- RESTORE PLACEHOLDERS ---
+    // --- RESTAURAR LOS PLACEHOLDERS ---
     Object.keys(placeholders).forEach((key) => {
       escaped = escaped.replace(key, placeholders[key]);
     });

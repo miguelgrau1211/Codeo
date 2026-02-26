@@ -2,16 +2,30 @@ import { Component, signal, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectio
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { RoguelikeService } from '../../services/roguelike-service';
-import { RoguelikeSessionService, RunStats } from '../../services/roguelike-session-service';
-import { EjecutarCodigoService } from '../../services/ejecutar-codigo-service';
-import { UserDataService } from '../../services/user-data-service';
-import { ThemeService } from '../../services/theme-service';
-import { LanguageService } from '../../services/language-service';
+import { RoguelikeService } from '../../services/roguelike.service';
+import { RoguelikeSessionService, RunStats } from '../../services/roguelike-session.service';
+import { EjecutarCodigoService } from '../../services/ejecutar-codigo.service';
+import { UserDataService } from '../../services/user-data.service';
+import { ThemeService } from '../../services/theme.service';
+import { LanguageService } from '../../services/language.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { NivelRoguelike } from '../../models/level.model';
-import { AuthService } from '../../services/auth-service';
+import { AuthService } from '../../services/auth.service';
 
+/**
+ * Componente del modo infinito (roguelike).
+ *
+ * Juego de supervivencia con mecánicas roguelike:
+ * - Sesión con vidas limitadas y temporizador regresivo.
+ * - Niveles aleatorios con dificultad escalada por progresión.
+ * - Editor de código con resaltado de sintaxis (Python).
+ * - Tienda de mejoras (compra de upgrades con monedas de sesión).
+ * - Pantalla de Game Over con estadísticas finales.
+ * - Sistema server-authoritative: el servidor valida todo el estado.
+ * - Botón de debug (solo admin) para modificar el tiempo.
+ *
+ * Toda la lógica de sesión se gestiona a través de RoguelikeSessionService.
+ */
 @Component({
   selector: 'app-modo-infinito',
   standalone: true,
@@ -24,14 +38,14 @@ import { AuthService } from '../../services/auth-service';
 export class ModoInfinitoComponent implements OnInit, OnDestroy {
 
   // ==========================================
-  // UI STATE
+  // ESTADO DE LA INTERFAZ
   // ==========================================
   showIntro = signal(true);
   startExit = signal(false);
   isInstructionsOpen = signal(true);
 
   // ==========================================
-  // LEVEL DATA
+  // DATOS DEL NIVEL
   // ==========================================
   titulo = signal<string>(this.langService.translate('DASHBOARD.LOADING'));
   descripcion = signal<string>('');
@@ -40,7 +54,7 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   nivelId = signal<number | null>(null);
 
   // ==========================================
-  // EDITOR STATE
+  // ESTADO DEL EDITOR
   // ==========================================
   codeContent = signal('');
   highlightedCode = signal<SafeHtml>('');
@@ -48,34 +62,34 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   lineNumbers = signal<number[]>([1]);
 
   // ==========================================
-  // GAME STATE (Server-authoritative)
+  // ESTADO DEL JUEGO (Server-authoritative)
   // ==========================================
   lives = signal(3);
   coins = signal(0);
   nivelesCompletados = signal(0);
 
   // ==========================================
-  // TIMER STATE
+  // ESTADO DEL TEMPORIZADOR
   // ==========================================
   timeRemaining = signal(300);
   timerPaused = signal(false);
   private timerInterval: ReturnType<typeof setInterval> | null = null;
 
   // ==========================================
-  // VISUAL STATE
+  // ESTADO VISUAL
   // ==========================================
   isExecuting = signal(false);
   isShowingTimeOut = signal(false);
   isFadingOutTimeOut = signal(false);
 
   // ==========================================
-  // GAME OVER
+  // FIN DEL JUEGO
   // ==========================================
   showGameOver = signal(false);
   gameOverStats = signal<RunStats | null>(null);
 
   // ==========================================
-  // SHOP & UPGRADES
+  // TIENDA Y MEJORAS
   // ==========================================
   showMejoras = signal(false);
   purchasedUpgrades = signal<{ id: number; icon: string; nombre: string; tipo: string }[]>([]);
@@ -84,20 +98,21 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   mejoraFeedback = signal<string | null>(null);
 
   // ==========================================
-  // RESET
+  // REINICIO Y TUTORIAL
   // ==========================================
   showResetConfirm = signal(false);
   initialCode = signal('');
   showNextLevelButton = signal(false);
   recompensas = signal<any>(null);
+  showTutorial = signal(false);
 
   // ==========================================
-  // EXECUTION OUTPUT
+  // SALIDA DE EJECUCIÓN
   // ==========================================
   executionResult = signal<any>(null);
 
   // ==========================================
-  // DEBUG (Admin only)
+  // DEPURACIÓN (Solo Admin)
   // ==========================================
   isAdmin = computed(() => this.authService.isAdminSignal());
 
@@ -115,10 +130,15 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   }
 
   // ==========================================
-  // LIFECYCLE
+  // CICLO DE VIDA
   // ==========================================
 
   ngOnInit() {
+    const hasSeenTutorial = localStorage.getItem('roguelike_tutorial_seen');
+    if (!hasSeenTutorial) {
+      this.showTutorial.set(true);
+    }
+    
     this.startNewSession();
     
     // Validar admin para el botón de debug
@@ -135,8 +155,13 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
     this.stopTimer();
   }
 
+  dismissTutorial() {
+    localStorage.setItem('roguelike_tutorial_seen', 'true');
+    this.showTutorial.set(false);
+  }
+
   // ==========================================
-  // HELPERS
+  // FUNCIONES AUXILIARES
   // ==========================================
 
   getDifficultyKey(): string {
@@ -150,7 +175,7 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   }
 
   // ==========================================
-  // SESSION MANAGEMENT
+  // GESTIÓN DE LA SESIÓN
   // ==========================================
 
   startNewSession() {
@@ -172,7 +197,7 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   }
 
   // ==========================================
-  // TIMER MANAGEMENT
+  // GESTIÓN DEL TEMPORIZADOR
   // ==========================================
 
   startTimer() {
@@ -401,7 +426,7 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   }
 
   // ==========================================
-  // CODE EXECUTION
+  // EJECUCIÓN DE CÓDIGO
   // ==========================================
 
   ejecutarCodigo() {
@@ -422,7 +447,7 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
           this.isExecuting.set(false);
 
           if (response.correcto) {
-            // SUCCESS
+            // ÉXITO
             this.stopTimer();
             this.showNextLevelButton.set(true);
             this.nivelesCompletados.update(n => n + 1);
@@ -446,7 +471,7 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
               this.recompensas.set(response.recompensas);
             }
           } else {
-            // FAILURE
+            // FALLO
             this.resumeTimer();
 
             this.roguelikeSessionService.registerFailure().subscribe({
@@ -486,7 +511,7 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   }
 
   // ==========================================
-  // GAME OVER
+  // FIN DE PARTIDA
   // ==========================================
 
   triggerGameOver(stats: RunStats) {
@@ -508,7 +533,7 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   }
 
   // ==========================================
-  // SHOP
+  // TIENDA
   // ==========================================
 
   buyBox() {
@@ -565,7 +590,7 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   }
 
   // ==========================================
-  // RESET & UI
+  // REINICIO E INTERFAZ
   // ==========================================
 
   requestReset() {
@@ -590,7 +615,7 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   }
 
   // ==========================================
-  // EDITOR
+  // EDITOR DE CÓDIGO
   // ==========================================
 
   onCodeInput(event: Event) {
@@ -623,9 +648,16 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   }
 
   // ==========================================
-  // SYNTAX HIGHLIGHTING (private)
+  // RESALTADO DE SINTAXIS (Interno)
   // ==========================================
 
+  /**
+   * Genera el HTML enriquecido para aplicar resaltado de sintaxis a partir
+   * de código en texto plano utilizando un sistema de regex.
+   * Asigna clases CSS específicas (token-*) para la paleta de colores.
+   * 
+   * @param code El código fuente en texto plano escrito en el editor.
+   */
   private updateCode(code: string) {
     const lines = code.split('\n').length;
     this.lineNumbers.set(Array.from({ length: lines }, (_, i) => i + 1));
@@ -651,7 +683,7 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
     escaped = escaped.replace(/("""[\s\S]*?"""|'''[\s\S]*?''')/g, (match) => createPlaceholder(match, 'token-string'));
 
     // Single-line strings
-    escaped = escaped.replace(/(['"])(?:(?=(\\?))\\2.)*?\1/g, (match) => createPlaceholder(match, 'token-string'));
+    escaped = escaped.replace(/"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'/g, (match) => createPlaceholder(match, 'token-string'));
 
     // Comments
     escaped = escaped.replace(/#.*/g, (match) => createPlaceholder(match, 'token-comment'));

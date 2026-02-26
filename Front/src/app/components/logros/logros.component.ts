@@ -3,11 +3,19 @@ import { Component, signal, computed, inject, OnInit, ChangeDetectionStrategy } 
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { LogroComponent } from './logro/logro.component';
-import { LogrosService } from '../../services/logros-service';
+import { LogrosService } from '../../services/logros.service';
 import { Logro, PorcentajeLogrosResponse } from '../../models/achievement.model';
 
 type FiltroLogros = 'todos' | 'desbloqueados' | 'bloqueados';
-
+/**
+ * Componente de logros (achievements).
+ *
+ * Muestra la colección completa de logros del juego con:
+ * - Filtros: todos, desbloqueados, bloqueados.
+ * - Barra de progreso con porcentaje de completitud.
+ * - Tarjetas individuales por logro (delegadas al componente LogroComponent).
+ * - Easter egg oculto que se activa con 5 clics rápidos.
+ */
 @Component({
     selector: 'app-logros',
     standalone: true,

@@ -1,16 +1,31 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, HostListener, ChangeDetectorRef, inject, ChangeDetectionStrategy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth-service';
+import { AuthService } from '../../services/auth.service';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
+/**
+ * Validador personalizado que comprueba que las contraseñas coincidan.
+ * Compara los campos 'password' y 'password_confirm' del FormGroup.
+ */
 export const matchPasswordValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const password = control.get('password');
   const confirm = control.get('password_confirm');
   return password && confirm && password.value !== confirm.value ? { passwordMismatch: true } : null;
 };
 
+/**
+ * Componente de registro de usuarios.
+ *
+ * Formulario reactivo con validaciones estrictas:
+ * - Nickname requerido.
+ * - Email con formato válido.
+ * - Contraseña con requisitos de seguridad (≥8 chars, mayúscula, número, especial).
+ * - Confirmación de contraseña (validador cruzado matchPasswordValidator).
+ *
+ * Incluye efecto visual de fondo con vídeo y canvas animado.
+ */
 @Component({
   selector: 'app-registro',
   standalone: true,
@@ -165,9 +180,12 @@ export class RegistroComponent implements AfterViewInit, OnDestroy {
   }
 
   errorMessage = signal<string>(''); // Para errores generales
+  isLoading = signal<boolean>(false);
 
   onSubmit() {
     this.errorMessage.set(''); // Limpiar errores previos
+
+    if (this.isLoading()) return; // Evitar doble envío
 
     if (this.registroForm.invalid) {
       this.registroForm.markAllAsTouched();
@@ -185,13 +203,16 @@ export class RegistroComponent implements AfterViewInit, OnDestroy {
     };
 
     console.log('Enviando payload al backend...');
+    this.isLoading.set(true); // Activa el spinner visual
 
     this.authService.register(payload).subscribe({
       next: (response) => {
+        this.isLoading.set(false);
         console.log('Registro exitoso:', response);
         this.router.navigate(['/login']);
       },
       error: (error) => {
+        this.isLoading.set(false);
         console.error('Error detallado del backend:', error);
 
         if (error.status === 422 && error.error?.errors) {

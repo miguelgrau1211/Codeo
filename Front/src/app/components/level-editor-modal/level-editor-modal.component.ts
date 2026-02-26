@@ -1,10 +1,20 @@
 import { Component, EventEmitter, Input, Output, signal, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { StoryLevel, RoguelikeLevel } from '../../services/admin-service';
+import { StoryLevel, RoguelikeLevel } from '../../services/admin.service';
 
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
+/**
+ * Componente modal para crear/editar niveles.
+ *
+ * Modal reutilizable que soporta edición de niveles de historia y roguelike.
+ * Se configura mediante @Input:
+ * - levelType: 'story' | 'roguelike' (determina los campos del formulario).
+ * - levelData: null para crear, objeto para editar.
+ *
+ * Incluye gestión dinámica de test cases (añadir/eliminar pares input/output).
+ */
 @Component({
     selector: 'app-level-editor-modal',
     standalone: true,

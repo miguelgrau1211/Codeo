@@ -2,11 +2,22 @@ import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, ChangeDetec
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth-service';
-import { ProgresoHistoriaService } from '../../services/progreso-historia-service';
+import { AuthService } from '../../services/auth.service';
+import { ProgresoHistoriaService } from '../../services/progreso-historia.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
+/**
+ * Componente de inicio de sesión.
+ *
+ * Gestiona la autenticación del usuario mediante:
+ * - Formulario reactivo con email y contraseña.
+ * - Botón de autenticación con Google (OAuth redirect).
+ * - Validación de tokens existentes en sessionStorage y URL params.
+ * - Efecto visual de fondo con vídeo y canvas animado.
+ *
+ * Tras login exitoso, redirige al dashboard precargando los datos del usuario.
+ */
 @Component({
   selector: 'app-login',
   standalone: true,

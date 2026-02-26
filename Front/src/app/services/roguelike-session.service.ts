@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { NotificationService } from './notification.service';
 
+/** Estadísticas de la partida roguelike finalizada. */
 export interface RunStats {
   niveles_superados: number;
   monedas_obtenidas: number;
@@ -10,6 +11,7 @@ export interface RunStats {
   vidas_restantes: number;
 }
 
+/** Logro desbloqueado durante la sesión. */
 export interface Achievement {
   id: number;
   nombre: string;
@@ -18,6 +20,7 @@ export interface Achievement {
   rareza: string;
 }
 
+/** Estado de la sesión roguelike devuelto por el servidor. */
 export interface RoguelikeSession {
   lives: number;
   time_remaining: number;
@@ -45,15 +48,29 @@ export interface RoguelikeSession {
   };
 }
 
+/**
+ * Servicio de sesión roguelike.
+ *
+ * Gestiona todo el ciclo de vida de una partida roguelike:
+ * - Inicio de sesión y niveles.
+ * - Control de tiempo (check-time).
+ * - Registro de éxitos y fallos.
+ * - Tienda de mejoras (compra de upgrades).
+ * - Notificación automática de logros desbloqueados.
+ *
+ * Toda la lógica de juego es server-authoritative:
+ * el cliente solo envía intenciones y el servidor calcula consecuencias.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class RoguelikeSessionService {
-  private apiUrl = 'http://localhost/api/roguelike';
-  private notificationService = inject(NotificationService);
+  private readonly apiUrl = 'http://localhost/api/roguelike';
+  private readonly notificationService = inject(NotificationService);
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
+  /** Genera las cabeceras HTTP con el token de autenticación. */
   private getHeaders() {
     const token = sessionStorage.getItem('token') || '';
     return {
@@ -62,21 +79,17 @@ export class RoguelikeSessionService {
     };
   }
 
+  /** Inicia una nueva sesión roguelike (resetea vidas, tiempo, etc.). */
   startSession(): Observable<RoguelikeSession> {
     return this.http.post<RoguelikeSession>(
       `${this.apiUrl}/start-session`, {},
       { headers: this.getHeaders() }
     ).pipe(
-      tap(res => {
-        if (res.nuevos_logros && res.nuevos_logros.length > 0) {
-          res.nuevos_logros.forEach(logro => {
-            this.notificationService.showAchievement(logro);
-          });
-        }
-      })
+      tap(res => this.notificarLogros(res))
     );
   }
 
+  /** Inicia un nuevo nivel dentro de la sesión activa. */
   startLevel(): Observable<RoguelikeSession> {
     return this.http.post<RoguelikeSession>(
       `${this.apiUrl}/start-level`, {},
@@ -84,51 +97,37 @@ export class RoguelikeSessionService {
     );
   }
 
+  /** Verifica el tiempo restante con el servidor (fuente de verdad). */
   checkTime(): Observable<RoguelikeSession> {
     return this.http.get<RoguelikeSession>(
       `${this.apiUrl}/check-time`,
       { headers: this.getHeaders() }
     ).pipe(
-      tap(res => {
-        if (res.nuevos_logros && res.nuevos_logros.length > 0) {
-          res.nuevos_logros.forEach(logro => {
-            this.notificationService.showAchievement(logro);
-          });
-        }
-      })
+      tap(res => this.notificarLogros(res))
     );
   }
 
+  /** Registra un fallo (respuesta incorrecta) en la sesión actual. */
   registerFailure(): Observable<RoguelikeSession> {
     return this.http.post<RoguelikeSession>(
       `${this.apiUrl}/failure`, {},
       { headers: this.getHeaders() }
     ).pipe(
-      tap(res => {
-        if (res.nuevos_logros && res.nuevos_logros.length > 0) {
-          res.nuevos_logros.forEach(logro => {
-            this.notificationService.showAchievement(logro);
-          });
-        }
-      })
+      tap(res => this.notificarLogros(res))
     );
   }
 
+  /** Registra un éxito (respuesta correcta) en la sesión actual. */
   registerSuccess(): Observable<RoguelikeSession> {
     return this.http.post<RoguelikeSession>(
       `${this.apiUrl}/success`, {},
       { headers: this.getHeaders() }
     ).pipe(
-      tap(res => {
-        if (res.nuevos_logros && res.nuevos_logros.length > 0) {
-          res.nuevos_logros.forEach(logro => {
-            this.notificationService.showAchievement(logro);
-          });
-        }
-      })
+      tap(res => this.notificarLogros(res))
     );
   }
 
+  /** Obtiene el estado actual de la sesión roguelike. */
   getSession(): Observable<RoguelikeSession> {
     return this.http.get<RoguelikeSession>(
       `${this.apiUrl}/session`,
@@ -136,6 +135,7 @@ export class RoguelikeSessionService {
     );
   }
 
+  /** Obtiene 3 mejoras aleatorias disponibles para comprar. */
   getMejorasRandom(): Observable<any[]> {
     return this.http.get<any[]>(
       'http://localhost/api/mejoras/random',
@@ -143,6 +143,7 @@ export class RoguelikeSessionService {
     );
   }
 
+  /** Compra una mejora dentro de la sesión roguelike. */
   buyMejora(mejoraId: number): Observable<any> {
     return this.http.post<any>(
       `${this.apiUrl}/buy-mejora`,
@@ -151,11 +152,23 @@ export class RoguelikeSessionService {
     );
   }
 
+  /** [Solo Admin] Fija el tiempo restante a 10s para pruebas. */
   debugSetTime(): Observable<RoguelikeSession> {
     return this.http.post<RoguelikeSession>(
       `${this.apiUrl}/debug-set-time`, {},
       { headers: this.getHeaders() }
     );
   }
-}
 
+  /**
+   * Muestra notificaciones para logros desbloqueados en la respuesta.
+   * Método helper privado para evitar duplicación de código.
+   */
+  private notificarLogros(res: RoguelikeSession): void {
+    if (res.nuevos_logros && res.nuevos_logros.length > 0) {
+      res.nuevos_logros.forEach(logro => {
+        this.notificationService.showAchievement(logro);
+      });
+    }
+  }
+}

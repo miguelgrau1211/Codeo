@@ -1,3 +1,4 @@
+/** Modelo de un logro individual con estado de desbloqueo. */
 export interface Logro {
   id: number;
   nombre: string;
@@ -10,12 +11,15 @@ export interface Logro {
   fecha_obtencion: string | null;
 }
 
+/** Respuesta del endpoint de logros desbloqueados. */
 export interface LogrosDesbloqueadosResponse {
   usuario_id: number;
-  progreso_logros: string; // "3/26"
+  /** Formato: "3/26" (obtenidos/total). */
+  progreso_logros: string;
   lista_completa: Logro[];
 }
 
+/** Respuesta del endpoint de porcentaje de logros. */
 export interface PorcentajeLogrosResponse {
   usuario_id: number;
   logros_obtenidos: number;
@@ -23,4 +27,3 @@ export interface PorcentajeLogrosResponse {
   porcentaje: number;
   texto: string;
 }
-

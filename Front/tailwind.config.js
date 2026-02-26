@@ -21,6 +21,9 @@ module.exports = {
         'accent-color': 'var(--accent-color)',
         'text-main': 'var(--text-main)',
         'text-muted': 'var(--text-muted)',
+        'editor-surface': 'var(--editor-surface, #020617)',
+        'terminal-surface': 'var(--terminal-surface, var(--secondary-bg))',
+        'terminal-header': 'var(--terminal-header, rgba(0,0,0,0.4))',
       },
       animation: {
         blob: "blob 7s infinite",

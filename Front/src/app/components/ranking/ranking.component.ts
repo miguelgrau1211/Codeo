@@ -2,10 +2,17 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { RankingService } from '../../services/ranking-service';
-import { UserDataService } from '../../services/user-data-service';
+import { RankingService } from '../../services/ranking.service';
+import { UserDataService } from '../../services/user-data.service';
 import { RankingUser } from '../../models/ranking.model';
-
+/**
+ * Componente de ranking global.
+ *
+ * Muestra la clasificación de usuarios ordenados por experiencia.
+ * Los 3 primeros se muestran en un podio destacado; el resto en lista.
+ * Los datos se cargan del RankingService y los datos del usuario actual
+ * se leen desde la caché global del UserDataService.
+ */
 @Component({
   selector: 'app-ranking',
   standalone: true,

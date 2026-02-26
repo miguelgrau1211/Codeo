@@ -1,12 +1,20 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { UserDataService } from '../../services/user-data-service';
-import { ThemeService } from '../../services/theme-service';
-import { LanguageService } from '../../services/language-service';
+import { UserDataService } from '../../services/user-data.service';
+import { ThemeService } from '../../services/theme.service';
+import { LanguageService } from '../../services/language.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { ActivityItem } from '../../models/user.model';
-
+/**
+ * Componente de perfil de usuario.
+ *
+ * Muestra toda la información del jugador:
+ * - Avatar, nickname, nivel, XP, monedas, racha.
+ * - Estadísticas de progreso (historia y roguelike).
+ * - Actividad reciente.
+ * - Modal de edición de perfil (nickname y avatar con DiceBear API).
+ */
 @Component({
   selector: 'app-perfil',
   standalone: true,
@@ -60,7 +68,7 @@ export class PerfilComponent {
   recentActivity = signal<ActivityItem[]>([]);
   isLoadingActivity = signal(true);
 
-  // Modal State
+  // Estado del modal de edición
   isEditModalOpen = signal(false);
   editNickname = signal('');
   editAvatarUrl = signal('');
@@ -80,6 +88,9 @@ export class PerfilComponent {
     });
   }
 
+  /**
+   * Abre el modal de edición y precarga los datos actuales del usuario.
+   */
   openEditModal() {
     const user = this.userData();
     if (!user) return;
@@ -89,10 +100,16 @@ export class PerfilComponent {
     this.saveFeedback.set(null);
   }
 
+  /**
+   * Cierra el modal de edición de perfil.
+   */
   closeEditModal() {
     this.isEditModalOpen.set(false);
   }
 
+  /**
+   * Genera un avatar aleatorio usando la API de DiceBear.
+   */
   generateRandomAvatar() {
     const seeds = ['Felix', 'Aneka', 'Zoe', 'Bear', 'Tiger', 'Leo', 'Max', 'Luna', 'Bella', 'Charlie', 'Milo', 'Simba', 'Coco', 'Rocky'];
     const randomSeed = seeds[Math.floor(Math.random() * seeds.length)] + Math.floor(Math.random() * 1000);
@@ -100,6 +117,10 @@ export class PerfilComponent {
     this.editAvatarUrl.set(newUrl);
   }
 
+  /**
+   * Envía los cambios del perfil (nickname/avatar) al servidor para su actualización.
+   * Si la operación es exitosa, refresca la señal global de datos del usuario.
+   */
   saveProfile() {
     if (this.isSaving()) return;
 
@@ -125,7 +146,7 @@ export class PerfilComponent {
     });
   }
 
-  // Inputs binding helpers
+  // Funciones auxiliares para enlazar inputs sin NgModel directo
   updateNickname(event: Event) {
     this.editNickname.set((event.target as HTMLInputElement).value);
   }

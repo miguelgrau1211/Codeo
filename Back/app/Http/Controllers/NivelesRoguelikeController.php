@@ -110,7 +110,85 @@ class NivelesRoguelikeController extends Controller
         return response()->json($data, 200);
     }
 
-    //Eliminar un nivel
+    /**
+     * Devuelve los niveles roguelike desactivados.
+     */
+    public function desactivados()
+    {
+        $niveles = NivelRoguelikeDesactivado::orderBy('fecha_desactivacion', 'desc')->get();
+        return response()->json($niveles, 200);
+    }
+
+    /**
+     * Alterna el estado de un nivel roguelike (Activar/Desactivar).
+     */
+    public function toggleStatus(Request $request, $id)
+    {
+        try {
+            // 1. Intentar desactivar (si está en la tabla principal)
+            $nivel = NivelRoguelike::find($id);
+
+            if ($nivel) {
+                return DB::transaction(function () use ($nivel, $request) {
+                    NivelRoguelikeDesactivado::create([
+                        'nivel_id_original' => $nivel->id,
+                        'dificultad' => $nivel->dificultad,
+                        'titulo' => $nivel->titulo,
+                        'descripcion' => $nivel->descripcion,
+                        'test_cases' => $nivel->test_cases,
+                        'recompensa_monedas' => $nivel->recompensa_monedas,
+                        'motivo' => $request->input('motivo', 'Desactivado por administrador'),
+                        'fecha_desactivacion' => now()
+                    ]);
+
+                    $nivel->delete();
+
+                    AdminLog::create([
+                        'user_id' => Auth::id(),
+                        'action' => 'DISABLE_LEVEL_ROGUELIKE',
+                        'details' => "Desactivó nivel roguelike: {$nivel->titulo} (ID: {$nivel->id})",
+                    ]);
+
+                    return response()->json(['message' => 'Nivel desactivado correctamente'], 200);
+                });
+            }
+
+            // 2. Intentar activar (buscar en tabla de desactivados)
+            $desactivado = NivelRoguelikeDesactivado::where('nivel_id_original', $id)
+                ->orWhere('id', $id)
+                ->first();
+
+            if ($desactivado) {
+                return DB::transaction(function () use ($desactivado) {
+                    $nuevoNivel = NivelRoguelike::create([
+                        'id' => $desactivado->nivel_id_original,
+                        'dificultad' => $desactivado->dificultad,
+                        'titulo' => $desactivado->titulo,
+                        'descripcion' => $desactivado->descripcion,
+                        'test_cases' => $desactivado->test_cases,
+                        'recompensa_monedas' => $desactivado->recompensa_monedas,
+                    ]);
+
+                    $desactivado->delete();
+
+                    AdminLog::create([
+                        'user_id' => Auth::id(),
+                        'action' => 'ENABLE_LEVEL_ROGUELIKE',
+                        'details' => "Reactivó nivel roguelike: {$nuevoNivel->titulo} (ID: {$nuevoNivel->id})",
+                    ]);
+
+                    return response()->json(['message' => 'Nivel reactivado correctamente'], 200);
+                });
+            }
+
+            return response()->json(['message' => 'Nivel no encontrado'], 404);
+
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error al cambiar estado: ' . $e->getMessage()], 500);
+        }
+    }
+
+    // Eliminar un nivel
     public function destroy($id)
     {
         NivelRoguelike::destroy($id);

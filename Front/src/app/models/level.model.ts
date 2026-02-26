@@ -1,3 +1,4 @@
+/** Modelo de un nivel del modo roguelike (infinito). */
 export interface NivelRoguelike {
   id: number;
   dificultad: string;
@@ -7,6 +8,7 @@ export interface NivelRoguelike {
   test_cases?: any[];
 }
 
+/** Modelo de un nivel del modo historia con progreso del usuario. */
 export interface NivelHistoria {
   nivel_id: number;
   orden: number;
@@ -19,10 +21,10 @@ export interface NivelHistoria {
   test_cases?: any[];
 }
 
+/** Respuesta completa del progreso del usuario en modo historia. */
 export interface ProgresoHistoriaResponse {
   usuario_id: number;
   niveles_completados: number;
   total_niveles: number;
   progreso_detallado: NivelHistoria[];
 }
-

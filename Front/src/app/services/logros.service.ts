@@ -1,16 +1,23 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LogrosDesbloqueadosResponse, PorcentajeLogrosResponse } from '../models/achievement.model';
 
+/**
+ * Servicio de logros (achievements).
+ *
+ * Comunica con el backend para obtener la lista de logros
+ * del usuario con su estado de desbloqueo y las estadísticas
+ * de completitud general.
+ */
 @Injectable({
     providedIn: 'root',
 })
 export class LogrosService {
     private readonly apiUrl = 'http://localhost/api/users';
+    private readonly http = inject(HttpClient);
 
-    constructor(private readonly http: HttpClient) { }
-
+    /** Genera las cabeceras HTTP con el token de autenticación. */
     private getHeaders(): HttpHeaders {
         const token = sessionStorage.getItem('token') ?? '';
         return new HttpHeaders({
@@ -32,7 +39,7 @@ export class LogrosService {
 
     /**
      * GET /api/users/porcentaje-logros
-     * Devuelve estadísticas de completitud.
+     * Devuelve estadísticas de completitud (porcentaje, total, obtenidos).
      */
     getPorcentajeLogros(): Observable<PorcentajeLogrosResponse> {
         return this.http.get<PorcentajeLogrosResponse>(
@@ -41,4 +48,3 @@ export class LogrosService {
         );
     }
 }
-

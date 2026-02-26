@@ -346,6 +346,7 @@
     "CONFIRM_PASS": "Confirm Password",
     "CONFIRM_PASSWORD_LABEL": "Confirm",
     "SUBMIT": "Create Account",
+    "CREATING_ACCOUNT": "Creating account",
     "HAVE_ACCOUNT": "Are you already part of Codeo?",
     "ALREADY_MEMBER": "Already have an account?",
     "LOGIN_LINK": "Login",
@@ -484,7 +485,15 @@
       "EXTRA_LIFE_DESC": "Start with an extra life on each run.",
       "EXTRA_TIME_NAME": "Extra Time",
       "EXTRA_TIME_DESC": "Adds 30 seconds to the level timer."
-    }
+    },
+    "TUTORIAL_TITLE": "How to play Survival",
+    "TUTORIAL_DESC": "Welcome to the <strong class=\"text-red-500\">Infinite Mode</strong>. Here you will have to solve coding challenges to survive. Time is ticking, and if you submit wrong code or run out of time, you will lose lives.",
+    "TUTORIAL_KEY_CONCEPTS": "Key Survival Concepts",
+    "TUTORIAL_VAR_INPUT": "Input Variable: input_data",
+    "TUTORIAL_VAR_INPUT_DESC": "In each level, the system injects a global variable named <code class=\"text-accent-color bg-black/40 px-2 py-0.5 rounded border border-accent-color/20 font-bold\">input_data</code>. This variable <strong class=\"text-white\">is an array (list)</strong> containing the test data for the current level. You can access values using indices, for example: <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 rounded border border-white/10 font-mono\">input_data[0]</code>, <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 rounded border border-white/10 font-mono\">input_data[1]</code>, etc.",
+    "TUTORIAL_GEN_OUTPUT": "Generate Output: print()",
+    "TUTORIAL_GEN_OUTPUT_DESC": "Validation reads what your code prints to the console. Use <code class=\"text-accent-color bg-black/40 px-2 py-0.5 rounded border border-accent-color/20 font-bold\">print()</code> to send your final answer exactly matching the format of the \"EXPECTED OUTPUT\" on the left.",
+    "TUTORIAL_GOT_IT": "GOT IT!"
   },
   "ADMIN": {
     "TITLE": "ADMIN PANEL",

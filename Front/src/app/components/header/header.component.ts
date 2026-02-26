@@ -1,8 +1,16 @@
 import { Component, signal, effect, inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
-import { AuthService } from '../../services/auth-service';
+import { AuthService } from '../../services/auth.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+/**
+ * Componente de cabecera principal.
+ *
+ * Barra de navegación superior que incluye enlaces a las secciones principales,
+ * botón de admin (si aplica), y se oculta automáticamente en rutas de
+ * autenticación (login, registro, landing).
+ * Escucha eventos de NavigationEnd para actualizar su visibilidad.
+ */
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -67,11 +75,21 @@ export class HeaderComponent {
   }
 
   logout() {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('user');
-    this.isLoggedIn.set(false);
-    this.isAdmin.set(false);
-    this.router.navigate(['/login']);
+    this.authService.logout().subscribe({
+      next: () => {
+        this.isLoggedIn.set(false);
+        this.isAdmin.set(false);
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error('Logout falló', err);
+        // Fallback en caso de que el backend falle para forzar limpieza
+        sessionStorage.clear();
+        this.isLoggedIn.set(false);
+        this.isAdmin.set(false);
+        this.router.navigate(['/login']);
+      }
+    });
   }
 }
 

@@ -16,13 +16,16 @@ class CreateUserAction
      */
     public function execute(UserRegistrationData $data): Usuario
     {
+        $avatarUrl = $data->avatarUrl
+            ?? 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . urlencode($data->nickname);
+
         return Usuario::create([
             'nickname' => $data->nickname,
             'nombre' => $data->nombre,
             'apellidos' => $data->apellidos,
             'email' => $data->email,
             'password' => Hash::make($data->password),
-            'avatar_url' => $data->avatarUrl,
+            'avatar_url' => $avatarUrl,
             'terminos_aceptados' => $data->terminosAceptados,
         ]);
     }

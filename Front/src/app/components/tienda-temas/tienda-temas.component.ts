@@ -1,11 +1,20 @@
 import { Component, inject, OnInit, signal, ChangeDetectionStrategy, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ThemeService, Tema } from '../../services/theme-service';
-import { UserDataService } from '../../services/user-data-service';
+import { ThemeService, Tema } from '../../services/theme.service';
+import { UserDataService } from '../../services/user-data.service';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
-import { LanguageService } from '../../services/language-service';
+import { LanguageService } from '../../services/language.service';
 
+/**
+ * Componente de la tienda de temas visuales.
+ *
+ * Permite al usuario explorar, comprar y activar temas:
+ * - Catálogo de temas con previsualizaciones.
+ * - Modal de confirmación de compra con validación de monedas.
+ * - Activación de temas comprados (aplica CSS variables en tiempo real).
+ * - Sincronización con UserDataService para las monedas del jugador.
+ */
 @Component({
   selector: 'app-tienda-temas',
   standalone: true,

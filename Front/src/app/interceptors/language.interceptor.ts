@@ -1,32 +1,34 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { LanguageService } from '../services/language-service';
+import { LanguageService } from '../services/language.service';
 
 /**
- * Attaches the current app language as the `Accept-Language` HTTP header
- * on every request directed to the backend API.
+ * Interceptor funcional de idioma.
  *
- * The Laravel backend reads this header in TranslationService::resolveLocale()
- * to translate dynamic DB content (level titles, descriptions, etc.)
- * before returning the JSON response.
+ * Adjunta la cabecera `Accept-Language` con el idioma activo
+ * a todas las peticiones HTTP dirigidas al backend (API Laravel).
  *
- * We skip i18n JSON file fetches (./i18n/*.json) since those are static
- * assets served by the Angular dev server, not the Laravel API.
+ * El backend usa esta cabecera en TranslationService::resolveLocale()
+ * para traducir contenido dinámico de la BD (títulos, descripciones, etc.)
+ * antes de devolver la respuesta JSON.
+ *
+ * Se excluyen:
+ * - Peticiones a archivos JSON de i18n (assets estáticos del frontend).
+ * - Peticiones a dominios externos (CDNs, APIs de terceros).
  */
 export const languageInterceptor: HttpInterceptorFn = (req, next) => {
-    // Skip static i18n asset fetches — they don't go through Laravel
+    // Excluir peticiones a archivos de traducción estáticos
     if (req.url.includes('/i18n/') && req.url.endsWith('.json')) {
         return next(req);
     }
 
-    // Skip any request that is clearly not to our API
-    // (e.g. external CDNs, Google Translate proxy, etc.)
+    // Excluir peticiones a dominios externos (no nuestra API)
     if (req.url.startsWith('http') && !req.url.includes('/api/')) {
         return next(req);
     }
 
     const langService = inject(LanguageService);
-    const lang = langService.currentLang(); // reactive signal value
+    const lang = langService.currentLang();
 
     const cloned = req.clone({
         setHeaders: {
@@ -36,4 +38,3 @@ export const languageInterceptor: HttpInterceptorFn = (req, next) => {
 
     return next(cloned);
 };
-

@@ -1,3 +1,4 @@
+/** Modelo de un usuario en la tabla de ranking global. */
 export interface RankingUser {
   name: string;
   level: number;
@@ -6,4 +7,3 @@ export interface RankingUser {
   rank: number;
   badges: string[];
 }
-

@@ -2,9 +2,9 @@ import { Component, signal, inject, OnInit, computed, OnDestroy } from '@angular
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { AdminService, User, DashboardStats, AdminLog, StoryLevel, RoguelikeLevel } from '../../services/admin-service';
+import { AdminService, User, DashboardStats, AdminLog, StoryLevel, RoguelikeLevel } from '../../services/admin.service';
 import { ReporteService } from '../../services/reporte.service';
-import { ThemeService } from '../../services/theme-service';
+import { ThemeService } from '../../services/theme.service';
 import { AdminStatCardComponent } from './components/admin-stat-card/admin-stat-card.component';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { LevelEditorModalComponent } from '../level-editor-modal/level-editor-modal.component';
@@ -12,8 +12,20 @@ import { LevelEditorModalComponent } from '../level-editor-modal/level-editor-mo
 
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
-import { LanguageService } from '../../services/language-service';
+import { LanguageService } from '../../services/language.service';
 
+/**
+ * Componente del panel de administración.
+ *
+ * Dashboard CRUD completo para administradores con pestañas:
+ * - Usuarios: Listado paginado con búsqueda, ordenación y ban/unban.
+ * - Niveles Historia: CRUD de niveles con activación/desactivación.
+ * - Niveles Roguelike: CRUD de desafíos con gestión de dificultad.
+ * - Logs: Auditoría de acciones administrativas con filtros.
+ * - Reportes: Gestión de reportes de usuarios (estado + eliminación).
+ *
+ * Implementa caché con signals para evitar recargas innecesarias.
+ */
 @Component({
   selector: 'app-panel-admin',
   standalone: true,

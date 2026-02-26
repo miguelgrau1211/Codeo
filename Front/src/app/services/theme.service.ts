@@ -1,10 +1,11 @@
 import { Injectable, signal, inject, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap, map } from 'rxjs';
-import { UserDataService } from './user-data-service';
+import { UserDataService } from './user-data.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
+/** Modelo de un tema visual de la tienda. */
 export interface Tema {
   id: number;
   nombre: string;
@@ -15,20 +16,31 @@ export interface Tema {
   preview_img: string;
 }
 
+/**
+ * Servicio de temas visuales.
+ *
+ * Gestiona el sistema de theming dinámico de la aplicación:
+ * - Carga y aplicación de temas comprados por el usuario.
+ * - Sincronización con el backend (tema activo persistido en BD).
+ * - Aplicación de variables CSS en tiempo real.
+ * - Re-aplicación automática del tema al navegar entre rutas.
+ *
+ * El tema activo se aplica como CSS custom properties en :root.
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
-  private http = inject(HttpClient);
-  private userDataService = inject(UserDataService);
-  private router = inject(Router);
-  private apiUrl = 'http://localhost/api';
+  private readonly http = inject(HttpClient);
+  private readonly userDataService = inject(UserDataService);
+  private readonly router = inject(Router);
+  private readonly apiUrl = 'http://localhost/api';
 
-  // State
-  currentTheme = signal<Tema | null>(null);
-  
+  /** Signal reactivo con el tema actualmente activo. */
+  readonly currentTheme = signal<Tema | null>(null);
+
   constructor() {
-    // Automatically apply theme variables when the current theme changes or route changes
+    // Aplicar tema automáticamente cuando cambia el signal
     effect(() => {
       const theme = this.currentTheme();
       if (theme) {
@@ -39,7 +51,7 @@ export class ThemeService {
       }
     });
 
-    // Listen to router changes to ensure theme is applied on navigation
+    // Re-aplicar tema al navegar entre rutas
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
@@ -51,7 +63,7 @@ export class ThemeService {
       }
     });
 
-    // Sync theme when user data is loaded
+    // Sincronizar tema cuando se cargan los datos del usuario
     effect(() => {
       const userData = this.userDataService.userDataSignal();
       if (userData) {
@@ -62,7 +74,6 @@ export class ThemeService {
             if (active) this.currentTheme.set(active);
           });
         } else {
-          // No theme active? Load default (first one available)
           this.getTemas().subscribe(temas => {
             if (temas.length > 0) {
               this.currentTheme.set(temas[0]);
@@ -73,17 +84,21 @@ export class ThemeService {
     });
   }
 
-  private clearTheme() {
+  /** Restaura los colores por defecto (Deep Space) cuando no hay tema activo. */
+  private clearTheme(): void {
     const root = document.documentElement;
-    // Fallback to Deep Space colors (our new default)
     root.style.setProperty('--primary-bg', '#050a14');
     root.style.setProperty('--secondary-bg', '#0a1020');
     root.style.setProperty('--accent-color', '#8b5cf6');
     root.style.setProperty('--text-main', '#e2e8f0');
     root.style.setProperty('--text-muted', '#64748b');
+    root.style.setProperty('--editor-surface', '#020617');
+    root.style.setProperty('--terminal-surface', '#0a1020');
+    root.style.setProperty('--terminal-header', 'rgba(0,0,0,0.4)');
     root.style.removeProperty('--editor-bg-img');
   }
 
+  /** Genera las cabeceras HTTP con el token de autenticación. */
   private getHeaders() {
     const token = sessionStorage.getItem('token');
     return {
@@ -94,22 +109,33 @@ export class ThemeService {
     };
   }
 
+  /** Obtiene todos los temas disponibles en la tienda. */
   getTemas(): Observable<Tema[]> {
     return this.http.get<{ data: Tema[] }>(`${this.apiUrl}/temas`, this.getHeaders()).pipe(
       map(response => response.data)
     );
   }
 
+  /** Obtiene los temas que el usuario ya ha comprado. */
   getMisTemas(): Observable<Tema[]> {
     return this.http.get<{ data: Tema[] }>(`${this.apiUrl}/temas/mis-temas`, this.getHeaders()).pipe(
       map(response => response.data)
     );
   }
 
+  /**
+   * Compra un tema para el usuario actual.
+   * @param temaId ID del tema a comprar.
+   */
   comprarTema(temaId: number): Observable<any> {
     return this.http.post(`${this.apiUrl}/temas/${temaId}/comprar`, {}, this.getHeaders());
   }
 
+  /**
+   * Activa un tema comprado como tema actual del usuario.
+   * Actualiza automáticamente el signal currentTheme.
+   * @param temaId ID del tema a activar.
+   */
   activarTema(temaId: number): Observable<any> {
     return this.http
       .post<{ message: string; tema: Tema }>(`${this.apiUrl}/temas/${temaId}/activar`, {}, this.getHeaders())
@@ -120,9 +146,12 @@ export class ThemeService {
       );
   }
 
-  private applyTheme(tema: Tema) {
+  /**
+   * Aplica las variables CSS de un tema en :root.
+   * Limpia propiedades dinámicas que puedan no existir en todos los temas.
+   */
+  private applyTheme(tema: Tema): void {
     const root = document.documentElement;
-    // Clear dynamic properties that might not be in all themes
     root.style.removeProperty('--editor-bg-img');
 
     Object.entries(tema.css_variables).forEach(([key, value]) => {
@@ -130,4 +159,3 @@ export class ThemeService {
     });
   }
 }
-

@@ -20,6 +20,9 @@ class TemaSeeder extends Seeder
                     '--accent-color' => '#8b5cf6',
                     '--text-main' => '#e2e8f0',
                     '--text-muted' => '#64748b',
+                    '--editor-surface' => '#020617',
+                    '--terminal-surface' => '#0a0e1a',
+                    '--terminal-header' => 'rgba(0,0,0,0.5)',
                     '--editor-bg-img' => '/modo-historia/fondo-alternativo.png',
                 ],
                 'preview_img' => 'assets/themes/deep-space.png',
@@ -34,6 +37,9 @@ class TemaSeeder extends Seeder
                     '--accent-color' => '#3b82f6',
                     '--text-main' => '#f8fafc',
                     '--text-muted' => '#94a3b8',
+                    '--editor-surface' => '#0c1222',
+                    '--terminal-surface' => '#141d2f',
+                    '--terminal-header' => 'rgba(0,0,0,0.4)',
                 ],
                 'preview_img' => 'assets/themes/default-dark.png',
             ],
@@ -42,11 +48,14 @@ class TemaSeeder extends Seeder
                 'descripcion' => 'Modo claro oficial. Suavizado para no cansar la vista.',
                 'precio' => 0,
                 'css_variables' => [
-                    '--primary-bg' => '#e2e8f0', // Soft gray-blue instead of white
-                    '--secondary-bg' => '#f1f5f9', // Very soft gray
+                    '--primary-bg' => '#e2e8f0',
+                    '--secondary-bg' => '#f1f5f9',
                     '--accent-color' => '#2563eb',
                     '--text-main' => '#1e293b',
                     '--text-muted' => '#475569',
+                    '--editor-surface' => '#f8fafc',
+                    '--terminal-surface' => '#e8edf4',
+                    '--terminal-header' => 'rgba(203,213,225,0.6)',
                 ],
                 'preview_img' => 'assets/themes/light-mode.png',
             ],
@@ -60,6 +69,9 @@ class TemaSeeder extends Seeder
                     '--accent-color' => '#f013bd',
                     '--text-main' => '#00fff5',
                     '--text-muted' => '#700fb0',
+                    '--editor-surface' => '#09090f',
+                    '--terminal-surface' => '#12121f',
+                    '--terminal-header' => 'rgba(0,0,0,0.6)',
                 ],
                 'preview_img' => 'assets/themes/neon-cyber.png',
             ],
@@ -73,6 +85,9 @@ class TemaSeeder extends Seeder
                     '--accent-color' => '#f0a500',
                     '--text-main' => '#e8f5e9',
                     '--text-muted' => '#a5d6a7',
+                    '--editor-surface' => '#142214',
+                    '--terminal-surface' => '#1e3520',
+                    '--terminal-header' => 'rgba(0,0,0,0.4)',
                 ],
                 'preview_img' => 'assets/themes/forest-zen.png',
             ],
@@ -86,13 +101,16 @@ class TemaSeeder extends Seeder
                     '--accent-color' => '#ffdd00',
                     '--text-main' => '#ffffff',
                     '--text-muted' => '#446688',
+                    '--editor-surface' => '#000e18',
+                    '--terminal-surface' => '#001828',
+                    '--terminal-header' => 'rgba(0,0,0,0.5)',
                 ],
                 'preview_img' => 'assets/themes/midnight-ocean.png',
             ],
         ];
 
         foreach ($temas as $tema) {
-            Tema::firstOrCreate(
+            Tema::updateOrCreate(
                 ['nombre' => $tema['nombre']],
                 $tema
             );

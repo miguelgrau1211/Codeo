@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { ProgresoHistoriaService } from '../../services/progreso-historia-service';
-import { UserDataService } from '../../services/user-data-service';
-import { ThemeService } from '../../services/theme-service';
-import { AuthService } from '../../services/auth-service';
+import { ProgresoHistoriaService } from '../../services/progreso-historia.service';
+import { UserDataService } from '../../services/user-data.service';
+import { ThemeService } from '../../services/theme.service';
+import { AuthService } from '../../services/auth.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
-// Stripe.js global types
+// Tipos globales para Stripe.js
 declare const Stripe: any;
 
 interface Activity {
@@ -36,6 +36,18 @@ interface BattlePassReward {
   themeVars?: Record<string, string>;
 }
 
+/**
+ * Componente del dashboard principal.
+ *
+ * Pantalla principal del usuario autenticado que muestra:
+ * - Estadísticas del jugador (nivel, XP, monedas, racha, ranking).
+ * - Progreso en el modo historia (barra de progreso y último nivel).
+ * - Actividad reciente del usuario.
+ * - Estado y compra del Pase de Batalla (integración con Stripe).
+ * - Accesos directos a las secciones principales del juego.
+ *
+ * Es un componente "Smart" que orquesta datos de múltiples servicios.
+ */
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -54,14 +66,14 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
   // Exponer el signal de admin al template
   readonly isAdmin = this.authService.isAdminSignal;
 
-  // Recent Activity Data
+  // Datos de Actividad Reciente
   recentActivity = signal<Activity[]>([
     { id: 1, type: 'complete', title: 'Completado "Bucles For"', xpEarned: 150, time: 'Hace 2h' },
     { id: 2, type: 'achievement', title: 'Logro Desbloqueado: "Bug Hunter"', xpEarned: 300, time: 'Hace 5h' },
     { id: 3, type: 'challenge', title: 'Derrotaste al Boss "NullPointer"', xpEarned: 500, time: 'Ayer' }
   ]);
 
-  // Refactored logic:
+  // Lógica refactorizada:
   serviceProgreso = this.progresoHistoriaService.progresoSignal;
 
   stats_historia = computed(() => {
@@ -98,23 +110,23 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
   
   userData = computed(() => this.userDataService.userDataSignal());
 
-  // --- Premium / Battle Pass ---
+  // --- Premium / Pase de Batalla ---
   isPremium = this.userDataService.isPremium;
 
-  // --- Payment Modal State ---
+  // --- Estado del Modal de Pago ---
   showPaymentModal = signal(false);
   paymentStep = signal<'loading' | 'form' | 'processing' | 'success' | 'error'>('loading');
   paymentError = signal<string | null>(null);
   stripeCardReady = signal(false);
   cardHolder = signal('');
 
-  // Stripe internals (not signals - mutable references)
+  // Variables internas de Stripe (no son señales - referencias mutables)
   private stripe: any = null;
   private cardElement: any = null;
   private clientSecret: string | null = null;
   private stripeElementMounted = false;
 
-  // --- Battle Pass Logic ---
+  // --- Lógica del Pase de Batalla ---
   battlePassRewards = signal<BattlePassReward[]>([
     { 
       level: 5, type: 'theme', value: 'Cyber Volcanic', icon: '🌋', label: 'Cyber Volcanic',
@@ -153,7 +165,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     return Math.min(100, (curLevel / lastRewardLevel) * 100);
   });
 
-  // Init logic
+  // Lógica de inicialización
   ngOnInit() {
     if (!this.serviceProgreso()) {
       this.progresoHistoriaService.getProgresoHistoria().subscribe();
@@ -166,7 +178,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  // Mount Stripe Element when the modal container appears in the DOM
+  // Montar el elemento de Stripe cuando el contenedor del modal aparece en el DOM
   ngAfterViewChecked() {
     if (this.showPaymentModal() && this.paymentStep() === 'form' && !this.stripeElementMounted) {
       const container = document.getElementById('stripe-card-element');
@@ -177,14 +189,14 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  // Sidebar State
+  // Estado de la barra lateral (Sidebar)
   isSidebarOpen = signal(true);
 
   toggleSidebar() {
     this.isSidebarOpen.update(v => !v);
   }
 
-  // --- Stripe Payment Methods ---
+  // --- Métodos de pago con Stripe ---
 
   openPaymentModal() {
     this.paymentStep.set('loading');
@@ -200,7 +212,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
       'Accept': 'application/json'
     };
 
-    // Step 1: Get Stripe status and publishable key
+    // Paso 1: Obtener estado de Stripe y clave pública
     this.http.get<any>('http://localhost/api/battle-pass/status', { headers }).subscribe({
       next: (statusRes) => {
         const publishableKey = statusRes.stripe_publishable_key;
@@ -211,7 +223,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
           return;
         }
 
-        // Step 2: Create PaymentIntent on Backend
+        // Paso 2: Crear PaymentIntent en el Backend
         this.http.post<any>('http://localhost/api/battle-pass/create-intent', {}, { headers }).subscribe({
           next: (intentRes) => {
             if (!intentRes.success) {
@@ -222,11 +234,11 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
 
             this.clientSecret = intentRes.client_secret;
 
-            // Step 3: Initialize Stripe.js and Elements
+            // Paso 3: Inicializar Stripe.js y Elements
             this.stripe = Stripe(publishableKey);
             const elements = this.stripe.elements();
 
-            // Create a styled Card Element
+            // Crear un elemento de tarjeta (Card Element) con estilos
             this.cardElement = elements.create('card', {
               style: {
                 base: {
@@ -246,7 +258,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
               hidePostalCode: true,
             });
 
-            // Listen for card readiness/errors
+            // Escuchar cambios de estado o errores en la tarjeta
             this.cardElement.on('change', (event: any) => {
               if (event.error) {
                 this.paymentError.set(event.error.message);
@@ -256,8 +268,20 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
               this.stripeCardReady.set(event.complete);
             });
 
-            // Show the form
+            // Esperar al evento 'ready' de Stripe para confirmar que está montado
+            this.cardElement.on('ready', () => {
+              this.stripeCardReady.set(false); // Ready pero aún sin datos completos
+            });
+
+            // Mostrar el formulario y montar tras renderizado del DOM
             this.paymentStep.set('form');
+            setTimeout(() => {
+              const container = document.getElementById('stripe-card-element');
+              if (container && this.cardElement && !this.stripeElementMounted) {
+                this.cardElement.mount('#stripe-card-element');
+                this.stripeElementMounted = true;
+              }
+            }, 100);
           },
           error: (err) => {
             this.paymentError.set(err.error?.message || 'Error al conectar con la pasarela de pagos.');
@@ -295,12 +319,17 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
       return;
     }
 
-    console.log('🔵 [PAYMENT] Iniciando procesamiento con Stripe...');
+    if (!this.stripeElementMounted) {
+      this.paymentError.set('El formulario de pago aún no está listo. Espera un momento e inténtalo de nuevo.');
+      return;
+    }
+
+    console.log('🔵 [PAGO] Iniciando procesamiento con Stripe...');
     this.paymentStep.set('processing');
     this.paymentError.set(null);
 
     try {
-      // Step 4: Confirm payment with Stripe.js
+      // Paso 4: Confirmar el pago con Stripe.js
       const { error, paymentIntent } = await this.stripe.confirmCardPayment(
         this.clientSecret,
         {
@@ -323,7 +352,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
       console.log('🟢 [STRIPE] PaymentIntent status:', paymentIntent.status);
 
       if (paymentIntent.status === 'succeeded') {
-        // Step 5: Notify our backend to activate premium status
+        // Paso 5: Notificar a nuestro backend para activar el estado premium
         console.log('🔵 [BACKEND] Notificando confirmación al servidor...');
         const token = sessionStorage.getItem('token');
         this.http.post<any>('http://localhost/api/battle-pass/confirm', 

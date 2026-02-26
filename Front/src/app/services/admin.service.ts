@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+/** Modelo de usuario para la vista de administración. */
 export interface User {
     id: number;
     nickname: string;
@@ -11,6 +12,7 @@ export interface User {
     es_admin: boolean | number;
 }
 
+/** Respuesta paginada genérica del backend (Laravel). */
 export interface PaginatedResponse<T> {
     current_page: number;
     data: T[];
@@ -27,31 +29,36 @@ export interface PaginatedResponse<T> {
     total: number;
 }
 
-export interface PaginatedResponse<T> {
-    data: T[];
-    current_page: number;
-    last_page: number;
-    total: number;
-    per_page: number;
-}
-
+/**
+ * Servicio de administración.
+ *
+ * Gestiona todas las operaciones CRUD del panel de administración:
+ * - Usuarios (listar, eliminar, banear/desbanear).
+ * - Niveles de historia y roguelike (CRUD + activar/desactivar).
+ * - Estadísticas del dashboard y logs de auditoría.
+ *
+ * Incluye caché reactiva con signals para niveles de historia y roguelike,
+ * evitando peticiones innecesarias al cambiar de pestaña.
+ */
 @Injectable({
     providedIn: 'root'
 })
 export class AdminService {
-    private http = inject(HttpClient);
-    private apiUrl = 'http://localhost/api/admin';
+    private readonly http = inject(HttpClient);
+    private readonly apiUrl = 'http://localhost/api/admin';
 
-    // State Cache
+    /** Caché reactiva de niveles de historia (paginados). */
     storyState = signal<{ data: StoryLevel[], page: number, total: number, last_page: number, loaded: boolean }>({
         data: [], page: 1, total: 0, last_page: 1, loaded: false
     });
 
+    /** Caché reactiva de niveles roguelike (paginados). */
     roguelikeState = signal<{ data: RoguelikeLevel[], page: number, total: number, last_page: number, loaded: boolean }>({
         data: [], page: 1, total: 0, last_page: 1, loaded: false
     });
 
-    private getHeaders() {
+    /** Genera las cabeceras HTTP con el token de autenticación. */
+    private getHeaders(): HttpHeaders {
         const token = sessionStorage.getItem('token');
         return new HttpHeaders({
             'Authorization': `Bearer ${token}`,
@@ -59,6 +66,7 @@ export class AdminService {
         });
     }
 
+    /** Obtiene la lista paginada de usuarios con filtros opcionales de búsqueda y orden. */
     getUsers(page: number = 1, search: string = '', sortBy: string = 'id', sortOrder: 'asc' | 'desc' = 'desc'): Observable<PaginatedResponse<User>> {
         let url = `${this.apiUrl}/users?page=${page}&sort_by=${sortBy}&sort_order=${sortOrder}`;
         if (search) {
@@ -69,24 +77,28 @@ export class AdminService {
         });
     }
 
+    /** Elimina permanentemente un usuario por su ID. */
     deleteUser(id: number): Observable<any> {
         return this.http.delete(`${this.apiUrl}/users/${id}`, {
             headers: this.getHeaders()
         });
     }
 
+    /** Activa o desactiva un usuario (ban/unban). */
     toggleUserStatus(id: number, motivo: string = 'Desactivado por el administrador'): Observable<any> {
         return this.http.post(`${this.apiUrl}/users/${id}/toggle-status`, { motivo }, {
             headers: this.getHeaders()
         });
     }
 
+    /** Obtiene las estadísticas generales del dashboard de administración. */
     getStats(): Observable<DashboardStats> {
         return this.http.get<DashboardStats>(`${this.apiUrl}/stats`, {
             headers: this.getHeaders()
         });
     }
 
+    /** Obtiene los logs de auditoría del administrador con filtro por acción. */
     getLogs(page: number = 1, action: string = ''): Observable<PaginatedResponse<AdminLog>> {
         let url = `${this.apiUrl}/logs?page=${page}`;
         if (action) {
@@ -97,58 +109,72 @@ export class AdminService {
         });
     }
 
-    // Niveles historia
+    // ── Niveles de Historia ────────────────────────────────
+
+    /** Obtiene la lista paginada de niveles de historia activos. */
     getStoryLevels(page: number = 1): Observable<PaginatedResponse<StoryLevel>> {
         return this.http.get<PaginatedResponse<StoryLevel>>(`${this.apiUrl}/niveles-historia?page=${page}`, { headers: this.getHeaders() });
     }
 
+    /** Obtiene todos los niveles de historia desactivados. */
     getStoryLevelsDesactivados(): Observable<StoryLevel[]> {
         return this.http.get<StoryLevel[]>(`${this.apiUrl}/niveles-historia/desactivados`, { headers: this.getHeaders() });
     }
 
+    /** Activa o desactiva un nivel de historia. */
     toggleStoryLevelStatus(id: number, motivo: string = 'Admin action'): Observable<any> {
         return this.http.post(`${this.apiUrl}/niveles-historia/${id}/toggle-status`, { motivo }, { headers: this.getHeaders() });
     }
 
+    /** Crea un nuevo nivel de historia. */
     createStoryLevel(data: any): Observable<StoryLevel> {
         return this.http.post<StoryLevel>(`${this.apiUrl}/niveles-historia`, data, { headers: this.getHeaders() });
     }
 
+    /** Actualiza un nivel de historia existente. */
     updateStoryLevel(id: number, data: any): Observable<StoryLevel> {
         return this.http.put<StoryLevel>(`${this.apiUrl}/niveles-historia/${id}`, data, { headers: this.getHeaders() });
     }
 
-    // Niveles roguelike
+    // ── Niveles Roguelike ──────────────────────────────────
+
+    /** Obtiene la lista paginada de niveles roguelike activos. */
     getRoguelikeLevels(page: number = 1): Observable<PaginatedResponse<RoguelikeLevel>> {
         return this.http.get<PaginatedResponse<RoguelikeLevel>>(`${this.apiUrl}/niveles-roguelike?page=${page}`, { headers: this.getHeaders() });
     }
 
+    /** Obtiene un nivel de historia específico por su ID (datos completos). */
     getStoryLevel(id: number): Observable<StoryLevel> {
         return this.http.get<StoryLevel>(`${this.apiUrl}/niveles-historia/${id}`, { headers: this.getHeaders() });
     }
 
+    /** Obtiene un nivel roguelike específico por su ID (datos completos). */
     getRoguelikeLevel(id: number): Observable<RoguelikeLevel> {
         return this.http.get<RoguelikeLevel>(`${this.apiUrl}/niveles-roguelike/${id}`, { headers: this.getHeaders() });
     }
 
+    /** Obtiene todos los niveles roguelike desactivados. */
     getRoguelikeLevelsDesactivados(): Observable<RoguelikeLevel[]> {
         return this.http.get<RoguelikeLevel[]>(`${this.apiUrl}/niveles-roguelike/desactivados`, { headers: this.getHeaders() });
     }
 
+    /** Activa o desactiva un nivel roguelike. */
     toggleRoguelikeLevelStatus(id: number, motivo: string = 'Admin action'): Observable<any> {
         return this.http.post(`${this.apiUrl}/niveles-roguelike/${id}/toggle-status`, { motivo }, { headers: this.getHeaders() });
     }
 
+    /** Crea un nuevo nivel roguelike. */
     createRoguelikeLevel(data: any): Observable<RoguelikeLevel> {
-        // Las rutas protegidas de CREATE/UPDATE están en /api/admin/niveles-roguelike
         return this.http.post<RoguelikeLevel>(`${this.apiUrl}/niveles-roguelike`, data, { headers: this.getHeaders() });
     }
 
+    /** Actualiza un nivel roguelike existente. */
     updateRoguelikeLevel(id: number, data: any): Observable<RoguelikeLevel> {
         return this.http.put<RoguelikeLevel>(`${this.apiUrl}/niveles-roguelike/${id}`, data, { headers: this.getHeaders() });
     }
 }
 
+/** Estadísticas generales del panel de administración. */
 export interface DashboardStats {
     total_users: number;
     active_users_24h: number;
@@ -156,6 +182,7 @@ export interface DashboardStats {
     success_rate: number;
 }
 
+/** Registro de log de auditoría de acciones del administrador. */
 export interface AdminLog {
     id: number;
     user_id: number;
@@ -165,6 +192,7 @@ export interface AdminLog {
     created_at: string;
 }
 
+/** Modelo de un nivel del modo historia. */
 export interface StoryLevel {
     id: number;
     orden: number;
@@ -172,16 +200,19 @@ export interface StoryLevel {
     descripcion: string;
     recompensa_exp: number;
     recompensa_monedas: number;
-    nivel_id_original?: number; // Para desactivados
+    /** ID original del nivel (solo presente en niveles desactivados). */
+    nivel_id_original?: number;
     fecha_desactivacion?: string;
 }
 
+/** Modelo de un nivel del modo roguelike (infinito). */
 export interface RoguelikeLevel {
     id: number;
     dificultad: string;
     titulo: string;
     descripcion: string;
     recompensa_monedas: number;
+    /** ID original del nivel (solo presente en niveles desactivados). */
     nivel_id_original?: number;
     fecha_desactivacion?: string;
 }

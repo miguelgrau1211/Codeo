@@ -3,6 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
+/**
+ * Componente de la página de aterrizaje (landing page).
+ *
+ * Primera página que ve el usuario no autenticado.
+ * Incluye secciones de presentación, features destacadas,
+ * estadísticas de engagement y call-to-action hacia registro/login.
+ */
 @Component({
   selector: 'app-landing-page',
   standalone: true,

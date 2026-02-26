@@ -241,18 +241,30 @@
                 }
 
                 <div class="pt-6">
-                    <button type="submit"
-                        class="w-full group relative px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-bold text-xl tracking-wide hover:shadow-lg hover:shadow-purple-500/40 transition-all duration-300 transform hover:-translate-y-1 text-center overflow-hidden">
+                    <button type="submit" [disabled]="isLoading()"
+                        class="w-full group relative px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-bold text-xl tracking-wide hover:shadow-lg hover:shadow-purple-500/40 transition-all duration-300 transform hover:-translate-y-1 text-center overflow-hidden disabled:opacity-75 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none">
+                        
+                        @if (!isLoading()) {
                         <div
-                            class="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-700 ease-out -skew-x-12 origin-left -translate-x-full">
+                            class="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-700 ease-out -skew-x-12 origin-left -translate-x-full border-transparent">
                         </div>
+                        }
+
                         <span class="relative z-10 flex items-center justify-center gap-2">
-                            <span>{{ 'REGISTER.SUBMIT' | translate }}</span>
-                            <svg class="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                            </svg>
+                            @if (isLoading()) {
+                                <svg class="animate-spin -ml-1 mr-3 h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span>{{ 'REGISTER.CREATING_ACCOUNT' | translate }}...</span>
+                            } @else {
+                                <span>{{ 'REGISTER.SUBMIT' | translate }}</span>
+                                <svg class="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                                </svg>
+                            }
                         </span>
                     </button>
                 </div>

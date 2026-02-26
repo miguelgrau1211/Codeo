@@ -12,7 +12,16 @@ import { ConfiguracionComponent } from './components/configuracion/configuracion
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { PanelAdminComponent } from './components/panel-admin/panel-admin.component';
 import { TiendaTemasComponent } from './components/tienda-temas/tienda-temas.component';
-
+/**
+ * Tabla de rutas principal de la aplicación Codeo.
+ *
+ * Define la navegación entre las distintas secciones:
+ * - Autenticación: Landing, login, registro.
+ * - Juego: Dashboard, modo historia, modo infinito (roguelike).
+ * - Social: Ranking, logros, perfil.
+ * - Tienda: Temas visuales.
+ * - Sistema: Ajustes, soporte, panel de administración.
+ */
 export const routes: Routes = [
   { path: '', component: LandingPageComponent },
   { path: 'login', component: LoginComponent },
