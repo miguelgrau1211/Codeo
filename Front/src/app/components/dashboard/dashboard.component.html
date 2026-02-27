@@ -653,7 +653,7 @@
                             <p class="text-text-muted text-sm">{{ 'DASHBOARD.PAYMENT_INIT_DESC' | translate }}</p>
                         </div>
 
-                        @if (paymentStep() === 'form' || paymentStep() === 'processing') {
+                        } @else if (paymentStep() === 'form' || paymentStep() === 'processing') {
                             <!-- Contenedor unificado para Formulario y Procesamiento -->
                             <!-- Importante: No se usa @if/else para que el div de Stripe NO se desmonte del DOM mientras se procesa -->
                             <div [class.hidden]="paymentStep() === 'processing'">
