@@ -20,12 +20,12 @@ FROM node:22-slim
 
 WORKDIR /app
 
-# Instalar http-server para servir estáticos de forma más robusta
+# Instalar http-server
 RUN npm install -g http-server
 
-# Copiar solo los archivos construidos desde la etapa anterior
+# Copiar archivos
 COPY --from=build-step /app/dist/Front/browser /app/dist/Front/browser
 
-# Railway inyecta la variable $PORT.
-# Usamos http-server con soporte para SPA (redirigiendo a index.html)
-CMD ["sh", "-c", "http-server dist/Front/browser -p $PORT --proxy http://localhost:$PORT?"]
+# Railway usa $PORT. Forzamos a http-server a usarlo con -p
+# --spa redirige todas las rutas a index.html (necesario para Angular)
+CMD ["sh", "-c", "http-server dist/Front/browser -p ${PORT:-8080} --spa"]
