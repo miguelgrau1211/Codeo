@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->append(\App\Http\Middleware\SetLocaleMiddleware::class);
         $middleware->append(\App\Http\Middleware\ForceCors::class);
+        $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(fn($request, $e) => $request->is('api/*') || $request->expectsJson());
