@@ -20,12 +20,12 @@ FROM node:22-slim
 
 WORKDIR /app
 
-# Instalar serve para servir estáticos
-RUN npm install -g serve
+# Instalar http-server para servir estáticos de forma más robusta
+RUN npm install -g http-server
 
 # Copiar solo los archivos construidos desde la etapa anterior
 COPY --from=build-step /app/dist/Front/browser /app/dist/Front/browser
 
-# Railway inyecta la variable $PORT. Usamos shell para expandirla.
-# Añadimos un ls para depurar la estructura de carpetas en caso de fallo.
-CMD ["sh", "-c", "ls -R dist && serve -s dist/Front/browser -l $PORT"]
+# Railway inyecta la variable $PORT.
+# Usamos http-server con soporte para SPA (redirigiendo a index.html)
+CMD ["sh", "-c", "http-server dist/Front/browser -p $PORT --proxy http://localhost:$PORT?"]
