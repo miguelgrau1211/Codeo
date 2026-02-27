@@ -31,8 +31,10 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 2. Crear 10 usuarios aleatorios
-        Usuario::factory(10)->create();
+        // 2. Crear 10 usuarios aleatorios (Solo en local/test)
+        if (app()->environment('local', 'testing')) {
+            Usuario::factory(10)->create();
+        }
 
         // 3. Llamar a los otros seeders
         $this->call([
