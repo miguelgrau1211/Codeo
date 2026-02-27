@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject, ChangeDetectionStrategy, OnInit, AfterViewChecked } from '@angular/core';
+import { Component, signal, computed, inject, ChangeDetectionStrategy, OnInit, AfterViewChecked, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -82,15 +82,15 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     if (user) {
       const completed = user.story_levels_completed ?? 0;
       const total = user.total_story_levels ?? 0;
-      
+
       // El nivel actual es el siguiente al último completado, sin pasarnos del total
       const actual = completed < total ? completed + 1 : (total > 0 ? total : 1);
 
       return {
         actual_level: actual,
         total_levels: total,
-        lvls_progress: total > 0 
-          ? Math.round((completed / total) * 100) + '%' 
+        lvls_progress: total > 0
+          ? Math.round((completed / total) * 100) + '%'
           : '0%',
         titulo: user.last_story_level_title || '...'
       };
@@ -116,7 +116,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
   rank = computed(() => this.userDataService.userDataSignal()?.rank ?? 0);
   n_achievements = computed(() => this.userDataService.userDataSignal()?.n_achievements ?? 0);
   story_levels_completed = computed(() => this.userDataService.userDataSignal()?.story_levels_completed ?? 0);
-  
+
   userData = computed(() => this.userDataService.userDataSignal());
 
   // --- Premium / Pase de Batalla ---
@@ -137,20 +137,20 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
 
   // --- Lógica del Pase de Batalla ---
   battlePassRewards = signal<BattlePassReward[]>([
-    { 
+    {
       level: 5, type: 'theme', value: 'Cyber Volcanic', icon: '🌋', label: 'Cyber Volcanic',
       themeVars: { '--primary-bg': '#1a0505', '--secondary-bg': '#2d0a0a', '--accent-color': '#ff4500' }
     },
-    { 
+    {
       level: 12, type: 'theme', value: 'Aurora Borealis', icon: '🌌', label: 'Aurora Borealis',
       themeVars: { '--primary-bg': '#051622', '--secondary-bg': '#1ba098', '--accent-color': '#deb992' }
     },
     { level: 20, type: 'coins', value: 500, icon: '💰', label: '500 Coins' },
-    { 
+    {
       level: 28, type: 'theme', value: 'Gold Rush', icon: '💎', label: 'Gold Rush',
       themeVars: { '--primary-bg': '#000000', '--secondary-bg': '#111111', '--accent-color': '#ffd700' }
     },
-    { 
+    {
       level: 35, type: 'theme', value: 'Void Master', icon: '🔮', label: 'Void Master',
       themeVars: { '--primary-bg': '#020202', '--secondary-bg': '#0a0a0c', '--accent-color': '#8a2be2' }
     },
@@ -185,6 +185,22 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     if (token) {
       this.authService.esAdmin(token).subscribe();
     }
+
+    this.checkScreenSize();
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize() {
+    const isMobile = window.innerWidth < 768;
+    if (isMobile && this.isSidebarOpen()) {
+      this.isSidebarOpen.set(false);
+    } else if (!isMobile && !this.isSidebarOpen()) {
+      this.isSidebarOpen.set(true);
+    }
   }
 
   // Montar el elemento de Stripe cuando el contenedor del modal aparece en el DOM
@@ -198,8 +214,8 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  // Estado de la barra lateral (Sidebar)
-  isSidebarOpen = signal(true);
+  // Estado de la barra lateral (Sidebar) - Cerrado por defecto en móvil
+  isSidebarOpen = signal(window.innerWidth > 768);
 
   toggleSidebar() {
     this.isSidebarOpen.update(v => !v);
@@ -284,7 +300,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
 
             // Mostrar el formulario y montar tras renderizado del DOM
             this.paymentStep.set('form');
-            
+
             // Usar setTimeout para asegurar que el DOM se ha actualizado con el nuevo estado del modal
             setTimeout(() => {
               const checkContainer = () => {
@@ -373,7 +389,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
         // Paso 5: Notificar a nuestro backend para activar el estado premium
         console.log('🔵 [BACKEND] Notificando confirmación al servidor...');
         const token = sessionStorage.getItem('token');
-        this.http.post<any>(`${environment.apiUrl}/battle-pass/confirm`, 
+        this.http.post<any>(`${environment.apiUrl}/battle-pass/confirm`,
           { payment_intent_id: paymentIntent.id },
           {
             headers: {
@@ -387,7 +403,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
             if (res.success) {
               // === CONSOLE CONFIRMATION ===
               console.log('%c ✅ PAGO REALIZADO CON ÉXITO ', 'background: #00ca4e; color: #fff; font-size: 16px; font-weight: bold; border-radius: 4px; padding: 4px 8px;');
-              
+
               this.paymentStep.set('success');
               // Silently refresh data
               this.userDataService.getUserData(true).subscribe();

@@ -36,9 +36,11 @@
       transform: translateY(0) scale(1);
       opacity: 0;
     }
+
     20% {
       opacity: 1;
     }
+
     100% {
       transform: translateY(-250px) scale(0) translateX(var(--drift, 10px));
       opacity: 0;
@@ -51,7 +53,8 @@
     border-radius: 50%;
     background: #fbbf24;
     box-shadow: 0 0 15px 4px rgba(220, 38, 38, 0.6);
-    opacity: 0; /* Base opacity is 0 */
+    opacity: 0;
+    /* Base opacity is 0 */
     animation: rise-ember linear infinite;
     /* Always running, visibility controlled by parent opacity or internal keyframes if parent is visible */
   }
@@ -61,19 +64,27 @@
     width: 10px;
     height: 10px;
   }
+
   ::-webkit-scrollbar-track {
-    background: #21252b; /* Sidebar BG */
+    background: #21252b;
+    /* Sidebar BG */
   }
+
   ::-webkit-scrollbar-corner {
     background: #21252b;
   }
+
   ::-webkit-scrollbar-thumb {
-    background: #4b5363; /* Slate-600 approx */
-    border: 2px solid #21252b; /* Border matches track for padding effect */
+    background: #4b5363;
+    /* Slate-600 approx */
+    border: 2px solid #21252b;
+    /* Border matches track for padding effect */
     border-radius: 10px;
   }
+
   ::-webkit-scrollbar-thumb:hover {
-    background: #6b7280; /* Slate-500 approx */
+    background: #6b7280;
+    /* Slate-500 approx */
   }
 
   @keyframes space-drift {
@@ -81,10 +92,12 @@
       background-position: 0% 50%;
       transform: scale(1.0);
     }
+
     50% {
       background-position: 100% 50%;
       transform: scale(1.25);
     }
+
     100% {
       background-position: 0% 50%;
       transform: scale(1.0);
@@ -100,9 +113,11 @@
       transform: scale(1.5) rotate(0deg);
       opacity: 0;
     }
+
     20% {
       opacity: 0.7;
     }
+
     100% {
       transform: scale(1.5) rotate(360deg);
       opacity: 0.7;
@@ -114,14 +129,29 @@
   }
 
   @keyframes loading {
-    0% { transform: translateX(-100%); }
-    50% { transform: translateX(0); }
-    100% { transform: translateX(100%); }
+    0% {
+      transform: translateX(-100%);
+    }
+
+    50% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(100%);
+    }
   }
 
   @keyframes fade-in-up {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
 
   .animate-fade-in-up {
@@ -129,8 +159,15 @@
   }
 
   @keyframes bounce-short {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-4px); }
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-4px);
+    }
   }
 
   .animate-bounce-short {
@@ -138,18 +175,51 @@
   }
 
   @keyframes pulse-light {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.8; transform: scale(1.05); }
+
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
   }
 
   .animate-pulse-light {
     animation: pulse-light 2s ease-in-out infinite;
   }
 
-  @keyframes gradient-slow {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out forwards;
+  }
+
+  @keyframes zoom-in {
+    from {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .animate-zoom-in {
+    animation: zoom-in 0.3s ease-out forwards;
   }
 
   .animate-gradient-slow {
@@ -164,33 +234,45 @@
 .token-keyword {
   color: #c678dd !important;
   display: inline-block;
-  filter: drop-shadow(0 0 2px rgba(168,85,247,0.3));
+  filter: drop-shadow(0 0 2px rgba(168, 85, 247, 0.3));
 }
+
 .token-function {
   color: #61afef !important;
   display: inline-block;
 }
+
 .token-string {
   color: #98c379 !important;
   display: inline-block;
   transition: all 0.2s;
 }
+
 .token-string:hover {
   transform: scale(1.05);
   text-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
 }
+
 .token-number {
   color: #fbbf24 !important;
   display: inline-block;
   font-weight: bold;
 }
+
 .token-comment {
   color: #5c6370 !important;
   font-style: italic;
 }
+
 .token-variable {
   color: #f87171 !important;
   display: inline-block;
 }
-.token-type { color: #e5c07b !important; }
-.token-operator { color: #56b6c2 !important; }
+
+.token-type {
+  color: #e5c07b !important;
+}
+
+.token-operator {
+  color: #56b6c2 !important;
+}
