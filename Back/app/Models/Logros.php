@@ -31,19 +31,23 @@ class Logros extends Model
     {
         if (!$value) return null;
         
-        $url = $value;
-        // Si es una ruta relativa, generar la URL usando Storage
-        if (!filter_var($value, FILTER_VALIDATE_URL)) {
-            $url = \Illuminate\Support\Facades\Storage::url($value);
+        // Si ya es una URL absoluta de internet (no localhost), la dejamos
+        if (filter_var($value, FILTER_VALIDATE_URL) && !str_contains($value, 'localhost')) {
+            return $value;
         }
 
-        // Si por algún motivo (configuración de Laravel o base de datos) la URL contiene localhost,
-        // la forzamos a usar la URL configurada en el servidor.
-        if (str_contains($url, 'localhost')) {
-            $appUrl = rtrim(config('app.url'), '/');
-            return str_replace(['http://localhost:8000', 'http://localhost'], $appUrl, $url);
+        // Para rutas relativas o localhost, devolvemos la ruta absoluta al servidor (/storage/...)
+        // Limpiamos posibles restos de 'storage/' en el path para no duplicar
+        $cleanPath = ltrim($value, '/');
+        if (str_starts_with($cleanPath, 'storage/')) {
+            $cleanPath = substr($cleanPath, 8);
+        }
+        // Si venía de una URL de localhost, nos quedamos solo con lo que va después de /storage/
+        if (str_contains($cleanPath, 'localhost')) {
+            $parts = explode('/storage/', $cleanPath);
+            $cleanPath = end($parts);
         }
 
-        return $url;
+        return '/storage/' . ltrim($cleanPath, '/');
     }
 }

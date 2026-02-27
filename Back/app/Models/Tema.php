@@ -33,18 +33,17 @@ class Tema extends Model
     {
         if (!$value) return null;
         
-        $url = $value;
-        // Si no es URL absoluta, usar asset() para generarla
-        if (!filter_var($value, FILTER_VALIDATE_URL)) {
-            $url = asset($value);
+        // Si es una URL absoluta externa, la dejamos
+        if (filter_var($value, FILTER_VALIDATE_URL) && !str_contains($value, 'localhost')) {
+            return $value;
         }
 
-        // Forzar reemplazo de localhost si aparece
-        if (str_contains($url, 'localhost')) {
-            $appUrl = rtrim(config('app.url'), '/');
-            return str_replace(['http://localhost:8000', 'http://localhost'], $appUrl, $url);
-        }
+        // Devolvemos ruta relativa al servidor
+        $cleanPath = ltrim($value, '/');
+        // Quitar prefijos si existen para normalizar
+        if (str_starts_with($cleanPath, 'storage/')) $cleanPath = substr($cleanPath, 8);
+        if (str_starts_with($cleanPath, 'assets/')) return '/' . $cleanPath;
 
-        return $url;
+        return '/storage/' . ltrim($cleanPath, '/');
     }
 }
