@@ -16,6 +16,12 @@ COPY . .
 # Railway inyecta las variables aquí durante el build
 RUN node set-env.js && npm run build -- --configuration production
 
+# TRUCO FINAL: Reemplazo directo en los archivos generados por si Angular ignoró la variable
+RUN if [ -n "$API_URL" ]; then \
+      echo "Applying hard replacement to dist files: $API_URL"; \
+      find dist/Front/browser -type f -name "*.js" -exec sed -i "s|http://localhost/api|$API_URL|g" {} +; \
+    fi
+
 # Stage 2: Serve
 FROM node:22-slim
 
