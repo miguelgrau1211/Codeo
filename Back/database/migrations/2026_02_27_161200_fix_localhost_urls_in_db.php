@@ -22,9 +22,9 @@ return new class extends Migration
 
         // También para los temas si existen
         if (Schema::hasTable('temas')) {
-            DB::table('temas')->where('preview_url', 'like', '%localhost%')->get()->each(function ($tema) use ($appUrl) {
-                $newUrl = preg_replace('/http:\/\/localhost(\:8000)?/', $appUrl, $tema->preview_url);
-                DB::table('temas')->where('id', $tema->id)->update(['preview_url' => $newUrl]);
+            DB::table('temas')->where('preview_img', 'like', '%localhost%')->get()->each(function ($tema) use ($appUrl) {
+                $newUrl = preg_replace('/http:\/\/localhost(\:8000)?/', $appUrl, $tema->preview_img);
+                DB::table('temas')->where('id', $tema->id)->update(['preview_img' => $newUrl]);
             });
         }
     }
