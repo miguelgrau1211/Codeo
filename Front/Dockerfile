@@ -12,8 +12,9 @@ RUN npm install
 # Copiar el resto del código
 COPY . .
 
-# Construir la aplicación
-RUN npm run build
+# Generar archivos de entorno y construir
+# Railway inyecta las variables aquí durante el build
+RUN node set-env.js && npm run build -- --configuration production
 
 # Stage 2: Serve
 FROM node:22-slim
