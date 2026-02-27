@@ -276,12 +276,21 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
 
             // Mostrar el formulario y montar tras renderizado del DOM
             this.paymentStep.set('form');
+            
+            // Usar setTimeout para asegurar que el DOM se ha actualizado con el nuevo estado del modal
             setTimeout(() => {
-              const container = document.getElementById('stripe-card-element');
-              if (container && this.cardElement && !this.stripeElementMounted) {
-                this.cardElement.mount('#stripe-card-element');
-                this.stripeElementMounted = true;
-              }
+              const checkContainer = () => {
+                const container = document.getElementById('stripe-card-element');
+                if (container && this.cardElement && !this.stripeElementMounted) {
+                  this.cardElement.mount('#stripe-card-element');
+                  this.stripeElementMounted = true;
+                  console.log('🟢 [STRIPE] Element mounted successfully');
+                } else if (!this.stripeElementMounted && this.showPaymentModal()) {
+                  // Re-intentar brevemente si el contenedor aún no está
+                  setTimeout(checkContainer, 50);
+                }
+              };
+              checkContainer();
             }, 100);
           },
           error: (err) => {
