@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -14,7 +15,7 @@ import { Observable } from 'rxjs';
 })
 export class EjecutarCodigoService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost/api/ejecutar-codigo';
+  private readonly apiUrl = `${environment.apiUrl}/ejecutar-codigo`;
 
   /**
    * Envía el código al backend para su ejecución y evaluación.

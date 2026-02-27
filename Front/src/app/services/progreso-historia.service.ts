@@ -1,5 +1,6 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { Observable, tap } from 'rxjs';
 import { NotificationService } from './notification.service';
 
@@ -17,13 +18,12 @@ import { NotificationService } from './notification.service';
   providedIn: 'root',
 })
 export class ProgresoHistoriaService {
-  private readonly apiUrl = 'http://localhost/api/users/progreso-historia';
+  private readonly apiUrl = `${environment.apiUrl}/users/progreso-historia`;
   private readonly notificationService = inject(NotificationService);
+  private readonly http = inject(HttpClient);
 
   /** Signal reactivo con el progreso completo del modo historia. */
   readonly progresoSignal = signal<any>(null);
-
-  constructor(private readonly http: HttpClient) { }
 
   /**
    * Obtiene el progreso del usuario en el modo historia.
@@ -48,7 +48,7 @@ export class ProgresoHistoriaService {
    */
   updateProgresoHistoria(progreso: any): Observable<any> {
     const token = sessionStorage.getItem('token');
-    const postUrl = 'http://localhost/api/progreso-historia';
+    const postUrl = `${environment.apiUrl}/progreso-historia`;
 
     return this.http.post<any>(postUrl, progreso, {
       headers: {

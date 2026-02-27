@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { ProgresoHistoriaService } from '../../services/progreso-historia.service';
 import { UserDataService } from '../../services/user-data.service';
 import { ThemeService } from '../../services/theme.service';
+import { environment } from '../../../environments/environment';
 import { AuthService } from '../../services/auth.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
@@ -213,7 +214,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     };
 
     // Paso 1: Obtener estado de Stripe y clave pública
-    this.http.get<any>('http://localhost/api/battle-pass/status', { headers }).subscribe({
+    this.http.get<any>(`${environment.apiUrl}/battle-pass/status`, { headers }).subscribe({
       next: (statusRes) => {
         const publishableKey = statusRes.stripe_publishable_key;
 
@@ -224,7 +225,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
         }
 
         // Paso 2: Crear PaymentIntent en el Backend
-        this.http.post<any>('http://localhost/api/battle-pass/create-intent', {}, { headers }).subscribe({
+        this.http.post<any>(`${environment.apiUrl}/battle-pass/create-intent`, {}, { headers }).subscribe({
           next: (intentRes) => {
             if (!intentRes.success) {
               this.paymentError.set(intentRes.message || 'Error al iniciar el pago.');
@@ -355,7 +356,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
         // Paso 5: Notificar a nuestro backend para activar el estado premium
         console.log('🔵 [BACKEND] Notificando confirmación al servidor...');
         const token = sessionStorage.getItem('token');
-        this.http.post<any>('http://localhost/api/battle-pass/confirm', 
+        this.http.post<any>(`${environment.apiUrl}/battle-pass/confirm`, 
           { payment_intent_id: paymentIntent.id },
           {
             headers: {

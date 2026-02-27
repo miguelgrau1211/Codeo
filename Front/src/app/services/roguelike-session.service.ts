@@ -1,5 +1,6 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { Observable, tap } from 'rxjs';
 import { NotificationService } from './notification.service';
 
@@ -65,10 +66,9 @@ export interface RoguelikeSession {
   providedIn: 'root'
 })
 export class RoguelikeSessionService {
-  private readonly apiUrl = 'http://localhost/api/roguelike';
+  private readonly apiUrl = `${environment.apiUrl}/roguelike`;
   private readonly notificationService = inject(NotificationService);
-
-  constructor(private readonly http: HttpClient) { }
+  private readonly http = inject(HttpClient);
 
   /** Genera las cabeceras HTTP con el token de autenticación. */
   private getHeaders() {
@@ -138,7 +138,7 @@ export class RoguelikeSessionService {
   /** Obtiene 3 mejoras aleatorias disponibles para comprar. */
   getMejorasRandom(): Observable<any[]> {
     return this.http.get<any[]>(
-      'http://localhost/api/mejoras/random',
+      `${environment.apiUrl}/mejoras/random`,
       { headers: this.getHeaders() }
     );
   }

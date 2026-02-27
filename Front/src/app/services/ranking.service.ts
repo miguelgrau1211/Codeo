@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { Observable, map } from 'rxjs';
 import { RankingUser } from '../models/ranking.model';
 
@@ -14,7 +15,7 @@ import { RankingUser } from '../models/ranking.model';
 })
 export class RankingService {
     private readonly http = inject(HttpClient);
-    private readonly apiUrl = 'http://localhost/api/ranking';
+    private readonly apiUrl = `${environment.apiUrl}/ranking`;
 
     /**
      * Obtiene el ranking global de usuarios.

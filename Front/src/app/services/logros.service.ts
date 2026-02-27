@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { LogrosDesbloqueadosResponse, PorcentajeLogrosResponse } from '../models/achievement.model';
 
@@ -14,7 +15,7 @@ import { LogrosDesbloqueadosResponse, PorcentajeLogrosResponse } from '../models
     providedIn: 'root',
 })
 export class LogrosService {
-    private readonly apiUrl = 'http://localhost/api/users';
+    private readonly apiUrl = `${environment.apiUrl}/users`;
     private readonly http = inject(HttpClient);
 
     /** Genera las cabeceras HTTP con el token de autenticación. */

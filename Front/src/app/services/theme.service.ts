@@ -1,5 +1,6 @@
 import { Injectable, signal, inject, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { Observable, tap, map } from 'rxjs';
 import { UserDataService } from './user-data.service';
 import { Router, NavigationEnd } from '@angular/router';
@@ -34,7 +35,7 @@ export class ThemeService {
   private readonly http = inject(HttpClient);
   private readonly userDataService = inject(UserDataService);
   private readonly router = inject(Router);
-  private readonly apiUrl = 'http://localhost/api';
+  private readonly apiUrl = environment.apiUrl;
 
   /** Signal reactivo con el tema actualmente activo. */
   readonly currentTheme = signal<Tema | null>(null);

@@ -1,5 +1,6 @@
 import { inject, Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { Observable, tap, map, of } from 'rxjs';
 import { NotificationService } from './notification.service';
 import { UserData, ActivityItem } from '../models/user.model';
@@ -27,7 +28,7 @@ import { UserData, ActivityItem } from '../models/user.model';
 export class UserDataService {
   private readonly http = inject(HttpClient);
   private readonly notificationService = inject(NotificationService);
-  private readonly apiUrl = 'http://localhost/api/users';
+  private readonly apiUrl = `${environment.apiUrl}/users`;
 
   // ── Estado central del usuario (singleton caché) ──────
 

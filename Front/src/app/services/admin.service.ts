@@ -1,5 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 
 /** Modelo de usuario para la vista de administración. */
@@ -45,7 +46,7 @@ export interface PaginatedResponse<T> {
 })
 export class AdminService {
     private readonly http = inject(HttpClient);
-    private readonly apiUrl = 'http://localhost/api/admin';
+    private readonly apiUrl = `${environment.apiUrl}/admin`;
 
     /** Caché reactiva de niveles de historia (paginados). */
     storyState = signal<{ data: StoryLevel[], page: number, total: number, last_page: number, loaded: boolean }>({
@@ -216,4 +217,3 @@ export interface RoguelikeLevel {
     nivel_id_original?: number;
     fecha_desactivacion?: string;
 }
-

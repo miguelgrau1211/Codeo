@@ -1,5 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { Observable, tap } from 'rxjs';
 import { NivelRoguelike } from '../models/level.model';
 
@@ -13,12 +14,11 @@ import { NivelRoguelike } from '../models/level.model';
   providedIn: 'root',
 })
 export class RoguelikeService {
-  private readonly apiUrl = 'http://localhost/api/niveles-roguelike/aleatorio';
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = `${environment.apiUrl}/niveles-roguelike/aleatorio`;
 
   /** Signal reactivo con el nivel roguelike actualmente cargado. */
   readonly nivelActual = signal<NivelRoguelike | null>(null);
-
-  constructor(private readonly http: HttpClient) {}
 
   /** Genera las cabeceras HTTP con el token de autenticación. */
   private getHeaders() {
