@@ -25,4 +25,16 @@ class Tema extends Model
                     ->withPivot('comprado_at')
                     ->withTimestamps();
     }
+
+    /**
+     * Accesor para la imagen de previsualización.
+     */
+    public function getPreviewImgAttribute($value)
+    {
+        if (!$value) return null;
+        if (filter_var($value, FILTER_VALIDATE_URL)) return $value;
+
+        // Si es una ruta de assets o almacenamiento, asegurar que sea pública
+        return asset($value);
+    }
 }
