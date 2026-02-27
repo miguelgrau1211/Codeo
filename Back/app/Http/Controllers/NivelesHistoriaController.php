@@ -6,6 +6,8 @@ use App\Models\NivelesHistoria;
 use App\Models\NivelHistoriaDesactivado;
 use App\Models\AdminLog;
 use App\Services\TranslationService;
+use App\Actions\Story\DisableStoryLevelAction;
+use App\Actions\Story\EnableStoryLevelAction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -105,87 +107,29 @@ class NivelesHistoriaController
 
     /**
      * Alterna el estado de un nivel (Activar/Desactivar).
+     * Delegamos la lógica pesada a clases Action para que el controlador sea delgado.
      */
-    public function toggleStatus(Request $request, $id)
+    public function toggleStatus(Request $request, $id, DisableStoryLevelAction $disableAction, EnableStoryLevelAction $enableAction)
     {
+        // 1. Intentamos buscar el nivel en la tabla de niveles activos
+        $nivel = NivelesHistoria::find($id);
+
+        if ($nivel) {
+            // Si existe, lo desactivamos
+            $motivo = $request->input('motivo', 'Desactivado por administrador');
+            $disableAction->execute($nivel, $motivo);
+            return response()->json(['message' => 'Nivel desactivado correctamente'], 200);
+        }
+
+        // 2. Si no estaba activo, intentamos reactivarlo desde la tabla de desactivados
         try {
-            // 1. Intentar desactivar (si está en la tabla principal)
-            $nivel = NivelesHistoria::find($id);
-
-            if ($nivel) {
-                return DB::transaction(function () use ($nivel, $request) {
-                    NivelHistoriaDesactivado::create([
-                        'nivel_id_original' => $nivel->id,
-                        'orden' => $nivel->orden,
-                        'titulo' => $nivel->titulo,
-                        'descripcion' => $nivel->descripcion,
-                        'contenido_teorico' => $nivel->contenido_teorico,
-                        'codigo_inicial' => $nivel->codigo_inicial,
-                        'test_cases' => $nivel->test_cases,
-                        'recompensa_exp' => $nivel->recompensa_exp,
-                        'recompensa_monedas' => $nivel->recompensa_monedas,
-                        'motivo' => $request->input('motivo', 'Desactivado por administrador'),
-                        'fecha_desactivacion' => now()
-                    ]);
-
-                    $nivel->delete();
-
-                    AdminLog::create([
-                        'user_id' => Auth::id(),
-                        'action' => 'DISABLE_LEVEL_STORY',
-                        'details' => "Desactivó nivel historia: {$nivel->titulo} (ID: {$nivel->id})",
-                    ]);
-
-                    return response()->json(['message' => 'Nivel desactivado correctamente'], 200);
-                });
-            }
-
-            // 2. Intentar activar: Resolver ambigüedad del ID.
-            // Como el frontend puede enviar el ID de la tabla actual o el original,
-            // buscamos en 'NivelHistoriaDesactivado' coincidencias tanto por 'nivel_id_original' como por su PK.
-
-            $desactivado = NivelHistoriaDesactivado::where('nivel_id_original', $id)
-                ->orWhere('id', $id)
-                ->first();
-
-            if ($desactivado) {
-                return DB::transaction(function () use ($desactivado) {
-
-                    // Verificar colisión de orden
-                    if (NivelesHistoria::where('orden', $desactivado->orden)->exists()) {
-                        return response()->json(['message' => 'No se puede activar: Ya existe un nivel activo con el orden ' . $desactivado->orden], 409);
-                    }
-
-                    $nuevoNivel = NivelesHistoria::create([
-                        // Restauramos el nivel forzando el uso de su ID original.
-                        // Esto es para mantener la integridad con 'usuario_progreso_historia' y no romper el progreso de los usuarios.
-                        'id' => $desactivado->nivel_id_original,
-                        'orden' => $desactivado->orden,
-                        'titulo' => $desactivado->titulo,
-                        'descripcion' => $desactivado->descripcion,
-                        'contenido_teorico' => $desactivado->contenido_teorico,
-                        'codigo_inicial' => $desactivado->codigo_inicial,
-                        'test_cases' => $desactivado->test_cases,
-                        'recompensa_exp' => $desactivado->recompensa_exp,
-                        'recompensa_monedas' => $desactivado->recompensa_monedas,
-                    ]);
-
-                    $desactivado->delete();
-
-                    AdminLog::create([
-                        'user_id' => Auth::id(),
-                        'action' => 'ENABLE_LEVEL_STORY',
-                        'details' => "Reactivó nivel historia: {$nuevoNivel->titulo} (ID: {$nuevoNivel->id})",
-                    ]);
-
-                    return response()->json(['message' => 'Nivel reactivado correctamente'], 200);
-                });
-            }
-
-            return response()->json(['message' => 'Nivel no encontrado'], 404);
-
+            $enableAction->execute($id);
+            return response()->json(['message' => 'Nivel reactivado correctamente'], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['message' => 'Nivel no encontrado en ninguna tabla'], 404);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Error al cambiar estado: ' . $e->getMessage()], 500);
+            // Manejamos errores de colisión de orden u otros problemas de negocio
+            return response()->json(['message' => $e->getMessage()], 409);
         }
     }
 

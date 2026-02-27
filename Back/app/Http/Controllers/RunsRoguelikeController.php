@@ -4,21 +4,35 @@ namespace App\Http\Controllers;
 
 use App\Models\RunsRoguelike;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Controlador para la gestión del historial de partidas (Runs) de Roguelike.
+ */
 class RunsRoguelikeController extends Controller
 {
-    public function index(){
-        $runs = RunsRoguelike::where('usuario_id', Auth::id())->get();
-        return response()->json($runs, 200);
+    /**
+     * Lista todas las partidas del usuario actual.
+     */
+    public function index(): JsonResponse
+    {
+        return response()->json(RunsRoguelike::where('usuario_id', Auth::id())->orderByDesc('created_at')->get());
     }
 
-    public function show($id){
-        $run = RunsRoguelike::findOrFail($id);
-        return response()->json($run, 200);
+    /**
+     * Muestra el detalle de una partida específica.
+     */
+    public function show($id): JsonResponse
+    {
+        return response()->json(RunsRoguelike::where('usuario_id', Auth::id())->findOrFail($id));
     }
 
-    public function store(Request $request){
+    /**
+     * Registra manualmente una nueva partida (Generalmente automatizado por Actions).
+     */
+    public function store(Request $request): JsonResponse
+    {
         $validatedData = $request->validate([
             'vidas_restantes' => 'required|integer',
             'niveles_superados' => 'required|integer',
@@ -30,16 +44,15 @@ class RunsRoguelikeController extends Controller
         $validatedData['usuario_id'] = Auth::id();
 
         $run = RunsRoguelike::create($validatedData);
-
-        return response()->json([
-            'message' => 'Run creado exitosamente',
-            'data' => $run
-        ], 201);
+        return response()->json(['message' => 'Run registrada', 'data' => $run], 201);
     }
 
-    public function update(Request $request, $id){
+    /**
+     * Actualiza los datos de una partida.
+     */
+    public function update(Request $request, $id): JsonResponse
+    {
         $run = RunsRoguelike::where('usuario_id', Auth::id())->findOrFail($id);
-
         $validatedData = $request->validate([
             'vidas_restantes' => 'required|integer',
             'niveles_superados' => 'required|integer',
@@ -49,35 +62,28 @@ class RunsRoguelikeController extends Controller
         ]);
 
         $run->update($validatedData);
-
-        return response()->json([
-            'message' => 'Run actualizado exitosamente',
-            'data' => $run
-        ], 200);
+        return response()->json(['message' => 'Run actualizada', 'data' => $run]);
     }
 
-    public function destroy($id){
-        $run = RunsRoguelike::findOrFail($id);
-        $run->delete();
-
-        return response()->json([
-            'message' => 'Run eliminado exitosamente'
-        ], 200);
-    }
-    
     /**
-     * Obtiene el récord histórico del usuario en Roguelike
-     * * @param int $idUsuario
-     * @return \Illuminate\Http\JsonResponse
+     * Elimina una partida del historial.
      */
-    public function getNivelMejorRunUsuario()
+    public function destroy($id): JsonResponse
     {
-        $idUsuario = Auth::id();
+        RunsRoguelike::where('usuario_id', Auth::id())->findOrFail($id)->delete();
+        return response()->json(['message' => 'Run eliminada']);
+    }
+
+    /**
+     * Obtiene el récord histórico del usuario (Mejor nivel y monedas).
+     */
+    public function getNivelMejorRunUsuario(): JsonResponse
+    {
         $usuario = Auth::user();
 
-        //mejor partida
-        $mejorRun = RunsRoguelike::where('usuario_id', $idUsuario)
-            ->orderByDesc('niveles_superados')->orderByDesc('monedas_obtenidas') // Desempate por monedas
+        $mejorRun = RunsRoguelike::where('usuario_id', $usuario->id)
+            ->orderByDesc('niveles_superados')
+            ->orderByDesc('monedas_obtenidas')
             ->first();
 
         if (!$mejorRun) {
@@ -85,7 +91,7 @@ class RunsRoguelikeController extends Controller
                 'nickname' => $usuario->nickname,
                 'tiene_record' => false,
                 'mejor_nivel' => 0
-            ], 200);
+            ]);
         }
 
         return response()->json([
@@ -94,6 +100,6 @@ class RunsRoguelikeController extends Controller
             'mejor_nivel' => $mejorRun->niveles_superados,
             'monedas' => $mejorRun->monedas_obtenidas,
             'fecha' => $mejorRun->created_at->diffForHumans()
-        ], 200);
+        ]);
     }
 }

@@ -21,7 +21,7 @@ class EjecutarCodigo extends Controller
     {
         $request->validate([
             'codigo' => 'required|string|max:10000',
-            'tipo'   => 'required|in:historia,roguelike',
+            'tipo' => 'required|in:historia,roguelike',
             'nivel_id' => 'required|integer',
         ]);
 
@@ -46,8 +46,8 @@ class EjecutarCodigo extends Controller
             $now = now('UTC');
             $startedAt = \Illuminate\Support\Carbon::parse($session['level_started_at'], 'UTC');
             $elapsed = $startedAt->diffInSeconds($now, false);
-            
-            $allocatedTime = $session['time_remaining'] ?? 300; 
+
+            $allocatedTime = $session['time_remaining'] ?? 300;
 
             if ($elapsed > $allocatedTime) {
                 return response()->json([
@@ -92,7 +92,7 @@ class EjecutarCodigo extends Controller
 
         try {
             $payload = [
-                'code'  => $codigoUsuario,
+                'code' => $codigoUsuario,
                 'tests' => $tests,
             ];
 
@@ -101,7 +101,7 @@ class EjecutarCodigo extends Controller
             if ($response->failed()) {
                 Log::error('Lambda request failed', [
                     'status' => $response->status(),
-                    'body'   => $response->body(),
+                    'body' => $response->body(),
                 ]);
                 throw new \Exception('Error al conectar con el servidor de ejecución.');
             }
@@ -117,24 +117,25 @@ class EjecutarCodigo extends Controller
             if (!empty($lambdaResult['error'])) {
                 return response()->json([
                     'correcto' => false,
-                    'message'  => 'Error de ejecución:',
-                    'error'    => $lambdaResult['error'],
+                    'message' => 'Error de ejecución:',
+                    'error' => $lambdaResult['error'],
                 ], 200);
             }
 
-            // 3. Procesar resultados — normalizar floats enteros (1.0 → 1)
+            // 3. Procesar resultados — normalizar números flotantes con formato entero (ej: 1.0 → 1)
+            // Esto es necesario para que las comparaciones de igualdad con el output esperado sean consistentes.
             $resultadosTests = $lambdaResult['results'] ?? [];
 
             foreach ($resultadosTests as &$res) {
                 if (isset($res['output'])) {
                     $val = $res['output'];
-                    // Si el resultado es un float que es un número entero (ej: "1.0"), convertir a "1"
-                    if (is_numeric($val) && floatval($val) == intval($val) && str_contains((string)$val, '.')) {
-                        $res['output'] = (string)intval($val);
+                    // Si el resultado es un número que termina en .0 (ej: "1.0"), se convierte a cadena entera "1"
+                    if (is_numeric($val) && floatval($val) == intval($val) && str_contains((string) $val, '.')) {
+                        $res['output'] = (string) intval($val);
                     }
-                    // Re-evaluar si pasa el test
+                    // Re-evaluar si el test pasa tras la normalización
                     if (isset($res['expected'])) {
-                        $res['passed'] = trim((string)$res['output']) === trim((string)$res['expected']);
+                        $res['passed'] = trim((string) $res['output']) === trim((string) $res['expected']);
                     }
                 }
             }
@@ -142,6 +143,7 @@ class EjecutarCodigo extends Controller
 
             $todasPasadas = !empty($resultadosTests);
 
+            // Verificar si todos los casos de prueba han superado la validación
             foreach ($resultadosTests as $res) {
                 if (isset($res['passed']) && !$res['passed']) {
                     $todasPasadas = false;
@@ -149,7 +151,8 @@ class EjecutarCodigo extends Controller
                 }
             }
 
-            // 4. Otorgar recompensas (solo roguelike, dentro de transacción)
+            // 4. Otorgar recompensas dinámicas (solo activo en modo Roguelike)
+            // En el modo historia, las recompensas se gestionan al completar el nivel, no en cada ejecución.
             $recompensas = [];
 
             if ($todasPasadas && $tipo === 'roguelike') {
@@ -159,10 +162,11 @@ class EjecutarCodigo extends Controller
                         $xp = 25;
                         $coins = 10;
 
+                        // Se usa una transacción para asegurar la integridad de los datos del usuario
                         DB::transaction(function () use ($userId, $xp, $coins) {
                             DB::table('usuarios')
                                 ->where('id', $userId)
-                                ->lockForUpdate()
+                                ->lockForUpdate() // Bloqueo de fila para evitar condiciones de carrera en el XP
                                 ->increment('exp_total', $xp);
 
                             DB::table('usuarios')
@@ -172,12 +176,12 @@ class EjecutarCodigo extends Controller
 
                         Log::info('Recompensas otorgadas - Roguelike', [
                             'usuario_id' => $userId,
-                            'xp'         => $xp,
-                            'monedas'    => $coins,
+                            'xp' => $xp,
+                            'monedas' => $coins,
                         ]);
 
                         $recompensas = [
-                            'xp'      => $xp,
+                            'xp' => $xp,
                             'monedas' => $coins,
                             'message' => "Ganaste {$xp} XP y {$coins} Monedas.",
                         ];
@@ -185,16 +189,16 @@ class EjecutarCodigo extends Controller
                         Log::error('Error otorgando recompensas Roguelike: ' . $e->getMessage());
                     }
                 } else {
-                    Log::warning('Roguelike rewards: Auth::id() returned null.');
+                    Log::warning('Intento de otorgar recompensas Roguelike sin usuario autenticado.');
                 }
             }
 
             return response()->json([
-                'correcto'    => $todasPasadas,
-                'message'     => $todasPasadas
-                    ? '¡Genial! Todos los tests pasaron.'
-                    : 'Algunos tests fallaron. Revisa tu lógica.',
-                'detalles'    => $resultadosTests,
+                'correcto' => $todasPasadas,
+                'message' => $todasPasadas
+                    ? '¡Genial! Todos los tests pasaron correctamente.'
+                    : 'Algunos tests fallaron. Revisa tu lógica e inténtalo de nuevo.',
+                'detalles' => $resultadosTests,
                 'recompensas' => $recompensas,
             ], 200);
 
@@ -203,7 +207,7 @@ class EjecutarCodigo extends Controller
 
             return response()->json([
                 'correcto' => false,
-                'message'  => 'Error interno del sistema de evaluación.',
+                'message' => 'Error interno del sistema de evaluación.',
                 'detalles' => [],
             ], 200);
         }

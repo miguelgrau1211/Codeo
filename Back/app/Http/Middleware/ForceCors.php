@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ForceCors
 {
-    /** CORS headers applied to every response, including errors. */
+    /** Cabeceras CORS aplicadas a cada respuesta, incluyendo errores. */
     private const CORS_HEADERS = [
         'Access-Control-Allow-Origin' => '*',
         'Access-Control-Allow-Methods' => 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
@@ -17,14 +17,14 @@ class ForceCors
 
     public function handle(Request $request, Closure $next): Response
     {
-        // Respond immediately to preflight OPTIONS requests
+        // Responder inmediatamente a las peticiones preflight OPTIONS
         if ($request->isMethod('OPTIONS')) {
             return response('', 204)->withHeaders(self::CORS_HEADERS);
         }
 
         $response = $next($request);
 
-        // Add CORS headers to every response (including 4xx/5xx)
+        // Añadir cabeceras CORS a cada respuesta (incluyendo errores 4xx/5xx)
         foreach (self::CORS_HEADERS as $key => $value) {
             $response->headers->set($key, $value);
         }

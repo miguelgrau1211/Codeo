@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\Achievements;
 
 use App\Models\Logros;
 use App\Models\UsuarioLogro;

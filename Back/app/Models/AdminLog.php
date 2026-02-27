@@ -11,6 +11,9 @@ class AdminLog extends Model
 
     protected $table = 'admin_logs';
 
+    /**
+     * Registro de auditoría para acciones administrativas.
+     */
     protected $fillable = [
         'user_id',
         'action',

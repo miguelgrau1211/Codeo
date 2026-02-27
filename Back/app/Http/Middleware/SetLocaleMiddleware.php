@@ -13,7 +13,7 @@ class SetLocaleMiddleware
     {
         $locale = TranslationService::resolveLocale($request);
 
-        // Map 'val' to 'ca' for Laravel/Carbon as 'val' is usually not supported
+        // Mapeamos 'val' a 'ca' para Laravel/Carbon, ya que 'val' no suele estar soportado de forma nativa
         $laravelLocale = ($locale === 'val') ? 'ca' : $locale;
 
         app()->setLocale($laravelLocale);

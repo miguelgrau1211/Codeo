@@ -86,8 +86,8 @@ class Usuario extends Authenticatable
     public function temas()
     {
         return $this->belongsToMany(Tema::class, 'usuario_tema')
-                    ->withPivot('comprado_at')
-                    ->withTimestamps();
+            ->withPivot('comprado_at')
+            ->withTimestamps();
     }
 
     public function temaActual()

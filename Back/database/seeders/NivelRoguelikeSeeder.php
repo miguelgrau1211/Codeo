@@ -5,148 +5,113 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\NivelRoguelike;
 
+/**
+ * Seeder para los desafíos del Modo Roguelike (Infinito).
+ * Todos los desafíos han sido actualizados a Python con recompensas escaladas.
+ */
 class NivelRoguelikeSeeder extends Seeder
 {
     public function run(): void
     {
         $niveles = [
+            // --- FÁCIL (20 Monedas) ---
             [
                 'dificultad' => 'fácil',
-                'titulo' => 'Suma Simple',
-                'descripcion' => 'Imprime la suma de dos numeros dados.',
-                'test_cases' => [['input' => '[10, 20]', 'output' => '30'], ['input' => '[20, 20]', 'output' => '40']],
-                'recompensa_monedas' => 5
+                'titulo' => 'Suma de Entradas',
+                'descripcion' => 'Recibes una lista con dos números [a, b]. Imprime su suma.',
+                'test_cases' => [['input' => '[10, 20]', 'output' => '30'], ['input' => '[5, 5]', 'output' => '10']],
+                'recompensa_monedas' => 20
+            ],
+            [
+                'dificultad' => 'fácil',
+                'titulo' => 'Longitud de Nombre',
+                'descripcion' => 'Recibes un string. Imprime cuántos caracteres tiene.',
+                'test_cases' => [['input' => '"Python"', 'output' => '6'], ['input' => '""', 'output' => '0']],
+                'recompensa_monedas' => 20
+            ],
+            [
+                'dificultad' => 'fácil',
+                'titulo' => 'Grito Energético',
+                'descripcion' => 'Convierte el string de entrada a mayúsculas.',
+                'test_cases' => [['input' => '"hola"', 'output' => 'HOLA'], ['input' => '"code"', 'output' => 'CODE']],
+                'recompensa_monedas' => 20
+            ],
+
+            // --- MEDIO (60 Monedas) ---
+            [
+                'dificultad' => 'medio',
+                'titulo' => 'Solo Pares',
+                'descripcion' => 'Dada una lista de números, imprime una nueva lista conteniendo solo los pares.',
+                'test_cases' => [['input' => '[1, 2, 3, 4]', 'output' => '[2, 4]'], ['input' => '[1, 3, 5]', 'output' => '[]']],
+                'recompensa_monedas' => 60
             ],
             [
                 'dificultad' => 'medio',
-                'titulo' => 'Bucle For',
-                'descripcion' => 'Imprime los números del un nuemro al otro seguidos (12345) usando un bucle.',
-                'test_cases' => [['input' => '[1, 5]', 'output' => '12345'], ['input' => '[2, 6]', 'output' => '23456']],
-                'recompensa_monedas' => 15
-            ],
-            [
-                'dificultad' => 'difícil',
-                'titulo' => 'Array Reverse',
-                'descripcion' => 'Dado un array, imprímelo al revés.',
-                'test_cases' => [['input' => '[1,2,3]', 'output' => '321'], ['input' => '[4,5,6]', 'output' => '654']],
-                'recompensa_monedas' => 30
-            ],
-            [
-                'dificultad' => 'fácil',
-                'titulo' => 'Resta simple',
-                'descripcion' => 'Imprime la resta de dos numeros dados.',
-                'test_cases' => [['input' => '[10, 20]', 'output' => '-10'], ['input' => '[20, 20]', 'output' => '0']],
-                'recompensa_monedas' => 5
+                'titulo' => 'Contador de Vocales',
+                'descripcion' => 'Cuenta cuántas vocales (a,e,i,o,u) hay en el string dado.',
+                'test_cases' => [['input' => '"manzana"', 'output' => '3'], ['input' => '"xyz"', 'output' => '0']],
+                'recompensa_monedas' => 60
             ],
             [
                 'dificultad' => 'medio',
-                'titulo' => 'Bucle For',
-                'descripcion' => 'Imprime los números del un nuemro al otro seguidos (12345) usando un bucle.',
-                'test_cases' => [['input' => '[1, 5]', 'output' => '12345'], ['input' => '[2, 6]', 'output' => '23456']],
-                'recompensa_monedas' => 15
+                'titulo' => 'Invertir String',
+                'descripcion' => 'Imprime el string de entrada del revés.',
+                'test_cases' => [['input' => '"abc"', 'output' => 'cba'], ['input' => '"radar"', 'output' => 'radar']],
+                'recompensa_monedas' => 60
+            ],
+
+            // --- DIFÍCIL (150 Monedas) ---
+            [
+                'dificultad' => 'difícil',
+                'titulo' => 'Palíndromo Checker',
+                'descripcion' => 'Imprime True si el string es un palíndromo, False si no lo es.',
+                'test_cases' => [['input' => '"anita lava la tina"', 'output' => 'True'], ['input' => '"hola"', 'output' => 'False']],
+                'recompensa_monedas' => 150
             ],
             [
                 'dificultad' => 'difícil',
-                'titulo' => 'Array Reverse',
-                'descripcion' => 'Dado un array, imprímelo al revés.',
-                'test_cases' => [['input' => '[1,2,3]', 'output' => '321'], ['input' => '[4,5,6]', 'output' => '654']],
-                'recompensa_monedas' => 30
-            ],
-            [
-                'dificultad' => 'fácil',
-                'titulo' => 'Multiplicación simple',
-                'descripcion' => 'Imprime la multiplicación de dos numeros dados.',
-                'test_cases' => [['input' => '[10, 20]', 'output' => '200'], ['input' => '[20, 20]', 'output' => '400']],
-                'recompensa_monedas' => 5
-            ],
-            [
-                'dificultad' => 'medio',
-                'titulo' => 'Bucle For',
-                'descripcion' => 'Imprime los números del un nuemro al otro seguidos (12345) usando un bucle.',
-                'test_cases' => [['input' => '[1, 5]', 'output' => '12345'], ['input' => '[2, 6]', 'output' => '23456']],
-                'recompensa_monedas' => 15
+                'titulo' => 'Sucesión de Fibonacci',
+                'descripcion' => 'Imprime el n-ésimo número de la sucesión de Fibonacci.',
+                'test_cases' => [['input' => '5', 'output' => '5'], ['input' => '10', 'output' => '55']],
+                'recompensa_monedas' => 150
             ],
             [
                 'dificultad' => 'difícil',
-                'titulo' => 'Array Reverse',
-                'descripcion' => 'Dado un array, imprímelo al revés.',
-                'test_cases' => [['input' => '[1,2,3]', 'output' => '321'], ['input' => '[4,5,6]', 'output' => '654']],
-                'recompensa_monedas' => 30
+                'titulo' => 'Anagramas',
+                'descripcion' => 'Dados dos strings en una lista [s1, s2], imprime True si son anagramas.',
+                'test_cases' => [['input' => '["amor", "roma"]', 'output' => 'True'], ['input' => '["hola", "chau"]', 'output' => 'False']],
+                'recompensa_monedas' => 150
+            ],
+
+            // --- EXTREMO (300 Monedas) ---
+            [
+                'dificultad' => 'extremo',
+                'titulo' => 'Validador de Paréntesis',
+                'descripcion' => 'Determina si una cadena de paréntesis, corchetes y llaves está balanceada.',
+                'test_cases' => [['input' => '"([]{})"', 'output' => 'True'], ['input' => '"([)]"', 'output' => 'False']],
+                'recompensa_monedas' => 300
             ],
             [
-                'dificultad' => 'fácil',
-                'titulo' => 'División simple',
-                'descripcion' => 'Imprime la división de dos numeros dados.',
-                'test_cases' => [['input' => '[10, 20]', 'output' => '0.5'], ['input' => '[20, 20]', 'output' => '1']],
-                'recompensa_monedas' => 5
+                'dificultad' => 'extremo',
+                'titulo' => 'Suma de Dos Objetivos',
+                'descripcion' => 'Dada una lista y un objetivo, imprime los índices de los dos números que sumen el objetivo.',
+                'test_cases' => [['input' => '([2, 7, 11, 15], 9)', 'output' => '[0, 1]'], ['input' => '([3, 2, 4], 6)', 'output' => '[1, 2]']],
+                'recompensa_monedas' => 300
             ],
             [
-                'dificultad' => 'medio',
-                'titulo' => 'Bucle For',
-                'descripcion' => 'Imprime los números del un nuemro al otro seguidos (12345) usando un bucle.',
-                'test_cases' => [['input' => '[1, 5]', 'output' => '12345'], ['input' => '[2, 6]', 'output' => '23456']],
-                'recompensa_monedas' => 15
-            ],
-            [
-                'dificultad' => 'difícil',
-                'titulo' => 'Array Reverse',
-                'descripcion' => 'Dado un array, imprímelo al revés.',
-                'test_cases' => [['input' => '[1,2,3]', 'output' => '321'], ['input' => '[4,5,6]', 'output' => '654']],
-                'recompensa_monedas' => 30
-            ],
-            [
-                'dificultad' => 'fácil',
-                'titulo' => 'Suma Simple',
-                'descripcion' => 'Imprime la suma de dos numeros dados.',
-                'test_cases' => [['input' => '[10, 20]', 'output' => '30'], ['input' => '[20, 20]', 'output' => '40']],
-                'recompensa_monedas' => 5
-            ],
-            [
-                'dificultad' => 'medio',
-                'titulo' => 'Bucle For',
-                'descripcion' => 'Imprime los números del un nuemro al otro seguidos (12345) usando un bucle.',
-                'test_cases' => [['input' => '[1, 5]', 'output' => '12345'], ['input' => '[2, 6]', 'output' => '23456']],
-                'recompensa_monedas' => 15
-            ],
-            [
-                'dificultad' => 'difícil',
-                'titulo' => 'Array Reverse',
-                'descripcion' => 'Dado un array, imprímelo al revés.',
-                'test_cases' => [['input' => '[1,2,3]', 'output' => '321'], ['input' => '[4,5,6]', 'output' => '654']],
-                'recompensa_monedas' => 30
-            ],
-            [
-                'dificultad' => 'fácil',
-                'titulo' => 'Suma Simple',
-                'descripcion' => 'Imprime la suma de dos numeros dados.',
-                'test_cases' => [['input' => '[10, 20]', 'output' => '30'], ['input' => '[20, 20]', 'output' => '40']],
-                'recompensa_monedas' => 5
-            ],
-            [
-                'dificultad' => 'medio',
-                'titulo' => 'Bucle For',
-                'descripcion' => 'Imprime los números del un nuemro al otro seguidos (12345) usando un bucle.',
-                'test_cases' => [['input' => '[1, 5]', 'output' => '12345'], ['input' => '[2, 6]', 'output' => '23456']],
-                'recompensa_monedas' => 15
-            ],
-            [
-                'dificultad' => 'difícil',
-                'titulo' => 'Array Reverse',
-                'descripcion' => 'Dado un array, imprímelo al revés.',
-                'test_cases' => [['input' => '[1,2,3]', 'output' => '321'], ['input' => '[4,5,6]', 'output' => '654']],
-                'recompensa_monedas' => 30
-            ],
-            [
-                'dificultad' => 'fácil',
-                'titulo' => 'Suma Simple',
-                'descripcion' => 'Imprime la suma de dos numeros dados.',
-                'test_cases' => [['input' => '[10, 20]', 'output' => '30'], ['input' => '[20, 20]', 'output' => '40']],
-                'recompensa_monedas' => 5
+                'dificultad' => 'extremo',
+                'titulo' => 'Frecuencia de Personajes',
+                'descripcion' => 'Imprime un diccionario con la frecuencia de cada carácter en el string.',
+                'test_cases' => [['input' => '"aba"', 'output' => "{'a': 2, 'b': 1}"], ['input' => '"c"', 'output' => "{'c': 1}"]],
+                'recompensa_monedas' => 300
             ],
         ];
 
         foreach ($niveles as $nivel) {
-            NivelRoguelike::firstOrCreate(['titulo' => $nivel['titulo']], $nivel);
+            NivelRoguelike::updateOrCreate(
+                ['titulo' => $nivel['titulo']],
+                $nivel
+            );
         }
     }
 }

@@ -2,595 +2,166 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Mejoras;
-use App\Models\RunsRoguelike;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
-use App\Actions\CheckAchievementsAction;
-use App\Actions\ProcessLevelUpAction;
-use App\Actions\UpdateUserStreakAction;
-use Illuminate\Support\Facades\DB;
+use App\Actions\Roguelike\StartRoguelikeSessionAction;
+use App\Actions\Roguelike\ProcessRoguelikeSuccessAction;
+use App\Actions\Roguelike\ProcessRoguelikeFailureAction;
+use App\Actions\Roguelike\CheckRoguelikeTimerAction;
+use App\Actions\Roguelike\ApplyRoguelikeUpgradeAction;
 use App\Services\TranslationService;
 
+/**
+ * Controlador de Sesiones Roguelike.
+ * Refactorizado para ser un "Skinny Controller" delegando la lógica a Actions.
+ */
 class RoguelikeSessionController extends Controller
 {
-    /** Tiempo por nivel en segundos (5 minutos). */
-    private const TIME_PER_LEVEL = 300;
-
-    /** Vidas iniciales. */
-    private const INITIAL_LIVES = 3;
-
-    /** TTL del cache en segundos (2 horas). */
-    private const CACHE_TTL = 7200;
-
     /**
-     * Inicia una nueva sesión/run de roguelike.
-     * Almacena el estado en Cache vinculado al usuario.
+     * Inicia una nueva partida de roguelike.
      */
-    public function startSession(Request $request)
+    public function startSession(StartRoguelikeSessionAction $action): JsonResponse
     {
-        $userId = Auth::id();
-        $cacheKey = $this->getCacheKey($userId);
-
-        // Crear la run en BD inmediatamente
-        $run = RunsRoguelike::create([
-            'usuario_id' => $userId,
-            'vidas_restantes' => self::INITIAL_LIVES,
-            'niveles_superados' => 0,
-            'monedas_obtenidas' => 0,
-            'estado' => 'activo',
-            'data_partida' => [
-                'xp_earned' => 0,
-                'started_at' => now()->toISOString(),
-            ],
-        ]);
-
-        $session = [
-            'user_id' => $userId,
-            'run_id' => $run->id,
-            'lives' => self::INITIAL_LIVES,
-            'levels_completed' => 0,
-            'coins_earned' => 0,
-            'xp_earned' => 0,
-            'level_started_at' => null,
-            'time_remaining' => self::TIME_PER_LEVEL,
-            'started_at' => now()->toISOString(),
-            'mejoras_activas' => [],
-            'coin_multiplier' => 1,
-            'current_level_id' => null,
-            'used_level_ids' => [],
-        ];
-
-        Cache::put($cacheKey, $session, self::CACHE_TTL);
-
-        Log::info('Roguelike session started', ['user_id' => $userId, 'run_id' => $run->id]);
-
-        $nuevosLogros = (new CheckAchievementsAction())->execute();
+        $result = $action->execute(Auth::id());
 
         return response()->json([
             'message' => 'Sesión iniciada',
-            'lives' => $session['lives'],
-            'time_remaining' => $session['time_remaining'],
-            'coins_earned' => $session['coins_earned'],
-            'mejoras_activas' => $session['mejoras_activas'],
-            'nuevos_logros' => $nuevosLogros
-        ], 200);
+            'lives' => $result['session']['lives'],
+            'time_remaining' => $result['session']['time_remaining'],
+            'coins_earned' => $result['session']['coins_earned'],
+            'mejoras_activas' => $result['session']['mejoras_activas'],
+            'nuevos_logros' => $result['nuevos_logros']
+        ]);
     }
 
     /**
-     * Inicia el temporizador para un nuevo nivel.
-     * Registra el timestamp exacto del inicio.
+     * Inicia el temporizador para un nivel específico.
      */
-    public function startLevel(Request $request)
+    public function startLevel(): JsonResponse
     {
         $userId = Auth::id();
         $session = $this->getSession($userId);
 
-        if (!$session) {
+        if (!$session)
             return $this->noSessionResponse();
-        }
+        if ($session['lives'] <= 0)
+            return response()->json(['message' => 'Sin vidas restantes', 'game_over' => true], 403);
 
-        if ($session['lives'] <= 0) {
-            return response()->json([
-                'message' => 'Game Over. No te quedan vidas.',
-                'game_over' => true,
-                'stats' => $this->getSessionStats($session),
-            ], 200);
-        }
-
-        // Reiniciar temporizador para el nuevo nivel (SIEMPRE UTC)
+        // Marcamos el inicio del nivel con el tiempo del servidor (UTC)
         $session['level_started_at'] = now('UTC')->toDateTimeString();
-        $session['time_remaining'] = self::TIME_PER_LEVEL;
+        $session['time_remaining'] = 300; // Reset a 5 mins
 
-        $this->saveSession($userId, $session);
+        Cache::put("roguelike_session_$userId", $session, 7200);
 
         return response()->json([
             'message' => 'Nivel iniciado',
             'lives' => $session['lives'],
-            'time_remaining' => $session['time_remaining'],
-            'levels_completed' => $session['levels_completed'],
-        ], 200);
-    }
-
-    /**
-     * Valida el tiempo restante del nivel actual.
-     * Calcula en base al timestamp real del servidor (anti-tampering).
-     */
-    public function checkTime(Request $request)
-    {
-        $userId = Auth::id();
-        $session = $this->getSession($userId);
-
-        if (!$session || !isset($session['level_started_at'])) {
-            return response()->json(['message' => 'No hay nivel activo'], 404);
-        }
-
-        // Usar UTC siempre para evitar desajustes de zona horaria
-        $now = now('UTC');
-        $startedAt = \Illuminate\Support\Carbon::parse($session['level_started_at'], 'UTC');
-        $elapsed = $startedAt->diffInSeconds($now, false); // Diferencia firmada (now - startedAt)
-
-        $allocatedTime = $session['time_remaining'] ?? self::TIME_PER_LEVEL;
-        $timeRemaining = $allocatedTime - $elapsed;
-
-        Log::debug('Roguelike checkTime Debug', [
-            'userId' => $userId,
-            'startedAt' => $startedAt->toDateTimeString(),
-            'now' => $now->toDateTimeString(),
-            'allocatedTime' => $allocatedTime,
-            'elapsed' => $elapsed,
-            'timeRemaining' => $timeRemaining
+            'time_remaining' => $session['time_remaining']
         ]);
-
-        if ($timeRemaining <= 0) {
-            // Evitar doble resta si ya se procesó
-            if ($session['time_remaining'] > 0) {
-                if ($session['lives'] <= 0) {
-                    $session['lives'] = 0;
-                    $gameOver = true;
-                } else {
-                    $session['lives']--;
-                    $gameOver = false;
-                }
-
-                if (!$gameOver) {
-                    $session['time_remaining'] = 60;
-                    $session['level_started_at'] = now('UTC')->toDateTimeString();
-                } else {
-                    $session['time_remaining'] = 0;
-                    $session['level_started_at'] = null;
-                }
-                
-                $this->saveSession($userId, $session);
-            } else {
-                $gameOver = $session['lives'] <= 0 && $session['time_remaining'] == 0;
-            }
-
-            $nuevosLogros = [];
-
-            if ($gameOver) {
-                $this->saveRun($session);
-                $nuevosLogros = (new CheckAchievementsAction())->execute();
-            }
-
-            return response()->json([
-                'time_expired' => true,
-                'lives' => $session['lives'],
-                'time_remaining' => $session['time_remaining'],
-                'game_over' => $gameOver,
-                'stats' => $gameOver ? $this->getSessionStats($session) : null,
-                'nuevos_logros' => $nuevosLogros,
-                'message' => $gameOver
-                    ? '¡Game Over! Te has quedado sin vidas y sin tiempo.'
-                    : '¡Se acabó el tiempo! Pierdes una vida. Te damos 1 minuto extra.',
-            ], 200);
-        }
-
-        return response()->json([
-            'time_expired' => false,
-            'time_remaining' => max(0, $timeRemaining),
-            'lives' => $session['lives'],
-        ], 200);
     }
 
     /**
-     * Fuerza el tiempo restante de la sesión a 10 segundos (Debug Admin).
+     * Valida el tiempo restante (prevención de trampas).
      */
-    public function debugSetTime(Request $request)
+    public function checkTime(CheckRoguelikeTimerAction $timerAction, ProcessRoguelikeFailureAction $failureAction): JsonResponse
     {
-        $userId = Auth::id();
-        $session = $this->getSession($userId);
-
-        if (!$session || !isset($session['level_started_at'])) {
-            return response()->json(['message' => 'No hay sesión activa'], 404);
-        }
-
-        // Ajustar started_at para que queden exactamente 10 segundos
-        // started_at = now - (time_remaining - 10)
-        $session['time_remaining'] = 10;
-        $session['level_started_at'] = now('UTC')->toDateTimeString();
-
-        $this->saveSession($userId, $session);
-
-        Log::info('Admin debug: forced roguelike time to 10s', ['user_id' => $userId]);
-
-        return response()->json([
-            'message' => 'Tiempo ajustado a 10 segundos',
-            'lives' => $session['lives'],
-            'time_remaining' => 10,
-        ], 200);
-    }
-
-    /**
-     * Registra un fallo (código no pasa tests).
-     * Resta una vida y verifica game over.
-     */
-    public function registerFailure(Request $request)
-    {
-        $userId = Auth::id();
-        $session = $this->getSession($userId);
-
-        if (!$session) {
-            return $this->noSessionResponse();
-        }
-
-        if ($session['lives'] <= 0) {
-            $session['lives'] = 0;
-            $gameOver = true;
-        } else {
-            $session['lives']--;
-            $gameOver = false;
-        }
-
-        $this->saveSession($userId, $session);
-        $nuevosLogros = [];
-
-        if ($gameOver) {
-            $this->saveRun($session);
-            $nuevosLogros = (new CheckAchievementsAction())->execute();
-        }
-
-        Log::info('Roguelike failure registered', [
-            'user_id' => $userId,
-            'lives' => $session['lives'],
-            'game_over' => $gameOver,
-        ]);
-
-        return response()->json([
-            'lives' => $session['lives'],
-            'game_over' => $gameOver,
-            'stats' => $gameOver ? $this->getSessionStats($session) : null,
-            'nuevos_logros' => $nuevosLogros,
-            'message' => $gameOver
-                ? '¡Game Over! Has fallado sin vidas restantes.'
-                : '¡Código incorrecto! Pierdes una vida.',
-        ], 200);
-    }
-
-    /**
-     * Registra un éxito (nivel completado).
-     */
-    public function registerSuccess(Request $request)
-    {
-        $userId = Auth::id();
-        $session = $this->getSession($userId);
-
-        if (!$session) {
-            return $this->noSessionResponse();
-        }
-
-        $multiplier = $session['coin_multiplier'] ?? 1;
-        $coinsGained = 10 * $multiplier;
-
-        $session['levels_completed'] += 1;
-        $session['coins_earned'] += $coinsGained;
-        $session['xp_earned'] += 25;
-
-        // Marcar nivel actual como completado/usado y limpiar actual para que el siguiente sea nuevo
-        if (isset($session['current_level_id'])) {
-            $session['used_level_ids'][] = $session['current_level_id'];
-            $session['current_level_id'] = null;
-        }
-
-        $this->saveSession($userId, $session);
-
-        // Actualizar la run en BD con cada nivel completado
-        $this->updateRun($session);
-
-        // Recompensas globales en tiempo real
-        try {
-            DB::transaction(function () use ($userId, $coinsGained) {
-                DB::table('usuarios')
-                    ->where('id', $userId)
-                    ->lockForUpdate()
-                    ->increment('exp_total', 25); // 25 XP por nivel roguelike
-
-                DB::table('usuarios')
-                    ->where('id', $userId)
-                    ->increment('monedas', $coinsGained);
-            });
-        } catch (\Throwable $e) {
-            Log::error('Error otorgando recompensas globales Roguelike: ' . $e->getMessage());
-        }
-
-        $nuevosLogros = (new CheckAchievementsAction())->execute();
-        $locale = TranslationService::resolveLocale($request);
-        $translator = app(TranslationService::class);
-
-        /** @var \App\Models\Usuario $user */
         $user = Auth::user();
-        $rachaData = (new UpdateUserStreakAction())->execute($user);
-        
-        // Procesar subida de nivel
-        $levelUpData = (new ProcessLevelUpAction())->execute($user);
+        $session = $this->getSession($user->id);
 
-        return response()->json([
-            'lives' => $session['lives'],
-            'levels_completed' => $session['levels_completed'],
-            'coins_earned' => $session['coins_earned'],
-            'xp_earned' => $session['xp_earned'],
-            'nuevos_logros' => $translator->translateLogrosCollection($nuevosLogros, $locale),
-            'racha' => $rachaData,
-            'level_up' => $levelUpData
-        ], 200);
-    }
-
-    /**
-     * Compra una mejora con monedas de la sesión.
-     * Carga 3 mejoras aleatorias, el usuario elige una por ID.
-     */
-    public function buyMejora(Request $request)
-    {
-        $request->validate([
-            'mejora_id' => 'required|integer|exists:mejoras,id',
-        ]);
-
-        $userId = Auth::id();
-        $session = $this->getSession($userId);
-
-        if (!$session) {
+        if (!$session)
             return $this->noSessionResponse();
-        }
 
-        $mejora = Mejoras::find($request->mejora_id);
-
-        if (!$mejora) {
-            return response()->json(['message' => 'Mejora no encontrada.'], 404);
-        }
-
-        // Coste fijo de la caja: 100 monedas de sesión
-        $costeCaja = 100;
-
-        if ($session['coins_earned'] < $costeCaja) {
-            return response()->json([
-                'message' => 'No tienes suficientes monedas.',
-                'coins_earned' => $session['coins_earned'],
-                'coste' => $costeCaja,
-            ], 400);
-        }
-
-        // Deducir coste
-        $session['coins_earned'] -= $costeCaja;
-
-        // Aplicar efecto según tipo
-        $efectoAplicado = '';
-
-        switch ($mejora->tipo) {
-            case 'vidas_extra':
-                $session['lives'] += 1;
-                $efectoAplicado = '+1 vida. Ahora tienes ' . $session['lives'] . ' vidas.';
-                break;
-
-            case 'tiempo_extra':
-                $session['time_remaining'] = ($session['time_remaining'] ?? self::TIME_PER_LEVEL) + 60;
-                $efectoAplicado = '+60 segundos de tiempo extra.';
-                break;
-
-            case 'multiplicador':
-                $session['coin_multiplier'] = ($session['coin_multiplier'] ?? 1) * 2;
-                $efectoAplicado = 'x2 multiplicador de monedas activo.';
-                break;
-
-            case 'pista':
-                // Se envía al frontend para revelar info extra
-                $efectoAplicado = 'Pista desbloqueada para el nivel actual.';
-                break;
-        }
-
-        // Registrar mejora activa
-        $session['mejoras_activas'] = $session['mejoras_activas'] ?? [];
-        $session['mejoras_activas'][] = [
-            'id' => $mejora->id,
-            'nombre' => $mejora->nombre,
-            'tipo' => $mejora->tipo,
-            'icon' => $this->getMejoraIcon($mejora->tipo),
-        ];
-
-        $this->saveSession($userId, $session);
-
-        Log::info('Mejora comprada', [
-            'user_id' => $userId,
-            'mejora' => $mejora->nombre,
-            'tipo' => $mejora->tipo,
-        ]);
-
-        return response()->json([
-            'message' => '¡Mejora activada! ' . $efectoAplicado,
-            'efecto' => $efectoAplicado,
-            'mejora' => [
-                'id' => $mejora->id,
-                'nombre' => $mejora->nombre,
-                'tipo' => $mejora->tipo,
-                'icon' => $this->getMejoraIcon($mejora->tipo),
-            ],
-            'lives' => $session['lives'],
-            'time_remaining' => $session['time_remaining'],
-            'coins_earned' => $session['coins_earned'],
-            'coin_multiplier' => $session['coin_multiplier'] ?? 1,
-            'mejoras_activas' => $session['mejoras_activas'],
-        ], 200);
+        $result = $timerAction->execute($user, $session, $failureAction);
+        return response()->json($result);
     }
 
     /**
-     * Devuelve un icono emoji según el tipo de mejora.
+     * Registra un fallo al resolver un reto.
      */
-    private function getMejoraIcon(string $tipo): string
+    public function registerFailure(ProcessRoguelikeFailureAction $action): JsonResponse
     {
-        return match ($tipo) {
-            'vidas_extra' => '❤️',
-            'tiempo_extra' => '⏱️',
-            'multiplicador' => '💰',
-            'pista' => '💡',
-            default => '⚡',
-        };
+        $user = Auth::user();
+        $session = $this->getSession($user->id);
+
+        if (!$session)
+            return $this->noSessionResponse();
+
+        $result = $action->execute($user, $session);
+        return response()->json($result);
     }
 
     /**
-     * Obtiene el estado completo de la sesión actual.
+     * Registra el éxito al resolver un reto.
      */
-    public function getSessionStatus(Request $request)
+    public function registerSuccess(Request $request, ProcessRoguelikeSuccessAction $action): JsonResponse
     {
-        $userId = Auth::id();
-        $session = $this->getSession($userId);
+        $user = Auth::user();
+        $session = $this->getSession($user->id);
 
-        if (!$session) {
-            return response()->json(['active' => false], 200);
-        }
+        if (!$session)
+            return $this->noSessionResponse();
 
-        // Calcular tiempo restante en tiempo real usando UTC
-        $timeRemaining = self::TIME_PER_LEVEL;
-        if (isset($session['level_started_at']) && $session['level_started_at']) {
-            $now = now('UTC');
-            $startedAt = \Illuminate\Support\Carbon::parse($session['level_started_at'], 'UTC');
-            $elapsed = $startedAt->diffInSeconds($now, false);
-            
-            $allocatedTime = $session['time_remaining'] ?? self::TIME_PER_LEVEL;
-            $timeRemaining = max(0, $allocatedTime - $elapsed);
-        }
+        $result = $action->execute($user, $session);
 
-        return response()->json([
-            'active' => true,
-            'lives' => $session['lives'],
-            'time_remaining' => $timeRemaining,
-            'levels_completed' => $session['levels_completed'],
-            'coins_earned' => $session['coins_earned'],
-            'xp_earned' => $session['xp_earned'],
-        ], 200);
-    }
+        // Traducimos los logros si existen para la respuesta
+        $locale = TranslationService::resolveLocale($request);
+        $result['nuevos_logros'] = app(TranslationService::class)->translateLogrosCollection($result['nuevos_logros'], $locale);
 
-    // ==========================================
-    // HELPERS (Private)
-    // ==========================================
-
-    /**
-     * Genera la cache key vinculada al usuario.
-     */
-    public static function getCacheKey($userId): string
-    {
-        return "roguelike_session_" . ($userId ?? 'guest');
+        return response()->json($result);
     }
 
     /**
-     * Obtiene la sesión del cache.
+     * Compra de mejoras en la tienda de la sesión.
      */
-    private function getSession(int $userId): ?array
+    public function buyMejora(Request $request, ApplyRoguelikeUpgradeAction $action): JsonResponse
     {
-        return Cache::get($this->getCacheKey($userId));
-    }
+        $request->validate(['mejora_id' => 'required|integer|exists:mejoras,id']);
 
-    /**
-     * Guarda la sesión en cache.
-     */
-    private function saveSession(int $userId, array $session): void
-    {
-        Cache::put($this->getCacheKey($userId), $session, self::CACHE_TTL);
-    }
+        $user = Auth::user();
+        $session = $this->getSession($user->id);
+        if (!$session)
+            return $this->noSessionResponse();
 
-    /**
-     * Respuesta estándar cuando no hay sesión activa.
-     */
-    private function noSessionResponse()
-    {
-        return response()->json([
-            'message' => 'No hay sesión activa. Inicia una nueva partida.',
-        ], 404);
-    }
-
-    /**
-     * Extrae las estadísticas de la sesión para el Game Over.
-     */
-    private function getSessionStats(array $session): array
-    {
-        return [
-            'niveles_superados' => $session['levels_completed'],
-            'monedas_obtenidas' => $session['coins_earned'],
-            'xp_ganada' => $session['xp_earned'],
-            'vidas_restantes' => $session['lives'],
-        ];
-    }
-
-    /**
-     * Actualiza la run existente en la base de datos.
-     */
-    private function updateRun(array $session): void
-    {
         try {
-            $run = RunsRoguelike::find($session['run_id']);
-            if ($run) {
-                $run->update([
-                    'vidas_restantes' => $session['lives'],
-                    'niveles_superados' => $session['levels_completed'],
-                    'monedas_obtenidas' => $session['coins_earned'],
-                    'data_partida' => [
-                        'xp_earned' => $session['xp_earned'],
-                        'started_at' => $session['started_at'],
-                        'ended_at' => now()->toISOString(),
-                    ],
-                ]);
-            }
-        } catch (\Throwable $e) {
-            Log::error('Error actualizando run roguelike: ' . $e->getMessage());
+            $result = $action->execute($user, $session, $request->mejora_id);
+            return response()->json($result);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
         }
     }
 
     /**
-     * Marca la run como finalizada (game over).
+     * Obtiene el estado persistente de la sesión.
      */
-    private function saveRun(array $session): void
+    public function getSessionStatus(): JsonResponse
     {
-        try {
-            $run = RunsRoguelike::find($session['run_id']);
-            if ($run) {
-                $run->update([
-                    'vidas_restantes' => $session['lives'],
-                    'niveles_superados' => $session['levels_completed'],
-                    'monedas_obtenidas' => $session['coins_earned'],
-                    'estado' => 'fallido', // Assuming saveRun is called on game over/failure
-                    'data_partida' => [
-                        'xp_earned' => $session['xp_earned'],
-                        'started_at' => $session['started_at'],
-                        'ended_at' => now()->toISOString(),
-                    ],
-                ]);
-            } else {
-                // Fallback if run_id is not found, or if it's a new run being saved as final
-                RunsRoguelike::create([
-                    'usuario_id' => $session['user_id'],
-                    'vidas_restantes' => $session['lives'],
-                    'niveles_superados' => $session['levels_completed'],
-                    'monedas_obtenidas' => $session['coins_earned'],
-                    'estado' => 'finalizada', // Or 'fallido' depending on context
-                    'data_partida' => [
-                        'xp_earned' => $session['xp_earned'],
-                        'started_at' => $session['started_at'],
-                        'ended_at' => now()->toISOString(),
-                    ],
-                ]);
-            }
-        } catch (\Throwable $e) {
-            Log::error('Error guardando run roguelike: ' . $e->getMessage());
-        }
+        $session = $this->getSession(Auth::id());
+
+        if (!$session)
+            return response()->json(['active' => false]);
+
+        return response()->json(array_merge($session, ['active' => true]));
+    }
+
+    /**
+     * Obtiene la clave de caché estándar para la sesión de un usuario.
+     */
+    public static function getCacheKey(int $userId): string
+    {
+        return "roguelike_session_$userId";
+    }
+
+    // --- Helpers Privados ---
+
+    private function getSession($userId)
+    {
+        return Cache::get(self::getCacheKey($userId));
+    }
+
+    private function noSessionResponse(): JsonResponse
+    {
+        return response()->json(['message' => 'No hay sesión activa.'], 404);
     }
 }

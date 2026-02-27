@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Auth;
 class IsAdmin
 {
     /**
-     * Handle an incoming request.
+     * Maneja una solicitud entrante.
+     * Verifica si el usuario está autenticado y si tiene el rol de administrador.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */

@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Log;
 class TranslationService
 {
     /**
-     * Languages we actively translate via Google.
-     * Must match the codes in the frontend LanguageService.
-     * Spanish ('es') is excluded because it is the source language.
+     * Idiomas que traducimos activamente mediante la API de Google.
+     * Debe coincidir con los códigos definidos en el frontend (LanguageService).
+     * El castellano ('es') se excluye porque es el idioma de origen en la BD.
      */
     private const SUPPORTED_LOCALES = [
         'en',
@@ -30,24 +30,24 @@ class TranslationService
         'val',
     ];
 
-    /** Delimiter for bulk translation logic. High uniqueness to avoid collisions with user text. */
+    /** Delimitador para la lógica de traducción masiva (Bulk). Alta unicidad para evitar colisiones. */
     private const BULK_DELIMITER = ' [[[|]]] ';
 
     /**
-     * Fields that contain translatable free-text stored in Spanish in the DB.
+     * Campos que contienen texto libre traducible almacenado en castellano en la base de datos.
      */
     private const TRANSLATABLE_FIELDS_LEVEL = ['titulo', 'descripcion', 'contenido_teorico'];
     private const TRANSLATABLE_FIELDS_LOGRO = ['nombre', 'descripcion'];
     private const TRANSLATABLE_FIELDS_TEMA = ['nombre', 'descripcion'];
 
     /**
-     * Circuit-breaker flag: once Google Translate fails within a request,
-     * skip all subsequent calls to avoid cascading timeouts.
+     * Bandera de "Circuit-breaker": si Google Translate falla en una solicitud, 
+     * se omiten las siguientes para evitar retrasos en cascada (timeouts).
      */
     private bool $translationAvailable = true;
 
     /**
-     * Translate a level/challenge.
+     * Traduce un nivel o desafío.
      */
     public function translateNivel(array|object $nivel, string $locale): array
     {
@@ -55,7 +55,7 @@ class TranslationService
     }
 
     /**
-     * Translate an achievement (logro).
+     * Traduce un logro.
      */
     public function translateLogro(array|object $logro, string $locale): array
     {
@@ -63,7 +63,7 @@ class TranslationService
     }
 
     /**
-     * Translate a theme.
+     * Traduce un tema visual.
      */
     public function translateTema(array|object $tema, string $locale): array
     {
@@ -71,8 +71,8 @@ class TranslationService
     }
 
     /**
-     * Bulk translate a collection of records.
-     * Use this for Lists (Achievements, Levels) to avoid N+1 HTTP calls to Google.
+     * Traduce una colección de registros de forma masiva (Bulk).
+     * Se usa para listas (Logros, Niveles) para evitar llamadas N+1 a Google Translate.
      */
     public function translateCollection(iterable $records, string $locale, string $type = 'logro'): array
     {
@@ -92,7 +92,7 @@ class TranslationService
         $items = $this->normalizeItems($records);
         $toTranslate = [];
 
-        // 1. Identify what needs translation (not in cache)
+        // 1. Identificar qué necesita traducción (lo que no esté en caché)
         foreach ($items as $index => $item) {
             foreach ($fields as $field) {
                 if (!empty($item[$field]) && is_string($item[$field])) {
@@ -114,28 +114,32 @@ class TranslationService
             return $items;
         }
 
-        // 2. Perform Bulk Translation
-        // We join texts using a delimiter. We might need multiple chunks if text is too long.
+        // 2. Realizar Traducción en Lote (Bulk)
+        // Unimos los textos usando un delimitador. Se usan fragmentos (chunks) si el texto total es muy largo.
         $chunks = $this->chunkTranslationData($toTranslate);
 
         foreach ($chunks as $chunk) {
+            // Unimos todos los textos del fragmento con el delimitador especial
             $combinedText = collect($chunk)->pluck('text')->implode(self::BULK_DELIMITER);
             $translatedBulk = $this->callGoogleTranslate($combinedText, $lang);
 
             if ($translatedBulk === null) {
+                // Si la API falla (ej: timeout), activamos el "circuit-breaker" para el resto de la petición
                 $this->translationAvailable = false;
-                break; // Stop translating collection if API fails
+                break;
             }
 
+            // Dividimos el texto traducido de vuelta en sus partes originales usando el delimitador.
+            // La expresión regular contempla posibles espacios añadidos por el traductor alrededor de los corchetes.
             $translatedParts = preg_split('/\s?\[\[\[\|\]\]\]\s?/', $translatedBulk);
 
-            // Map back and cache
+            // Mapeamos cada traducción a su posición original en la colección
             foreach ($chunk as $i => $meta) {
-                // If the split failed or returned fewer parts, fallback to original text safely
+                // Si por algún error la división devuelve menos partes, mantenemos el texto original (meta['text'])
                 $val = trim($translatedParts[$i] ?? $meta['text']);
                 $items[$meta['item_index']][$meta['field']] = $val;
 
-                // Cache it for future requests
+                // Guardamos en caché por 7 días. La clave es el MD5 del texto en castellano original.
                 $cacheKey = "trans_{$lang}_" . md5($meta['text']);
                 Cache::put($cacheKey, $val, now()->addDays(7));
             }
@@ -144,7 +148,7 @@ class TranslationService
         return $items;
     }
 
-    /** Helper for backwards compatibility / single items */
+    /** Helper para compatibilidad con colecciones de logros */
     public function translateLogrosCollection(iterable $logros, string $locale): array
     {
         return $this->translateCollection($logros, $locale, 'logro');
@@ -188,9 +192,9 @@ class TranslationService
 
     private function callGoogleTranslate(string $text, string $targetLang): ?string
     {
-        // Safety: ensure characters like | are preserved by not over-cleaning
+        // Seguridad: asegurar que caracteres como | se preserven no limpiando en exceso
         try {
-            // Google Translate handles many languages. 'val' is not standard, use 'ca'.
+            // Google Translate soporta muchos idiomas. 'val' no es estándar, usamos 'ca' para la API.
             $googleLang = ($targetLang === 'val') ? 'ca' : $targetLang;
 
             $response = Http::timeout(5)->get('https://translate.googleapis.com/translate_a/single', [
@@ -232,7 +236,7 @@ class TranslationService
         return $result;
     }
 
-    /** Split bulk translation into smaller chunks to avoid URL length limits (approx 2000 chars) */
+    /** Divide la traducción masiva en fragmentos más pequeños para evitar límites de longitud en la URL (aprox 2000 chars) */
     private function chunkTranslationData(array $data): array
     {
         $chunks = [];
@@ -261,7 +265,7 @@ class TranslationService
         $primary = explode(',', $header)[0];
         $lang = strtolower(explode('-', trim($primary))[0]);
 
-        // Log to help debugging why 'it' might persist
+        // Registro para depurar por qué 'it' (u otros) podría persistir en el header
         // Log::debug("TranslationService: Resolved locale '{$lang}' from header '{$header}'");
 
         return $lang ?: 'es';

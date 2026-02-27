@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Representa una sesión o "Run" de juego en el modo Roguelike.
+ * Almacena el estado volátil que luego se sincroniza con el perfil global del usuario.
+ */
 class RunsRoguelike extends Model
 {
     protected $table = 'runs_roguelike';
@@ -16,18 +20,21 @@ class RunsRoguelike extends Model
         'monedas_obtenidas',
         'estado',
         'data_partida'
-       
     ];
 
-    // Relación: Un run pertenece a un usuario
+    /**
+     * Relación: Un run pertenece a un usuario concreto.
+     */
     public function usuario()
     {
         return $this->belongsTo(Usuario::class);
     }
 
+    /**
+     * Atributos que deben convertirse a tipos nativos automáticamente.
+     */
     protected $casts = [
         'data_partida' => 'array',
     ];
-
 }
-   
+

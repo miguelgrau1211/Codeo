@@ -2,171 +2,95 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use App\Actions\Achievements\GetAchievementsStatusAction;
+use App\Actions\Achievements\AssignAchievementManualAction;
 use App\Models\UsuarioLogro;
 use App\Services\TranslationService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Logros;
 
+/**
+ * Controlador para el progreso de logros de los usuarios.
+ */
 class UsuarioLogroController extends Controller
 {
-    // logros conseguidos
-    public function index()
+    /**
+     * Lista completa de logros con su estado de desbloqueo para el usuario actual.
+     */
+    public function getLogrosDesbloqueados(Request $request, GetAchievementsStatusAction $action): JsonResponse
     {
-        $logros = UsuarioLogro::where('usuario_id', Auth::id())->with('logro')->get();
-        return response()->json($logros, 200);
+        $locale = TranslationService::resolveLocale($request);
+        $result = $action->execute(Auth::id(), $locale);
+
+        return response()->json([
+            'usuario_id' => Auth::id(),
+            'progreso_logros' => $result['progreso_texto'],
+            'lista_completa' => $result['lista']
+        ]);
     }
 
-    // Asigna un logro
-    public function store(Request $request)
+    /**
+     * Obtiene solo los logros ya conseguidos por el usuario.
+     */
+    public function getLogrosUsuario(Request $request, GetAchievementsStatusAction $action): JsonResponse
     {
-        $validatedData = $request->validate([
-            'logro_id' => 'required|exists:logros,id',
+        $locale = TranslationService::resolveLocale($request);
+        $result = $action->execute(Auth::id(), $locale);
+
+        // Filtramos solo los desbloqueados para esta respuesta específica
+        $desbloqueados = collect($result['lista'])->where('desbloqueado', true)->values();
+
+        return response()->json([
+            'usuario_id' => Auth::id(),
+            'total_logros' => $desbloqueados->count(),
+            'logros' => $desbloqueados
         ]);
+    }
+
+    /**
+     * Asignación manual de un logro (Admin o eventos especiales).
+     */
+    public function store(Request $request, AssignAchievementManualAction $action): JsonResponse
+    {
+        $request->validate(['logro_id' => 'required|exists:logros,id']);
 
         try {
-            $nuevoLogro = UsuarioLogro::create([
-                'usuario_id' => Auth::id(),
-                'logro_id' => $validatedData['logro_id'],
-                'fecha_desbloqueo' => now(),
-            ]);
-
-            return response()->json([
-                'message' => '¡Logro desbloqueado con éxito!',
-                'data' => $nuevoLogro,
-            ], 201);
-
+            $nuevoLogro = $action->execute(Auth::id(), $request->logro_id);
+            return response()->json(['message' => '¡Logro desbloqueado!', 'data' => $nuevoLogro], 201);
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'El usuario ya posee este logro o ha ocurrido un error.',
-                'error' => $e->getMessage(),
-            ], 409);
+            return response()->json(['message' => $e->getMessage()], 409);
         }
     }
 
-    // Elimina un logro
-    public function destroy(Request $request, $id)
+    /**
+     * Revocación de un logro.
+     */
+    public function destroy(Request $request): JsonResponse
     {
-        $request->validate([
-            'logro_id' => 'required|exists:logros,id',
-        ]);
+        $request->validate(['logro_id' => 'required|exists:logros,id']);
 
         UsuarioLogro::where('usuario_id', Auth::id())
             ->where('logro_id', $request->logro_id)
             ->delete();
 
-        return response()->json(['message' => 'Logro revocado correctamente'], 200);
+        return response()->json(['message' => 'Logro revocado correctamente']);
     }
 
     /**
-     * Obtiene los logros conseguidos por el usuario con nombre/descripción traducidos.
+     * Porcentaje de completitud para el Dashboard.
      */
-    public function getLogrosUsuario(Request $request)
+    public function getPorcentajeLogros(GetAchievementsStatusAction $action): JsonResponse
     {
-        $idUsuario = Auth::id();
-        $locale = TranslationService::resolveLocale($request);
-
-        $logrosConseguidos = UsuarioLogro::where('usuario_id', $idUsuario)
-            ->with('logro')
-            ->get();
-
-        $translator = app(TranslationService::class);
-
-        // Extraer los modelos Logros para traducción masiva
-        $rawLogros = $logrosConseguidos->pluck('logro');
-        $translatedLogros = collect($translator->translateCollection($rawLogros, $locale, 'logro'))
-            ->keyBy('id');
-
-        $resultado = $logrosConseguidos->map(function ($item) use ($translatedLogros) {
-            $logro = $translatedLogros->get($item->logro_id);
-
-            return [
-                'logro_id' => $item->logro_id,
-                'nombre' => $logro['nombre'],
-                'descripcion' => $logro['descripcion'],
-                'icono_url' => $item->logro->icono_url,
-                'fecha_desbloqueo' => $item->fecha_desbloqueo,
-                'requisito_tipo' => $item->logro->requisito_tipo,
-            ];
-        });
+        $result = $action->execute(Auth::id(), 'es'); // El idioma da igual para números
 
         return response()->json([
-            'usuario_id' => (int) $idUsuario,
-            'total_logros' => $resultado->count(),
-            'logros' => $resultado,
-        ], 200);
-    }
-
-    /**
-     * Obtiene la lista completa de logros indicando cuáles ha desbloqueado el usuario.
-     * Nombre y descripción se traducen según Accept-Language.
-     * Fix: la fecha de desbloqueo se carga de una sola query (evita N+1).
-     */
-    public function getLogrosDesbloqueados(Request $request)
-    {
-        $idUsuario = Auth::id();
-        $locale = TranslationService::resolveLocale($request);
-
-        $todosLosLogros = Logros::all();
-
-        // Cargar todos los logros del usuario en una sola query → evita N+1
-        $userLogros = UsuarioLogro::where('usuario_id', $idUsuario)
-            ->get()
-            ->keyBy('logro_id');
-
-        $translator = app(TranslationService::class);
-        // Traducción masiva de todos los logros
-        $translatedLogros = collect($translator->translateCollection($todosLosLogros, $locale, 'logro'))
-            ->keyBy('id');
-
-        $resultado = $todosLosLogros->map(function ($logro) use ($userLogros, $translatedLogros) {
-            $desbloqueado = $userLogros->has($logro->id);
-            $translated = $translatedLogros->get($logro->id);
-
-            return [
-                'id' => $logro->id,
-                'nombre' => $translated['nombre'],
-                'descripcion' => $translated['descripcion'],
-                'icono_url' => $logro->icono_url,
-                'rareza' => $logro->rareza,
-                'requisito_tipo' => $logro->requisito_tipo,
-                'requisito_cantidad' => $logro->requisito_cantidad,
-                'desbloqueado' => $desbloqueado,
-                'fecha_obtencion' => $desbloqueado
-                    ? $userLogros->get($logro->id)?->fecha_desbloqueo
-                    : null,
-            ];
-        });
-
-        return response()->json([
-            'usuario_id' => (int) $idUsuario,
-            'progreso_logros' => count($userLogros) > 0
-                ? count($userLogros) . '/' . $todosLosLogros->count()
-                : '0/0',
-            'lista_completa' => $resultado,
-        ], 200);
-    }
-
-    /**
-     * Obtiene el porcentaje de completitud de logros del usuario.
-     */
-    public function getPorcentajeLogros()
-    {
-        $idUsuario = Auth::id();
-        $totalLogros = Logros::count();
-
-        if ($totalLogros === 0) {
-            return response()->json(['porcentaje' => 0, 'mensaje' => 'No hay logros configurados'], 200);
-        }
-
-        $logrosUsuario = UsuarioLogro::where('usuario_id', $idUsuario)->count();
-        $porcentaje = ($logrosUsuario / $totalLogros) * 100;
-
-        return response()->json([
-            'usuario_id' => (int) $idUsuario,
-            'logros_obtenidos' => $logrosUsuario,
-            'total_disponibles' => $totalLogros,
-            'porcentaje' => round($porcentaje, 2),
-        ], 200);
+            'usuario_id' => Auth::id(),
+            'logros_obtenidos' => $result['total_obtenidos'],
+            'total_disponibles' => $result['total_disponibles'],
+            'porcentaje' => $result['total_disponibles'] > 0
+                ? round(($result['total_obtenidos'] / $result['total_disponibles']) * 100, 2)
+                : 0
+        ]);
     }
 }
