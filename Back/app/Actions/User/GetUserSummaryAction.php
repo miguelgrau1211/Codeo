@@ -28,15 +28,25 @@ class GetUserSummaryAction
         // Obtenemos los datos calculados (ya sea de caché o calculándolos ahora)
         $data = \Illuminate\Support\Facades\Cache::remember($cacheKey, 600, function () use ($usuario) {
             $nAchievements = UsuarioLogro::where('usuario_id', $usuario->id)->count();
-            $storyLevelsCompleted = ProgresoHistoria::where('usuario_id', $usuario->id)->where('completado', true)->count();
+            $storyLevelsCompleted = ProgresoHistoria::where('usuario_id', $usuario->id)
+                ->where('completado', true)
+                ->count();
             $roguelikeLevelsPlayed = (int) RunsRoguelike::where('usuario_id', $usuario->id)->sum('niveles_superados');
             $totalStoryLevels = NivelesHistoria::count();
 
-            $lastLevelRecord = ProgresoHistoria::where('usuario_id', $usuario->id)
+            // Buscamos el nivel actual (el primero no completado)
+            $completedIds = ProgresoHistoria::where('usuario_id', $usuario->id)
                 ->where('completado', true)
-                ->with('nivel')
-                ->orderByDesc('updated_at')
+                ->pluck('nivel_id');
+            
+            $currentLevel = NivelesHistoria::whereNotIn('id', $completedIds)
+                ->orderBy('orden')
                 ->first();
+
+            // Si todos están completados, mostramos el último
+            if (!$currentLevel) {
+                $currentLevel = NivelesHistoria::orderByDesc('orden')->first();
+            }
 
             $rank = Usuario::where('exp_total', '>', $usuario->exp_total)->count() + 1;
 
@@ -45,14 +55,22 @@ class GetUserSummaryAction
                 'storyLevelsCompleted' => $storyLevelsCompleted,
                 'roguelikeLevelsPlayed' => $roguelikeLevelsPlayed,
                 'totalStoryLevels' => $totalStoryLevels,
-                'lastStoryLevelTitle' => $lastLevelRecord?->nivel?->titulo,
+                'currentLevelModel' => $currentLevel, // Store the model for later translation
+                'lastStoryLevelTitle' => $currentLevel?->titulo ?? 'Novato', // Default title
                 'rank' => $rank
             ];
         });
 
-        // 3. Logros por visitar perfil (Esto puede dar nuevos logros, no se cachea el resultado final)
-        $nuevosLogros = (new CheckAchievementsAction())->execute(['visitar_perfil' => 1]);
+        // 3. Traducir el título del nivel actual si existe
         $locale = TranslationService::resolveLocale($request);
+        $currentLevelTitle = $data['lastStoryLevelTitle'];
+        if (isset($data['currentLevelModel']) && $data['currentLevelModel']) {
+            $translated = app(TranslationService::class)->translateNivel($data['currentLevelModel'], $locale);
+            $currentLevelTitle = $translated['titulo'] ?? $currentLevelTitle;
+        }
+
+        // 4. Logros por visitar perfil
+        $nuevosLogros = (new CheckAchievementsAction())->execute(['visitar_perfil' => 1]);
         $translatedLogros = app(TranslationService::class)->translateLogrosCollection($nuevosLogros, $locale);
 
         return new UserSummaryData(
@@ -66,7 +84,7 @@ class GetUserSummaryAction
             nAchievements: $data['nAchievements'],
             storyLevelsCompleted: $data['storyLevelsCompleted'],
             totalStoryLevels: $data['totalStoryLevels'],
-            lastStoryLevelTitle: $data['lastStoryLevelTitle'],
+            lastStoryLevelTitle: $currentLevelTitle,
             roguelikeLevelsPlayed: $data['roguelikeLevelsPlayed'],
             subscriptionDate: $usuario->created_at->format('d/m/Y'),
             rank: $data['rank'],

@@ -78,17 +78,25 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
   serviceProgreso = this.progresoHistoriaService.progresoSignal;
 
   stats_historia = computed(() => {
-    const data = this.serviceProgreso();
-    if (data) {
+    const user = this.userData();
+    if (user) {
+      const completed = user.story_levels_completed ?? 0;
+      const total = user.total_story_levels ?? 0;
+      
+      // El nivel actual es el siguiente al último completado, sin pasarnos del total
+      const actual = completed < total ? completed + 1 : (total > 0 ? total : 1);
+
       return {
-        actual_level: data.stats.total_niveles,
-        total_levels: data.stats.completados,
-        lvls_progress: data.stats.porcentaje_progreso,
-        titulo: data.stats.titulo_ultimo_nivel
+        actual_level: actual,
+        total_levels: total,
+        lvls_progress: total > 0 
+          ? Math.round((completed / total) * 100) + '%' 
+          : '0%',
+        titulo: user.last_story_level_title || '...'
       };
     }
     return {
-      actual_level: 0,
+      actual_level: 1,
       total_levels: 0,
       lvls_progress: "0%",
       titulo: "Cargando..."
