@@ -1,26 +1,15 @@
-# Stage 1: Build
+# Stage 1: Build 
 FROM node:22-bookworm as build-step
 
 WORKDIR /app
 
-# Copiar archivos de dependencias
-COPY package.json package-lock.json ./
-
 # Instalar dependencias
+COPY package.json package-lock.json ./
 RUN npm install
 
-# Copiar el resto del código
+# Copiar código y construir
 COPY . .
-
-# Generar archivos de entorno y construir
-# Railway inyecta las variables aquí durante el build
-RUN node set-env.js && npm run build -- --configuration production
-
-# TRUCO FINAL: Reemplazo directo en los archivos generados por si Angular ignoró la variable
-RUN if [ -n "$API_URL" ]; then \
-      echo "Applying hard replacement to dist files: $API_URL"; \
-      find dist/Front/browser -type f -name "*.js" -exec sed -i "s|http://localhost/api|$API_URL|g" {} +; \
-    fi
+RUN npm run build -- --configuration production
 
 # Stage 2: Serve
 FROM node:22-slim
@@ -30,11 +19,10 @@ WORKDIR /app
 # Instalar http-server
 RUN npm install -g http-server
 
-# Copiar archivos
+# Copiar archivos construidos
 COPY --from=build-step /app/dist/Front/browser /app/dist/Front/browser
 
-# Railway usa $PORT. Forzamos a http-server a usarlo con -p
-# -g activa compresión Gzip
-# -c-1 desactiva caché de archivos (para desarrollo) o pon -c3600 para 1 hora
-# --spa redirige todas las rutas a index.html
-CMD ["sh", "-c", "http-server dist/Front/browser -p ${PORT:-8080} -g --spa -c3600"]
+# AL ARRANCAR: 
+# 1. Inyectamos la variable $API_URL real de Railway dentro del index.html
+# 2. Arrancamos el servidor
+CMD ["sh", "-c", "sed -i \"s|__API_URL_PLACEHOLDER__|${API_URL:-http://localhost/api}|g\" dist/Front/browser/index.html && http-server dist/Front/browser -p ${PORT:-8080} -g --spa -c3600"]
