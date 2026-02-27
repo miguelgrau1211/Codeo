@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\User;
 
 use App\Models\Usuario;
 use App\Models\UsuarioDesactivado;
@@ -9,11 +9,12 @@ use Illuminate\Support\Facades\DB;
 class DeactivateUserAction
 {
     /**
-     * Deactivates a user by moving them to the 'usuarios_desactivados' table.
+     * Desactiva un usuario moviendo sus datos a la tabla 'usuarios_desactivados'
+     * y eliminándolo de la tabla principal para evitar accesos.
      *
-     * @param Usuario $usuario The user to deactivate.
-     * @param string $reason The reason for deactivation.
-     * @return bool
+     * @param Usuario $usuario El modelo del usuario a desactivar.
+     * @param string $reason El motivo de la desactivación/baneo.
+     * @return bool Confirmación de la operación.
      */
     public function execute(Usuario $usuario, string $reason): bool
     {

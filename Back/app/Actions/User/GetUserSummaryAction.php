@@ -7,7 +7,7 @@ use App\Models\UsuarioLogro;
 use App\Models\ProgresoHistoria;
 use App\Models\NivelesHistoria;
 use App\Models\RunsRoguelike;
-use App\Actions\CheckAchievementsAction;
+use App\Actions\Achievements\CheckAchievementsAction;
 use App\Actions\UpdateUserStreakAction;
 use App\Actions\GrantBattlePassRewardsAction;
 use App\Services\TranslationService;

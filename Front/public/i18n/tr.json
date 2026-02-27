@@ -176,7 +176,12 @@
     "RARITY_RARE": "Nadir",
     "RARITY_EPIC": "Epik",
     "RARITY_LEGENDARY": "Efsanevi",
-    "RARITY_CELESTIAL": "Gökten"
+    "RARITY_CELESTIAL": "Gökten",
+    "UNLOCKED_ALERT": "BAŞARI KİLİDİ ​​AÇILDI!",
+    "RARITY_ESPECIAL": "Özel",
+    "RARITY_RARO": "Kuir",
+    "RARITY_EPICO": "Destansı",
+    "RARITY_LEGENDARIO": "Efsanevi"
   },
   "RANKING": {
     "BACK": "Panele Dön",
@@ -373,7 +378,8 @@
     "CONFIRM_REQUIRED": "Şifreyi onaylayın.",
     "ERR_PASS_MISMATCH": "Şifreler eşleşmiyor.",
     "PASSWORD_MISMATCH": "Şifreler eşleşmiyor.",
-    "ERR_UNKNOWN": "Hata oluştu."
+    "ERR_UNKNOWN": "Hata oluştu.",
+    "CREATING_ACCOUNT": "Hesap oluşturuluyor"
   },
   "LANDING": {
     "BADGE": "Oyunlaştırılmış öğrenme platformu",
@@ -484,7 +490,15 @@
       "EXTRA_LIFE_DESC": "Her koşuda ekstra bir canla başlarsınız.",
       "EXTRA_TIME_NAME": "Uzatma Zamanı",
       "EXTRA_TIME_DESC": "Seviyenin zamanlayıcısına 30 saniye ekler."
-    }
+    },
+    "TUTORIAL_TITLE": "Hayatta Kalma nasıl oynanır?",
+    "TUTORIAL_DESC": "<strong class=\"text-red-500\">Sonsuz Mod</strong>'a hoş geldiniz. Burada hayatta kalabilmek için kod zorluklarını çözmeniz gerekecek. Saat işliyor ve yanlış kod gönderirseniz veya zaman aşımı yaparsanız can kaybedersiniz.",
+    "TUTORIAL_KEY_CONCEPTS": "Hayatta Kalmanın Temel Kavramları",
+    "TUTORIAL_VAR_INPUT": "Giriş değişkeni: input_data",
+    "TUTORIAL_VAR_INPUT_DESC": "Her düzeyde sistem, <code class=\"text-accent-color bg-black/40 px-2 py-0.5 rounded border border-accent-color/20 font-bold\">input_data</code> adı verilen genel bir değişkeni enjekte eder. Bu değişken <strong class=\"text-white\">mevcut düzeyin test verilerini içeren bir dizidir (listedir)</strong>. Değerlere indeksleri kullanarak erişebilirsiniz, örneğin: <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 rounded border border-white/10 font-mono\">input_data[0]</code>, <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 rounded border border-white/10 font-mono\">input_data[1]</code>, vb.",
+    "TUTORIAL_GEN_OUTPUT": "Çıktı Oluştur: print()",
+    "TUTORIAL_GEN_OUTPUT_DESC": "Doğrulama, kodunuzun konsola yazdırdıklarını okur. Tam olarak biçimlendirilmiş son yanıtınızı soldaki \"BEKLENEN ÇIKTI\"ya göndermek için <code class=\"text-accent-color bg-black/40 px-2 py-0.5 rounded border border-accent-color/20 font-bold\">print()</code> komutunu kullanın.",
+    "TUTORIAL_GOT_IT": "ANLAŞILDI!"
   },
   "ADMIN": {
     "TITLE": "YÖNETİCİ PANELİ",

@@ -2,23 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\ProcessPurchaseAction;
+use App\Actions\Shop\ProcessPurchaseAction;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Controlador para la gestión de compras y suscripciones premium (Stripe).
+ */
 class PurchaseController extends Controller
 {
     /**
-     * Devuelve el estado premium del usuario + la clave pública de Stripe.
-     * El frontend necesita la publishable key para inicializar Stripe.js.
+     * Devuelve el estado premium del usuario y la clave pública de Stripe.
      */
-    public function getBattlePassStatus()
+    public function getBattlePassStatus(): JsonResponse
     {
         $usuario = Auth::user();
-
-        if (!$usuario) {
-            return response()->json(['message' => 'No autenticado'], 401);
-        }
 
         return response()->json([
             'is_premium' => (bool) $usuario->es_premium,
@@ -26,50 +25,28 @@ class PurchaseController extends Controller
             'price' => ProcessPurchaseAction::BATTLE_PASS_PRICE_DISPLAY,
             'currency' => ProcessPurchaseAction::CURRENCY,
             'stripe_publishable_key' => config('services.stripe.publishable_key'),
-        ], 200);
+        ]);
     }
 
     /**
      * PASO 1: Crea un PaymentIntent en Stripe.
-     * 
-     * El frontend llama a este endpoint para obtener el client_secret,
-     * que luego usa con Stripe.js para confirmar el pago de forma segura.
      */
-    public function createPaymentIntent(ProcessPurchaseAction $action)
+    public function createPaymentIntent(ProcessPurchaseAction $action): JsonResponse
     {
-        $usuario = Auth::user();
-
-        if (!$usuario) {
-            return response()->json(['message' => 'No autenticado'], 401);
-        }
-
-        $result = $action->createPaymentIntent($usuario);
-        $statusCode = $result['success'] ? 200 : 422;
-
-        return response()->json($result, $statusCode);
+        $result = $action->createPaymentIntent(Auth::user());
+        return response()->json($result, $result['success'] ? 200 : 422);
     }
 
     /**
      * PASO 2: Confirma que el pago fue exitoso y activa premium.
-     * 
-     * El frontend llama a este endpoint DESPUÉS de que Stripe.js
-     * confirme el pago en el cliente.
      */
-    public function confirmPayment(Request $request, ProcessPurchaseAction $action)
+    public function confirmPayment(Request $request, ProcessPurchaseAction $action): JsonResponse
     {
-        $usuario = Auth::user();
-
-        if (!$usuario) {
-            return response()->json(['message' => 'No autenticado'], 401);
-        }
-
         $request->validate([
             'payment_intent_id' => 'required|string|starts_with:pi_',
         ]);
 
-        $result = $action->confirmPayment($usuario, $request->input('payment_intent_id'));
-        $statusCode = $result['success'] ? 200 : 422;
-
-        return response()->json($result, $statusCode);
+        $result = $action->confirmPayment(Auth::user(), $request->input('payment_intent_id'));
+        return response()->json($result, $result['success'] ? 200 : 422);
     }
 }

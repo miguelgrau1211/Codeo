@@ -60,7 +60,7 @@ class GrantBattlePassRewardsAction
     }
 
     /**
-     * Lógica para otorgar una recompensa específica.
+     * Lógica interna para otorgar una recompensa específica (monedas o temas).
      */
     private function grantReward(Usuario $usuario, int $level, array $reward): void
     {
@@ -71,18 +71,26 @@ class GrantBattlePassRewardsAction
                 ['granted_at' => now()]
             );
 
-            // 2. Aplicar la recompensa
+            // 2. Aplicar la recompensa según el tipo
             if ($reward['type'] === 'coins') {
                 $usuario->monedas += $reward['value'];
                 $usuario->save();
-                Log::info("BattlePass: Monedas otorgadas", ['user' => $usuario->id, 'lvl' => $level, 'amount' => $reward['value']]);
+                Log::info("Pase de Batalla: Monedas otorgadas", [
+                    'usuario_id' => $usuario->id,
+                    'nivel' => $level,
+                    'cantidad' => $reward['value']
+                ]);
             } elseif ($reward['type'] === 'theme') {
                 $tema = Tema::where('nombre', $reward['value'])->first();
                 if ($tema) {
-                    // Solo si no lo tiene ya (por si lo compró antes)
+                    // Otorgar solo si el usuario no tiene el tema registrado
                     if (!$usuario->temas()->where('tema_id', $tema->id)->exists()) {
                         $usuario->temas()->attach($tema->id, ['comprado_at' => now()]);
-                        Log::info("BattlePass: Tema otorgado", ['user' => $usuario->id, 'lvl' => $level, 'theme' => $reward['value']]);
+                        Log::info("Pase de Batalla: Tema visual otorgado", [
+                            'usuario_id' => $usuario->id,
+                            'nivel' => $level,
+                            'tema' => $reward['value']
+                        ]);
                     }
                 }
             }

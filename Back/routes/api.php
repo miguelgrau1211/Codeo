@@ -18,12 +18,12 @@ use App\Http\Controllers\PurchaseController;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| Rutas de la API
 |--------------------------------------------------------------------------
 |
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
+| Aquí es donde puedes registrar las rutas de la API para tu aplicación.
+| Estas rutas son cargadas por el RouteServiceProvider dentro de un grupo que
+| tiene asignado el grupo de middleware "api". ¡Disfruta construyendo tu API!
 |
 */
 
@@ -50,7 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
-    // Check Admin Role
+    // Verificar Rol de Administrador
     Route::get('/es-admin', [UserController::class, 'esAdmin']);
 
     //validar usuario
@@ -118,7 +118,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Administración de contenido y usuarios (Solo Admin)
     Route::middleware('admin')->group(function () {
-        // Admin Routes for Roguelike Levels
+        // Rutas de Administración para Niveles Roguelike
         Route::get('/admin/niveles-roguelike', [NivelesRoguelikeController::class, 'indexAdmin']);
         Route::get('/admin/niveles-roguelike/desactivados', [NivelesRoguelikeController::class, 'desactivados']);
         Route::post('/admin/niveles-roguelike', [NivelesRoguelikeController::class, 'store']);
@@ -129,12 +129,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::apiResource('mejoras', MejorasController::class)->except(['index', 'show']);
 
-        // Gestión de Usuarios Completa
+        // Gestión de Usuarios Completa (CRUD Admin)
         Route::get('/admin/users', [UserController::class, 'index']);
         Route::delete('/admin/users/{id}', [UserController::class, 'destroy']);
         Route::post('/admin/users/{id}/toggle-status', [UserController::class, 'toggleStatus']);
 
-        // Gestión de Reportes (Admin revisa)
+        // Gestión de Reportes (Revisión por Moderadores)
         Route::get('/admin/reportes', [\App\Http\Controllers\ReporteController::class, 'index']);
         Route::get('/admin/reportes/{id}', [\App\Http\Controllers\ReporteController::class, 'show']);
         Route::put('/admin/reportes/{id}', [\App\Http\Controllers\ReporteController::class, 'update']); // Para cambiar estado/prioridad
@@ -153,7 +153,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/admin/stats', [AdminDashboardController::class, 'getStats']);
         Route::get('/admin/logs', [AdminDashboardController::class, 'getLogs']);
 
-        // Debug Roguelike (Only Admin)
+        // Herramientas de Depuración Roguelike (Solo SuperAdmin)
         Route::post('/roguelike/debug-set-time', [RoguelikeSessionController::class, 'debugSetTime']);
     });
 });

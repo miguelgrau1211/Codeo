@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Tema;
-use App\Http\Resources\TemaResource;
+use App\Actions\Achievements\CheckAchievementsAction;
 use App\Actions\ComprarTemaAction;
+use App\Actions\Roguelike\ProcessRoguelikeFailureAction;
+use App\Actions\Roguelike\ProcessRoguelikeSuccessAction;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\TemaResource;
+use App\Models\Tema;
+use App\Services\TranslationService;
+use Illuminate\Http\Request;
 
 class TemaController extends Controller
 {
@@ -37,12 +41,11 @@ class TemaController extends Controller
             return response()->json(['message' => $e->getMessage()], 400);
         }
     }
-
     public function activar(Request $request, Tema $tema)
     {
         $usuario = $request->user();
 
-        // Check if user owns the theme (or if it's a default/free theme if we have any)
+        // Verificar si el usuario posee el tema (o si es un tema gratuito)
         if (!$usuario->temas()->where('tema_id', $tema->id)->exists() && $tema->precio > 0) {
             return response()->json(['message' => 'No posees este tema.'], 403);
         }
@@ -52,9 +55,7 @@ class TemaController extends Controller
         $locale = $request->header('Accept-Language', 'es');
         $translatedTema = app(\App\Services\TranslationService::class)->translateTema($tema, $locale);
 
-        $msg = ($locale === 'en') ? 'Theme activated correctly.' : 'Tema activado correctamente.';
-        // For other languages we could use __() if we had lang files in the backend for these strings.
-        // But the user specifically wants EVERYTHING translated.
+        $msg = 'Tema activado correctamente.';
 
         return response()->json(['message' => $msg, 'tema' => $translatedTema]);
     }

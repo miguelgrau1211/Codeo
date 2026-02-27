@@ -176,7 +176,12 @@
     "RARITY_RARE": "Rare",
     "RARITY_EPIC": "Epic",
     "RARITY_LEGENDARY": "Legendary",
-    "RARITY_CELESTIAL": "Heavenly"
+    "RARITY_CELESTIAL": "Heavenly",
+    "UNLOCKED_ALERT": "ACHIEVEMENT UNLOCKED!",
+    "RARITY_ESPECIAL": "Special",
+    "RARITY_RARO": "Queer",
+    "RARITY_EPICO": "Epic",
+    "RARITY_LEGENDARIO": "Legendary"
   },
   "RANKING": {
     "BACK": "Back to Dashboard",

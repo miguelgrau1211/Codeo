@@ -5,35 +5,41 @@ namespace App\Http\Controllers;
 use App\Models\Logros;
 use App\Services\TranslationService;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
+/**
+ * Controlador para la gestión de definiciones de Logros.
+ */
 class LogrosController extends Controller
 {
     /**
-     * Returns all achievements, with nombre/descripcion translated
-     * into the language requested via the Accept-Language header.
+     * Lista todos los logros con traducción opcional.
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $locale = TranslationService::resolveLocale($request);
-        $translator = app(TranslationService::class);
-
         $logros = Logros::all();
-        $translated = $translator->translateCollection($logros, $locale, 'logro');
 
-        return response()->json($translated, 200);
+        $translated = app(TranslationService::class)->translateCollection($logros, $locale, 'logro');
+        return response()->json($translated);
     }
 
-    public function show($id, Request $request)
+    /**
+     * Muestra un logro específico.
+     */
+    public function show($id, Request $request): JsonResponse
     {
-        $locale = TranslationService::resolveLocale($request);
         $logro = Logros::findOrFail($id);
-        $translator = app(TranslationService::class);
-        $data = $translator->translateLogro($logro, $locale);
+        $locale = TranslationService::resolveLocale($request);
 
-        return response()->json($data, 200);
+        $data = app(TranslationService::class)->translateLogro($logro, $locale);
+        return response()->json($data);
     }
 
-    public function store(Request $request)
+    /**
+     * Crea un nuevo logro (Admin).
+     */
+    public function store(Request $request): JsonResponse
     {
         $validatedData = $request->validate([
             'nombre' => 'required|string',
@@ -44,17 +50,15 @@ class LogrosController extends Controller
         ]);
 
         $logro = Logros::create($validatedData);
-
-        return response()->json([
-            'message' => 'Logro creado exitosamente',
-            'data' => $logro,
-        ], 201);
+        return response()->json(['message' => 'Logro creado', 'data' => $logro], 201);
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Actualiza un logro existente (Admin).
+     */
+    public function update(Request $request, $id): JsonResponse
     {
         $logro = Logros::findOrFail($id);
-
         $validatedData = $request->validate([
             'nombre' => 'required|string',
             'descripcion' => 'required|string',
@@ -64,20 +68,15 @@ class LogrosController extends Controller
         ]);
 
         $logro->update($validatedData);
-
-        return response()->json([
-            'message' => 'Logro actualizado exitosamente',
-            'data' => $logro,
-        ], 200);
+        return response()->json(['message' => 'Logro actualizado', 'data' => $logro]);
     }
 
-    public function destroy($id)
+    /**
+     * Elimina un logro (Admin).
+     */
+    public function destroy($id): JsonResponse
     {
-        $logro = Logros::findOrFail($id);
-        $logro->delete();
-
-        return response()->json([
-            'message' => 'Logro eliminado exitosamente',
-        ], 200);
+        Logros::destroy($id);
+        return response()->json(['message' => 'Logro eliminado']);
     }
 }

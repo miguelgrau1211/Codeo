@@ -4,33 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Models\Reporte;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use App\Actions\Reports\CreateReportAction;
+use App\Actions\Reports\UpdateReportStatusAction;
 
+/**
+ * Controlador para la gestión de Reportes (Soporte, Bugs, Sugerencias).
+ */
 class ReporteController extends Controller
 {
-    // Lista todos los reportes 
-    public function index()
+    /**
+     * Lista todos los reportes (Generalmente para Admin).
+     */
+    public function index(): JsonResponse
     {
-        // reporte con los datos básicos del usuario
-        $reportes = Reporte::with('usuario')->get();
-        return response()->json($reportes, 200);
+        return response()->json(Reporte::with('usuario')->get());
     }
 
-    // Crea un reporte (desde el frontend)
-    public function store(Request $request)
+    /**
+     * Crea un nuevo reporte desde el frontend.
+     */
+    public function store(Request $request, CreateReportAction $action): JsonResponse
     {
-        $usuarioId = auth()->id();
-
-        // 🛡️ Anti-Spam: Limitar a 3 reportes pendientes por usuario
-        $reportesPendientes = Reporte::where('usuario_id', $usuarioId)
-            ->where('estado', 'pendiente')
-            ->count();
-
-        if ($reportesPendientes >= 3) {
-            return response()->json([
-                'message' => 'Tienes demasiados reportes pendientes (máximo 3). Por favor, espera a que los revisemos.'
-            ], 429);
-        }
-
         $validatedData = $request->validate([
             'email_contacto' => 'nullable|email|max:255',
             'tipo' => 'required|string|max:50',
@@ -39,88 +35,46 @@ class ReporteController extends Controller
             'prioridad' => 'nullable|string|in:baja,media,alta,critica',
         ]);
 
-        $reporte = Reporte::create([
-            'usuario_id' => $usuarioId,
-            'email_contacto' => $validatedData['email_contacto'] ?? auth()->user()?->email,
-            'tipo' => $validatedData['tipo'],
-            'titulo' => $validatedData['titulo'],
-            'descripcion' => $validatedData['descripcion'],
-            'prioridad' => $validatedData['prioridad'] ?? 'media',
-            'estado' => 'pendiente',
-        ]);
+        $reporte = $action->execute(Auth::user(), $validatedData);
 
         return response()->json([
-            'message' => 'Reporte creado correctamente. ¡Gracias por ayudarnos a mejorar!',
+            'message' => 'Reporte creado correctamente. ¡Gracias por ayudarnos!',
             'data' => $reporte
         ], 201);
     }
 
-    //mostrar
-    public function show($id)
+    /**
+     * Muestra un reporte específico.
+     */
+    public function show($id): JsonResponse
     {
-        $reporte = Reporte::with('usuario')->findOrFail($id);
-        return response()->json($reporte, 200);
+        return response()->json(Reporte::with('usuario')->findOrFail($id));
     }
 
-    // Actualizar reporte (Solo Admin)
-    public function update(Request $request, $id)
+    /**
+     * Actualiza el estado de un reporte y aplica recompensas/sanciones (Solo Admin).
+     */
+    public function update(Request $request, $id, UpdateReportStatusAction $action): JsonResponse
     {
-        $reporte = Reporte::findOrFail($id);
-        $anteriorEstado = $reporte->estado;
-
         $validatedData = $request->validate([
             'estado' => 'nullable|string|in:pendiente,en revision,solucionado,rechazado,spam',
             'prioridad' => 'nullable|string|in:baja,media,alta,critica',
         ]);
 
-        $reporte->update($validatedData);
-
-        $puntosXP = null;
-        $mensajeExtra = "";
-
-        // ✅ Recompensa: Solucionado
-        if ($reporte->estado === 'solucionado' && $anteriorEstado !== 'solucionado') {
-            $usuario = $reporte->usuario;
-            if ($usuario) {
-                $puntosXP = ($reporte->prioridad === 'critica' || $reporte->prioridad === 'alta') ? 100 : 50;
-                $usuario->exp_total += $puntosXP;
-
-                // Lógica subir nivel
-                while ($usuario->exp_total >= ($usuario->nivel_global * 100)) {
-                    $usuario->exp_total -= ($usuario->nivel_global * 100);
-                    $usuario->nivel_global++;
-                }
-                $usuario->save();
-                $mensajeExtra = " y usuario recompensado con $puntosXP XP";
-            }
-        }
-
-        // ❌ Penalización: Spam
-        if ($reporte->estado === 'spam' && $anteriorEstado !== 'spam') {
-            $usuario = $reporte->usuario;
-            if ($usuario) {
-                $puntosPenalizacion = 100;
-                // Restar XP sin bajar de 0
-                $usuario->exp_total = max(0, $usuario->exp_total - $puntosPenalizacion);
-                $usuario->save();
-                $mensajeExtra = " y usuario penalizado con -$puntosPenalizacion XP";
-            }
-        }
+        $result = $action->execute($id, $validatedData);
 
         return response()->json([
-            'message' => 'Reporte actualizado correctamente' . $mensajeExtra,
-            'data' => $reporte
-        ], 200);
+            'message' => $result['mensaje'],
+            'data' => $result['reporte']
+        ]);
     }
 
-    //eliminar
-    public function destroy($id)
+    /**
+     * Elimina un reporte de la base de datos.
+     */
+    public function destroy($id): JsonResponse
     {
-        $reporte = Reporte::findOrFail($id);
-        $reporte->delete();
-
-        return response()->json([
-            'message' => 'Reporte eliminado correctamente'
-        ], 200);
+        Reporte::findOrFail($id)->delete();
+        return response()->json(['message' => 'Reporte eliminado correctamente']);
     }
 }

@@ -176,7 +176,12 @@
     "RARITY_RARE": "Редкое",
     "RARITY_EPIC": "Эпическое",
     "RARITY_LEGENDARY": "Легендарное",
-    "RARITY_CELESTIAL": "Небесное"
+    "RARITY_CELESTIAL": "Небесное",
+    "UNLOCKED_ALERT": "ДОСТИЖЕНИЕ РАЗБЛОКИРОВАНО!",
+    "RARITY_ESPECIAL": "Особенный",
+    "RARITY_RARO": "странный",
+    "RARITY_EPICO": "Эпический",
+    "RARITY_LEGENDARIO": "Легендарный"
   },
   "RANKING": {
     "BACK": "Назад",
@@ -373,7 +378,8 @@
     "CONFIRM_REQUIRED": "Повторите пароль.",
     "ERR_PASS_MISMATCH": "Пароли не совпадают.",
     "PASSWORD_MISMATCH": "Пароли не совпадают.",
-    "ERR_UNKNOWN": "Ошибка."
+    "ERR_UNKNOWN": "Ошибка.",
+    "CREATING_ACCOUNT": "Создание учетной записи"
   },
   "LANDING": {
     "BADGE": "Игровая платформа обучения",
@@ -484,7 +490,15 @@
       "EXTRA_LIFE_DESC": "Вы начинаете с дополнительной жизни в каждом забеге.",
       "EXTRA_TIME_NAME": "Дополнительное время",
       "EXTRA_TIME_DESC": "Добавляет 30 секунд к таймеру уровня."
-    }
+    },
+    "TUTORIAL_TITLE": "Как играть в Выживание",
+    "TUTORIAL_DESC": "Добро пожаловать в <strong class=\"text-red-500\">Бесконечный режим</strong>. Здесь вам придется решать проблемы с кодом, чтобы выжить. Часы тикают, и если вы отправите неверный код или тайм-аут, вы потеряете жизни.",
+    "TUTORIAL_KEY_CONCEPTS": "Ключевые понятия для выживания",
+    "TUTORIAL_VAR_INPUT": "Входная переменная: input_data",
+    "TUTORIAL_VAR_INPUT_DESC": "На каждом уровне система вводит глобальную переменную с именем <code class=\"text-accent-color bg-black/40 px-2 py-0.5 rounded border border-accent-color/20 font-bold\">input_data</code>. Эта переменная <strong class=\"text-white\">представляет собой массив (список)</strong>, содержащий тестовые данные текущего уровня. Доступ к значениям можно получить с помощью индексов, например: <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 rounded border border-white/10 font-mono\">input_data[0]</code>, <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 rounded border border-white/10 шрифт-моно\">input_data[1]</code> и т. д.",
+    "TUTORIAL_GEN_OUTPUT": "Создать вывод: print()",
+    "TUTORIAL_GEN_OUTPUT_DESC": "При проверке считывается то, что ваш код выводит на консоль. Используйте <code class=\"text-accent-color bg-black/40 px-2 py-0.5 rounded border border-accent-color/20 font-bold\">print()</code>, чтобы отправить окончательный точно отформатированный ответ на «ОЖИДАЕМЫЙ ВЫВОД» слева.",
+    "TUTORIAL_GOT_IT": "ПОНЯЛ!"
   },
   "ADMIN": {
     "TITLE": "ПАНЕЛЬ АДМИНИСТРА",

@@ -3,21 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mejoras;
+use App\Services\TranslationService;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Actions\Shop\GetShopUpgradesAction;
 
+/**
+ * Controlador para la gestión de Mejoras (Upgrades).
+ */
 class MejorasController extends Controller
 {
-    public function index(){
-        $mejoras = Mejoras::all();
-        return response()->json($mejoras, 200);
+    /**
+     * Lista todas las mejoras disponibles.
+     */
+    public function index(Request $request, GetShopUpgradesAction $action): JsonResponse
+    {
+        $locale = TranslationService::resolveLocale($request);
+        return response()->json($action->execute($locale));
     }
 
-    public function show($id){
-        $mejora = Mejoras::findOrFail($id);
-        return response()->json($mejora, 200);
+    /**
+     * Muestra una mejora específica.
+     */
+    public function show($id): JsonResponse
+    {
+        return response()->json(Mejoras::findOrFail($id));
     }
 
-    public function store(Request $request){
+    /**
+     * Crea una nueva mejora (Admin).
+     */
+    public function store(Request $request): JsonResponse
+    {
         $validatedData = $request->validate([
             'nombre' => 'required|string',
             'descripcion' => 'required|string',
@@ -26,16 +43,15 @@ class MejorasController extends Controller
         ]);
 
         $mejora = Mejoras::create($validatedData);
-
-        return response()->json([
-            'message' => 'Mejora creada exitosamente',
-            'data' => $mejora
-        ], 201);
+        return response()->json(['message' => 'Mejora creada', 'data' => $mejora], 201);
     }
 
-    public function update(Request $request, $id){
+    /**
+     * Actualiza una mejora (Admin).
+     */
+    public function update(Request $request, $id): JsonResponse
+    {
         $mejora = Mejoras::findOrFail($id);
-
         $validatedData = $request->validate([
             'nombre' => 'required|string',
             'descripcion' => 'required|string',
@@ -44,24 +60,24 @@ class MejorasController extends Controller
         ]);
 
         $mejora->update($validatedData);
-
-        return response()->json([
-            'message' => 'Mejora actualizada exitosamente',
-            'data' => $mejora
-        ], 200);
+        return response()->json(['message' => 'Mejora actualizada', 'data' => $mejora]);
     }
 
-    public function destroy($id){
-        $mejora = Mejoras::findOrFail($id);
-        $mejora->delete();
-
-        return response()->json([
-            'message' => 'Mejora eliminada exitosamente'
-        ], 200);
+    /**
+     * Elimina una mejora (Admin).
+     */
+    public function destroy($id): JsonResponse
+    {
+        Mejoras::destroy($id);
+        return response()->json(['message' => 'Mejora eliminada']);
     }
 
-    public function getTresMejorasRandom(){
-        $mejoras = Mejoras::inRandomOrder()->take(3)->get();
-        return response()->json($mejoras, 200);
+    /**
+     * Obtiene 3 mejoras aleatorias para la tienda interactiva.
+     */
+    public function getTresMejorasRandom(Request $request, GetShopUpgradesAction $action): JsonResponse
+    {
+        $locale = TranslationService::resolveLocale($request);
+        return response()->json($action->execute($locale, true));
     }
 }

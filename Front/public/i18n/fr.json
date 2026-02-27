@@ -176,7 +176,12 @@
     "RARITY_RARE": "Rare",
     "RARITY_EPIC": "Épique",
     "RARITY_LEGENDARY": "Légendaire",
-    "RARITY_CELESTIAL": "Céleste"
+    "RARITY_CELESTIAL": "Céleste",
+    "UNLOCKED_ALERT": "SUCCÈS DÉBLOQUÉ !",
+    "RARITY_ESPECIAL": "Spécial",
+    "RARITY_RARO": "Bizarre",
+    "RARITY_EPICO": "Épique",
+    "RARITY_LEGENDARIO": "Légendaire"
   },
   "RANKING": {
     "BACK": "Retour",
@@ -373,7 +378,8 @@
     "CONFIRM_REQUIRED": "Confirmez le mot de passe.",
     "ERR_PASS_MISMATCH": "Les mots de passe ne correspondent pas.",
     "PASSWORD_MISMATCH": "Les mots de passe ne correspondent pas.",
-    "ERR_UNKNOWN": "Erreur inconnue."
+    "ERR_UNKNOWN": "Erreur inconnue.",
+    "CREATING_ACCOUNT": "Création de compte"
   },
   "LANDING": {
     "BADGE": "Plateforme d'apprentissage gamifiée",
@@ -484,7 +490,15 @@
       "EXTRA_LIFE_DESC": "Vous commencez avec une vie supplémentaire à chaque partie.",
       "EXTRA_TIME_NAME": "Temps supplémentaire",
       "EXTRA_TIME_DESC": "Ajoute 30 secondes au chronomètre du niveau."
-    }
+    },
+    "TUTORIAL_TITLE": "Comment jouer à Survie",
+    "TUTORIAL_DESC": "Bienvenue dans le <strong class=\"text-red-500\">Mode Infini</strong>. Ici, vous devrez résoudre des défis de code pour survivre. Le temps presse et si vous envoyez un mauvais code ou si vous expirez, vous perdrez des vies.",
+    "TUTORIAL_KEY_CONCEPTS": "Concepts clés pour survivre",
+    "TUTORIAL_VAR_INPUT": "Variable d'entrée : input_data",
+    "TUTORIAL_VAR_INPUT_DESC": "A chaque niveau, le système injecte une variable globale appelée <code class=\"text-accent-color bg-black/40 px-2 py-0.5 round border border-accent-color/20 font-bold\">input_data</code>. Cette variable <strong class=\"text-white\">est un tableau (liste)</strong> qui contient les données de test du niveau actuel. Vous pouvez accéder aux valeurs à l'aide d'index, par exemple : <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 arrondi border border-white/10 font-mono\">input_data[0]</code>, <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 arrondi border border-white/10 font-mono\">input_data[1]</code>, etc.",
+    "TUTORIAL_GEN_OUTPUT": "Générer une sortie : print()",
+    "TUTORIAL_GEN_OUTPUT_DESC": "La validation lit ce que votre code imprime sur la console. Utilisez <code class=\"text-accent-color bg-black/40 px-2 py-0.5 arrondi border border-accent-color/20 font-bold\">print()</code> pour envoyer votre réponse finale exactement formatée à la \"SORTIE ATTENDU\" sur la gauche.",
+    "TUTORIAL_GOT_IT": "COMPRIS!"
   },
   "ADMIN": {
     "TITLE": "PANNEAU D'ADMINISTRATION",

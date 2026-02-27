@@ -10,7 +10,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents; // Importante si usas 
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Ejecuta el seeder de la base de datos.
      */
     public function run(): void
     {

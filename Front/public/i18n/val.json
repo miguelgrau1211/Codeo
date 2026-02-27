@@ -176,7 +176,12 @@
     "RARITY_RARE": "Rar",
     "RARITY_EPIC": "Èpic",
     "RARITY_LEGENDARY": "Llegendari",
-    "RARITY_CELESTIAL": "Celestial"
+    "RARITY_CELESTIAL": "Celestial",
+    "UNLOCKED_ALERT": "¡LOGRO DESBLOQUEADO!",
+    "RARITY_ESPECIAL": "Especial",
+    "RARITY_RARO": "Raro",
+    "RARITY_EPICO": "Épico",
+    "RARITY_LEGENDARIO": "Legendario"
   },
   "RANKING": {
     "BACK": "Tornar al Dashboard",
@@ -373,7 +378,8 @@
     "CONFIRM_REQUIRED": "Confirma la contrasenya.",
     "ERR_PASS_MISMATCH": "Les contrasenyes no coincideixen.",
     "PASSWORD_MISMATCH": "Les contrasenyes no coincideixen.",
-    "ERR_UNKNOWN": "Error inesperat."
+    "ERR_UNKNOWN": "Error inesperat.",
+    "CREATING_ACCOUNT": "Creando cuenta"
   },
   "LANDING": {
     "BADGE": "Plataforma gamificada",
@@ -484,7 +490,15 @@
       "EXTRA_LIFE_DESC": "Comences amb una vida extra.",
       "EXTRA_TIME_NAME": "Temps Extra",
       "EXTRA_TIME_DESC": "Afegeix 30 segons."
-    }
+    },
+    "TUTORIAL_TITLE": "Cómo jugar Supervivencia",
+    "TUTORIAL_DESC": "Bienvenido al <strong class=\"text-red-500\">Modo Infinito</strong>. Aquí tendrás que resolver retos de código para sobrevivir. El tiempo corre y si envías código erróneo o se agota el tiempo, perderás vidas.",
+    "TUTORIAL_KEY_CONCEPTS": "Conceptos Clave para Sobrevivir",
+    "TUTORIAL_VAR_INPUT": "Variable Input: input_data",
+    "TUTORIAL_VAR_INPUT_DESC": "En cada nivel, el sistema inyecta una variable global llamada <code class=\"text-accent-color bg-black/40 px-2 py-0.5 rounded border border-accent-color/20 font-bold\">input_data</code>. Esta variable <strong class=\"text-white\">es un array (lista)</strong> que contiene los datos de prueba del nivel actual. Puedes acceder a los valores usando índices, por ejemplo: <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 rounded border border-white/10 font-mono\">input_data[0]</code>, <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 rounded border border-white/10 font-mono\">input_data[1]</code>, etc.",
+    "TUTORIAL_GEN_OUTPUT": "Generar Salida: print()",
+    "TUTORIAL_GEN_OUTPUT_DESC": "La validación lee lo que tu código imprime en consola. Usa <code class=\"text-accent-color bg-black/40 px-2 py-0.5 rounded border border-accent-color/20 font-bold\">print()</code> para enviar tu respuesta final con formato exacto al \"EXPECTED OUTPUT\" de la izquierda.",
+    "TUTORIAL_GOT_IT": "¡ENTENDIDO!"
   },
   "ADMIN": {
     "TITLE": "PANELL D'ADMIN",

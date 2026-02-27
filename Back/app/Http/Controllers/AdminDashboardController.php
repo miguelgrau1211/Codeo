@@ -3,55 +3,35 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Usuario;
-use App\Models\RunsRoguelike;
+use Illuminate\Http\JsonResponse;
 use App\Models\AdminLog;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use App\Actions\Admin\GetAdminStatsAction;
 
+/**
+ * Controlador para el panel de administración central.
+ */
 class AdminDashboardController extends Controller
 {
     /**
-     * Get Dashboard Stats
+     * Obtiene estadísticas rápidas del sistema.
      */
-    public function getStats()
+    public function getStats(GetAdminStatsAction $action): JsonResponse
     {
-        // total
-        $totalUsers = Usuario::count();
-
-        // activos en 24h
-        $activeUsers = Usuario::where('updated_at', '>=', Carbon::now()->subDay())->count();
-
-        // total runs
-        $totalRuns = RunsRoguelike::count();
-
-        // tasa de exito
-        $successfulRuns = RunsRoguelike::where('estado', 'completed')->orWhere('estado', 'win')->count();
-
-        $successRate = $totalRuns > 0 ? round(($successfulRuns / $totalRuns) * 100, 1) : 0;
-
-        return response()->json([
-            'total_users' => $totalUsers,
-            'active_users_24h' => $activeUsers,
-            'total_runs' => $totalRuns,
-            'success_rate' => $successRate
-        ]);
+        return response()->json($action->execute());
     }
 
     /**
-     * Get System Logs
+     * Obtiene el historial de acciones administrativas con paginación.
      */
-    public function getLogs(Request $request)
+    public function getLogs(Request $request): JsonResponse
     {
-        $query = AdminLog::with('user:id,nombre,email')->orderBy('created_at', 'desc');
+        $query = AdminLog::with('user:id,nickname,email')->orderByDesc('created_at');
 
-        // filtro simple
+        // Filtro por tipo de acción si se solicita
         if ($request->has('action')) {
             $query->where('action', 'like', '%' . $request->action . '%');
         }
 
-        $logs = $query->paginate(15);
-
-        return response()->json($logs);
+        return response()->json($query->paginate(15));
     }
 }

@@ -19,7 +19,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class UserResource extends JsonResource
 {
     /**
-     * Transforma el recurso en un array.
+     * Transforma el recurso en un array para la respuesta JSON.
+     * Estructura los datos del usuario en perfil y estadísticas.
      */
     public function toArray(Request $request): array
     {

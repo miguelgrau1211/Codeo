@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\Shop;
 
 use App\Models\Usuario;
+use App\Actions\GrantBattlePassRewardsAction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Stripe\Stripe;
@@ -139,7 +140,7 @@ class ProcessPurchaseAction
             return DB::transaction(function () use ($usuario, $paymentIntent) {
                 // Bloqueo de fila para evitar condiciones de carrera
                 $usuario = Usuario::lockForUpdate()->find($usuario->id);
-                
+
                 $usuario->es_premium = true;
                 $usuario->premium_since = now();
                 $usuario->save();

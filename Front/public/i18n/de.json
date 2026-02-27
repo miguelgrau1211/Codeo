@@ -176,7 +176,12 @@
     "RARITY_RARE": "Selten",
     "RARITY_EPIC": "Episch",
     "RARITY_LEGENDARY": "Legendär",
-    "RARITY_CELESTIAL": "Himmlisch"
+    "RARITY_CELESTIAL": "Himmlisch",
+    "UNLOCKED_ALERT": "ERFOLG FREIGESCHALTET!",
+    "RARITY_ESPECIAL": "Besonders",
+    "RARITY_RARO": "Seltsam",
+    "RARITY_EPICO": "Epos",
+    "RARITY_LEGENDARIO": "Legendär"
   },
   "RANKING": {
     "BACK": "Dashboard",
@@ -373,7 +378,8 @@
     "CONFIRM_REQUIRED": "Passwort bestätigen.",
     "ERR_PASS_MISMATCH": "Passwörter stimmen nicht überein.",
     "PASSWORD_MISMATCH": "Passwörter stimmen nicht überein.",
-    "ERR_UNKNOWN": "Fehler."
+    "ERR_UNKNOWN": "Fehler.",
+    "CREATING_ACCOUNT": "Konto erstellen"
   },
   "LANDING": {
     "BADGE": "Gamifizierte Lernplattform",
@@ -484,7 +490,15 @@
       "EXTRA_LIFE_DESC": "Du beginnst bei jedem Lauf mit einem Extraleben.",
       "EXTRA_TIME_NAME": "Verlängerung",
       "EXTRA_TIME_DESC": "Fügt dem Timer des Levels 30 Sekunden hinzu."
-    }
+    },
+    "TUTORIAL_TITLE": "So spielt man Survival",
+    "TUTORIAL_DESC": "Willkommen im <strong class=\"text-red-500\">Unendlichen Modus</strong>. Hier müssen Sie Code-Herausforderungen lösen, um zu überleben. Die Uhr tickt und wenn Sie einen falschen Code oder eine Zeitüberschreitung senden, verlieren Sie Leben.",
+    "TUTORIAL_KEY_CONCEPTS": "Schlüsselkonzepte zum Überleben",
+    "TUTORIAL_VAR_INPUT": "Eingabevariable: input_data",
+    "TUTORIAL_VAR_INPUT_DESC": "Auf jeder Ebene fügt das System eine globale Variable mit dem Namen <code class=\"text-accent-color bg-black/40 px-2 py-0.5 Rounded Border Border-Accent-Color/20 Font-bold\">input_data</code> ein. Diese Variable <strong class=\"text-white\">ist ein Array (Liste)</strong>, das die Testdaten der aktuellen Ebene enthält. Sie können über Indizes auf die Werte zugreifen, zum Beispiel: <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 abgerundeter Rand border-white/10 font-mono\">input_data[0]</code>, <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 abgerundeter Rand border-white/10 font-mono\">input_data[1]</code> usw.",
+    "TUTORIAL_GEN_OUTPUT": "Ausgabe generieren: print()",
+    "TUTORIAL_GEN_OUTPUT_DESC": "Bei der Validierung wird gelesen, was Ihr Code auf der Konsole ausgibt. Verwenden Sie <code class=\"text-accent-color bg-black/40 px-2 py-0.5 Rounded Border Border-Accent-Color/20 Font-Bold\">print()</code>, um Ihre endgültige, genau formatierte Antwort an die „ERWARTETE AUSGABE“ auf der linken Seite zu senden.",
+    "TUTORIAL_GOT_IT": "VERSTANDEN!"
   },
   "ADMIN": {
     "TITLE": "ADMIN PANEL",

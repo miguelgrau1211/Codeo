@@ -10,32 +10,34 @@ use Exception;
 class ComprarTemaAction
 {
     /**
+     * Ejecuta la compra de un tema visual usando monedas del usuario.
+     * 
      * @param Usuario $usuario
      * @param Tema $tema
-     * @return void
-     * @throws Exception
+     * @throws Exception Si el usuario ya tiene el tema o no tiene saldo suficiente.
      */
     public function execute(Usuario $usuario, Tema $tema): void
     {
         DB::transaction(function () use ($usuario, $tema) {
-            // Refetch user with lock for update to prevent race conditions as per rules
+            // Volvemos a obtener el usuario con bloqueo de fila (LOCK FOR UPDATE)
+            // para evitar condiciones de carrera en el saldo de monedas.
             $usuario = Usuario::where('id', $usuario->id)->lockForUpdate()->first();
 
-            // Check if user already has the theme
+            // Verificar si el usuario ya posee el tema
             if ($usuario->temas()->where('tema_id', $tema->id)->exists()) {
                 throw new Exception('Ya posees este tema.');
             }
 
-            // Check if user has enough coins
+            // Verificar si tiene saldo suficiente
             if ($usuario->monedas < $tema->precio) {
                 throw new Exception('No tienes suficientes monedas.');
             }
 
-            // Deduct coins
+            // Deducir el coste del tema
             $usuario->monedas -= $tema->precio;
             $usuario->save();
 
-            // Attach theme
+            // Vincular el tema al usuario con la fecha de compra
             $usuario->temas()->attach($tema->id, ['comprado_at' => now()]);
         });
     }
