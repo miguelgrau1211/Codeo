@@ -1,6 +1,7 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { environment } from '../../../../environments/environment';
 
 /**
  * Componente presentacional de un logro individual.
@@ -18,6 +19,7 @@ import { TranslatePipe } from '../../../pipes/translate.pipe';
     styles: []
 })
 export class LogroComponent {
+    public readonly backendUrl = environment.backendUrl;
     @Input() nombre = '';
     @Input() descripcion = '';
     @Input() iconoUrl: string | null = null;

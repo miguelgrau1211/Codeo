@@ -69,7 +69,7 @@
             [ngClass]="desbloqueado ? rarezaBorderGlow : ''">
 
             <!-- Real Icon Image — oversized to pop out -->
-            <img *ngIf="iconoUrl" [src]="'http://localhost' + iconoUrl" [alt]="nombre"
+            <img *ngIf="iconoUrl" [src]="iconoUrl.startsWith('http') ? iconoUrl : (backendUrl + iconoUrl)" [alt]="nombre"
                 class="w-52 h-52 object-contain drop-shadow-[0_4px_20px_rgba(168,85,247,0.3)]" loading="lazy" />
 
             <!-- Fallback: Lock icon -->
