@@ -176,7 +176,12 @@
     "RARITY_RARE": "Zeldzaam",
     "RARITY_EPIC": "Episch",
     "RARITY_LEGENDARY": "Legendarisch",
-    "RARITY_CELESTIAL": "Celestiaal"
+    "RARITY_CELESTIAL": "Celestiaal",
+    "UNLOCKED_ALERT": "PRESTATIE ONTGRENDELD!",
+    "RARITY_ESPECIAL": "Speciaal",
+    "RARITY_RARO": "Vreemd",
+    "RARITY_EPICO": "Episch",
+    "RARITY_LEGENDARIO": "Legendarisch"
   },
   "RANKING": {
     "BACK": "Terug naar Dashboard",

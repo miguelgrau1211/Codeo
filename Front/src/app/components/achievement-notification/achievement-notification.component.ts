@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../../services/notification.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 /**
  * Componente de notificaciones de logros.
@@ -10,10 +11,10 @@ import { NotificationService } from '../../services/notification.service';
  * Componente "Dumb" (presentacional): solo lee del NotificationService.
  */
 @Component({
-    selector: 'app-achievement-notification',
-    standalone: true,
-    imports: [CommonModule],
-    template: `
+  selector: 'app-achievement-notification',
+  standalone: true,
+  imports: [CommonModule, TranslatePipe],
+  template: `
     <div class="notification-container">
       @for (notif of notificationService.activeNotifications(); track notif.id) {
         <div 
@@ -33,17 +34,17 @@ import { NotificationService } from '../../services/notification.service';
           </div>
 
           <div class="content">
-            <span class="unlock-text">¡LOGRO DESBLOQUEADO!</span>
+            <span class="unlock-text">{{ 'ACHIEVEMENTS.UNLOCKED_ALERT' | translate }}</span>
             <h3 class="achievement-title">{{ notif.nombre }}</h3>
             <p class="achievement-desc">{{ notif.descripcion }}</p>
           </div>
 
-          <div class="rareza-badge">{{ notif.rareza | uppercase }}</div>
+          <div class="rareza-badge">{{ ('ACHIEVEMENTS.RARITY_' + notif.rareza.toUpperCase()) | translate | uppercase }}</div>
         </div>
       }
     </div>
   `,
-    styles: [`
+  styles: [`
     .notification-container {
       position: fixed;
       top: 20px;
@@ -173,9 +174,5 @@ import { NotificationService } from '../../services/notification.service';
   `]
 })
 export class AchievementNotificationComponent {
-    public readonly notificationService = inject(NotificationService);
+  public readonly notificationService = inject(NotificationService);
 }
-
-
-
-

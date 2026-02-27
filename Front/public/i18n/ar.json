@@ -176,7 +176,12 @@
     "RARITY_RARE": "نادر",
     "RARITY_EPIC": "ملحمي",
     "RARITY_LEGENDARY": "أسطوري",
-    "RARITY_CELESTIAL": "سماوي"
+    "RARITY_CELESTIAL": "سماوي",
+    "UNLOCKED_ALERT": "الإنجاز مفتوح!",
+    "RARITY_ESPECIAL": "خاص",
+    "RARITY_RARO": "مثلي",
+    "RARITY_EPICO": "ملحمي",
+    "RARITY_LEGENDARIO": "الأسطوري"
   },
   "RANKING": {
     "BACK": "قاعة المشاهير",

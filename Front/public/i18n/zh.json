@@ -176,7 +176,12 @@
     "RARITY_RARE": "稀有",
     "RARITY_EPIC": "史诗",
     "RARITY_LEGENDARY": "传奇",
-    "RARITY_CELESTIAL": "天界"
+    "RARITY_CELESTIAL": "天界",
+    "UNLOCKED_ALERT": "¡LOGRO DESBLOQUEADO!",
+    "RARITY_ESPECIAL": "Especial",
+    "RARITY_RARO": "Raro",
+    "RARITY_EPICO": "Épico",
+    "RARITY_LEGENDARIO": "Legendario"
   },
   "RANKING": {
     "BACK": "返回仪表板",

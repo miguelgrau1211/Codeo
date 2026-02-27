@@ -172,11 +172,15 @@
         "PROGRESS_DETAIL": "Has completado {{obtained}} de {{total}} logros",
         "UNLOCKED_STATUS": "Desbloqueado",
         "LOCKED_STATUS": "Bloqueado",
+        "UNLOCKED_ALERT": "¡LOGRO DESBLOQUEADO!",
+        "RARITY_ESPECIAL": "Especial",
+        "RARITY_RARO": "Raro",
+        "RARITY_EPICO": "Épico",
+        "RARITY_LEGENDARIO": "Legendario",
+        "RARITY_CELESTIAL": "Celestial",
         "RARITY_SPECIAL": "Especial",
         "RARITY_RARE": "Raro",
-        "RARITY_EPIC": "Épico",
-        "RARITY_LEGENDARY": "Legendario",
-        "RARITY_CELESTIAL": "Celestial"
+        "RARITY_EPIC": "Épico"
     },
     "RANKING": {
         "BACK": "Volver al Dashboard",

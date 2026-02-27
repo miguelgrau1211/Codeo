@@ -176,7 +176,12 @@
     "RARITY_RARE": "Rare",
     "RARITY_EPIC": "Épique",
     "RARITY_LEGENDARY": "Légendaire",
-    "RARITY_CELESTIAL": "Céleste"
+    "RARITY_CELESTIAL": "Céleste",
+    "UNLOCKED_ALERT": "SUCCÈS DÉBLOQUÉ !",
+    "RARITY_ESPECIAL": "Spécial",
+    "RARITY_RARO": "Bizarre",
+    "RARITY_EPICO": "Épique",
+    "RARITY_LEGENDARIO": "Légendaire"
   },
   "RANKING": {
     "BACK": "Retour",

@@ -176,7 +176,12 @@
     "RARITY_RARE": "Nadir",
     "RARITY_EPIC": "Epik",
     "RARITY_LEGENDARY": "Efsanevi",
-    "RARITY_CELESTIAL": "Gökten"
+    "RARITY_CELESTIAL": "Gökten",
+    "UNLOCKED_ALERT": "BAŞARI KİLİDİ ​​AÇILDI!",
+    "RARITY_ESPECIAL": "Özel",
+    "RARITY_RARO": "Kuir",
+    "RARITY_EPICO": "Destansı",
+    "RARITY_LEGENDARIO": "Efsanevi"
   },
   "RANKING": {
     "BACK": "Panele Dön",

@@ -176,7 +176,12 @@
     "RARITY_RARE": "दुर्लभ",
     "RARITY_EPIC": "महाकाव्य",
     "RARITY_LEGENDARY": "पौराणिक",
-    "RARITY_CELESTIAL": "स्वर्गीय"
+    "RARITY_CELESTIAL": "स्वर्गीय",
+    "UNLOCKED_ALERT": "खुली उपलब्धि!",
+    "RARITY_ESPECIAL": "विशेष",
+    "RARITY_RARO": "विचित्र",
+    "RARITY_EPICO": "महाकाव्य",
+    "RARITY_LEGENDARIO": "प्रसिद्ध"
   },
   "RANKING": {
     "BACK": "डैशबोर्ड पर वापस",

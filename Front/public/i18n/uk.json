@@ -176,7 +176,12 @@
     "RARITY_RARE": "Рідкісне",
     "RARITY_EPIC": "Епічне",
     "RARITY_LEGENDARY": "Легендарне",
-    "RARITY_CELESTIAL": "Небесне"
+    "RARITY_CELESTIAL": "Небесне",
+    "UNLOCKED_ALERT": "ДОСЯГНЕННЯ РОЗБЛОКУВАНО!",
+    "RARITY_ESPECIAL": "Особливий",
+    "RARITY_RARO": "Квір",
+    "RARITY_EPICO": "Епос",
+    "RARITY_LEGENDARIO": "Легендарний"
   },
   "RANKING": {
     "BACK": "Назад до інформаційної панелі",

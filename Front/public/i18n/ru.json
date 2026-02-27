@@ -176,7 +176,12 @@
     "RARITY_RARE": "Редкое",
     "RARITY_EPIC": "Эпическое",
     "RARITY_LEGENDARY": "Легендарное",
-    "RARITY_CELESTIAL": "Небесное"
+    "RARITY_CELESTIAL": "Небесное",
+    "UNLOCKED_ALERT": "ДОСТИЖЕНИЕ РАЗБЛОКИРОВАНО!",
+    "RARITY_ESPECIAL": "Особенный",
+    "RARITY_RARO": "странный",
+    "RARITY_EPICO": "Эпический",
+    "RARITY_LEGENDARIO": "Легендарный"
   },
   "RANKING": {
     "BACK": "Назад",

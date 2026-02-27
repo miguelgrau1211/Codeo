@@ -176,7 +176,12 @@
     "RARITY_RARE": "Rar",
     "RARITY_EPIC": "Èpic",
     "RARITY_LEGENDARY": "Llegendari",
-    "RARITY_CELESTIAL": "Celestial"
+    "RARITY_CELESTIAL": "Celestial",
+    "UNLOCKED_ALERT": "¡LOGRO DESBLOQUEADO!",
+    "RARITY_ESPECIAL": "Especial",
+    "RARITY_RARO": "Raro",
+    "RARITY_EPICO": "Épico",
+    "RARITY_LEGENDARIO": "Legendario"
   },
   "RANKING": {
     "BACK": "Tornar al Dashboard",
