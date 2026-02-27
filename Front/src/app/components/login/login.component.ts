@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 import { ProgresoHistoriaService } from '../../services/progreso-historia.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
@@ -101,7 +102,7 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
     this.isLoading.set(true);
     this.loadingMessage.set('LOGIN.REDIRECT_GOOGLE');
     // Redirigir al endpoint del backend que inicia el flujo de Google
-    window.location.href = 'http://localhost/api/auth/google';
+    window.location.href = `${environment.apiUrl}/auth/google`;
   }
 
 
@@ -297,7 +298,3 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
     }
   }
 }
-
-
-
-

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { UserDataService } from './user-data.service';
 import { LanguageService } from './language.service';
+import { environment } from '../../environments/environment';
 
 /**
  * Servicio de autenticación.
@@ -21,7 +22,7 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly userDataService = inject(UserDataService);
   private readonly languageService = inject(LanguageService);
-  private readonly apiUrl = 'http://localhost/api';
+  private readonly apiUrl = environment.apiUrl;
 
   /** Signal reactivo que indica si el usuario es administrador. */
   readonly isAdminSignal = signal<boolean>(false);

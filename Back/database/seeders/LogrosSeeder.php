@@ -349,7 +349,7 @@ class LogrosSeeder extends Seeder
                         new \Illuminate\Http\File($sourcePath),
                         $filename
                     );
-                    $dbPath = Storage::url($storageDir . '/' . $filename);
+                    $dbPath = $storageDir . '/' . $filename;
                 }
             }
 

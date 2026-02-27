@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 
 /** Estructura del payload para enviar un reporte al backend. */
@@ -23,7 +24,7 @@ export interface ReportePayload {
 })
 export class ReporteService {
     private readonly http = inject(HttpClient);
-    private readonly apiUrl = 'http://localhost/api/reportes';
+    private readonly apiUrl = `${environment.apiUrl}/reportes`;
 
     /** Genera las cabeceras HTTP con el token de autenticación. */
     private getAuthHeaders() {
@@ -45,7 +46,7 @@ export class ReporteService {
 
     /** [Admin] Obtiene todos los reportes del sistema. */
     getReportes(): Observable<any[]> {
-        return this.http.get<any[]>('http://localhost/api/admin/reportes', {
+        return this.http.get<any[]>(`${environment.apiUrl}/admin/reportes`, {
             headers: this.getAuthHeaders()
         });
     }
@@ -56,14 +57,14 @@ export class ReporteService {
      * @param data Campos a actualizar (estado, prioridad).
      */
     actualizarEstado(id: number, data: { estado?: string; prioridad?: string }): Observable<any> {
-        return this.http.put(`http://localhost/api/admin/reportes/${id}`, data, {
+        return this.http.put(`${environment.apiUrl}/admin/reportes/${id}`, data, {
             headers: this.getAuthHeaders()
         });
     }
 
     /** [Admin] Elimina permanentemente un reporte. */
     eliminarReporte(id: number): Observable<any> {
-        return this.http.delete(`http://localhost/api/admin/reportes/${id}`, {
+        return this.http.delete(`${environment.apiUrl}/admin/reportes/${id}`, {
             headers: this.getAuthHeaders()
         });
     }

@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { ProgresoHistoriaService } from '../../services/progreso-historia.service';
 import { UserDataService } from '../../services/user-data.service';
 import { ThemeService } from '../../services/theme.service';
+import { environment } from '../../../environments/environment';
 import { AuthService } from '../../services/auth.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
@@ -77,17 +78,25 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
   serviceProgreso = this.progresoHistoriaService.progresoSignal;
 
   stats_historia = computed(() => {
-    const data = this.serviceProgreso();
-    if (data) {
+    const user = this.userData();
+    if (user) {
+      const completed = user.story_levels_completed ?? 0;
+      const total = user.total_story_levels ?? 0;
+      
+      // El nivel actual es el siguiente al último completado, sin pasarnos del total
+      const actual = completed < total ? completed + 1 : (total > 0 ? total : 1);
+
       return {
-        actual_level: data.stats.total_niveles,
-        total_levels: data.stats.completados,
-        lvls_progress: data.stats.porcentaje_progreso,
-        titulo: data.stats.titulo_ultimo_nivel
+        actual_level: actual,
+        total_levels: total,
+        lvls_progress: total > 0 
+          ? Math.round((completed / total) * 100) + '%' 
+          : '0%',
+        titulo: user.last_story_level_title || '...'
       };
     }
     return {
-      actual_level: 0,
+      actual_level: 1,
       total_levels: 0,
       lvls_progress: "0%",
       titulo: "Cargando..."
@@ -213,7 +222,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     };
 
     // Paso 1: Obtener estado de Stripe y clave pública
-    this.http.get<any>('http://localhost/api/battle-pass/status', { headers }).subscribe({
+    this.http.get<any>(`${environment.apiUrl}/battle-pass/status`, { headers }).subscribe({
       next: (statusRes) => {
         const publishableKey = statusRes.stripe_publishable_key;
 
@@ -224,7 +233,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
         }
 
         // Paso 2: Crear PaymentIntent en el Backend
-        this.http.post<any>('http://localhost/api/battle-pass/create-intent', {}, { headers }).subscribe({
+        this.http.post<any>(`${environment.apiUrl}/battle-pass/create-intent`, {}, { headers }).subscribe({
           next: (intentRes) => {
             if (!intentRes.success) {
               this.paymentError.set(intentRes.message || 'Error al iniciar el pago.');
@@ -275,12 +284,21 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
 
             // Mostrar el formulario y montar tras renderizado del DOM
             this.paymentStep.set('form');
+            
+            // Usar setTimeout para asegurar que el DOM se ha actualizado con el nuevo estado del modal
             setTimeout(() => {
-              const container = document.getElementById('stripe-card-element');
-              if (container && this.cardElement && !this.stripeElementMounted) {
-                this.cardElement.mount('#stripe-card-element');
-                this.stripeElementMounted = true;
-              }
+              const checkContainer = () => {
+                const container = document.getElementById('stripe-card-element');
+                if (container && this.cardElement && !this.stripeElementMounted) {
+                  this.cardElement.mount('#stripe-card-element');
+                  this.stripeElementMounted = true;
+                  console.log('🟢 [STRIPE] Element mounted successfully');
+                } else if (!this.stripeElementMounted && this.showPaymentModal()) {
+                  // Re-intentar brevemente si el contenedor aún no está
+                  setTimeout(checkContainer, 50);
+                }
+              };
+              checkContainer();
             }, 100);
           },
           error: (err) => {
@@ -355,7 +373,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
         // Paso 5: Notificar a nuestro backend para activar el estado premium
         console.log('🔵 [BACKEND] Notificando confirmación al servidor...');
         const token = sessionStorage.getItem('token');
-        this.http.post<any>('http://localhost/api/battle-pass/confirm', 
+        this.http.post<any>(`${environment.apiUrl}/battle-pass/confirm`, 
           { payment_intent_id: paymentIntent.id },
           {
             headers: {

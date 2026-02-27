@@ -63,6 +63,9 @@ class SaveStoryProgressAction
         // 4. Lógica de Gamificación (solo si se ha completado)
         $gamificacion = [];
         if ($completado) {
+            // Invalidar la caché del dashboard para mostrar datos actualizados
+            \Illuminate\Support\Facades\Cache::forget("user_summary_{$user->id}");
+
             $gamificacion = [
                 'nuevos_logros' => (new CheckAchievementsAction())->execute(),
                 'racha' => (new UpdateUserStreakAction())->execute($user),

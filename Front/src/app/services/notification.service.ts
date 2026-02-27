@@ -1,4 +1,5 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 /** Modelo de notificación de logro desbloqueado. */
 export interface AchievementNotification {
@@ -28,7 +29,7 @@ export class NotificationService {
 
     /**
      * Añade una nueva notificación de logro a la cola.
-     * Se elimina automáticamente tras 5 segundos.
+     * Se devuelve automáticamente tras 5 segundos.
      * Normaliza URLs de iconos que empiezan con /storage.
      */
     showAchievement(achievement: Omit<AchievementNotification, 'id'>): void {
@@ -37,7 +38,7 @@ export class NotificationService {
         // Normalizar URL del icono si viene con ruta relativa del storage
         let icono_url = achievement.icono_url;
         if (icono_url && icono_url.startsWith('/storage')) {
-            icono_url = `http://localhost${icono_url}`;
+            icono_url = `${environment.backendUrl}${icono_url}`;
         }
 
         const newNotification: AchievementNotification = {

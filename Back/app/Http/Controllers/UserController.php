@@ -100,20 +100,26 @@ class UserController extends Controller
      */
     public function login(Request $request, LoginUserAction $action): JsonResponse
     {
-        $credentials = $request->validate([
+        $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        $result = $action->execute($credentials['email'], $credentials['password']);
-
-        return (new UserResource($result['user']))
-            ->additional([
-                'message' => 'Inicio de sesión exitoso',
-                'access_token' => $result['access_token'],
-                'token_type' => $result['token_type'],
-            ])
-            ->response();
+        try {
+            $result = $action->execute($request->email, $request->password);
+            
+            return (new UserResource($result['user']))
+                ->additional([
+                    'message' => 'Inicio de sesión exitoso',
+                    'access_token' => $result['access_token'],
+                    'token_type' => 'Bearer',
+                ])
+                ->response();
+        } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getStatusCode());
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error al iniciar sesión'], 401);
+        }
     }
 
     /**
@@ -130,7 +136,9 @@ class UserController extends Controller
      */
     public function getUserData(Request $request, GetUserSummaryAction $action): JsonResponse
     {
-        $summary = $action->execute(Auth::user(), $request);
+        /** @var Usuario $user */
+        $user = Auth::user();
+        $summary = $action->execute($user, $request);
         return response()->json($summary->toArray());
     }
 
@@ -139,7 +147,9 @@ class UserController extends Controller
      */
     public function getActividadUsuarioReciente(GetUserRecentActivityAction $action): JsonResponse
     {
-        return response()->json(['actividad' => $action->execute(Auth::user())]);
+        /** @var Usuario $user */
+        $user = Auth::user();
+        return response()->json(['actividad' => $action->execute($user)]);
     }
 
     /**
@@ -226,6 +236,7 @@ class UserController extends Controller
      */
     public function getMiPosicionRanking(): JsonResponse
     {
+        /** @var Usuario $user */
         $user = Auth::user();
         return response()->json(['posicion' => Usuario::where('exp_total', '>', $user->exp_total)->count() + 1]);
     }

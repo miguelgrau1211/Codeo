@@ -134,10 +134,15 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   // ==========================================
 
   ngOnInit() {
-    const hasSeenTutorial = localStorage.getItem('roguelike_tutorial_seen');
-    if (!hasSeenTutorial) {
-      this.showTutorial.set(true);
-    }
+    // Validar si el usuario actual ha visto el tutorial (usando nickname único)
+    this.userDataService.getUserData().subscribe(user => {
+      if (user && user.nickname) {
+        const hasSeenTutorial = localStorage.getItem(`roguelike_tutorial_seen_${user.nickname}`);
+        if (!hasSeenTutorial) {
+          this.showTutorial.set(true);
+        }
+      }
+    });
     
     this.startNewSession();
     
@@ -156,7 +161,10 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   }
 
   dismissTutorial() {
-    localStorage.setItem('roguelike_tutorial_seen', 'true');
+    const user = this.userDataService.userDataSignal();
+    if (user && user.nickname) {
+      localStorage.setItem(`roguelike_tutorial_seen_${user.nickname}`, 'true');
+    }
     this.showTutorial.set(false);
   }
 

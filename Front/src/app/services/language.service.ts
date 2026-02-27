@@ -1,5 +1,6 @@
 import { Injectable, signal, effect, inject, untracked } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { UserDataService } from './user-data.service';
 import { catchError, EMPTY } from 'rxjs';
 
@@ -26,6 +27,7 @@ export interface Language {
 })
 export class LanguageService {
     private readonly http = inject(HttpClient);
+    private readonly apiUrl = `${environment.apiUrl}/users`;
     private readonly userDataService = inject(UserDataService);
 
     /** Lista de idiomas soportados por la aplicación. */
