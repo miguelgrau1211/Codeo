@@ -373,7 +373,8 @@
     "CONFIRM_REQUIRED": "Confirma la contrasenya.",
     "ERR_PASS_MISMATCH": "Les contrasenyes no coincideixen.",
     "PASSWORD_MISMATCH": "Les contrasenyes no coincideixen.",
-    "ERR_UNKNOWN": "Error inesperat."
+    "ERR_UNKNOWN": "Error inesperat.",
+    "CREATING_ACCOUNT": "Creant compte"
   },
   "LANDING": {
     "BADGE": "Plataforma gamificada",
@@ -484,7 +485,15 @@
       "EXTRA_LIFE_DESC": "Comences amb una vida extra.",
       "EXTRA_TIME_NAME": "Temps Extra",
       "EXTRA_TIME_DESC": "Afegeix 30 segons."
-    }
+    },
+    "TUTORIAL_TITLE": "Com jugar Supervivència",
+    "TUTORIAL_DESC": "Benvingut al <strong class=\"text-xarxa-500\">Mode infinit</strong>. Aquí hauràs de resoldre reptes de codi per sobreviure. El temps corre i si envies codi erroni o s'esgota el temps, perdràs vides.",
+    "TUTORIAL_KEY_CONCEPTS": "Conceptes Clau per a Sobreviure",
+    "TUTORIAL_VAR_INPUT": "Variable Input: input_data",
+    "TUTORIAL_VAR_INPUT_DESC": "A cada nivell, el sistema injecta una variable global anomenada <code class=\"text-accent-color bg-black/40 px-2 pi-0.5 rounded border border-accent-color/20 font-bold\">input_data</code>. Aquesta variable <strong class=\"text-white\">és un array (llista)</strong> que conté les dades de prova del nivell actual. Podeu accedir als valors usant índexs, per exemple: <code class=\"text-text-main bg-black/40 px-1.5 pi-0.5 rounded border border-white/10 font-mono\">input_data[0]</code>, <code class=\"text-text-main bg-black/40 px border-white/10 font-mono\">input_data[1]</code>, etc.",
+    "TUTORIAL_GEN_OUTPUT": "Generar Sortida: print()",
+    "TUTORIAL_GEN_OUTPUT_DESC": "La validació llegeix el que el teu codi imprimeix a la consola. Fes servir <code class=\"text-accent-color bg-black/40 px-2 pi-0.5 rounded border border-accent-color/20 font-bold\">print()</code> per enviar la teva resposta final amb format exacte a l'\"EXPECTED OUTPUT\" de l'esquerra.",
+    "TUTORIAL_GOT_IT": "ENTÈS!"
   },
   "ADMIN": {
     "TITLE": "PANELL D'ADMIN",

@@ -373,7 +373,8 @@
     "CONFIRM_REQUIRED": "Conferma password.",
     "ERR_PASS_MISMATCH": "Le password non corrispondono.",
     "PASSWORD_MISMATCH": "Le password non coincidono.",
-    "ERR_UNKNOWN": "Errore."
+    "ERR_UNKNOWN": "Errore.",
+    "CREATING_ACCOUNT": "Creazione dell'account"
   },
   "LANDING": {
     "BADGE": "Piattaforma di apprendimento gamificata",
@@ -484,7 +485,15 @@
       "EXTRA_LIFE_DESC": "Inizi con una vita extra ad ogni corsa.",
       "EXTRA_TIME_NAME": "Tempo extra",
       "EXTRA_TIME_DESC": "Aggiunge 30 secondi al timer del livello."
-    }
+    },
+    "TUTORIAL_TITLE": "Come giocare a Sopravvivenza",
+    "TUTORIAL_DESC": "Benvenuto nella <strong class=\"text-red-500\">Modalità Infinita</strong>. Qui dovrai risolvere sfide di codice per sopravvivere. Il tempo stringe e se invii un codice sbagliato o scadi, perderai vite.",
+    "TUTORIAL_KEY_CONCEPTS": "Concetti chiave per sopravvivere",
+    "TUTORIAL_VAR_INPUT": "Variabile di input: input_data",
+    "TUTORIAL_VAR_INPUT_DESC": "Ad ogni livello, il sistema inserisce una variabile globale chiamata <code class=\"text-accent-color bg-black/40 px-2 py-0.5 bordo arrotondato border-accent-color/20 font-bold\">input_data</code>. Questa variabile <strong class=\"text-white\">è un array (elenco)</strong> che contiene i dati del test del livello corrente. È possibile accedere ai valori utilizzando gli indici, ad esempio: <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 bordo arrotondato border-white/10 font-mono\">input_data[0]</code>, <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 bordo arrotondato border-white/10 font-mono\">input_data[1]</code>, ecc.",
+    "TUTORIAL_GEN_OUTPUT": "Genera output: stampa()",
+    "TUTORIAL_GEN_OUTPUT_DESC": "La convalida legge ciò che il tuo codice stampa sulla console. Utilizza <code class=\"text-accent-color bg-black/40 px-2 py-0.5 bordo arrotondato border-accent-color/20 font-bold\">print()</code> per inviare la tua risposta finale esattamente formattata all'\"OUTPUT PREVISTO\" sulla sinistra.",
+    "TUTORIAL_GOT_IT": "INTESO!"
   },
   "ADMIN": {
     "TITLE": "PANNELLO AMMINISTRATIVO",

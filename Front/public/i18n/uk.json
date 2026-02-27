@@ -373,7 +373,8 @@
     "CONFIRM_REQUIRED": "Повторіть пароль.",
     "ERR_PASS_MISMATCH": "Паролі не збігаються.",
     "PASSWORD_MISMATCH": "Паролі не збігаються.",
-    "ERR_UNKNOWN": "Помилка."
+    "ERR_UNKNOWN": "Помилка.",
+    "CREATING_ACCOUNT": "Створення облікового запису"
   },
   "LANDING": {
     "BADGE": "Ігрова платформа для навчання",
@@ -484,7 +485,15 @@
       "EXTRA_LIFE_DESC": "Ви починаєте з додатковим життям під час кожного пробігу.",
       "EXTRA_TIME_NAME": "Додатковий час",
       "EXTRA_TIME_DESC": "Додає 30 секунд до таймера рівня."
-    }
+    },
+    "TUTORIAL_TITLE": "Як грати в Survival",
+    "TUTORIAL_DESC": "Вітаємо в <strong class=\"text-red-500\">режимі нескінченності</strong>. Тут вам доведеться вирішувати проблеми з кодом, щоб вижити. Годинник цокає, і якщо ви надішлете неправильний код або тайм-аут, ви втратите життя.",
+    "TUTORIAL_KEY_CONCEPTS": "Ключові поняття для виживання",
+    "TUTORIAL_VAR_INPUT": "Вхідна змінна: input_data",
+    "TUTORIAL_VAR_INPUT_DESC": "На кожному рівні система вводить глобальну змінну під назвою <code class=\"text-accent-color bg-black/40 px-2 py-0.5 rounded border border-accent-color/20 font-bold\">input_data</code>. Ця змінна <strong class=\"text-white\">є масивом (списком)</strong>, який містить тестові дані поточного рівня. Ви можете отримати доступ до значень за допомогою індексів, наприклад: <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 rounded border border-white/10 font-mono\">input_data[0]</code>, <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 rounded border border-white/10 font-mono\">input_data[1]</code> тощо.",
+    "TUTORIAL_GEN_OUTPUT": "Згенерувати вихідні дані: print()",
+    "TUTORIAL_GEN_OUTPUT_DESC": "Перевірка читає те, що ваш код друкує на консолі. Використовуйте <code class=\"text-accent-color bg-black/40 px-2 py-0.5 rounded border border-accent-color/20 font-bold\">print()</code>, щоб надіслати остаточну точно відформатовану відповідь на \"ОЧІКУВАНИЙ ВИСНОВОК\" ліворуч.",
+    "TUTORIAL_GOT_IT": "ЗРОЗУМІВ!"
   },
   "ADMIN": {
     "TITLE": "ПАНЕЛЬ АДМІНІСТРАЦІЇ",

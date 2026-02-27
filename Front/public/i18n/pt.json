@@ -373,7 +373,8 @@
     "CONFIRM_REQUIRED": "Confirme a senha.",
     "ERR_PASS_MISMATCH": "As senhas não coincidem.",
     "PASSWORD_MISMATCH": "As senhas não coincidem.",
-    "ERR_UNKNOWN": "Erro."
+    "ERR_UNKNOWN": "Erro.",
+    "CREATING_ACCOUNT": "Criando conta"
   },
   "LANDING": {
     "BADGE": "Plataforma de aprendizagem gamificada",
@@ -484,7 +485,15 @@
       "EXTRA_LIFE_DESC": "Você começa com uma vida extra em cada corrida.",
       "EXTRA_TIME_NAME": "Tempo Extra",
       "EXTRA_TIME_DESC": "Adiciona 30 segundos ao cronômetro do nível."
-    }
+    },
+    "TUTORIAL_TITLE": "Como jogar Sobrevivência",
+    "TUTORIAL_DESC": "Bem-vindo ao <strong class=\"text-red-500\">Modo Infinito</strong>. Aqui você terá que resolver desafios de código para sobreviver. O tempo está passando e se você enviar o código errado ou expirar, você perderá vidas.",
+    "TUTORIAL_KEY_CONCEPTS": "Conceitos-chave para sobreviver",
+    "TUTORIAL_VAR_INPUT": "Variável de entrada: input_data",
+    "TUTORIAL_VAR_INPUT_DESC": "Em cada nível, o sistema injeta uma variável global chamada <code class=\"text-accent-color bg-black/40 px-2 py-0.5 round border border-accent-color/20 font-bold\">input_data</code>. Esta variável <strong class=\"text-white\">é uma matriz (lista)</strong> que contém os dados de teste do nível atual. Você pode acessar os valores usando índices, por exemplo: <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 round border border-white/10 font-mono\">input_data[0]</code>, <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 round border border-white/10 font-mono\">input_data[1]</code>, etc.",
+    "TUTORIAL_GEN_OUTPUT": "Gerar saída: print()",
+    "TUTORIAL_GEN_OUTPUT_DESC": "A validação lê o que seu código imprime no console. Use <code class=\"text-accent-color bg-black/40 px-2 py-0.5 round border border-accent-color/20 font-bold\">print()</code> para enviar sua resposta final formatada exatamente para a \"SAÍDA ESPERADA\" à esquerda.",
+    "TUTORIAL_GOT_IT": "ENTENDIDO!"
   },
   "ADMIN": {
     "TITLE": "PAINEL DE ADMINISTRAÇÃO",

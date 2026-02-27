@@ -373,7 +373,8 @@
     "CONFIRM_REQUIRED": "تأكيد كلمة المرور.",
     "ERR_PASS_MISMATCH": "كلمات المرور غير متطابقة.",
     "PASSWORD_MISMATCH": "كلمات المرور غير متطابقة.",
-    "ERR_UNKNOWN": "حدث خطأ ما."
+    "ERR_UNKNOWN": "حدث خطأ ما.",
+    "CREATING_ACCOUNT": "إنشاء الحساب"
   },
   "LANDING": {
     "BADGE": "منصة تعلم محفزة",
@@ -484,7 +485,15 @@
       "EXTRA_LIFE_DESC": "تبدأ بحياة إضافية في كل جولة.",
       "EXTRA_TIME_NAME": "الوقت الإضافي",
       "EXTRA_TIME_DESC": "يضيف 30 ثانية إلى مؤقت المستوى."
-    }
+    },
+    "TUTORIAL_TITLE": "كيف تلعب لعبة البقاء على قيد الحياة",
+    "TUTORIAL_DESC": "مرحبًا بك في <strong class=\"text-red-500\">الوضع اللانهائي</strong>. هنا سيكون عليك حل تحديات التعليمات البرمجية من أجل البقاء. الساعة تدق وإذا قمت بإرسال رمز خاطئ أو مهلة خاطئة، فسوف تفقد الأرواح.",
+    "TUTORIAL_KEY_CONCEPTS": "المفاهيم الأساسية للبقاء على قيد الحياة",
+    "TUTORIAL_VAR_INPUT": "متغير الإدخال: input_data",
+    "TUTORIAL_VAR_INPUT_DESC": "في كل مستوى، يقوم النظام بإدخال متغير عام يسمى <code class=\"text-accent-color bg-black/40 px-2 py-0.5 rounded border border-accent-color/20font-bold\">input_data</code>. هذا المتغير <strong class=\"text-white\">هو مصفوفة (قائمة)</strong> تحتوي على بيانات الاختبار للمستوى الحالي. يمكنك الوصول إلى القيم باستخدام الفهارس، على سبيل المثال: <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 rounded border border-white/10 Font-mono\">input_data[0]</code>, <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 rounded border border-white/10 Font-mono\">input_data[1]</code>، وما إلى ذلك.",
+    "TUTORIAL_GEN_OUTPUT": "إنشاء الإخراج: طباعة ()",
+    "TUTORIAL_GEN_OUTPUT_DESC": "يقرأ التحقق من الصحة ما يطبعه الكود الخاص بك على وحدة التحكم. استخدم <code class=\"text-accent-color bg-black/40 px-2 py-0.5 rounded border border-accent-color/20font-bold\">print()</code> لإرسال إجابتك النهائية المنسقة تمامًا إلى \"الإخراج المتوقع\" على اليسار.",
+    "TUTORIAL_GOT_IT": "مفهومة!"
   },
   "ADMIN": {
     "TITLE": "لوحة الإدارة",

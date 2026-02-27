@@ -373,7 +373,8 @@
     "CONFIRM_REQUIRED": "Bevestig je wachtwoord.",
     "ERR_PASS_MISMATCH": "Wachtwoorden komen niet overeen.",
     "PASSWORD_MISMATCH": "Wachtwoorden komen niet overeen.",
-    "ERR_UNKNOWN": "Fout."
+    "ERR_UNKNOWN": "Fout.",
+    "CREATING_ACCOUNT": "Account aanmaken"
   },
   "LANDING": {
     "BADGE": "Gegamificeerd leerplatform",
@@ -484,7 +485,15 @@
       "EXTRA_LIFE_DESC": "Je begint met een extra leven bij elke run.",
       "EXTRA_TIME_NAME": "Extra tijd",
       "EXTRA_TIME_DESC": "Voegt 30 seconden toe aan de timer van het niveau."
-    }
+    },
+    "TUTORIAL_TITLE": "Hoe Survival te spelen",
+    "TUTORIAL_DESC": "Welkom bij de <strong class=\"text-red-500\">Oneindige modus</strong>. Hier moet je code-uitdagingen oplossen om te overleven. De klok tikt en als je de verkeerde code verzendt of een time-out krijgt, verlies je levens.",
+    "TUTORIAL_KEY_CONCEPTS": "Sleutelconcepten om te overleven",
+    "TUTORIAL_VAR_INPUT": "Invoervariabele: input_data",
+    "TUTORIAL_VAR_INPUT_DESC": "Op elk niveau injecteert het systeem een ​​globale variabele met de naam <code class=\"text-accent-color bg-black/40 px-2 py-0.5 round border border-accent-color/20 font-bold\">input_data</code>. Deze variabele <strong class=\"text-white\">is een array (lijst)</strong> die de testgegevens van het huidige niveau bevat. U kunt toegang krijgen tot de waarden met behulp van indexen, bijvoorbeeld: <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 round border border-white/10 font-mono\">input_data[0]</code>, <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 round border border-white/10 font-mono\">input_data[1]</code>, enz.",
+    "TUTORIAL_GEN_OUTPUT": "Uitvoer genereren: print()",
+    "TUTORIAL_GEN_OUTPUT_DESC": "Validatie leest wat uw code naar de console afdrukt. Gebruik <code class=\"text-accent-color bg-black/40 px-2 py-0.5 round border border-accent-color/20 font-bold\">print()</code> om uw uiteindelijke exact opgemaakte reactie naar de \"VERWACHTE UITVOER\" aan de linkerkant te sturen.",
+    "TUTORIAL_GOT_IT": "BEGREPEN!"
   },
   "ADMIN": {
     "TITLE": "BEHEERDERSPANEEL",

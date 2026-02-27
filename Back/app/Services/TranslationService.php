@@ -36,7 +36,7 @@ class TranslationService
     /**
      * Campos que contienen texto libre traducible almacenado en castellano en la base de datos.
      */
-    private const TRANSLATABLE_FIELDS_LEVEL = ['titulo', 'descripcion', 'contenido_teorico'];
+    private const TRANSLATABLE_FIELDS_LEVEL = ['titulo', 'descripcion', 'contenido_teorico', 'codigo_inicial'];
     private const TRANSLATABLE_FIELDS_LOGRO = ['nombre', 'descripcion'];
     private const TRANSLATABLE_FIELDS_TEMA = ['nombre', 'descripcion'];
 
