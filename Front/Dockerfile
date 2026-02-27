@@ -27,5 +27,7 @@ RUN npm install -g http-server
 COPY --from=build-step /app/dist/Front/browser /app/dist/Front/browser
 
 # Railway usa $PORT. Forzamos a http-server a usarlo con -p
-# --spa redirige todas las rutas a index.html (necesario para Angular)
-CMD ["sh", "-c", "http-server dist/Front/browser -p ${PORT:-8080} --spa"]
+# -g activa compresión Gzip
+# -c-1 desactiva caché de archivos (para desarrollo) o pon -c3600 para 1 hora
+# --spa redirige todas las rutas a index.html
+CMD ["sh", "-c", "http-server dist/Front/browser -p ${PORT:-8080} -g --spa -c3600"]

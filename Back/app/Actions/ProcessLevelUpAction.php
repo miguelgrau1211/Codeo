@@ -28,6 +28,9 @@ class ProcessLevelUpAction
             $usuario->save();
             $leveledUp = true;
 
+            // Invalidar la caché del dashboard al subir de nivel
+            \Illuminate\Support\Facades\Cache::forget("user_summary_{$usuario->id}");
+
             // Otorgar recompensas del pase de batalla si corresponde
             $battlePassRewards = (new \App\Actions\GrantBattlePassRewardsAction())->execute($usuario);
 
