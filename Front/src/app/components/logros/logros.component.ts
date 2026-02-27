@@ -64,7 +64,7 @@ export class LogrosComponent implements OnInit {
 
     readonly porcentaje = computed(() => {
         const s = this.stats();
-        return s ? s.porcentaje : 0;
+        return s ? Math.round(s.porcentaje * 10) / 10 : 0;
     });
 
     // ── Lifecycle ───────────────────────────────────────────
