@@ -19,6 +19,9 @@ class CreateUserAction
         $avatarUrl = $data->avatarUrl
             ?? 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . urlencode($data->nickname);
 
+        // Buscar el tema por defecto por nombre para ser robustos a cambios de ID
+        $defaultTheme = \App\Models\Tema::where('nombre', 'Deep Space')->first();
+
         return Usuario::create([
             'nickname' => $data->nickname,
             'nombre' => $data->nombre,
@@ -27,6 +30,7 @@ class CreateUserAction
             'password' => Hash::make($data->password),
             'avatar_url' => $avatarUrl,
             'terminos_aceptados' => $data->terminosAceptados,
+            'tema_actual_id' => $defaultTheme?->id,
         ]);
     }
 }

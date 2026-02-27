@@ -77,7 +77,9 @@ export class ThemeService {
         } else {
           this.getTemas().subscribe(temas => {
             if (temas.length > 0) {
-              this.currentTheme.set(temas[0]);
+              // Buscar Deep Space por nombre como prioridad para el fallback
+              const deepSpace = temas.find(t => t.nombre === 'Deep Space');
+              this.currentTheme.set(deepSpace || temas[0]);
             }
           });
         }
