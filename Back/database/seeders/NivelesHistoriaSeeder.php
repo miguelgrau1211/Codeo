@@ -59,7 +59,7 @@ class NivelesHistoriaSeeder extends Seeder
                 'titulo' => 'Condicionales IF',
                 'descripcion' => 'Toma decisiones basadas en condiciones.',
                 'contenido_teorico' => '<h1>Control de Flujo</h1><p>Usa <code>if</code> seguido de dos puntos y sangría.</p>',
-                'codigo_inicial' => "x = 10\nif x > 5:\n    print('Es mayor')\n",
+                'codigo_inicial' => "# x = 10\n# Comprobamos si x es mayor que 5\nif x > 5:\n    # Si es mayor, imprimimos el mensaje\n    print('Es mayor')\n",
                 'test_cases' => [['input' => '', 'output' => 'Es mayor']],
                 'recompensa_exp' => 300,
                 'recompensa_monedas' => 150

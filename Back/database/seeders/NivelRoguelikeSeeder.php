@@ -11,6 +11,9 @@ use App\Models\NivelRoguelike;
  */
 class NivelRoguelikeSeeder extends Seeder
 {
+    /**
+     * Ejecuta el seeder para poblar los niveles del modo Roguelike.
+     */
     public function run(): void
     {
         $niveles = [

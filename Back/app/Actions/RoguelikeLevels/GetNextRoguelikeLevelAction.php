@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Log;
 class GetNextRoguelikeLevelAction
 {
     /**
+     * Ejecuta la lógica para obtener el siguiente nivel del Roguelike.
+     * Prioriza niveles no jugados y maneja la dificultad dinámica.
+     * 
      * @param int $userId
      * @param string $locale
      * @return array Nivel traducido y datos de sesión actualizados.
@@ -67,7 +70,10 @@ class GetNextRoguelikeLevelAction
     }
 
     /**
-     * Probabilidades de dificultad basadas en el nivel actual de la run.
+     * Determina la dificultad del siguiente nivel basada en el progreso de la sesión.
+     * 
+     * @param int $completed Cantidad de niveles completados en la run actual.
+     * @return string Dificultad seleccionada ('fácil', 'medio', 'difícil', 'extremo').
      */
     private function determineDifficulty(int $completed): string
     {

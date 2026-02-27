@@ -11,9 +11,16 @@ use App\Actions\Story\EnableStoryLevelAction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-
+/**
+ * Controlador para la gestión de niveles del Modo Historia.
+ * Gestiona tanto la vista de usuario (con traducción) como el panel de administración.
+ */
 class NivelesHistoriaController
 {
+    /**
+     * Lista de niveles para el mapa de usuario.
+     * Incluye traducción automática según el idioma de la plataforma.
+     */
     public function index(Request $request)
     {
         $locale = TranslationService::resolveLocale($request);
@@ -28,6 +35,10 @@ class NivelesHistoriaController
         return response()->json($translated, 200);
     }
 
+    /**
+     * Lista de niveles para el panel de administración.
+     * No traduce contenidos para permitir la edición del texto original (Base Español).
+     */
     public function indexAdmin(Request $request)
     {
         // Paginación para admin - No traducimos porque admin edita el original (ES)
@@ -37,6 +48,10 @@ class NivelesHistoriaController
         return response()->json($niveles, 200);
     }
 
+    /**
+     * Muestra el detalle de un nivel específico.
+     * Si la petición viene de admin, devuelve el crudo; si no, lo traduce.
+     */
     public function show($id, Request $request)
     {
         $nivel = NivelesHistoria::findOrFail($id);
@@ -52,6 +67,9 @@ class NivelesHistoriaController
         return response()->json($data, 200);
     }
 
+    /**
+     * Crea un nuevo nivel de historia (Admin).
+     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -73,6 +91,9 @@ class NivelesHistoriaController
         ], 201);
     }
 
+    /**
+     * Actualiza un nivel de historia existente (Admin).
+     */
     public function update(Request $request, $id)
     {
         $nivel = NivelesHistoria::findOrFail($id);
@@ -133,6 +154,9 @@ class NivelesHistoriaController
         }
     }
 
+    /**
+     * Elimina permanentemente un nivel de historia.
+     */
     public function destroy($id)
     {
         $nivel = NivelesHistoria::findOrFail($id);

@@ -8,13 +8,13 @@ use Illuminate\Database\Seeder;
 class ProgresoHistoriaSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Ejecuta el seeder para poblar el progreso de historia inicial.
      */
     public function run(): void
     {
         // Obtener usuarios clave
         $admin = \App\Models\Usuario::find(1);
-        $user  = \App\Models\Usuario::find(2);
+        $user = \App\Models\Usuario::find(2);
 
         // Obtener todos los niveles de historia ordenados
         $niveles = \App\Models\NivelesHistoria::orderBy('orden')->get();
@@ -29,11 +29,11 @@ class ProgresoHistoriaSeeder extends Seeder
             foreach ($niveles as $nivel) {
                 \App\Models\ProgresoHistoria::firstOrCreate([
                     'usuario_id' => $admin->id,
-                    'nivel_id'   => $nivel->id,
+                    'nivel_id' => $nivel->id,
                 ], [
                     'completado' => false,
                     'codigo_solucion_usuario' => '// Solución Maestra generada en Seeder',
-                    
+
                 ]);
             }
         }
@@ -43,7 +43,7 @@ class ProgresoHistoriaSeeder extends Seeder
             $primerNivel = $niveles->first();
             \App\Models\ProgresoHistoria::firstOrCreate([
                 'usuario_id' => $user->id,
-                'nivel_id'   => $primerNivel->id,
+                'nivel_id' => $primerNivel->id,
             ], [
                 'completado' => false,
                 'codigo_solucion_usuario' => 'print("Hola Mundo")',
