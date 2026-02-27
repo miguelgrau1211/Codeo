@@ -40,26 +40,62 @@ export class ThemeService {
   readonly currentTheme = signal<Tema | null>(null);
 
   constructor() {
-    // Aplicar tema automáticamente cuando cambia el signal
+    // -------------------------------------------------------------------------------- //
+    // 1. APLICAR TEMA O CACHÉ DE FORMA SÍNCRONA AL INSTANCIAR EL SERVICIO
+    // Esto evita parpadeos mientras se obtienen los datos de la API.
+    // -------------------------------------------------------------------------------- //
+    const savedThemeCss = localStorage.getItem('applied-theme-css');
+    if (savedThemeCss) {
+      try {
+        const cssVars = JSON.parse(savedThemeCss);
+        const root = document.documentElement;
+        Object.entries(cssVars).forEach(([key, value]) => {
+          root.style.setProperty(key, value as string);
+        });
+      } catch (e) {
+        console.error('Error al parsear el tema cacheado', e);
+      }
+    }
+
+    // Intentar inicializar con caché local antes de cargar datos asíncronos para evitar parpadeos
+    const savedThemeId = localStorage.getItem('applied-theme-id');
+    if (savedThemeId && !this.currentTheme()) {
+      this.getTemas().subscribe(temas => {
+        const active = temas.find(t => t.id.toString() === savedThemeId);
+        if (active && !this.currentTheme()) {
+          // Solo si no se ha cargado todavía otra cosa mas fuerte desde UserDataService
+          this.currentTheme.set(active);
+        }
+      });
+    }
+
+    // Aplicar tema automáticamente cuando cambia el signal y guardar caché
     effect(() => {
       const theme = this.currentTheme();
       if (theme) {
         this.applyTheme(theme);
         localStorage.setItem('applied-theme-id', theme.id.toString());
-      } else {
+        localStorage.setItem('applied-theme-css', JSON.stringify(theme.css_variables));
+      } else if (!sessionStorage.getItem('token')) {
         this.clearTheme();
+        localStorage.removeItem('applied-theme-id');
+        localStorage.removeItem('applied-theme-css');
       }
     });
 
     // Re-aplicar tema al navegar entre rutas
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
+    ).subscribe((event: any) => {
+      // Ignorar la página de landing, allí sí queremos limpiar
+      if (event.url === '/' && !sessionStorage.getItem('token')) {
+        this.clearTheme();
+        return;
+      }
+
       const theme = this.currentTheme();
       if (theme) {
         this.applyTheme(theme);
-      } else {
-        this.clearTheme();
       }
     });
 
