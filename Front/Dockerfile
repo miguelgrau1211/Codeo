@@ -24,10 +24,7 @@ WORKDIR /app
 RUN npm install -g serve
 
 # Copiar solo los archivos construidos desde la etapa anterior
-# Ajustado a la ruta que configuramos en angular.json
 COPY --from=build-step /app/dist/Front/browser /app/dist/Front/browser
 
-EXPOSE 8080
-
-# Comando para arrancar el servidor de estáticos
-CMD ["serve", "-s", "dist/Front/browser", "-p", "8080"]
+# Railway inyecta la variable $PORT. Usamos shell para expandirla.
+CMD ["sh", "-c", "serve -s dist/Front/browser -l tcp://0.0.0.0:$PORT"]
