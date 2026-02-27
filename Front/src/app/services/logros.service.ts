@@ -47,4 +47,16 @@ export class LogrosService {
             { headers: this.getHeaders() }
         );
     }
+
+    /**
+     * POST /api/users/logros/easter-egg
+     * Ejecuta la comprobación manual para ver si el usuario ha desbloqueado el easter egg.
+     */
+    checkEasterEggAchievement(): Observable<{ message: string, nuevos_logros: any[] }> {
+        return this.http.post<{ message: string, nuevos_logros: any[] }>(
+            `${this.apiUrl}/logros/easter-egg`,
+            {},
+            { headers: this.getHeaders() }
+        );
+    }
 }

@@ -68,6 +68,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/logros', [UsuarioLogroController::class, 'getLogrosUsuario']);
     Route::get('/users/logros-desbloqueados', [UsuarioLogroController::class, 'getLogrosDesbloqueados']);
     Route::get('/users/porcentaje-logros', [UsuarioLogroController::class, 'getPorcentajeLogros']);
+    Route::post('/users/logros/easter-egg', [UsuarioLogroController::class, 'unlockEasterEgg']);
 
     // Progreso Historia
     Route::get('/progreso-historia', [ProgresoHistoriaController::class, 'index']);

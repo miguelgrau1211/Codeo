@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { LogroComponent } from './logro/logro.component';
 import { LogrosService } from '../../services/logros.service';
+import { NotificationService } from '../../services/notification.service';
 import { Logro, PorcentajeLogrosResponse } from '../../models/achievement.model';
 
 type FiltroLogros = 'todos' | 'desbloqueados' | 'bloqueados';
@@ -26,6 +27,7 @@ type FiltroLogros = 'todos' | 'desbloqueados' | 'bloqueados';
 })
 export class LogrosComponent implements OnInit {
     private readonly logrosService = inject(LogrosService);
+    protected readonly notificationService = inject(NotificationService);
 
     // ── State ───────────────────────────────────────────────
     readonly logros = signal<Logro[]>([]);
@@ -110,6 +112,19 @@ export class LogrosComponent implements OnInit {
             if (this.isEasterEggActive) {
                 this.showConfetti = true;
                 setTimeout(() => (this.showConfetti = false), 3000);
+
+                // Llamar al backend para validar el logro
+                this.logrosService.checkEasterEggAchievement().subscribe({
+                    next: (res) => {
+                        if (res.nuevos_logros && res.nuevos_logros.length > 0) {
+                            // Importar localmente el inyector no se puede, por lo que asumo NotificationService inyectado si es posible o recargar.
+                            // Para mantener local la dependencia, usaremos NotificationService inyectado en la clase.
+                            this.notificationService.showAchievement(res.nuevos_logros[0]);
+                            this.cargarLogros(); // Para actualizar la UI
+                        }
+                    },
+                    error: (err) => console.error('Error procesando easter egg', err)
+                });
             }
         }
     }

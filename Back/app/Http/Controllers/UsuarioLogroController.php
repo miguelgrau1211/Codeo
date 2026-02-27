@@ -93,4 +93,25 @@ class UsuarioLogroController extends Controller
                 : 0
         ]);
     }
+
+    /**
+     * Desbloquea el logro de Easter Egg manualmente llamando a la verificación de logros
+     * pasándole la estadística manual 'easter_egg'.
+     */
+    public function unlockEasterEgg(Request $request, \App\Actions\Achievements\CheckAchievementsAction $action): JsonResponse
+    {
+        // Ejecutamos la acción inyectando temporalmente que el user cumplió el easter egg
+        $nuevosLogros = $action->execute(['easter_egg' => 1]);
+
+        // Traducir si se devolvió algo
+        if (count($nuevosLogros) > 0) {
+            $locale = TranslationService::resolveLocale($request);
+            $nuevosLogros = app(TranslationService::class)->translateLogrosCollection(collect($nuevosLogros), $locale);
+        }
+
+        return response()->json([
+            'message' => count($nuevosLogros) > 0 ? 'Logro desbloqueado!' : 'Ya tenías el logro',
+            'nuevos_logros' => $nuevosLogros
+        ]);
+    }
 }
