@@ -29,7 +29,7 @@ class NivelesHistoriaSeeder extends Seeder
                 'titulo' => 'Variables y Tipos',
                 'descripcion' => 'Aprende a declarar variables sin usar símbolos especiales.',
                 'contenido_teorico' => '<h1>Variables</h1><p>A diferencia de otros lenguajes, en Python solo asignas un valor a un nombre.</p><pre>nombre = "Python"</pre>',
-                'codigo_inicial' => "# Crea una variable llamada 'lenguaje' con el valor 'Python'\n# Luego imprímela\n",
+                'codigo_inicial' => "# Crea una variable llamada \"lenguaje\" con el valor \"Python\"\n# Luego imprímela\n",
                 'test_cases' => [['input' => '', 'output' => 'Python']],
                 'recompensa_exp' => 150,
                 'recompensa_monedas' => 40
@@ -59,7 +59,7 @@ class NivelesHistoriaSeeder extends Seeder
                 'titulo' => 'Condicionales IF',
                 'descripcion' => 'Toma decisiones basadas en condiciones.',
                 'contenido_teorico' => '<h1>Control de Flujo</h1><p>Usa <code>if</code> seguido de dos puntos y sangría.</p>',
-                'codigo_inicial' => "# x = 10\n# Comprobamos si x es mayor que 5\nif x > 5:\n    # Si es mayor, imprimimos el mensaje\n    print('Es mayor')\n",
+                'codigo_inicial' => "# x = 10\n# Comprobamos si x es mayor que 5\nif x > 5:\n    # Si es mayor, imprimimos el mensaje\n    print(\"Es mayor\")\n",
                 'test_cases' => [['input' => '', 'output' => 'Es mayor']],
                 'recompensa_exp' => 300,
                 'recompensa_monedas' => 150

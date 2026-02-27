@@ -297,7 +297,7 @@ export class ModoHistoriaComponent implements OnInit {
     let placeholderCounter = 0;
 
     const createPlaceholder = (content: string, className: string) => {
-      const key = `__PH-${placeholderCounter++}__`;
+      const key = `__PH_${placeholderCounter++}__`;
       placeholders[key] = `<span class="${className}">${content}</span>`;
       return key;
     };
@@ -349,7 +349,7 @@ export class ModoHistoriaComponent implements OnInit {
     escaped = escaped.replace(/\b\d+\.?\d*\b/g, '<span class="token-number">$&</span>');
 
     // --- RESTAURAR LOS PLACEHOLDERS ---
-    Object.keys(placeholders).forEach((key) => {
+    Object.keys(placeholders).reverse().forEach((key) => {
       escaped = escaped.replace(key, placeholders[key]);
     });
 

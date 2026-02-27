@@ -39,6 +39,20 @@ class NivelRoguelikeSeeder extends Seeder
                 'test_cases' => [['input' => '"hola"', 'output' => 'HOLA'], ['input' => '"code"', 'output' => 'CODE']],
                 'recompensa_monedas' => 20
             ],
+            [
+                'dificultad' => 'fácil',
+                'titulo' => 'Es Par o Impar',
+                'descripcion' => 'Dado un número n, imprime "Par" si es par o "Impar" si es impar.',
+                'test_cases' => [['input' => '4', 'output' => 'Par'], ['input' => '7', 'output' => 'Impar']],
+                'recompensa_monedas' => 20
+            ],
+            [
+                'dificultad' => 'fácil',
+                'titulo' => 'Multiplicar por 10',
+                'descripcion' => 'Toma el número de entrada y multiplícalo por 10.',
+                'test_cases' => [['input' => '5', 'output' => '50'], ['input' => '0', 'output' => '0']],
+                'recompensa_monedas' => 20
+            ],
 
             // --- MEDIO (60 Monedas) ---
             [
@@ -60,6 +74,20 @@ class NivelRoguelikeSeeder extends Seeder
                 'titulo' => 'Invertir String',
                 'descripcion' => 'Imprime el string de entrada del revés.',
                 'test_cases' => [['input' => '"abc"', 'output' => 'cba'], ['input' => '"radar"', 'output' => 'radar']],
+                'recompensa_monedas' => 60
+            ],
+            [
+                'dificultad' => 'medio',
+                'titulo' => 'Elemento Mayor',
+                'descripcion' => 'Dada una lista de números, imprime el valor más alto.',
+                'test_cases' => [['input' => '[10, 50, 30]', 'output' => '50'], ['input' => '[-1, -5, 0]', 'output' => '0']],
+                'recompensa_monedas' => 60
+            ],
+            [
+                'dificultad' => 'medio',
+                'titulo' => 'Eliminar Duplicados',
+                'descripcion' => 'Dada una lista, imprime la lista con los elementos únicos en orden ascendente.',
+                'test_cases' => [['input' => '[3, 1, 2, 1, 3]', 'output' => '[1, 2, 3]'], ['input' => '[5, 5, 5]', 'output' => '[5]']],
                 'recompensa_monedas' => 60
             ],
 
@@ -85,6 +113,20 @@ class NivelRoguelikeSeeder extends Seeder
                 'test_cases' => [['input' => '["amor", "roma"]', 'output' => 'True'], ['input' => '["hola", "chau"]', 'output' => 'False']],
                 'recompensa_monedas' => 150
             ],
+            [
+                'dificultad' => 'difícil',
+                'titulo' => 'Contar Palabras',
+                'descripcion' => 'Dado un string con palabras separadas por espacios, imprime el número total de palabras.',
+                'test_cases' => [['input' => '"Python es genial"', 'output' => '3'], ['input' => '"Codeo"', 'output' => '1']],
+                'recompensa_monedas' => 150
+            ],
+            [
+                'dificultad' => 'difícil',
+                'titulo' => 'Letra más Frecuente',
+                'descripcion' => 'Imprime la letra que más veces aparece en un string (ignora espacios).',
+                'test_cases' => [['input' => '"banana"', 'output' => 'a'], ['input' => '"mississippi"', 'output' => 'i']],
+                'recompensa_monedas' => 150
+            ],
 
             // --- EXTREMO (300 Monedas) ---
             [
@@ -106,6 +148,20 @@ class NivelRoguelikeSeeder extends Seeder
                 'titulo' => 'Frecuencia de Personajes',
                 'descripcion' => 'Imprime un diccionario con la frecuencia de cada carácter en el string.',
                 'test_cases' => [['input' => '"aba"', 'output' => "{'a': 2, 'b': 1}"], ['input' => '"c"', 'output' => "{'c': 1}"]],
+                'recompensa_monedas' => 300
+            ],
+            [
+                'dificultad' => 'extremo',
+                'titulo' => 'Suma de Primos',
+                'descripcion' => 'Dado un número n, imprime la suma de todos los números primos hasta n.',
+                'test_cases' => [['input' => '10', 'output' => '17'], ['input' => '20', 'output' => '77']],
+                'recompensa_monedas' => 300
+            ],
+            [
+                'dificultad' => 'extremo',
+                'titulo' => 'Aplanar Lista',
+                'descripcion' => 'Recibes una lista de listas. Conviértela en una lista simple de un solo nivel.',
+                'test_cases' => [['input' => '[[1, 2], [3], [4, 5]]', 'output' => '[1, 2, 3, 4, 5]'], ['input' => '[["a"], ["b", "c"]]', 'output' => '["a", "b", "c"]']],
                 'recompensa_monedas' => 300
             ],
         ];

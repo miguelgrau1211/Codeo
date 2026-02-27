@@ -143,9 +143,9 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
         }
       }
     });
-    
+
     this.startNewSession();
-    
+
     // Validar admin para el botón de debug
     const token = sessionStorage.getItem('token');
     if (token) {
@@ -244,10 +244,10 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
   onTimeExpired() {
     // 1. Respuesta instantánea (Optimistic UI + Visual Impact)
     this.stopTimer();
-    this.timeRemaining.set(0); 
+    this.timeRemaining.set(0);
     this.isShowingTimeOut.set(true);
     this.isFadingOutTimeOut.set(false);
-    
+
     // Restamos vida localmente para feedback inmediato
     const currentLives = this.lives();
     if (currentLives > 0) {
@@ -263,7 +263,7 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
     });
 
     console.log('Timer expired, syncing with server...');
-    
+
     this.roguelikeSessionService.checkTime().subscribe({
       next: (res) => {
         // 2. Sincronización real con el servidor
@@ -276,13 +276,13 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
         } else {
           // Primero iniciamos el desvanecimiento gradual (fundido a negro desapareciendo)
           this.isFadingOutTimeOut.set(true);
-          
+
           // Esperamos a que la animación de CSS termine antes de limpiar el estado
           setTimeout(() => {
             this.isShowingTimeOut.set(false);
             this.isFadingOutTimeOut.set(false);
             this.startTimer();
-            
+
             // Solo ahora mostramos el mensaje final para evitar glitches visuales
             this.executionResult.set({
               correcto: false,
@@ -679,7 +679,7 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
     let placeholderCounter = 0;
 
     const createPlaceholder = (content: string, className: string) => {
-      const key = `__PH-${placeholderCounter++}__`;
+      const key = `__PH_${placeholderCounter++}__`;
       placeholders[key] = `<span class="${className}">${content}</span>`;
       return key;
     };
@@ -731,7 +731,7 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
     escaped = escaped.replace(/\b\d+\.?\d*\b/g, '<span class="token-number">$&</span>');
 
     // --- RESTORE PLACEHOLDERS ---
-    Object.keys(placeholders).forEach((key) => {
+    Object.keys(placeholders).reverse().forEach((key) => {
       escaped = escaped.replace(key, placeholders[key]);
     });
 
