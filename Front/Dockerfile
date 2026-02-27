@@ -27,4 +27,5 @@ RUN npm install -g serve
 COPY --from=build-step /app/dist/Front/browser /app/dist/Front/browser
 
 # Railway inyecta la variable $PORT. Usamos shell para expandirla.
-CMD ["sh", "-c", "serve -s dist/Front/browser -l tcp://0.0.0.0:$PORT"]
+# Añadimos un ls para depurar la estructura de carpetas en caso de fallo.
+CMD ["sh", "-c", "ls -R dist && serve -s dist/Front/browser -l $PORT"]
