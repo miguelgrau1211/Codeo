@@ -32,9 +32,19 @@ class Tema extends Model
     public function getPreviewImgAttribute($value)
     {
         if (!$value) return null;
-        if (filter_var($value, FILTER_VALIDATE_URL)) return $value;
+        
+        $url = $value;
+        // Si no es URL absoluta, usar asset() para generarla
+        if (!filter_var($value, FILTER_VALIDATE_URL)) {
+            $url = asset($value);
+        }
 
-        // Si es una ruta de assets o almacenamiento, asegurar que sea pública
-        return asset($value);
+        // Forzar reemplazo de localhost si aparece
+        if (str_contains($url, 'localhost')) {
+            $appUrl = rtrim(config('app.url'), '/');
+            return str_replace(['http://localhost:8000', 'http://localhost'], $appUrl, $url);
+        }
+
+        return $url;
     }
 }

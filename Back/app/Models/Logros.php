@@ -31,16 +31,19 @@ class Logros extends Model
     {
         if (!$value) return null;
         
-        // Si ya es una URL absoluta (http/https), la devolvemos tal cual
-        if (filter_var($value, FILTER_VALIDATE_URL)) {
-            // Pero si es de localhost (error antiguo), intentamos corregirla dinámicamente
-            if (str_contains($value, 'localhost')) {
-                return str_replace('http://localhost', config('app.url'), $value);
-            }
-            return $value;
+        $url = $value;
+        // Si es una ruta relativa, generar la URL usando Storage
+        if (!filter_var($value, FILTER_VALIDATE_URL)) {
+            $url = \Illuminate\Support\Facades\Storage::url($value);
         }
 
-        // Si es una ruta relativa (ej: logros/medalla.png), generamos la URL pública
-        return \Illuminate\Support\Facades\Storage::url($value);
+        // Si por algún motivo (configuración de Laravel o base de datos) la URL contiene localhost,
+        // la forzamos a usar la URL configurada en el servidor.
+        if (str_contains($url, 'localhost')) {
+            $appUrl = rtrim(config('app.url'), '/');
+            return str_replace(['http://localhost:8000', 'http://localhost'], $appUrl, $url);
+        }
+
+        return $url;
     }
 }
