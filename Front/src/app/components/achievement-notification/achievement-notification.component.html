@@ -1,0 +1,46 @@
+<div class="fixed top-5 right-5 z-[9999] flex flex-col gap-3 pointer-events-none">
+  @for (notif of notificationService.activeNotifications(); track notif.id) {
+    <div 
+      class="pointer-events-auto w-[380px] p-4 rounded-2xl flex items-center gap-4 relative overflow-hidden backdrop-blur-xl border border-white/10 shadow-2xl animate-slide-in-right border-l-4"
+      [ngClass]="{
+        'border-emerald-500': notif.rareza === 'especial',
+        'border-blue-500': notif.rareza === 'raro',
+        'border-purple-500': notif.rareza === 'epico',
+        'border-amber-500': notif.rareza === 'legendario',
+        'border-red-500 bg-gradient-to-br from-slate-900/95 to-red-950/40 animate-celestial-glow': notif.rareza === 'celestial',
+        'bg-slate-900/90': notif.rareza !== 'celestial'
+      }"
+    >
+      <div 
+        class="absolute top-7 right-3 text-white/30 cursor-pointer transition-colors hover:text-white z-10" 
+        (click)="notificationService.removeNotification(notif.id)"
+      >
+        <i class="bi bi-x-lg"></i>
+      </div>
+      
+      <div class="w-16 h-16 bg-white/5 rounded-xl flex items-center justify-center shrink-0">
+        @if (notif.icono_url) {
+          <img [src]="notif.icono_url" [alt]="notif.nombre" class="w-12 h-12 object-contain drop-shadow-md">
+        } @else {
+          <div class="text-3xl">🏆</div>
+        }
+      </div>
+
+      <div class="flex-1">
+        <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400/80 block mb-0.5">
+          {{ 'ACHIEVEMENTS.UNLOCKED_ALERT' | translate }}
+        </span>
+        <h3 class="m-0 text-lg font-bold text-white drop-shadow-sm leading-tight">
+          {{ notif.nombre }}
+        </h3>
+        <p class="mt-1 text-sm text-white/70 leading-relaxed line-clamp-2">
+          {{ notif.descripcion }}
+        </p>
+      </div>
+
+      <div class="absolute top-0 right-0 py-1 px-3 text-[9px] font-black bg-white/10 rounded-bl-xl text-white/60 tracking-wider">
+        {{ ('ACHIEVEMENTS.RARITY_' + notif.rareza.toUpperCase()) | translate | uppercase }}
+      </div>
+    </div>
+  }
+</div>

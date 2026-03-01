@@ -24,7 +24,7 @@ class GetStoryProgressSummaryAction
         $translator = app(TranslationService::class);
         $nivelesTraducidos = collect($translator->translateCollection($niveles, $locale, 'nivel'))->keyBy('id');
 
-        $progresoDetallado = $niveles->map(function ($nivel) use ($progresoUsuario, $userId, $nivelesTraducidos) {
+        $progresoDetallado = $niveles->map(function ($nivel) use ($progresoUsuario, $nivelesTraducidos) {
             $progreso = $progresoUsuario->get($nivel->id);
             $translated = $nivelesTraducidos->get($nivel->id);
 

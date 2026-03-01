@@ -30,8 +30,18 @@ module.exports = {
         "fade-in-up": "fadeInUp 0.5s ease-out forwards",
         "spin-slow": "spin-slow 20s linear infinite",
         "zoom-pulse": "zoom-pulse 15s ease-in-out infinite",
+        "slide-in-right": "slideInRight 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+        "celestial-glow": "celestialGlow 3s infinite alternate",
       },
       keyframes: {
+        slideInRight: {
+          "from": { transform: "translateX(100%)", opacity: "0" },
+          "to": { transform: "translateX(0)", opacity: "1" },
+        },
+        celestialGlow: {
+          "from": { "box-shadow": "0 0 10px rgba(239, 68, 68, 0.2)" },
+          "to": { "box-shadow": "0 0 30px rgba(239, 68, 68, 0.4)" },
+        },
         blob: {
           "0%": {
             transform: "translate(0px, 0px) scale(1)",

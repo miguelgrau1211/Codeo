@@ -69,7 +69,7 @@ export class HeaderComponent {
 
   updateVisibility() {
     const hiddenRoutes = ['', '/', '/login', '/registro', '/soporte'];
-    // We check if current URL (without query params) is in hiddenRoutes
+    // verificamos si la ruta actual está en hiddenRoutes
     const currentPath = this.router.url.split('?')[0];
     this.isVisible.set(!hiddenRoutes.includes(currentPath));
   }

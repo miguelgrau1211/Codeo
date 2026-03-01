@@ -121,7 +121,9 @@
             <div class="flex flex-col md:flex-row gap-4">
                 <button (click)="onLogout()" [disabled]="isProcessing()"
                     class="px-8 py-4 rounded-2xl bg-secondary-bg text-text-main font-black text-xs uppercase tracking-widest border border-white/10 hover:bg-zinc-800 transition-all flex items-center justify-center gap-2 disabled:opacity-50">
-                    <span *ngIf="isProcessing()">⌛</span>
+                    @if (isProcessing()) {
+                        <span>⌛</span>
+                    }
                     {{ 'SETTINGS.LOGOUT' | translate }}
                 </button>
                 <button (click)="confirmDeleteAccount()" [disabled]="isProcessing()"
@@ -134,7 +136,8 @@
     </div>
 
     <!-- Language Selector Modal -->
-    <div *ngIf="showLangModal()"
+    @if (showLangModal()) {
+    <div
         class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/90 backdrop-blur-xl animate-in fade-in duration-300">
         <div
             class="bg-secondary-bg border border-white/10 rounded-[2.5rem] p-8 max-w-3xl w-full shadow-2xl relative max-h-[90vh] overflow-hidden flex flex-col">
@@ -159,7 +162,9 @@
                             [class.text-white]="languageService.currentLang() === lang.code">{{ lang.nativeName }}</p>
                         <p class="text-[10px] opacity-60 uppercase tracking-tighter">{{ lang.name }}</p>
                     </div>
-                    <div *ngIf="languageService.currentLang() === lang.code" class="ml-auto text-white">✓</div>
+                    @if (languageService.currentLang() === lang.code) {
+                        <div class="ml-auto text-white">✓</div>
+                    }
                 </button>
                 }
             </div>
@@ -169,9 +174,11 @@
             </p>
         </div>
     </div>
+    }
 
     <!-- Delete Confirmation Modal -->
-    <div *ngIf="showDeleteModal()"
+    @if (showDeleteModal()) {
+    <div
         class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-md transition-opacity">
         <div
             class="bg-secondary-bg border border-red-500/30 rounded-[2.5rem] p-10 max-w-md w-full shadow-2xl shadow-red-900/20 transform animate-in fade-in zoom-in duration-300">
@@ -192,10 +199,13 @@
                 </button>
                 <button (click)="executeDeleteAccount()" [disabled]="isProcessing()"
                     class="py-4 rounded-2xl bg-red-600 text-white font-bold hover:bg-red-700 transition-all shadow-lg shadow-red-600/30 flex items-center justify-center gap-2">
-                    <span *ngIf="isProcessing()">⌛</span>
+                    @if (isProcessing()) {
+                        <span>⌛</span>
+                    }
                     {{ 'MODALS.CONFIRM_YES' | translate }}
                 </button>
             </div>
         </div>
     </div>
+    }
 </div>

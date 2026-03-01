@@ -151,21 +151,17 @@ class ProcessPurchaseAction
                 $battlePassRewards = (new GrantBattlePassRewardsAction())->execute($usuario);
 
                 // === LOG EN CONSOLA ===
-                Log::channel('stderr')->info('');
-                Log::channel('stderr')->info('╔══════════════════════════════════════════════════════════╗');
-                Log::channel('stderr')->info('║         ✅ PAGO CONFIRMADO - BATTLE PASS ACTIVADO        ║');
-                Log::channel('stderr')->info('╠══════════════════════════════════════════════════════════╣');
-                Log::channel('stderr')->info('║  Payment Intent ID: ' . $paymentIntent->id);
-                Log::channel('stderr')->info('║  Monto:            ' . self::BATTLE_PASS_PRICE_DISPLAY . '€');
-                Log::channel('stderr')->info('║  Moneda:           ' . strtoupper(self::CURRENCY));
-                Log::channel('stderr')->info('║  Estado Stripe:    ' . $paymentIntent->status);
-                Log::channel('stderr')->info('║  Usuario ID:       ' . $usuario->id);
-                Log::channel('stderr')->info('║  Usuario:          ' . $usuario->nickname);
-                Log::channel('stderr')->info('║  Email:            ' . $usuario->email);
-                Log::channel('stderr')->info('║  Premium desde:    ' . $usuario->premium_since->format('Y-m-d H:i:s'));
-                Log::channel('stderr')->info('║  Rewards otorgados: ' . count($battlePassRewards));
-                Log::channel('stderr')->info('╚══════════════════════════════════════════════════════════╝');
-                Log::channel('stderr')->info('');
+                Log::channel('stderr')->info('🔵 [BATTLEPASS] BattlePass purchased via Stripe', [
+                    'payment_intent_id' => $paymentIntent->id,
+                    'user_id' => $usuario->id,
+                    'amount' => self::BATTLE_PASS_PRICE_DISPLAY,
+                    'currency' => self::CURRENCY,
+                    'rewards_granted' => count($battlePassRewards),
+                ]);
+
+
+
+                
 
                 // También log en el archivo estándar
                 Log::info('BattlePass purchased via Stripe', [

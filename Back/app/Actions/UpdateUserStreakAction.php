@@ -34,7 +34,6 @@ class UpdateUserStreakAction
 
             if ($lastCompletionDate->equalTo($today)) {
                 // Ya completó algo hoy, no incrementamos racha pero actualizamos timestamp
-                // (Opcional: podrías decidir no actualizar el timestamp para mantener el "primer logro del día")
             } elseif ($lastCompletionDate->equalTo($yesterday)) {
                 // Completó ayer, incrementamos racha
                 $usuario->streak += 1;

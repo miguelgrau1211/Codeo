@@ -53,7 +53,7 @@ class TemaController extends Controller
         $usuario->update(['tema_actual_id' => $tema->id]);
 
         $locale = $request->header('Accept-Language', 'es');
-        $translatedTema = app(\App\Services\TranslationService::class)->translateTema($tema, $locale);
+        $translatedTema = app(TranslationService::class)->translateTema($tema, $locale);
 
         $msg = 'Tema activado correctamente.';
 

@@ -1,5 +1,5 @@
-import { Component, signal, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, signal, inject, ChangeDetectionStrategy } from '@angular/core';
+import { CommonModule, NgClass } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AudioService } from '../../services/audio.service';
@@ -18,9 +18,10 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 @Component({
   selector: 'app-configuracion',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, TranslatePipe],
+  imports: [RouterLink, FormsModule, TranslatePipe, NgClass],
   templateUrl: './configuracion.component.html',
-  styleUrl: './configuracion.component.css'
+  styleUrl: './configuracion.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConfiguracionComponent {
   private audioService = inject(AudioService);

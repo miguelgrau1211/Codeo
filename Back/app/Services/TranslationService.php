@@ -6,6 +6,17 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Servicio de Traducción Dinámica para Codeo.
+ * 
+ * Este servicio se encarga de traducir contenido almacenado en la base de datos (originalmente en castellano)
+ * al idioma preferido del usuario mediante la API de Google Translate.
+ * 
+ * Implementa estrategias de optimización como:
+ * - Caché de resultados para evitar llamadas repetitivas.
+ * - Traducción por lotes (Bulk) para evitar el problema N+1 en colecciones.
+ * - Circuit-breaker para evitar retrasos si la API externa falla.
+ */
 class TranslationService
 {
     /**
@@ -47,7 +58,11 @@ class TranslationService
     private bool $translationAvailable = true;
 
     /**
-     * Traduce un nivel o desafío.
+     * Traduce los campos de un objeto Nivel al idioma solicitado.
+     * 
+     * @param array|object $nivel El registro del nivel o desafío.
+     * @param string $locale Código de idioma (ej: 'en', 'fr').
+     * @return array Datos del nivel con los campos traducidos.
      */
     public function translateNivel(array|object $nivel, string $locale): array
     {
@@ -55,7 +70,11 @@ class TranslationService
     }
 
     /**
-     * Traduce un logro.
+     * Traduce los campos de un objeto Logro al idioma solicitado.
+     * 
+     * @param array|object $logro El registro del logro.
+     * @param string $locale Código de idioma.
+     * @return array Datos del logro traducidos.
      */
     public function translateLogro(array|object $logro, string $locale): array
     {
@@ -63,7 +82,11 @@ class TranslationService
     }
 
     /**
-     * Traduce un tema visual.
+     * Traduce los campos de un objeto Tema Visual al idioma solicitado.
+     * 
+     * @param array|object $tema El registro del tema.
+     * @param string $locale Código de idioma.
+     * @return array Datos del tema traducidos.
      */
     public function translateTema(array|object $tema, string $locale): array
     {
@@ -71,8 +94,15 @@ class TranslationService
     }
 
     /**
-     * Traduce una colección de registros de forma masiva (Bulk).
-     * Se usa para listas (Logros, Niveles) para evitar llamadas N+1 a Google Translate.
+     * Traduce una colección de registros (Logros, Niveles, Temas) de forma masiva.
+     * 
+     * Optimiza el rendimiento concatenando todos los textos en una única petición a Google.
+     * Verifica la existencia en caché antes de enviar nuevos textos a traducir.
+     * 
+     * @param iterable $records Colección de modelos o arrays.
+     * @param string $locale Idioma de destino.
+     * @param string $type Tipo de entidad ('logro', 'nivel', 'tema').
+     * @return array Colección procesada con las traducciones aplicadas.
      */
     public function translateCollection(iterable $records, string $locale, string $type = 'logro'): array
     {
@@ -148,12 +178,22 @@ class TranslationService
         return $items;
     }
 
-    /** Helper para compatibilidad con colecciones de logros */
+    /**
+     * Helper específico para colecciones de logros (mantiene compatibilidad con código anterior).
+     */
     public function translateLogrosCollection(iterable $logros, string $locale): array
     {
         return $this->translateCollection($logros, $locale, 'logro');
     }
 
+    /**
+     * Procesa la traducción campo por campo de un registro individual.
+     * 
+     * @param array|object $record Registro a traducir.
+     * @param string $locale Idioma destino.
+     * @param array $fields Lista de campos que deben ser traducidos.
+     * @return array Array con los datos (posiblemente) traducidos.
+     */
     private function translateFields(array|object $record, string $locale, array $fields): array
     {
         $data = is_array($record) ? $record : (method_exists($record, 'toArray') ? $record->toArray() : (array) $record);
@@ -176,6 +216,13 @@ class TranslationService
         return $data;
     }
 
+    /**
+     * Obtiene una traducción desde la caché o la solicita a la API si no existe.
+     * 
+     * @param string $text Texto original en castellano.
+     * @param string $targetLang Idioma destino (ISO).
+     * @return string|null El texto traducido, o null si la API falla.
+     */
     private function translateCached(string $text, string $targetLang): ?string
     {
         $cacheKey = "trans_{$targetLang}_" . md5($text);
@@ -190,6 +237,13 @@ class TranslationService
         return $result;
     }
 
+    /**
+     * Realiza la llamada HTTP a la API gratuita de Google Translate.
+     * 
+     * @param string $text Texto (o cadena de textos unidos por delimitador) a traducir.
+     * @param string $targetLang Código de idioma compatible con Google.
+     * @return string|null Respuesta de Google o null en caso de error.
+     */
     private function callGoogleTranslate(string $text, string $targetLang): ?string
     {
         // Seguridad: asegurar que caracteres como | se preserven no limpiando en exceso
@@ -221,12 +275,25 @@ class TranslationService
         }
     }
 
+    /**
+     * Verifica si el locale solicitado está soportado y devuelve el código ISO base.
+     * Si no está en la lista blanca, devuelve 'es' (sin traducción).
+     * 
+     * @param string $locale Locale completo (ej: 'en-US' o 'en').
+     * @return string Código ISO de dos letras soportado.
+     */
     private function getValidTargetLang(string $locale): string
     {
         $lang = strtolower(explode('-', $locale)[0]);
         return in_array($lang, self::SUPPORTED_LOCALES) ? $lang : 'es';
     }
 
+    /**
+     * Convierte una colección de objetos/modelos en una lista de arrays planos.
+     * 
+     * @param iterable $records Colección de elementos.
+     * @return array Lista de arrays.
+     */
     private function normalizeItems(iterable $records): array
     {
         $result = [];
@@ -236,7 +303,15 @@ class TranslationService
         return $result;
     }
 
-    /** Divide la traducción masiva en fragmentos más pequeños para evitar límites de longitud en la URL (aprox 2000 chars) */
+    /** 
+     * Divide los datos a traducir en fragmentos más pequeños.
+     * 
+     * El límite de 1500 caracteres asegura que la URL de la petición GET (después del encoding)
+     * no exceda el límite estándar de los servidores y proxies (2000-4000 caracteres).
+     * 
+     * @param array $data Lista de metadatos de traducción.
+     * @return array Chunks de datos listos para procesar.
+     */
     private function chunkTranslationData(array $data): array
     {
         $chunks = [];
@@ -259,6 +334,12 @@ class TranslationService
         return $chunks;
     }
 
+    /**
+     * Resuelve el idioma del usuario basándose en el header HTTP 'Accept-Language'.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return string Idioma base (ej: 'es', 'en', 'fr').
+     */
     public static function resolveLocale(\Illuminate\Http\Request $request): string
     {
         $header = $request->header('Accept-Language', 'es');
