@@ -23,9 +23,7 @@ class LoginUserAction
         $usuario = Usuario::where('email', $email)->first();
 
         if (!$usuario || !Hash::check($password, $usuario->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['Las credenciales proporcionadas son incorrectas.'],
-            ]);
+            abort(401, 'Las credenciales proporcionadas son incorrectas.');
         }
 
         $token = $usuario->createToken('auth_token')->plainTextToken;

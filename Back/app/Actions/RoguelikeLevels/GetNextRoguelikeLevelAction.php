@@ -90,7 +90,7 @@ class GetNextRoguelikeLevelAction
                 return 'medio';
             return 'difícil';
         } else {
-            // Late game: Difícil y Extremo
+            // Late game: Difícil 
             if ($rand <= 20)
                 return 'fácil';
             if ($rand <= 70)

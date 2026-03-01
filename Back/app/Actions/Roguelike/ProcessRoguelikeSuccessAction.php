@@ -28,8 +28,8 @@ class ProcessRoguelikeSuccessAction
     {
         // 1. Calculamos recompensas
         $multiplier = $session['coin_multiplier'] ?? 1;
-        $coinsGained = 10 * $multiplier;
-        $xpGained = 25;
+        $coinsGained = 50 * $multiplier;
+        $xpGained = 50;
 
         // 2. Actualizamos el estado de la sesión local
         $session['levels_completed'] += 1;
@@ -77,6 +77,9 @@ class ProcessRoguelikeSuccessAction
         }
 
         // 5. Lógica de Gamificación (Logros, Racha, Nivel Global)
+        // Invalidar la caché del dashboard para mostrar datos actualizados (XP, Monedas, Nivel)
+        Cache::forget("user_summary_{$user->id}");
+
         $nuevosLogros = (new CheckAchievementsAction())->execute();
         $rachaData = (new UpdateUserStreakAction())->execute($user);
         $levelUpData = (new ProcessLevelUpAction())->execute($user);

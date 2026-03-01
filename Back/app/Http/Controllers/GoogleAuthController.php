@@ -41,11 +41,11 @@ class GoogleAuthController extends Controller
             $token = $user->createToken('google-auth-token')->plainTextToken;
 
             // Redirigir al frontend con el token en la URL (Angular lo capturará)
-            return redirect()->away(config('app.frontend_url') . '/login?token=' . $token);
+            return redirect()->away(config('app.frontend_url') . '/#/login?token=' . $token);
 
         } catch (\Exception $e) {
             Log::error('Error en Google Auth', ['message' => $e->getMessage()]);
-            return redirect()->away(config('app.frontend_url') . '/login?error=google_auth_failed');
+            return redirect()->away(config('app.frontend_url') . '/#/login?error=google_auth_failed');
         }
     }
 }
