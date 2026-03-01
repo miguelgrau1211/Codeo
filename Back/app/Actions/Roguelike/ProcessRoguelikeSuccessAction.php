@@ -78,6 +78,7 @@ class ProcessRoguelikeSuccessAction
 
         // 5. Lógica de Gamificación (Logros, Racha, Nivel Global)
         // Invalidar la caché del dashboard para mostrar datos actualizados (XP, Monedas, Nivel)
+        $user->refresh();
         Cache::forget("user_summary_{$user->id}");
 
         $nuevosLogros = (new CheckAchievementsAction())->execute();

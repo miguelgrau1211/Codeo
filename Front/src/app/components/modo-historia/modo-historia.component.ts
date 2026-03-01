@@ -248,15 +248,20 @@ export class ModoHistoriaComponent implements OnInit {
 
                 if (res.recompensas?.xp) {
                   this.recompensas.set(res.recompensas);
+                  // Actualización optimista: solo si res.recompensas.xp es el nuevo total (aunque el backend envía el ganado)
+                  // El handleLevelUpResult posterior corregirá esto con el total real del servidor.
                   this.userDataService.updateEconomy(undefined, res.recompensas.xp);
                 }
 
-                if (res.racha?.streak !== undefined) {
-                  this.userDataService.setStreak(res.racha.streak);
-                }
+                const gamificacion = res.gamificacion;
+                if (gamificacion) {
+                  if (gamificacion.racha?.streak !== undefined) {
+                    this.userDataService.setStreak(gamificacion.racha.streak);
+                  }
 
-                if (res.level_up) {
-                  this.userDataService.handleLevelUpResult(res.level_up);
+                  if (gamificacion.level_up) {
+                    this.userDataService.handleLevelUpResult(gamificacion.level_up);
+                  }
                 }
               },
               error: (err) => console.error('Error guardando progreso:', err),

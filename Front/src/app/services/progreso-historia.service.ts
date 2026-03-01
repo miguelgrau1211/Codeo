@@ -57,8 +57,9 @@ export class ProgresoHistoriaService {
       }
     }).pipe(
       tap(res => {
-        if (res.nuevos_logros && res.nuevos_logros.length > 0) {
-          res.nuevos_logros.forEach((logro: any) => {
+        const logros = res.gamificacion?.nuevos_logros || res.nuevos_logros;
+        if (logros && logros.length > 0) {
+          logros.forEach((logro: any) => {
             this.notificationService.showAchievement(logro);
           });
         }

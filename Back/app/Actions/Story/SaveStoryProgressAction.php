@@ -63,6 +63,10 @@ class SaveStoryProgressAction
         // 4. Lógica de Gamificación (solo si se ha completado)
         $gamificacion = [];
         if ($completado) {
+            // Aseguramos que el modelo del usuario tiene los datos actualizados (XP/Monedas) 
+            // tras la transacción anterior antes de guardar la racha para evitar overwrites.
+            $user->refresh();
+
             // Invalidar la caché del dashboard para mostrar datos actualizados
             \Illuminate\Support\Facades\Cache::forget("user_summary_{$user->id}");
 
