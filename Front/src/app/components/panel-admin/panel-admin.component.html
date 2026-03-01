@@ -539,11 +539,11 @@
                     <table class="w-full text-sm text-left">
                         <thead class="text-xs text-text-muted uppercase bg-primary-bg/50">
                             <tr>
-                                <th class="px-6 py-3 rounded-l-lg">{{ 'ADMIN.REPORTS.TABLE_CONTACT' | translate }}</th>
-                                <th class="px-6 py-3">{{ 'ADMIN.REPORTS.TABLE_REPORT' | translate }}</th>
-                                <th class="px-6 py-3">{{ 'ADMIN.REPORTS.TABLE_STATUS' | translate }}</th>
-                                <th class="px-6 py-3">{{ 'ADMIN.REPORTS.TABLE_DATE' | translate }}</th>
-                                <th class="px-6 py-3 rounded-r-lg text-center">{{ 'ADMIN.REPORTS.TABLE_ACTIONS' |
+                                <th class="px-6 py-3 rounded-l-lg">{{ 'ADMIN.SUPPORT.TABLE_CONTACT' | translate }}</th>
+                                <th class="px-6 py-3">{{ 'ADMIN.SUPPORT.TABLE_REPORT' | translate }}</th>
+                                <th class="px-6 py-3">{{ 'ADMIN.SUPPORT.TABLE_STATUS' | translate }}</th>
+                                <th class="px-6 py-3">{{ 'ADMIN.SUPPORT.TABLE_DATE' | translate }}</th>
+                                <th class="px-6 py-3 rounded-r-lg text-center">{{ 'ADMIN.SUPPORT.TABLE_ACTIONS' |
                                     translate }}</th>
                             </tr>
                         </thead>
@@ -584,16 +584,16 @@
                                         <select (change)="updateReportStatus(rep.id, $any($event.target).value)"
                                             class="bg-primary-bg border-none rounded text-xs py-1 px-2 focus:ring-1 focus:ring-accent-color transition-all outline-none text-text-main">
                                             <option value="pendiente" [selected]="rep.estado === 'pendiente'">{{
-                                                'ADMIN.REPORTS.STATUS_PENDING' | translate }}
+                                                'ADMIN.SUPPORT.STATUS_PENDING' | translate }}
                                             </option>
                                             <option value="en revision" [selected]="rep.estado === 'en revision'">{{
-                                                'ADMIN.REPORTS.STATUS_REVIEW' | translate }}</option>
+                                                'ADMIN.SUPPORT.STATUS_REVIEW' | translate }}</option>
                                             <option value="solucionado" [selected]="rep.estado === 'solucionado'">
-                                                {{ 'ADMIN.REPORTS.STATUS_SOLVED' | translate }}</option>
+                                                {{ 'ADMIN.SUPPORT.STATUS_SOLVED' | translate }}</option>
                                             <option value="rechazado" [selected]="rep.estado === 'rechazado'">
-                                                {{ 'ADMIN.REPORTS.STATUS_REJECTED' | translate }}</option>
+                                                {{ 'ADMIN.SUPPORT.STATUS_REJECTED' | translate }}</option>
                                             <option value="spam" [selected]="rep.estado === 'spam'">
-                                                {{ 'ADMIN.REPORTS.STATUS_SPAM' | translate }}</option>
+                                                {{ 'ADMIN.SUPPORT.STATUS_SPAM' | translate }}</option>
                                         </select>
                                     </div>
                                 </td>
@@ -612,7 +612,7 @@
                             @if (reportes().length === 0 && !isReportesLoading()) {
                             <tr>
                                 <td colspan="5" class="px-6 py-10 text-center text-text-muted italic">{{
-                                    'ADMIN.REPORTS.EMPTY' | translate }}</td>
+                                    'ADMIN.SUPPORT.EMPTY' | translate }}</td>
                             </tr>
                             }
                         </tbody>

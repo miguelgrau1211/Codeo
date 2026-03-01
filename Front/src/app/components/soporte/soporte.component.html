@@ -104,6 +104,27 @@
                                 class="w-full bg-black/20 border border-white/5 text-text-main placeholder:text-text-muted/50 rounded-xl px-4 py-3 focus:outline-none focus:border-accent-color focus:ring-1 focus:ring-accent-color/50 transition-all resize-none"
                                 [placeholder]="'SUPPORT.DESCRIPTION_PH' | translate"
                                 [class.border-red-500]="reportForm.get('description')?.invalid && reportForm.get('description')?.touched"></textarea>
+
+                            <div class="flex justify-between items-center mt-1 px-1">
+                                <span class="text-xs transition-all duration-300"
+                                    [class.text-red-400]="reportForm.get('description')?.invalid && reportForm.get('description')?.touched"
+                                    [class.text-text-muted]="!(reportForm.get('description')?.invalid && reportForm.get('description')?.touched)">
+                                    @if (reportForm.get('description')?.errors?.['minlength'] &&
+                                    reportForm.get('description')?.touched) {
+                                    {{ 'SUPPORT.ERR_MIN_LENGTH' | translate:{min: 20} }}
+                                    } @else if (reportForm.get('description')?.errors?.['required'] &&
+                                    reportForm.get('description')?.touched) {
+                                    {{ 'SUPPORT.ERR_REQUIRED' | translate }}
+                                    } @else {
+                                    <span class="opacity-0">.</span>
+                                    }
+                                </span>
+                                <span class="text-[10px] font-mono transition-colors"
+                                    [class.text-accent-color]="reportForm.get('description')?.valid"
+                                    [class.text-text-muted]="!reportForm.get('description')?.valid">
+                                    {{ reportForm.get('description')?.value?.length || 0 }}/20 min
+                                </span>
+                            </div>
                         </div>
 
                         <!-- Feedback Messages -->

@@ -277,6 +277,8 @@
         "DESCRIPTION_PH": "Describe qué sucedió, qué esperabas que pasara y pasos para reproducirlo...",
         "SUCCESS": "Reporte enviado con éxito. ¡Gracias!",
         "ERROR": "Hubo un error al enviar el reporte. Inténtalo de nuevo.",
+        "ERR_MIN_LENGTH": "Mínimo {{min}} caracteres para una descripción útil.",
+        "ERR_REQUIRED": "La descripción es necesaria.",
         "TIP_TITLE": "Tip Pro:",
         "TIP_DESC": "Los reportes detallados y constructivos ayudan a mejorar la plataforma para todos. ¡Las mejores contribuciones son recompensadas con XP!",
         "SPAM_WARNING": "⚠️ Aviso de Seguridad:",
@@ -292,7 +294,7 @@
             "Q1": "¿Cuánto tarda en responderse un report?",
             "A1": "Nuestro equipo revisa los reportes diariamente. Generalmente recibes respuesta en 24-48 horas laborables.",
             "Q2": "¿Cómo puedo resetear mi progreso?",
-            "A2": "Ve a Ajustes > Zona de Peligro > Resetear Progreso. Ten cuidado, esta acción no se puede deshacer.",
+            "A2": "Ve a Ajustes \u003e Zona de Peligro \u003e Resetear Progreso. Ten cuidado, esta acción no se puede deshacer.",
             "Q3": "¿Gano algo por reportar bugs?",
             "A3": "¡Sí! Si el bug es validado, recibirás créditos y XP como recompensa por ayudar a mejorar Codeo.",
             "Q4": "¿Puedo contribuir al código?",
@@ -491,12 +493,12 @@
             "EXTRA_TIME_DESC": "Añade 30 segundos al temporizador del nivel."
         },
         "TUTORIAL_TITLE": "Cómo jugar Supervivencia",
-        "TUTORIAL_DESC": "Bienvenido al <strong class=\"text-red-500\">Modo Infinito</strong>. Aquí tendrás que resolver retos de código para sobrevivir. El tiempo corre y si envías código erróneo o se agota el tiempo, perderás vidas.",
+        "TUTORIAL_DESC": "Bienvenido al \u003cstrong class=\"text-red-500\"\u003eModo Infinito\u003c/strong\u003e. Aquí tendrás que resolver retos de código para sobrevivir. El tiempo corre y si envías código erróneo o se agota el tiempo, perderás vidas.",
         "TUTORIAL_KEY_CONCEPTS": "Conceptos Clave para Sobrevivir",
         "TUTORIAL_VAR_INPUT": "Variable Input: input_data",
-        "TUTORIAL_VAR_INPUT_DESC": "En cada nivel, el sistema inyecta una variable global llamada <code class=\"text-accent-color bg-black/40 px-2 py-0.5 rounded border border-accent-color/20 font-bold\">input_data</code>. Esta variable <strong class=\"text-white\">es un array (lista)</strong> que contiene los datos de prueba del nivel actual. Puedes acceder a los valores usando índices, por ejemplo: <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 rounded border border-white/10 font-mono\">input_data[0]</code>, <code class=\"text-text-main bg-black/40 px-1.5 py-0.5 rounded border border-white/10 font-mono\">input_data[1]</code>, etc.",
+        "TUTORIAL_VAR_INPUT_DESC": "En cada nivel, el sistema inyecta una variable global llamada \u003ccode class=\"text-accent-color bg-black/40 px-2 py-0.5 rounded border border-accent-color/20 font-bold\"\u003einput_data\u003c/code\u003e. Esta variable \u003cstrong class=\"text-white\"\u003ees un array (lista)\u003c/strong\u003e que contiene los datos de prueba del nivel actual. Puedes acceder a los valores usando índices, por ejemplo: \u003ccode class=\"text-text-main bg-black/40 px-1.5 py-0.5 rounded border border-white/10 font-mono\"\u003einput_data[0]\u003c/code\u003e, \u003ccode class=\"text-text-main bg-black/40 px-1.5 py-0.5 rounded border border-white/10 font-mono\"\u003einput_data[1]\u003c/code\u003e, etc.",
         "TUTORIAL_GEN_OUTPUT": "Generar Salida: print()",
-        "TUTORIAL_GEN_OUTPUT_DESC": "La validación lee lo que tu código imprime en consola. Usa <code class=\"text-accent-color bg-black/40 px-2 py-0.5 rounded border border-accent-color/20 font-bold\">print()</code> para enviar tu respuesta final con formato exacto al \"EXPECTED OUTPUT\" de la izquierda.",
+        "TUTORIAL_GEN_OUTPUT_DESC": "La validación lee lo que tu código imprime en consola. Usa \u003ccode class=\"text-accent-color bg-black/40 px-2 py-0.5 rounded border border-accent-color/20 font-bold\"\u003eprint()\u003c/code\u003e para enviar tu respuesta final con formato exacto al \"EXPECTED OUTPUT\" de la izquierda.",
         "TUTORIAL_GOT_IT": "¡ENTENDIDO!"
     },
     "ADMIN": {
