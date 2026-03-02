@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
   body {
     background-color: var(--primary-bg, #050a14);
     color: var(--text-main, #e2e8f0);
@@ -90,7 +94,7 @@
   @keyframes space-drift {
     0% {
       background-position: 0% 50%;
-      transform: scale(1.0);
+      transform: scale(1);
     }
 
     50% {
@@ -100,7 +104,7 @@
 
     100% {
       background-position: 0% 50%;
-      transform: scale(1.0);
+      transform: scale(1);
     }
   }
 
@@ -159,7 +163,6 @@
   }
 
   @keyframes bounce-short {
-
     0%,
     100% {
       transform: translateY(0);
@@ -175,7 +178,6 @@
   }
 
   @keyframes pulse-light {
-
     0%,
     100% {
       opacity: 1;
@@ -224,6 +226,30 @@
 
   .animate-gradient-slow {
     animation: gradient-slow 8s ease infinite;
+  }
+
+  /* Sidebar custom scrollbar */
+  .custom-sidebar-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .custom-sidebar-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    border: none;
+  }
+
+  .custom-sidebar-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 

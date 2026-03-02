@@ -194,12 +194,14 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     this.checkScreenSize();
   }
 
+  private lastIsMobile = window.innerWidth < 768;
+
   private checkScreenSize() {
     const isMobile = window.innerWidth < 768;
-    if (isMobile && this.isSidebarOpen()) {
-      this.isSidebarOpen.set(false);
-    } else if (!isMobile && !this.isSidebarOpen()) {
-      this.isSidebarOpen.set(true);
+    // Solo actualizamos el estado si cruzamos el breakpoint de móvil/escritorio
+    if (isMobile !== this.lastIsMobile) {
+      this.isSidebarOpen.set(!isMobile);
+      this.lastIsMobile = isMobile;
     }
   }
 

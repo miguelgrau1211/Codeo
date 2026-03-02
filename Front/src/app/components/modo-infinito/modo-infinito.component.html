@@ -1,4 +1,4 @@
-<div class="min-h-screen text-text-main font-sans selection:bg-accent-color/30 overflow-hidden flex flex-col relative transition-colors duration-500"
+<div class="h-full text-text-main font-sans selection:bg-accent-color/30 overflow-hidden flex flex-col relative transition-colors duration-500"
     [class.bg-primary-bg]="urgencyLevel <= 1" [class.urgency-critical-bg]="urgencyLevel >= 3"
     [class.screen-shake-light]="urgencyLevel === 2 && !isShowingTimeOut()"
     [class.screen-shake-heavy]="urgencyLevel === 3 && timeRemaining() > 15 && !isShowingTimeOut()"
