@@ -40,6 +40,9 @@ Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleC
 
 Route::apiResource('niveles-roguelike', NivelesRoguelikeController::class)->only(['index']);
 Route::get('/mejoras/random', [MejorasController::class, 'getTresMejorasRandom']);
+Route::get('/debug/nivel', function() {
+    return \App\Models\NivelRoguelike::first();
+});
 Route::apiResource('mejoras', MejorasController::class)->only(['index', 'show']);
 
 // --- Rutas Protegidas (Requieren Token) ---

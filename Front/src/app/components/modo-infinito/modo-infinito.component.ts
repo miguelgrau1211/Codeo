@@ -406,6 +406,7 @@ export class ModoInfinitoComponent implements OnInit, OnDestroy {
         this.descripcion.set(nivel.descripcion);
         this.dificultad.set(nivel.dificultad);
         this.testCases.set(nivel.test_cases || []);
+        console.log('Nivel cargado:', nivel);
 
         const starterCode = this.langService.translate('INFINITE.STARTER_CODE');
         this.initialCode.set(starterCode);
