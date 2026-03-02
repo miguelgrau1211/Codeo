@@ -572,16 +572,16 @@
 
                 <!-- Mission Statement -->
                 <div
-                    class="mb-8 p-6 bg-primary-bg rounded-[2rem] border border-red-500/10 shadow-xl relative overflow-hidden group">
+                    class="mb-8 p-6 bg-primary-bg rounded-[2rem] border border-red-500/10 shadow-xl relative group">
                     <div class="absolute -top-4 -right-4 p-8 opacity-5 group-hover:scale-110 transition-transform">
                         <img src="/common/icons/roguelike_mode.png" class="w-24 h-24">
                     </div>
 
                     <h3
                         class="text-accent-color font-black text-xl mb-4 relative z-10 font-jersey italic tracking-wider">
-                        Pasa un texto a mayúsculas</h3>
+                        {{ titulo() }}</h3>
                     <p class="text-text-main text-sm mb-6 leading-relaxed relative z-10 font-medium">
-                        Cambia un string a mayúsculas
+                        {{ descripcion() }}
                     </p>
 
                     <div class="grid grid-cols-1 gap-4 text-xs font-mono relative z-10">
